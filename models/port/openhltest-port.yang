@@ -1,0 +1,114 @@
+module openhltest-port {
+
+    yang-version "1";
+    namespace "http://openhltest.org/yang/port";
+    prefix "oht";
+
+    import openhltest-port-statistics {
+        prefix s;
+    }
+
+    organization
+      "OpenHlTest working group";
+    contact
+      "OpenHlTest working group";
+    description
+      "This module describes a collection of abstract test ports
+	  and associated rpcs. An abstract test port should be as 
+	  minimal as possible.";
+
+    revision 2017-11-02 {
+        description
+          "Initial revision.";
+        reference
+          "0.0.1";
+    }
+
+    grouping port-top {
+        description
+          "A grouping of abstract test ports";
+
+        list port {
+            key "name";
+            description
+              "A list of abstract test ports";
+
+            leaf name {
+                type string;
+                description
+                  "The unique name of an abstract test port";
+            }
+
+        	container statistics {
+                uses s:port-statistics-top;
+            }
+        }
+    }
+
+    uses port-top;
+
+	grouping chassis-card-port-group {
+		leaf chassis {
+			description
+			"The ip address and/or hostname of the infrastructure that 
+			contains the physical or virtual test ports.";
+			type string;
+		}
+		leaf card-id {
+			description
+			"The one based card id that contains the physical or virtual test port";
+			default '1';
+			type uint16;
+		}
+		leaf port-id {
+			description
+			"The one based port id of the physical or virtual test port";
+			default 1;
+			type uint16;
+		}
+	}
+
+    rpc connect-ports {
+        description
+          "Connect abstract test ports to physical hardware test ports and/or 
+           virtual machine test ports";
+        input {
+            list port-map {
+                key "port-reference";
+                leaf port-reference {
+					description "An abstract test port reference";
+                    type leafref {
+                        path "/oht:port/oht:name";
+                    }
+                }
+				uses chassis-card-port-group;
+            }
+        }
+        output {
+            list failure-map {
+                key "port-reference";
+                leaf port-reference {
+					description "An abstract test port reference";
+                    type leafref {
+                        path "/oht:port/oht:name";
+                    }
+                }
+				uses chassis-card-port-group;
+            }
+        }
+    }
+
+    rpc disconnect-ports {
+        description
+          "Disconnect abstract test ports from any connected
+           physical hardware test ports and/or virtual machine test ports";
+        input {
+            leaf-list port-references {
+				description "A list of abstract test port references";
+                type leafref {
+                    path "/oht:port/oht:name";
+                }
+            }
+        }
+    }
+}

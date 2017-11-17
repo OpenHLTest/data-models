@@ -1,0 +1,92 @@
+module openhltest-port-statistics {
+
+    yang-version "1";
+    namespace "http://openhltest.net/yang/port";
+    prefix "openhltest-port";
+
+    organization
+      "OpenHlTest working group";
+    contact
+      "OpenHlTest working group";
+    description
+      "This module describes a YANG model for 
+       abstract test port statistics.";
+
+    revision 2017-11-02 {
+        description
+          "Initial revision.";
+        reference
+          "0.0.1";
+    }
+
+    grouping port-statistics-top {
+        description
+          "A grouping of port statistics";
+
+        leaf connection-state {
+            config false;
+            type enumeration {
+                enum CONNECTED;
+                enum CONNECTING;
+                enum DISCONNECTED;
+                enum DISCONNECTING;
+            }
+            description
+              "The state of the connection to the physical hardware 
+               test port or virtual machine test port";
+        }
+        leaf connection-state-details {
+            config false;
+            type string;
+            description
+              "Detailed information about the state of the connection to
+               the physical hardware test port or virtual machine test port";
+        }
+
+        leaf link {
+            config false;
+            type enumeration {
+                enum LINK_UP;
+                enum LINK_DOWN;
+            }
+            description
+              "The state of the test port link";
+        }
+        leaf interface-type {
+            config false;
+            type string;
+            description
+              "The type of interface of the test port";
+        }
+        leaf interface-speed {
+            config false;
+            type string;
+            description
+              "";
+        }
+        leaf tx-frames {
+            config false;
+            type string;
+            description
+              "";
+        }
+        leaf rx-frames {
+            config false;
+            type string;
+            description
+              "";
+        }
+        leaf collisions {
+            config false;
+            type string;
+            description
+              "";
+        }
+        leaf fcs-errors {
+            config false;
+            type string;
+            description
+              "";
+        }
+    }
+}
