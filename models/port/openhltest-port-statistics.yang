@@ -56,37 +56,37 @@ module openhltest-port-statistics {
             config false;
             type string;
             description
-              "The type of interface of the test port";
+              "The vendor specific interface type of the test port";
         }
-        leaf interface-speed {
+        leaf speed {
             config false;
             type string;
             description
-              "";
+              "The speed of the test port";
         }
         leaf tx-frames {
             config false;
-            type string;
+            type uint64;
             description
-              "";
+              "The number of frames transmitted";
         }
         leaf rx-frames {
             config false;
-            type string;
+            type uint64;
             description
-              "";
+              "The number of frames received";
         }
         leaf collisions {
             config false;
-            type string;
+            type uint64;
             description
-              "";
+              "The number of collisions that have occurred";
         }
         leaf fcs-errors {
             config false;
-            type string;
+            type uint64;
             description
-              "";
+              "The number of frame check sequence errors that have occurred";
         }
     }
 }
