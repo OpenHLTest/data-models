@@ -4,6 +4,9 @@ module openhltest-statistics {
     namespace "http://openhltest.org/yang/port";
     prefix "oht";
 
+    import openhltest-port {
+        prefix p;
+    }
     import openhltest-port-statistics {
         prefix s;
     }
@@ -13,9 +16,10 @@ module openhltest-statistics {
     contact
       "OpenHlTest working group";
     description
-      "This module describes a collection of abstract test ports
-	  and associated rpcs. An abstract test port should be as 
-	  minimal as possible.";
+      "This module describes a collection of all statistics that are available.
+	  It offers two methods of statistic retrieval.
+	  The pull method is described under the statistic container.
+	  The push method is described under the statistic-event container.";
 
     revision 2017-11-02 {
         description
@@ -24,21 +28,26 @@ module openhltest-statistics {
           "0.0.1";
     }
 
-    grouping statistics-top {
-        description
-          "A grouping of all possible statistics";
-
-		notification port-statistic-event {
-            list port {
-                key "port-reference";
-                leaf port-reference {
+	grouping statistics-top {
+		container statistics {
+			list port {
+				key "port-reference";
+				leaf port-reference {
 					description "An abstract test port reference";
-                    type leafref {
-                        path "/oht:port/oht:name";
-                    }
-                }
+					type leafref {
+						path "/p:port/p:name";
+					}
+				}
 				uses s:port-statistics-top;
-            }
+			}
 		}
-    }
+	}
+
+	uses statistics-top;
+
+	notification statistic-events {
+		description
+		"Provides push model for statisics";
+		uses statistics-top;
+	}
 }

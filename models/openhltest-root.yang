@@ -10,13 +10,17 @@ module openhltest-root {
     import openhltest-layer1 {
         prefix l;
     }
+    import openhltest-statistics {
+        prefix s;
+    }
 
     organization
       "OpenHlTest working group";
     contact
       "OpenHlTest working group";
     description
-      "This module aggregates all other top level modules.";
+      "This module aggregates all other top level modules.
+	  If a view is created using pyang it will exclude rpc and notification elements.";
 
     revision 2017-11-02 {
         description
@@ -31,6 +35,7 @@ module openhltest-root {
 
 		uses p:port-top;
 		uses l:layer1-top;
+		uses s:statistics-top;
     }
 
     uses root-top;
