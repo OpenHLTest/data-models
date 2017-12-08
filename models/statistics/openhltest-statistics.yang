@@ -18,8 +18,8 @@ module openhltest-statistics {
     description
       "This module describes a collection of all statistics that are available.
 	  It offers two methods of statistic retrieval.
-	  The pull method is described under the statistic container.
-	  The push method is described under the statistic-event container.";
+	  The pull method is described under the statistics container.
+	  The push method is described under the statistic-events container.";
 
     revision 2017-11-02 {
         description
@@ -43,11 +43,14 @@ module openhltest-statistics {
 		}
 	}
 
-	uses statistics-top;
+	uses statistics-top {
+		description
+		"The statistics pull model"; 
+	}
 
 	notification statistic-events {
 		description
-		"Provides push model for statisics";
+		"The statistics push model";
 		uses statistics-top;
 	}
 }
