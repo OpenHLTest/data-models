@@ -47,7 +47,7 @@ module openhltest-layer1 {
                     path "/p:port/p:name";
                 }
             }
-            leaf config-type {
+            leaf layer1-type {
                 description "Determines which detailed layer1 conditional container is active";
                 type enumeration {
                     enum ETHERNET;

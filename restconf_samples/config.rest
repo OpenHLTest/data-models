@@ -1,2 +1,44 @@
 ### get the entire config for a specific session
+### accept-encoding support: application/json; application/yaml
 GET {{host}}/restconf/data/openhltest-session:session=regression-1/config?content-all
+Accept-Encoding: application/json
+
+
+### load a vendor specific binary config
+### content type support: application/octet-stream
+POST {{host}}/restconf/data/openhltest-session:session=regression-1
+Content-Type: application/octet-stream
+
+.<vendor binary config filename here>
+
+
+### load an OpenHLTest config in a specific session
+### content-type support: application/json; application/yaml
+POST {{host}}/restconf/data/openhltest-session:session=regression-1
+Content-Type: application/json
+
+{
+	"config": {
+		"port": [
+			{
+				"name": "PE-2/6"
+			},
+			{
+				"name": "PE-2/7"
+			}
+		],
+		"layer1": [
+			{
+				"name": "ethernet",
+				"port-references": [
+					"PE-2/6",
+					"PE-2/7"
+				],
+				"layer1-type": "ETHERNET",
+				"ethernet": {
+					"speed": "ONE_G"
+				}
+			}
+		]
+	}	
+}

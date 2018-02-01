@@ -16,7 +16,11 @@ module openhltest-config {
     contact
       "OpenHlTest working group";
     description
-      "This module aggregates all other top level configuration modules.";
+      "This module aggregates all other top level configuration modules.
+	  Vendor should support loading of binary, json or yaml.
+	  Binary must be vendor specific which will allow for conversions from
+	  vendor specific to OpenHLTest format.
+	  Json/Yaml must be OpenHLTest model specific";
 
     revision 2017-11-02 {
         description
@@ -38,28 +42,4 @@ module openhltest-config {
     }
 
     uses config-top;
-	
-    rpc load {
-        description
-          "Load a test tool configuration";
-        input {
-            leaf content {
-                description 
-				"The content of the configuration.
-				Binary denotes a vendor specific configuration.
-				String denotes an OpenHlTest specific configuration in either json or yaml format.";
-				type union {
-					type binary;
-					type string;
-            	}
-        	}
-		}
-		output {
-			leaf summary {
-				description
-				"A free from vendor specific summary of the configuration that was loaded.";
-				type string;
-			}
-		}
-	}
 }
