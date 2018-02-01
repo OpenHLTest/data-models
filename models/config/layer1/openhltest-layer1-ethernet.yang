@@ -5,13 +5,13 @@ submodule openhltest-layer1-ethernet {
     }
 
     organization
-      "tgn.org";
+      "OpenHlTest working group";
     contact
-      admin@tgn.org;
+      "OpenHlTest working group";
     description
-      "Layer1 definitions";
+      "This module describes the abstract layer1 ethernet model.";
 
-    revision 2017-09-20 {
+    revision 2017-11-02 {
         description
           "Initial revision.";
         reference

@@ -30,6 +30,7 @@ module openhltest-statistics {
 
 	grouping statistics-top {
 		container statistics {
+			config false;
 			list port {
 				key "port-reference";
 				leaf port-reference {

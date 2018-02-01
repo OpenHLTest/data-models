@@ -15,7 +15,8 @@ module openhltest-layer1 {
     contact
       "OpenHlTest working group";
     description
-      "This module describes abstract layer1 models.";
+      "This module describes the different types of abstract layer1 models.
+	  It allows the user to choose the current layer1 model.";
 
     revision 2017-11-02 {
         description
@@ -26,12 +27,12 @@ module openhltest-layer1 {
 
     grouping layer1-top {
         description
-          "A grouping of abstract layer1 definitions";
+          "A grouping of layer1 definitions";
 
         list layer1 {
             key "name";
             description
-              "A list of abstract layer1 definitions";
+              "A list of layer1 definitions";
 
             leaf name {
                 type string;
@@ -40,7 +41,8 @@ module openhltest-layer1 {
             }
             leaf-list port-references {
                 description
-                  "A list of abstract port references";
+                  "A list of abstract port references that will share
+				  these layer1 characteristics.";
                 type leafref {
                     path "/p:port/p:name";
                 }
@@ -61,14 +63,14 @@ module openhltest-layer1 {
                 default ETHERNET;
             }
             container ethernet {
-                description "The conditional container for ethernet
-                detailed layer1 information";
+                description "The conditional container for detailed ethernet
+                layer1 information";
                 when "../config-type = ETHERNET";
                 uses ethernet-config;
             }
             container ethernet-vm {
-                description "The conditional container for ethernet virtual machine 
-                detailed layer1 information";
+                description "The conditional container for detailed ethernet virtual machine 
+                layer1 information";
                 when "../config-type = ETHERNET_VM";
                 uses ethernet-vm-config;
             }

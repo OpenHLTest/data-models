@@ -38,10 +38,6 @@ module openhltest-port {
                 description
                   "The unique name of an abstract test port";
             }
-
-        	container statistics {
-                uses s:port-statistics-top;
-            }
         }
     }
 

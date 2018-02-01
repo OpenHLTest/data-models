@@ -1,0 +1,2 @@
+### get the entire config for a specific session
+GET {{host}}/restconf/data/openhltest-session:session=regression-1/config?content-all

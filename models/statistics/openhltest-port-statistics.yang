@@ -26,10 +26,11 @@ module openhltest-port-statistics {
         leaf connection-state {
             config false;
             type enumeration {
-                enum CONNECTED;
                 enum CONNECTING;
-                enum DISCONNECTED;
+                enum CONNECTED_LINK_UP;
+				enum CONNECTED_LINK_DOWN;
                 enum DISCONNECTING;
+                enum DISCONNECTED;
             }
             description
               "The state of the connection to the physical hardware 
@@ -39,24 +40,14 @@ module openhltest-port-statistics {
             config false;
             type string;
             description
-              "Detailed information about the state of the connection to
+              "Free form vendor specific information about the state of the connection to
                the physical hardware test port or virtual machine test port";
-        }
-
-        leaf link {
-            config false;
-            type enumeration {
-                enum LINK_UP;
-                enum LINK_DOWN;
-            }
-            description
-              "The state of the test port link";
         }
         leaf interface-type {
             config false;
             type string;
             description
-              "The vendor specific interface type of the test port";
+              "Free form vendor specific interface type of the test port";
         }
         leaf speed {
             config false;

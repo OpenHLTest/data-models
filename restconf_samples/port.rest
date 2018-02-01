@@ -1,0 +1,6 @@
+### get a list of all ports
+GET {{host}}/restconf/data/openhltest-session:session=regression-1/port
+
+### get a specific port
+GET {{host}}/restconf/data/openhltest-session:session=regression-1/port=PE-2/6
+
