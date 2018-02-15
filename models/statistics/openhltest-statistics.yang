@@ -1,15 +1,11 @@
-module openhltest-statistics {
+submodule openhltest-statistics {
 
-    yang-version "1";
-    namespace "http://openhltest.org/yang/port";
-    prefix "oht";
+    yang-version "1.1";
+    belongs-to "openhltest-session" {
+		prefix "oht";
+	}
 
-    import openhltest-port {
-        prefix p;
-    }
-    import openhltest-port-statistics {
-        prefix s;
-    }
+    include openhltest-port-statistics;
 
     organization
       "OpenHlTest working group";
@@ -29,29 +25,14 @@ module openhltest-statistics {
     }
 
 	grouping statistics-top {
-		container statistics {
+		list ports {
 			config false;
-			list port {
-				key "port-reference";
-				leaf port-reference {
-					description "An abstract test port reference";
-					type leafref {
-						path "/p:port/p:name";
-					}
-				}
-				uses s:port-statistics-top;
+			key "name";
+			leaf name {
+				description "An abstract test port name";
+				type string;
 			}
+			uses port-statistics-top;
 		}
-	}
-
-	uses statistics-top {
-		description
-		"The statistics pull model"; 
-	}
-
-	notification statistic-events {
-		description
-		"The statistics push model";
-		uses statistics-top;
 	}
 }

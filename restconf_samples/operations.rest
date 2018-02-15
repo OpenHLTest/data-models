@@ -1,6 +1,0 @@
-### load a configuration
-POST {{host}}/restconf/operations/openhltest-session:session=regression-1/config/load
-Content-Type: application/octet-stream
-
-.c:/temp/ipv4_traffic.ixncfg
-

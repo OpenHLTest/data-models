@@ -1,6 +1,20 @@
-### get a list of all ports
-GET {{host}}/restconf/data/openhltest-session:session=regression-1/port
+### get a list of all port resources
+GET {{host}}/restconf/data/openhltest-session:sessions=regression-1/config/ports?depth=1
 
-### get a specific port
-GET {{host}}/restconf/data/openhltest-session:session=regression-1/port=PE-2/6
+### get a specific port resource
+GET {{host}}/restconf/data/sessions=regression-1/config/ports=PE-2/6?depth=1
 
+### get a specific port resource and specific fields
+GET {{host}}/restconf/data/session=regression-1/config/ports=PE-2/6?depth=1&fields=name
+
+### create a new port resource
+POST {{host}}/restconf/data/oht:session=regression-1/config
+Content-Type: application/json
+
+{
+	"openhltest-port:ports": [
+		{
+			"name": "PE-2/7"
+		}
+	]
+}

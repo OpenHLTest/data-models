@@ -1,8 +1,9 @@
-module openhltest-port-statistics {
+submodule openhltest-port-statistics {
 
-    yang-version "1";
-    namespace "http://openhltest.net/yang/port";
-    prefix "openhltest-port";
+    yang-version "1.1";
+    belongs-to "openhltest-session" {
+		prefix "oht";
+	}
 
     organization
       "OpenHlTest working group";
@@ -23,6 +24,21 @@ module openhltest-port-statistics {
         description
           "A grouping of port statistics";
 
+		leaf connected-test-port-id {
+			config false;
+			type string;
+			description
+			"The id of the connected test port. 
+			Empty if the abstract port is not connected to a test port.";
+		}
+        leaf connected-test-port-description {
+            config false;
+            type string;
+            description
+              "Free form vendor specific description of the connected test port.
+			  Can include details such as make/model/productId of the underlying hardware.
+			  Empty if the abstract port is not connected to a test port.";
+        }
         leaf connection-state {
             config false;
             type enumeration {
@@ -41,43 +57,29 @@ module openhltest-port-statistics {
             type string;
             description
               "Free form vendor specific information about the state of the connection to
-               the physical hardware test port or virtual machine test port";
-        }
-        leaf interface-type {
-            config false;
-            type string;
-            description
-              "Free form vendor specific interface type of the test port";
+               the physical hardware test port or virtual machine test port.
+			   Empty if the abstract port is not connected to a test port.";
         }
         leaf speed {
             config false;
             type string;
             description
-              "The speed of the test port";
+              "The actual speed of the test port.
+			  Empty if the abstract port is not connected to a test port.";
         }
         leaf tx-frames {
             config false;
-            type uint64;
+            type string;
             description
-              "The number of frames transmitted";
+              "The total number of frames transmitted on the port.
+			  Empty if the abstract port is not connected to a test port.";
         }
         leaf rx-frames {
             config false;
-            type uint64;
+            type string;
             description
-              "The number of frames received";
-        }
-        leaf collisions {
-            config false;
-            type uint64;
-            description
-              "The number of collisions that have occurred";
-        }
-        leaf fcs-errors {
-            config false;
-            type uint64;
-            description
-              "The number of frame check sequence errors that have occurred";
+              "The total number of frames received on the the port.
+			  Empty if the abstract port is not connected to a test port.";
         }
     }
 }

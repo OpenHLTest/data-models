@@ -1,8 +1,8 @@
 ### get a list of sessions
-GET {{host}}/restconf/data/openhltest-session:session
+GET {{host}}/restconf/data/openhltest-session:session?depth=1
 
 ### get a session by name
-GET {{host}}/restconf/data/openhltest-session:session=regression-1
+GET {{host}}/restconf/data/openhltest-session:session=regression-1?depth=1
 
 ### create a session
 POST {{host}}/restconf/data

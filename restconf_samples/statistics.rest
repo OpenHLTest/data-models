@@ -1,0 +1,5 @@
+### get all port statistics
+GET {{host}}/restconf/data/openhltest-session:session=regression-1/statistics/ports?depth=1
+
+### get a specific port's statistics
+GET {{host}}/restconf/data/openhltest-session:session=regression-1/statistics/ports=PE-2/6?depth=1
