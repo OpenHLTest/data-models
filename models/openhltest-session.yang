@@ -1,0 +1,87 @@
+module openhltest-session {
+
+    yang-version "1.1";
+    namespace "http://openhltest.org/yang/oht";
+    prefix "oht";
+
+    include openhltest-port;
+	include openhltest-protocol-group;
+	include openhltest-traffic-group;
+    include openhltest-statistics;
+	include openhltest-port-statistics;
+
+    organization
+      "OpenHlTest working group";
+    contact
+      "OpenHlTest working group";
+    description
+      "This module defines session capabilities.";
+
+    revision 2018-01-01 {
+        description
+          "Initial revision.";
+        reference
+          "0.0.1";
+    }
+
+	list sessions {
+		description
+		"A list of test tool sessions.
+		To start a test tool session create a new session.
+		To stop a test tool session delete an existing session.";
+		key "name";
+
+		leaf name {
+			description
+			"The unique name of test tool session";
+			type string;
+		}
+		leaf session-type {
+			description
+			"The type of test tool session.
+			Once the session has been created the session-type cannot be changed.";
+			mandatory true;
+			type enumeration {
+				enum L2L3;
+				enum L4L7;
+			}
+		}
+		leaf state {
+			config false;
+			description
+			"The state of the session.";
+			type enumeration {
+				enum STARTING;
+				enum STARTED;
+				enum STOPPING;
+			}
+		}
+
+		container config {
+			description 
+			"This container aggregates all other top level configuration submodules.
+			Vendor should support loading of binary, json or yaml.
+			Binary must be vendor specific which will allow for conversions from
+			vendor specific to OpenHLTest format.
+			Json/Yaml must be OpenHLTest model specific";
+			uses port-top;
+			uses protocol-group-top;
+			uses traffic-group-top;
+		}
+
+		container statistics {
+			description
+			"The statistics pull model";
+			uses statistics-top;
+			action clear {
+				description
+				"Clear all statistic counters.";
+			}
+		}
+		notification statistic-events {
+			description
+			"The statistics push model";
+			uses statistics-top;
+		}		
+	}
+}

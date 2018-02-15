@@ -1,0 +1,85 @@
+submodule openhltest-port-statistics {
+
+    yang-version "1.1";
+    belongs-to "openhltest-session" {
+		prefix "oht";
+	}
+
+    organization
+      "OpenHlTest working group";
+    contact
+      "OpenHlTest working group";
+    description
+      "This module describes a YANG model for 
+       abstract test port statistics.";
+
+    revision 2017-11-02 {
+        description
+          "Initial revision.";
+        reference
+          "0.0.1";
+    }
+
+    grouping port-statistics-top {
+        description
+          "A grouping of port statistics";
+
+		leaf connected-test-port-id {
+			config false;
+			type string;
+			description
+			"The id of the connected test port. 
+			Empty if the abstract port is not connected to a test port.";
+		}
+        leaf connected-test-port-description {
+            config false;
+            type string;
+            description
+              "Free form vendor specific description of the connected test port.
+			  Can include details such as make/model/productId of the underlying hardware.
+			  Empty if the abstract port is not connected to a test port.";
+        }
+        leaf connection-state {
+            config false;
+            type enumeration {
+                enum CONNECTING;
+                enum CONNECTED_LINK_UP;
+				enum CONNECTED_LINK_DOWN;
+                enum DISCONNECTING;
+                enum DISCONNECTED;
+            }
+            description
+              "The state of the connection to the physical hardware 
+               test port or virtual machine test port";
+        }
+        leaf connection-state-details {
+            config false;
+            type string;
+            description
+              "Free form vendor specific information about the state of the connection to
+               the physical hardware test port or virtual machine test port.
+			   Empty if the abstract port is not connected to a test port.";
+        }
+        leaf speed {
+            config false;
+            type string;
+            description
+              "The actual speed of the test port.
+			  Empty if the abstract port is not connected to a test port.";
+        }
+        leaf tx-frames {
+            config false;
+            type string;
+            description
+              "The total number of frames transmitted on the port.
+			  Empty if the abstract port is not connected to a test port.";
+        }
+        leaf rx-frames {
+            config false;
+            type string;
+            description
+              "The total number of frames received on the the port.
+			  Empty if the abstract port is not connected to a test port.";
+        }
+    }
+}

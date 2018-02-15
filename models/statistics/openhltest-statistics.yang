@@ -1,0 +1,38 @@
+submodule openhltest-statistics {
+
+    yang-version "1.1";
+    belongs-to "openhltest-session" {
+		prefix "oht";
+	}
+
+    include openhltest-port-statistics;
+
+    organization
+      "OpenHlTest working group";
+    contact
+      "OpenHlTest working group";
+    description
+      "This module describes a collection of all statistics that are available.
+	  It offers two methods of statistic retrieval.
+	  The pull method is described under the statistics container.
+	  The push method is described under the statistic-events container.";
+
+    revision 2017-11-02 {
+        description
+          "Initial revision.";
+        reference
+          "0.0.1";
+    }
+
+	grouping statistics-top {
+		list ports {
+			config false;
+			key "name";
+			leaf name {
+				description "An abstract test port name";
+				type string;
+			}
+			uses port-statistics-top;
+		}
+	}
+}
