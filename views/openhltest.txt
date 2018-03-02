@@ -1,8 +1,10 @@
 module: openhltest-session
     +--rw sessions* [name]
-       +--rw name                string
-       +--rw session-type        enumeration
-       +--ro state?              enumeration
+       +--rw name                        string
+       +--rw session-type                enumeration
+       +--ro state?                      enumeration
+       +--ro first-activity-timestamp?   yang:date-and-time
+       +--ro last-activity-timestamp?    yang:date-and-time
        +--rw config
        |  +--rw ports* [name]
        |  |  +--rw name    string

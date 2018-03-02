@@ -4,6 +4,9 @@ module openhltest-session {
     namespace "http://openhltest.org/yang/oht";
     prefix "oht";
 
+	import ietf-yang-types {
+		prefix yang;
+	}
     include openhltest-port;
 	include openhltest-protocol-group;
 	include openhltest-traffic-group;
@@ -49,12 +52,23 @@ module openhltest-session {
 		leaf state {
 			config false;
 			description
-			"The state of the session.";
+			"The state of the session.
+			A session is considered STARTED when it is able to accept REST requests.";
 			type enumeration {
 				enum STARTING;
 				enum STARTED;
 				enum STOPPING;
 			}
+		}
+		leaf first-activity-timestamp {
+			config false;
+			description "Timestamp of the first request to this session.";
+			type yang:date-and-time;
+		}
+		leaf last-activity-timestamp {
+			config false;
+			description "Timestamp of the last request to this session";
+			type yang:date-and-time;
 		}
 
 		container config {
