@@ -60,16 +60,6 @@ module openhltest-session {
 				enum STOPPING;
 			}
 		}
-		leaf first-activity-timestamp {
-			config false;
-			description "Timestamp of the first request to this session.";
-			type yang:date-and-time;
-		}
-		leaf last-activity-timestamp {
-			config false;
-			description "Timestamp of the last request to this session";
-			type yang:date-and-time;
-		}
 
 		container config {
 			description 

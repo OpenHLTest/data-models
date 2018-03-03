@@ -3,13 +3,13 @@
 ### 	application/json - returns the config data in json format
 ### 	application/yaml - returns the config data in yaml format
 ### 	application/octet-stream - returns the entire config in vendor specific binary format
-GET {{host}}/restconf/data/openhltest-session:session=regression-1/config?content=all
+GET {{host}}/restconf/data/openhltest-session:sessions=regression-1/config?content=all
 Accept-Encoding: application/json
 
 
 ### load a vendor specific binary config
 ### content type support: application/octet-stream
-POST {{host}}/restconf/data/openhltest-session:session=regression-1
+PATCH {{host}}/restconf/data/openhltest-session:sessions=regression-1/config
 Content-Type: application/octet-stream
 
 .<vendor binary config filename here>
