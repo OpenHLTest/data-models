@@ -51,7 +51,7 @@ Content-Type: application/json
 {
 	"openhltest-session:sessions": {
 		"name": "demo",
-		"type": "layer23"
+		"session-type": "L2L3"
 	}
 }
 ```
