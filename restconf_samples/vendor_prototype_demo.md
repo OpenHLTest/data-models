@@ -5,39 +5,47 @@ Notes
 1) The restconf requests that follow are defined according to RFC 2616.
 2) {{host}} is meant to be a placeholder for https://{host}:{port>}
 3) Server implementations should have the options of returning a 202 Accepted response for long duration requests.  
-  3.1 This will avoid client timeouts by returning a completion url that can be polled.  
-  3.2 Once the request has completed the polling response will return the actual response for the original request. 
-  3.3 This is beyond the scope of the demo and is meant to be a placeholder for further discussion.  
+  3.1 This will avoid client timeouts by returning a Location header url that can be polled.  
+  3.2 A GET to the polling url will can return one of the two following responses:  
+     3.2.1 If the request has not completed a 202 Accepted response will be returned  
+	 3.2.2 If the request has completed the actual response for the original request will be returned 
 
-### 202 Accepted proposal
+
+### POST request
 ```
-HTTP/1.1 202 Accepted
+POST /restconf/data/openhltest-session:session HTTP/1.1
 Content-Type: application/json
 Content-Length: <length of following payload>
 
 {
-	"id": "3",
-	"status": "IN_PROGRESS",
-	"status-url": "/restconf/data/openhltest-session:session=demo/pending-requests=3",
-	"execution-time-ms": 23356543,
-	"result": null
-}
-```
-### Pending request complete
-```
-HTTP/1.1 200 OK
-Content-Type: application/json
-Content-Length: <length of following payload>
-
-{
-	"id": "3",
-	"status": "COMPLETE",
-	"status-url": "/restconf/data/openhltest-session:session=demo/pending-requests=3",
-	"execution-time-ms": 2335633443,
-	"result": {
-		<json response if any will go here>
+	"openhltest-session:sessions": {
+		"name": "demo",
+		"session-type": "L2L3"
 	}
 }
+```
+
+### 202 Accepted response
+```
+HTTP/1.1 202 Accepted
+Location: /restconf/data/openhltest-session:sessions/accepted-status=3
+```
+
+### Polling request
+```
+GET /restconf/data/openhltest-session:sessions/accepted-status=3 HTTP/1.1
+```
+
+### Polling response not complete
+```
+HTTP/1.1 202 Accepted
+Location: /restconf/data/openhltest-session:sessions/accepted-status=3
+```
+
+### Polling response complete
+```
+HTTP/1.1 201 Created
+Location: /restconf/data/openhltest-session:sessions=demo
 ```
   
   
