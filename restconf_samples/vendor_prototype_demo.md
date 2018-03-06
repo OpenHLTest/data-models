@@ -13,7 +13,7 @@ Notes
 
 ### POST request
 ```
-POST /restconf/data/openhltest-session:session HTTP/1.1
+POST /restconf/data HTTP/1.1
 Content-Type: application/json
 Content-Length: <length of following payload>
 
@@ -28,18 +28,18 @@ Content-Length: <length of following payload>
 ### 202 Accepted response
 ```
 HTTP/1.1 202 Accepted
-Location: /restconf/data/openhltest-session:sessions/accepted-status=3
+Location: /restconf/data/accepted-status=3
 ```
 
 ### Polling request
 ```
-GET /restconf/data/openhltest-session:sessions/accepted-status=3 HTTP/1.1
+GET /restconf/data/accepted-status=3 HTTP/1.1
 ```
 
 ### Polling response not complete
 ```
 HTTP/1.1 202 Accepted
-Location: /restconf/data/openhltest-session:sessions/accepted-status=3
+Location: /restconf/data/accepted-status=3
 ```
 
 ### Polling response complete
@@ -53,7 +53,7 @@ Location: /restconf/data/openhltest-session:sessions=demo
 ---
 ### REQUEST
 ```
-POST {{host}}/restconfig/data/openhltest-session:sessions HTTP/1.1
+POST {{host}}/restconfig/data HTTP/1.1
 Content-Type: application/json
 
 {
