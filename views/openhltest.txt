@@ -1,10 +1,7 @@
 module: openhltest-session
     +--rw sessions* [name]
-       +--rw name                        string
-       +--rw session-type                enumeration
-       +--ro state?                      enumeration
-       +--ro first-activity-timestamp?   yang:date-and-time
-       +--ro last-activity-timestamp?    yang:date-and-time
+       +--rw name                string
+       +--rw session-type        enumeration
        +--rw config
        |  +--rw ports* [name]
        |  |  +--rw name    string
@@ -66,6 +63,8 @@ module: openhltest-session
        |           +--ro detail?        string
        |           +--ro stack-trace?   string
        +--rw statistics
+       |  +--ro first-activity-timestamp?   yang:date-and-time
+       |  +--ro last-activity-timestamp?    yang:date-and-time
        |  +--ro ports* [name]
        |  |  +--ro name                               string
        |  |  +--ro connected-test-port-id?            string
@@ -77,6 +76,8 @@ module: openhltest-session
        |  |  +--ro rx-frames?                         string
        |  +---x clear
        +---n statistic-events
+          +--ro first-activity-timestamp?   yang:date-and-time
+          +--ro last-activity-timestamp?    yang:date-and-time
           +--ro ports* [name]
              +--ro name                               string
              +--ro connected-test-port-id?            string

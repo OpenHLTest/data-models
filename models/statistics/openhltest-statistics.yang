@@ -5,7 +5,10 @@ submodule openhltest-statistics {
 		prefix "oht";
 	}
 
-    include openhltest-port-statistics;
+	import ietf-yang-types {
+		prefix yang;
+	}
+	include openhltest-port-statistics;
 
     organization
       "OpenHlTest working group";
