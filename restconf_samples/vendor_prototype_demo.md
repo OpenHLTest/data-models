@@ -53,7 +53,7 @@ Location: /restconf/data/openhltest-session:sessions=demo
 ---
 ### REQUEST
 ```
-POST {{host}}/restconfig/data HTTP/1.1
+POST {{host}}/restconf/data HTTP/1.1
 Content-Type: application/json
 
 {
@@ -66,7 +66,7 @@ Content-Type: application/json
 ### SUCCESS RESOURCE CREATED
 ```
 HTTP/1.1 201 OK
-Location: {{host}}/restconfig/data/openhltest-session:sessions=demo
+Location: {{host}}/restconf/data/openhltest-session:sessions=demo
 ```
 ### ERROR RESOURCE ALREADY EXISTS
 ```
@@ -82,7 +82,7 @@ This would overwrite the entire config instead of patching/creating nodes.
 This is not specified in restconf but is meant to assist customers in transitioning from binary configurations to JSON/YAML configurations.  
 ### REQUEST
 ```
-PATCH {{host}}/restconfig/data/openhltest-session:sessions=demo/config HTTP/1.1
+PATCH {{host}}/restconf/data/openhltest-session:sessions=demo/config HTTP/1.1
 Content-Type: application/octet-stream
 
 .<vendor binary config filename here>
