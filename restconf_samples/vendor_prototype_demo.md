@@ -76,13 +76,13 @@ HTTP/1.1 409 Conflict
 
 ## 2) Load a vendor specific binary configuration
 ---
-Normally patching the config node with JSON or YAML would mean updating all nodes that already exist or creating new ones.  
+Normally a POST to the config node with JSON or YAML would mean creating new nodes under the parent node specified in the url.  
 The ability of the server implementation to accept application/octet-stream allows a user to specify a binary config as opposed to JSON or YAML.  
-This would overwrite the entire config instead of patching/creating nodes.  
+This would overwrite the entire config.  
 This is not specified in restconf but is meant to assist customers in transitioning from binary configurations to JSON/YAML configurations.  
 ### REQUEST
 ```
-PATCH {{host}}/restconf/data/openhltest-session:sessions=demo/config HTTP/1.1
+POST {{host}}/restconf/data/openhltest-session:sessions=demo/config HTTP/1.1
 Content-Type: application/octet-stream
 
 .<vendor binary config filename here>
