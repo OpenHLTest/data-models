@@ -55,13 +55,17 @@ module: openhltest-session
        |  |        +--ro detail?        string
        |  |        +--ro stack-trace?   string
        |  +---x stop-traffic
+       |  |  +---w input
+       |  |  |  +---w traffic-group-names*   string
+       |  |  +--ro output
+       |  |     +--ro errata* [name]
+       |  |        +--ro name           string
+       |  |        +--ro detail?        string
+       |  |        +--ro stack-trace?   string
+       |  +---x clear
+       |  +---x load
        |     +---w input
-       |     |  +---w traffic-group-names*   string
-       |     +--ro output
-       |        +--ro errata* [name]
-       |           +--ro name           string
-       |           +--ro detail?        string
-       |           +--ro stack-trace?   string
+       |        +---w vendor-config?   binary
        +--rw statistics
        |  +--ro first-activity-timestamp?   yang:date-and-time
        |  +--ro last-activity-timestamp?    yang:date-and-time

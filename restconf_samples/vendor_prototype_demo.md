@@ -76,16 +76,18 @@ HTTP/1.1 409 Conflict
 
 ## 2) Load a vendor specific binary configuration
 ---
-Normally a POST to the config node with JSON or YAML would mean creating new nodes under the parent node specified in the url.  
-The ability of the server implementation to accept application/octet-stream allows a user to specify a binary config as opposed to JSON or YAML.  
-This would overwrite the entire config.  
-This is not specified in restconf but is meant to assist customers in transitioning from binary configurations to JSON/YAML configurations.  
+Users are given the option to load a vendor specific configuration using the load command.
+The input to the load action is the vendor specific configuration encoded as base64.
 ### REQUEST
 ```
-POST {{host}}/restconf/data/openhltest-session:sessions=demo/config HTTP/1.1
-Content-Type: application/octet-stream
+POST {{host}}/restconf/data/openhltest-session:sessions=demo/config/load HTTP/1.1
+Content-Type: application/json
 
-.<vendor binary config filename here>
+{
+	"openltest-session:input": {
+		"vendor-config": "vendor specific base64 encoded data goes here"
+	}
+}
 ```
 ### SUCCESS NO CONTENT
 ```

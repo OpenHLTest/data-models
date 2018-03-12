@@ -49,14 +49,26 @@ module openhltest-session {
 
 		container config {
 			description 
-			"This container aggregates all other top level configuration submodules.
-			Vendor should support loading of binary, json or yaml.
-			Binary must be vendor specific which will allow for conversions from
-			vendor specific to OpenHLTest format.
-			Json/Yaml must be OpenHLTest model specific";
+			"This container aggregates all other top level configuration submodules.";
 			uses port-top;
 			uses protocol-group-top;
 			uses traffic-group-top;
+
+			action clear {
+				description
+				"Clear the current configuration";
+			}
+			action load {
+				description
+				"Load a vendor specific configuration";
+				input {
+					leaf vendor-config {
+						description
+						"Configuration data encoded as base64";
+						type binary;
+					}
+				}
+			}
 		}
 
 		container statistics {
