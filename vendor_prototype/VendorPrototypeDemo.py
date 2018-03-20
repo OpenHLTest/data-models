@@ -32,8 +32,15 @@ connect_ports_payload = {
         }
     ]
 }
-empty_payload = {
-    "openhltest-session:input": []
+start_protocols_payload = {
+    "openhltest-session:input": {
+        "protocol-group-names": []
+    }
+}
+start_traffic_payload = {
+    "openhltest-session:input": {
+        "traffic-group-names": []
+    }
 }
 # END USER MODIFIABLE PARAMETERS
 
@@ -60,16 +67,16 @@ for traffic_group in response.openhltest_session_config.traffic_groups:
     print('\tTraffic Group: %s' % traffic_group.name)
     
 # 4) connect abstract ports to actual hardware and/or virtual ports
-transport.post('/restconf/data/openhltest-session:sessions=demo/config/connect-ports', payload=connect_ports_payload)
+response = transport.post('/restconf/data/openhltest-session:sessions=demo/config/connect-ports', payload=connect_ports_payload)
 
 # 5) start protocols
-transport.post('/restconf/data/openhltest-session:sessions=demo/config/start-protocols', payload=empty_payload)
+response = transport.post('/restconf/data/openhltest-session:sessions=demo/config/start-protocols', payload=start_protocols_payload)
 
 # 6) clear statistics
 transport.post('/restconf/data/openhltest-session:sessions=demo/statistics/clear')
 
 # 7) start traffic
-transport.post('/restconf/data/openhltest-session:sessions=demo/config/start-traffic', payload=empty_payload)
+response = transport.post('/restconf/data/openhltest-session:sessions=demo/config/start-traffic', payload=start_traffic_payload)
 
 # 8) retrieve statistics
 response = transport.get('/restconf/data/openhltest-session:sessions=demo/statistics')
