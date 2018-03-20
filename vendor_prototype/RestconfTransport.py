@@ -83,12 +83,12 @@ class RestconfTransport(object):
             response = requests.request(method, url, data=None, headers=headers, verify=self._verify_cert)
 
         while(response.status_code == 202):
-            response = requests.request('GET', response.headers['Location'], verify=self._verify_cert)
             self._print_trace('GET', response.headers['Location'])
+            response = requests.request('GET', response.headers['Location'], verify=self._verify_cert)
             time.sleep(1)
             
         if response.status_code == 201:
-            return self.get(response.headers['Location'])
+            return self.get('%s?depth=1' % response.headers['Location'])
         elif response.status_code == 204:
             return None
         elif str(response.status_code).startswith('2') is True:
@@ -114,6 +114,7 @@ class RestconfTransport(object):
             data_object = lambda: None
             for key in contentObject:
                 value = contentObject[key]
+                key = key.replace("-", "_").replace(":", "_")
                 if isinstance(value, dict) or isinstance(value, list):
                     value = self._make_lambda(value)
                 setattr(data_object, key, value)
