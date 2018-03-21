@@ -1,5 +1,6 @@
 import RestconfTransport
 import base64
+import time
 
 # BEGIN USER MODIFIABLE PARAMETERS
 restconf_server = '127.0.0.1'
@@ -49,7 +50,7 @@ transport.trace = True
 
 # 1) create a session
 response = transport.post('/restconf/data', payload=session_payload)
-assert(response.openhltest_session_sessions.name == 'demo')
+assert(response.openhltest_session_sessions.name == session_payload['openhltest-session:sessions']['name'])
 
 # 2) load a vendor specific configuration
 with open(vendor_config_filename, 'rb') as fid:
@@ -79,4 +80,9 @@ transport.post('/restconf/data/openhltest-session:sessions=demo/statistics/clear
 response = transport.post('/restconf/data/openhltest-session:sessions=demo/config/start-traffic', payload=start_traffic_payload)
 
 # 8) retrieve statistics
-response = transport.get('/restconf/data/openhltest-session:sessions=demo/statistics')
+while(True):
+    response = transport.get('/restconf/data/openhltest-session:sessions=demo/statistics')
+    print('%s%s%s%s' % ('Port'.ljust(20), 'Speed'.ljust(10), 'TxFrames'.ljust(15), 'RxFrames'.ljust(15)))
+    for port in response.openhltest_session_statistics.ports:
+        print('%s%s%s%s' % (port.name.ljust(20), port.speed.ljust(10), port.tx_frames.ljust(15), port.rx_frames.ljust(15)))
+    time.sleep(2)

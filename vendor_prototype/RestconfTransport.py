@@ -94,7 +94,10 @@ class RestconfTransport(object):
         elif str(response.status_code).startswith('2') is True:
             if response.headers.get('Content-Type'):
                 if 'application/json' in response.headers['Content-Type']:
-                    return self._make_lambda(response.json())
+                    json_dict = response.json()
+                    if self._trace == True:
+                        print(json.dumps(json_dict, indent=4, sort_keys=True))
+                    return self._make_lambda(json_dict)
                 elif 'application/octet-stream' in response.headers['Content-Type'] and fid is not None:
                     for chunk in response.iter_content(chunk_size=1024): 
                         if chunk: 
