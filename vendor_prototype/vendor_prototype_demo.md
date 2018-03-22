@@ -144,7 +144,7 @@ POST {{host}}/restconf/data/openhltest-session:sessions=demo/config/connect-port
 Content-Type: application/json
 
 {
-	"input": [
+	"openltest-session:input": [
 		{
 			"port-name": "Ethernet - 001",
 			"chassis": "10.36.74.53",
@@ -174,7 +174,7 @@ POST {{host}}/restconf/data/openhltest-session:sessions=demo/config/start-protoc
 Content-Type: application/json
 
 {
-	"input": []
+	"openltest-session:input": []
 }
 ```
 ### RESPONSE
@@ -203,7 +203,7 @@ POST {{host}}/restconf/data/openhltest-session:sessions=demo/config/start-traffi
 Content-Type: application/json
 
 {
-	"input": []
+	"openltest-session:input": []
 }
 ```
 ### RESPONSE
