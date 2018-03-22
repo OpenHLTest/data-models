@@ -118,7 +118,7 @@ Content-Length: <length of following payload>
 		],
 		"protocol-groups": [
 			{
-				"name": "Topology 1"
+				"name": "Topology 1",
 				"port-names": [
 					"Ethernet - 001"
 				]
