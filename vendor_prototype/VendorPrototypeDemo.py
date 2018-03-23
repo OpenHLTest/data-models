@@ -82,7 +82,17 @@ response = transport.post('/restconf/data/openhltest-session:sessions=demo/confi
 # 8) retrieve statistics
 while(True):
     response = transport.get('/restconf/data/openhltest-session:sessions=demo/statistics')
-    print('%s%s%s%s' % ('Port'.ljust(20), 'Speed'.ljust(10), 'TxFrames'.ljust(15), 'RxFrames'.ljust(15)))
+    print('%s%s%s%s%s'%(
+        'Port'.ljust(20),
+        'Port Type'.ljust(20),
+        'Speed'.ljust(10),
+        'TxFrames'.ljust(15),
+        'RxFrames'.ljust(15)))
     for port in response.openhltest_session_statistics.ports:
-        print('%s%s%s%s' % (port.name.ljust(20), port.speed.ljust(10), port.tx_frames.ljust(15), port.rx_frames.ljust(15)))
+        print('%s%s%s%s%s' % (
+            port.name.ljust(20),
+            port.connected_test_port_description.ljust(20), 
+            port.speed.ljust(10), 
+            port.tx_frames.ljust(15), 
+            port.rx_frames.ljust(15)))
     time.sleep(2)
