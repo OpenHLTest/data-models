@@ -5,6 +5,6 @@ python:
 install:
 - pip install pyang
 script:
-- python pyang --strict -p models openhltest-session.yang
+- build.py
 
 
