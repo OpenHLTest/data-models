@@ -9,10 +9,9 @@ python_dir = os.path.dirname(python)
 
 print('validating openhltest models...')
 data_models_dir = './models'
-#os.path.normpath('%s/models' % os.path.dirname(__file__))
 pyang = [
 	sys.executable,
-	os.path.normpath('%s/Scripts/pyang' % python_dir),
+	os.path.normpath('%s/Scripts/pyang' % os.environ['PYTHON_HOME']),
 	'--strict',
 	'-p',
 	data_models_dir,
@@ -25,4 +24,4 @@ while pyang_process.returncode is None:
 		print(stdout_data)
 	elif pyang_process.returncode > 0:
 		print(stderr_data)
-print('done')
+sys.exit(pyang_process.returncode)
