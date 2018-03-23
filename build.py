@@ -14,7 +14,7 @@ pyang = [
 	os.path.normpath('%s/Scripts/pyang' % python_dir),
 	'--strict',
 	'-p',
-	data_models_dir,
+	'./models',
 	'openhltest-session.yang'
 ]
 pyang_process = subprocess.Popen(pyang, bufsize=1, cwd=data_models_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
