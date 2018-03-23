@@ -1,0 +1,10 @@
+# validate models
+language: python
+python:
+- '2.7'
+install:
+- pip install pyang
+script:
+- python pyang --strict -p models openhltest-session.yang
+
+
