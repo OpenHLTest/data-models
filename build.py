@@ -8,13 +8,14 @@ python = os.path.normpath(sys.executable)
 python_dir = os.path.dirname(python)
 
 print('validating openhltest models...')
-data_models_dir = os.path.normpath('%s/models' % os.path.dirname(__file__))
+data_models_dir = './models'
+#os.path.normpath('%s/models' % os.path.dirname(__file__))
 pyang = [
 	sys.executable,
 	os.path.normpath('%s/Scripts/pyang' % python_dir),
 	'--strict',
 	'-p',
-	'./models',
+	data_models_dir,
 	'openhltest-session.yang'
 ]
 pyang_process = subprocess.Popen(pyang, bufsize=1, cwd=data_models_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
