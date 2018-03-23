@@ -19,7 +19,7 @@ print('validating openhltest models...')
 data_models_dir = './models'
 pyang = [
     sys.executable,
-    os.path.normpath('%s/../scripts/pyang' % python_dir),
+    pyang,
     '--strict',
     '-p',
     data_models_dir,
