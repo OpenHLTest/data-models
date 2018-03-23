@@ -15,13 +15,13 @@ def find(name, path):
 pyang = find('pyang', os.path.normpath('%s/..'% python_dir))
 print('pyang location %s' % pyang)
 
-print('validating openhltest models...')
+print('validating openhltest models in %s...' % os.getcwd())
 data_models_dir = './models'
 pyang = [
     sys.executable,
     pyang,
     '--strict',
-    '-p',
+    '--path',
     data_models_dir,
     'openhltest-session.yang'
 ]
