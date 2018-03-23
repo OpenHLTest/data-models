@@ -15,8 +15,9 @@ def find(name, path):
 pyang = find('pyang', os.path.normpath('%s/..'% python_dir))
 print('pyang location %s' % pyang)
 
-print('validating openhltest models in %s...' % os.getcwd())
-data_models_dir = './models'
+data_models_dir = os.path.normpath('%s/models'% os.getcwd())
+print('validating openhltest models in %s...' % data_models_dir)
+
 pyang = [
     sys.executable,
     pyang,
