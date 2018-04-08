@@ -84,7 +84,10 @@ class RestconfTransport(object):
 
         while(response.status_code == 202):
             self._print_trace('GET', response.headers['Location'])
-            response = requests.request('GET', response.headers['Location'], verify=self._verify_cert)
+            if response.headers['Location'].startswith('/'):
+                response = requests.request('GET', self._connection+response.headers['Location'], verify=self._verify_cert)
+            else:
+                response = requests.request('GET', response.headers['Location'], verify=self._verify_cert)
             time.sleep(1)
             
         if response.status_code == 201:
