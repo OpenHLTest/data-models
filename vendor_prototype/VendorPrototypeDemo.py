@@ -3,6 +3,7 @@ import base64
 import time
 
 # BEGIN USER MODIFIABLE PARAMETERS
+encoding = 'utf-8'
 restconf_server = '127.0.0.1'
 restconf_port = 443
 vendor_config_filename = "c:/temp/demo.ixncfg"
@@ -54,7 +55,7 @@ assert(response.openhltest_session_sessions.name == session_payload['openhltest-
 
 # 2) load a vendor specific configuration
 with open(vendor_config_filename, 'rb') as fid:
-    load_payload['openhltest-session:input']['vendor-config'] = base64.b64encode(fid.read())
+    load_payload['openhltest-session:input']['vendor-config'] = base64.b64encode(fid.read()).decode(encoding)
     response = transport.post('/restconf/data/openhltest-session:sessions=demo/config/load', payload=load_payload)
 
 # 3) Retrieve only read/write configuration nodes in JSON format
