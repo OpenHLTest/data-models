@@ -1,2 +1,5 @@
 .vscode/tasks.json
 *.pyc
+build
+dist
+openhltest.egg-info
