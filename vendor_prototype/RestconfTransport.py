@@ -23,7 +23,7 @@ class RestconfTransport(object):
 
         Args:
             hostname: hostname or ip address
-            rest_port: the rest port of the host
+            rest_port: the rest port of the host 
         """
         self._headers = {}
         self._verify_cert = False
