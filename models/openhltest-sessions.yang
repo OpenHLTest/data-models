@@ -1,0 +1,73 @@
+submodule openhltest-sessions {
+
+    yang-version "1.1";
+    belongs-to "openhltest" {
+		prefix "oht";
+	}
+
+	include openhltest-config;
+	include openhltest-statistics;
+	include openhltest-port-statistics;
+		
+    organization
+      "OpenHlTest working group";
+    contact
+      "OpenHlTest working group";
+    description
+      "This sub-module contains the top level sessions.";
+
+    revision 2017-11-02 {
+        description
+          "Initial revision.";
+        reference
+          "0.0.1";
+    }
+
+	grouping session-top {
+		list sessions {
+			description
+			"A list of test tool sessions.";
+			key "name";
+
+			leaf name {
+				description
+				"The unique name of the test tool session.
+				Once the session has been created the name cannot be modified.";
+				type string;
+			}
+			leaf session-type {
+				description
+				"The type of test tool session.
+				Once the session has been created the session-type cannot be modified.";
+				mandatory true;
+				type enumeration {
+					enum L2L3 {
+						description
+						"A layer 23 test tool session";
+					}
+					enum L4L7 {
+						description
+						"A layer 47 test tool session. This is currently not supported and is a feature placeholder";
+					}
+				}
+			}
+
+			uses config-top;
+
+			container statistics {
+				description
+				"The statistics pull model";
+				uses statistics-top;
+				action clear {
+					description
+					"Clear all statistic counters.";
+				}
+			}
+			notification statistic-events {
+				description
+				"The statistics push model";
+				uses statistics-top;
+			}		
+		}
+	}
+}
