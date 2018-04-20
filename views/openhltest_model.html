@@ -1,4 +1,4 @@
-<head><title> openhltest-session 
+<head><title> openhltest 
 </title>
 <style type="text/css" media="all">
 
@@ -153,7 +153,7 @@ function expandAllRows() {
 </a>
 <div class="app">
 <div style="background: #eee; border: dashed 1px #000;">
-<h1> Module: <font color=blue>openhltest-session</font>, Namespace:
+<h1> Module: <font color=blue>openhltest</font>, Namespace:
                     <font color=blue>http://openhltest.org/yang/oht</font>, Prefix:
                     <font color=blue>oht</font></h1> 
 
@@ -181,7 +181,7 @@ function expandAllRows() {
                                   onclick="toggleRows(this);return false;"
                                   class="folder">&nbsp;
                                </a>
-                               <font color=blue>openhltest-session</font>
+                               <font color=blue>openhltest</font>
                             </div>
                          </td> 
 <td>module</td><td></td><td></td><td></td><td>
@@ -193,9 +193,7 @@ function expandAllRows() {
                                 onclick="toggleRows(this);return false"
                                 class="folder">&nbsp;
                              </a>
-                             <abbr title="A list of test tool sessions.
-To start a test tool session create a new session.
-To stop a test tool session delete an existing session.">sessions[name]</abbr>
+                             <abbr title="A list of test tool sessions.">sessions[name]</abbr>
                           </div>
                        </td> 
 <td nowrap>list</td>
@@ -209,7 +207,8 @@ To stop a test tool session delete an existing session.">sessions[name]</abbr>
                        <td nowrap>
                           <div id=9999 class=tier3>
                              <a class="leaf">&nbsp;</a>
-                             <abbr title="The unique name of test tool session">  name </abbr>
+                             <abbr title="The unique name of the test tool session.
+Once the session has been created the name cannot be modified.">  name </abbr>
                           </div>
                        </td>
                        <td>leaf</td>
@@ -224,7 +223,7 @@ To stop a test tool session delete an existing session.">sessions[name]</abbr>
                           <div id=9999 class=tier3>
                              <a class="leaf">&nbsp;</a>
                              <abbr title="The type of test tool session.
-Once the session has been created the session-type cannot be changed.">  session-type </abbr>
+Once the session has been created the session-type cannot be modified.">  session-type </abbr>
                           </div>
                        </td>
                        <td>leaf</td>
@@ -597,538 +596,6 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                                 onclick="toggleRows(this);return false"
                                 class="folder">&nbsp;
                              </a>
-                             <abbr title="A list of physical layer definitions">physical-layers[name]</abbr>
-                          </div>
-                       </td> 
-<td nowrap>list</td>
-                    <td nowrap></td>
-                    <td nowrap>config</td>
-                    <td></td>
-                    <td>current</td>
-                    <td nowrap>/oht:sessions/oht:config/oht:physical-layers</td>
-                    </tr> 
-<tr id="1-1-3-4-6" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier5>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title="The unique name of the physical layer definition">  name </abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="string
-">string</abbr></td>
-                       <td nowrap>config</td>
-                       <td></td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:name</td</tr> 
-<tr id="1-1-3-4-7" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier5>
-                             <a class="leaf-list">&nbsp;</a>
-                             <abbr title="A list of abstract test port names that will share
-these physical layer characteristics.">  port-names </abbr>
-                          </div>
-                       </td>
-                       <td>leaf-list</td>
-                       <td nowrap><abbr title="string
-">string</abbr></td>
-                       <td nowrap>config</td>
-                       <td>*</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:port-names</td</tr> 
-<tr id="1-1-3-4-8" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier5>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title="Determines which detailed physical layer conditional container is active"> <em> layer-type </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="enumeration
- : {ETHERNET,TEN_GIG_LAN,TEN_GIG_WAN,FORTY_GIG,HUNDRED_GIG,FOUR_HUNDRED_GIG,ATM,POS,}">enumeration</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:layer-type</td</tr> 
-<tr id="1-1-3-4-9" class="a">
-                       <td nowrap id="p4000">
-                          <div id="p5000" class="tier5">
-                             <a href="#" id="p6000"
-                                onclick="toggleRows(this);return false"
-                                class="folder">&nbsp;
-                             </a>
-                             <abbr title="The conditional container for detailed ethernet
-physical layer information">ethernet</abbr>
-                          </div>
-                       </td> 
-<td nowrap>container</td>
-                    <td nowrap></td>
-                    <td nowrap>config</td>
-                    <td></td>
-                    <td>current</td>
-                    <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ethernet</td>
-                    </tr> 
-<tr id="1-1-3-4-9-5" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title="Detect if the connection would require a crossover, and automatically chooses 
-the MDI or MDI-X configuration to properly match the other end of the link"> <em> auto-mdix </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="boolean
-">boolean</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ethernet/oht:auto-mdix</td</tr> 
-<tr id="1-1-3-4-9-6" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title=""> <em> media </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="enumeration
- : {COPPER,FIBER,}">enumeration</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ethernet/oht:media</td</tr> 
-<tr id="1-1-3-4-9-7" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title=""> <em> ppm-enable </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="boolean
-">boolean</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ethernet/oht:ppm-enable</td</tr> 
-<tr id="1-1-3-4-9-8" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title=""> <em> ppm </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="int32
-">int32</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ethernet/oht:ppm</td</tr> 
-<tr id="1-1-3-4-9-9" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title=""> <em> loopback </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="enumeration
- : {NORMAL,LOOPBACK,MONITOR,}">enumeration</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ethernet/oht:loopback</td</tr> 
-<tr id="1-1-3-4-9-10" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title=""> <em> autonegotiate </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="boolean
-">boolean</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ethernet/oht:autonegotiate</td</tr> 
-<tr id="1-1-3-4-9-11" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf-list">&nbsp;</a>
-                             <abbr title="List of possible autonegotation capabilities to advertise.">  autonegotiate-advertise </abbr>
-                          </div>
-                       </td>
-                       <td>leaf-list</td>
-                       <td nowrap><abbr title="enumeration
- : {TEN_G_FULL,ONE_G_FULL,ONE_G_HALF,HUNDRED_M_FULL,HUNDRED_M_HALF,TEN_M_FULL,TEN_M_HALF,}">enumeration</abbr></td>
-                       <td nowrap>config</td>
-                       <td>*</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ethernet/oht:autonegotiate-advertise</td</tr> 
-<tr id="1-1-3-4-9-12" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title=""> <em> autonegotiate-masterslave-enable </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="boolean
-">boolean</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ethernet/oht:autonegotiate-masterslave-enable</td</tr> 
-<tr id="1-1-3-4-9-13" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title=""> <em> autonegotiate-masterslave </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="enumeration
- : {MASTER,SLAVE,}">enumeration</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ethernet/oht:autonegotiate-masterslave</td</tr> 
-<tr id="1-1-3-4-9-14" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title="Manage the rate of data transmission by enabling PAUSE frames."> <em> flow-control </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="boolean
-">boolean</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ethernet/oht:flow-control</td</tr> 
-<tr id="1-1-3-4-9-15" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title="Enable message encoding to control data transmission errors."> <em> forward-error-correction </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="boolean
-">boolean</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ethernet/oht:forward-error-correction</td</tr> 
-<tr id="1-1-3-4-9-16" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title=""> <em> forward-error-correction-mode </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="enumeration
- : {NONE,RS_FEC,KR_FEC,}">enumeration</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ethernet/oht:forward-error-correction-mode</td</tr> 
-<tr id="1-1-3-4-9-17" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title="Allow the port to continue transmitting traffic if the link(s) with its peer port(s) goes down"> <em> ignore-link-status </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="boolean
-">boolean</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ethernet/oht:ignore-link-status</td</tr> 
-<tr id="1-1-3-4-9-18" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title="No description"> <em> speed </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="enumeration
- : {TEN_M,ONE_HUNDRED_M,ONE_G,TWO_G,THREE_G,FOUR_G,FIVE_G,SIX_G,SEVEN_G,EIGHT_G,NINE_G,TEN_G,TWENTY_G,TWENTY_FIVE_G,THIRTY_G,FORTY_G,FIFTY_G,HUNDRED_G,FOUR_HUNDRED_G,}">enumeration</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ethernet/oht:speed</td</tr> 
-<tr id="1-1-3-4-9-19" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title="No description"> <em> auto-instrumentation </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="enumeration
- : {END_OF_FRAME,FLOATING,}">enumeration</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ethernet/oht:auto-instrumentation</td</tr> 
-<tr id="1-1-3-4-10" class="a">
-                       <td nowrap id="p4000">
-                          <div id="p5000" class="tier5">
-                             <a href="#" id="p6000"
-                                onclick="toggleRows(this);return false"
-                                class="folder">&nbsp;
-                             </a>
-                             <abbr title="The conditional container for detailed ten gig 
-lan physical layer information">ten-gig-lan</abbr>
-                          </div>
-                       </td> 
-<td nowrap>container</td>
-                    <td nowrap></td>
-                    <td nowrap>config</td>
-                    <td></td>
-                    <td>current</td>
-                    <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ten-gig-lan</td>
-                    </tr> 
-<tr id="1-1-3-4-10-20" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title="Detect if the connection would require a crossover, and automatically chooses 
-the MDI or MDI-X configuration to properly match the other end of the link"> <em> auto-mdix </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="boolean
-">boolean</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ten-gig-lan/oht:auto-mdix</td</tr> 
-<tr id="1-1-3-4-10-21" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title=""> <em> media </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="enumeration
- : {COPPER,FIBER,}">enumeration</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ten-gig-lan/oht:media</td</tr> 
-<tr id="1-1-3-4-10-22" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title=""> <em> ppm-enable </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="boolean
-">boolean</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ten-gig-lan/oht:ppm-enable</td</tr> 
-<tr id="1-1-3-4-10-23" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title=""> <em> ppm </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="int32
-">int32</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ten-gig-lan/oht:ppm</td</tr> 
-<tr id="1-1-3-4-10-24" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title=""> <em> loopback </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="enumeration
- : {NORMAL,LOOPBACK,MONITOR,}">enumeration</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ten-gig-lan/oht:loopback</td</tr> 
-<tr id="1-1-3-4-10-25" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title=""> <em> autonegotiate </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="boolean
-">boolean</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ten-gig-lan/oht:autonegotiate</td</tr> 
-<tr id="1-1-3-4-10-26" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf-list">&nbsp;</a>
-                             <abbr title="List of possible autonegotation capabilities to advertise.">  autonegotiate-advertise </abbr>
-                          </div>
-                       </td>
-                       <td>leaf-list</td>
-                       <td nowrap><abbr title="enumeration
- : {TEN_G_FULL,ONE_G_FULL,ONE_G_HALF,HUNDRED_M_FULL,HUNDRED_M_HALF,TEN_M_FULL,TEN_M_HALF,}">enumeration</abbr></td>
-                       <td nowrap>config</td>
-                       <td>*</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ten-gig-lan/oht:autonegotiate-advertise</td</tr> 
-<tr id="1-1-3-4-10-27" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title=""> <em> autonegotiate-masterslave-enable </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="boolean
-">boolean</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ten-gig-lan/oht:autonegotiate-masterslave-enable</td</tr> 
-<tr id="1-1-3-4-10-28" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title=""> <em> autonegotiate-masterslave </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="enumeration
- : {MASTER,SLAVE,}">enumeration</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ten-gig-lan/oht:autonegotiate-masterslave</td</tr> 
-<tr id="1-1-3-4-10-29" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title="Manage the rate of data transmission by enabling PAUSE frames."> <em> flow-control </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="boolean
-">boolean</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ten-gig-lan/oht:flow-control</td</tr> 
-<tr id="1-1-3-4-10-30" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title="Enable message encoding to control data transmission errors."> <em> forward-error-correction </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="boolean
-">boolean</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ten-gig-lan/oht:forward-error-correction</td</tr> 
-<tr id="1-1-3-4-10-31" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title=""> <em> forward-error-correction-mode </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="enumeration
- : {NONE,RS_FEC,KR_FEC,}">enumeration</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ten-gig-lan/oht:forward-error-correction-mode</td</tr> 
-<tr id="1-1-3-4-10-32" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title="Allow the port to continue transmitting traffic if the link(s) with its peer port(s) goes down"> <em> ignore-link-status </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="boolean
-">boolean</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ten-gig-lan/oht:ignore-link-status</td</tr> 
-<tr id="1-1-3-4-10-33" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title="No description"> <em> speed </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="enumeration
- : {TEN_M,ONE_HUNDRED_M,ONE_G,TWO_G,THREE_G,FOUR_G,FIVE_G,SIX_G,SEVEN_G,EIGHT_G,NINE_G,TEN_G,TWENTY_G,TWENTY_FIVE_G,THIRTY_G,FORTY_G,FIFTY_G,HUNDRED_G,FOUR_HUNDRED_G,}">enumeration</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ten-gig-lan/oht:speed</td</tr> 
-<tr id="1-1-3-4-10-34" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title="No description"> <em> lasi-monitoring-enabled </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="boolean
-">boolean</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ten-gig-lan/oht:lasi-monitoring-enabled</td</tr> 
-<tr id="1-1-3-4-10-35" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier6>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title="No description"> <em> flow-control-directed-address </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="string
-">string</abbr></td>
-                       <td nowrap>config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:config/oht:physical-layers/oht:ten-gig-lan/oht:flow-control-directed-address</td</tr> 
-<tr id="1-1-3-5" class="a">
-                       <td nowrap id="p4000">
-                          <div id="p5000" class="tier4">
-                             <a href="#" id="p6000"
-                                onclick="toggleRows(this);return false"
-                                class="folder">&nbsp;
-                             </a>
                              <abbr title="A list of emulated protocol groups">protocol-groups[name]</abbr>
                           </div>
                        </td> 
@@ -1139,7 +606,7 @@ the MDI or MDI-X configuration to properly match the other end of the link"> <em
                     <td>current</td>
                     <td nowrap>/oht:sessions/oht:config/oht:protocol-groups</td>
                     </tr> 
-<tr id="1-1-3-5-11" class="a">
+<tr id="1-1-3-4-6" class="a">
                        <td nowrap>
                           <div id=9999 class=tier5>
                              <a class="leaf">&nbsp;</a>
@@ -1153,7 +620,7 @@ the MDI or MDI-X configuration to properly match the other end of the link"> <em
                        <td></td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:config/oht:protocol-groups/oht:name</td</tr> 
-<tr id="1-1-3-5-12" class="a">
+<tr id="1-1-3-4-7" class="a">
                        <td nowrap>
                           <div id=9999 class=tier5>
                              <a class="leaf-list">&nbsp;</a>
@@ -1167,7 +634,7 @@ the MDI or MDI-X configuration to properly match the other end of the link"> <em
                        <td>*</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:config/oht:protocol-groups/oht:port-names</td</tr> 
-<tr id="1-1-3-6" class="a">
+<tr id="1-1-3-5" class="a">
                        <td nowrap>
                           <div id=9999 class=tier4>
                              <a class="action">&nbsp;</a>
@@ -1183,7 +650,7 @@ An empty list signifies that all protocol groups will be started.">  start-proto
                        <td></td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:config/oht:start-protocols</td</tr> 
-<tr id="1-1-3-6-13" class="a">
+<tr id="1-1-3-5-8" class="a">
                        <td nowrap id="p4000">
                           <div id="p5000" class="tier5">
                              <a href="#" id="p6000"
@@ -1200,7 +667,7 @@ An empty list signifies that all protocol groups will be started.">  start-proto
                     <td>current</td>
                     <td nowrap>/oht:sessions/oht:config/oht:start-protocols/oht:input</td>
                     </tr> 
-<tr id="1-1-3-6-13-36" class="a">
+<tr id="1-1-3-5-8-5" class="a">
                        <td nowrap>
                           <div id=9999 class=tier6>
                              <a class="leaf-list">&nbsp;</a>
@@ -1214,7 +681,7 @@ An empty list signifies that all protocol groups will be started.">  start-proto
                        <td>*</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:config/oht:start-protocols/oht:input/oht:protocol-group-names</td</tr> 
-<tr id="1-1-3-6-14" class="a">
+<tr id="1-1-3-5-9" class="a">
                        <td nowrap id="p4000">
                           <div id="p5000" class="tier5">
                              <a href="#" id="p6000"
@@ -1231,7 +698,7 @@ An empty list signifies that all protocol groups will be started.">  start-proto
                     <td>current</td>
                     <td nowrap>/oht:sessions/oht:config/oht:start-protocols/oht:output</td>
                     </tr> 
-<tr id="1-1-3-6-14-37" class="a">
+<tr id="1-1-3-5-9-6" class="a">
                        <td nowrap id="p4000">
                           <div id="p5000" class="tier6">
                              <a href="#" id="p6000"
@@ -1249,7 +716,7 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                     <td>current</td>
                     <td nowrap>/oht:sessions/oht:config/oht:start-protocols/oht:output/oht:errata</td>
                     </tr> 
-<tr id="1-1-3-6-14-37-11" class="a">
+<tr id="1-1-3-5-9-6-11" class="a">
                        <td nowrap>
                           <div id=9999 class=tier7>
                              <a class="leaf">&nbsp;</a>
@@ -1263,7 +730,7 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                        <td></td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:config/oht:start-protocols/oht:output/oht:errata/oht:name</td</tr> 
-<tr id="1-1-3-6-14-37-12" class="a">
+<tr id="1-1-3-5-9-6-12" class="a">
                        <td nowrap>
                           <div id=9999 class=tier7>
                              <a class="leaf">&nbsp;</a>
@@ -1277,7 +744,7 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:config/oht:start-protocols/oht:output/oht:errata/oht:detail</td</tr> 
-<tr id="1-1-3-6-14-37-13" class="a">
+<tr id="1-1-3-5-9-6-13" class="a">
                        <td nowrap>
                           <div id=9999 class=tier7>
                              <a class="leaf">&nbsp;</a>
@@ -1291,7 +758,7 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:config/oht:start-protocols/oht:output/oht:errata/oht:stack-trace</td</tr> 
-<tr id="1-1-3-7" class="a">
+<tr id="1-1-3-6" class="a">
                        <td nowrap>
                           <div id=9999 class=tier4>
                              <a class="action">&nbsp;</a>
@@ -1307,7 +774,7 @@ An empty list signifiels that all protocol groups will be stopped.">  stop-proto
                        <td></td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:config/oht:stop-protocols</td</tr> 
-<tr id="1-1-3-7-15" class="a">
+<tr id="1-1-3-6-10" class="a">
                        <td nowrap id="p4000">
                           <div id="p5000" class="tier5">
                              <a href="#" id="p6000"
@@ -1324,7 +791,7 @@ An empty list signifiels that all protocol groups will be stopped.">  stop-proto
                     <td>current</td>
                     <td nowrap>/oht:sessions/oht:config/oht:stop-protocols/oht:input</td>
                     </tr> 
-<tr id="1-1-3-7-15-38" class="a">
+<tr id="1-1-3-6-10-7" class="a">
                        <td nowrap>
                           <div id=9999 class=tier6>
                              <a class="leaf-list">&nbsp;</a>
@@ -1338,7 +805,7 @@ An empty list signifiels that all protocol groups will be stopped.">  stop-proto
                        <td>*</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:config/oht:stop-protocols/oht:input/oht:protocol-group-names</td</tr> 
-<tr id="1-1-3-7-16" class="a">
+<tr id="1-1-3-6-11" class="a">
                        <td nowrap id="p4000">
                           <div id="p5000" class="tier5">
                              <a href="#" id="p6000"
@@ -1355,7 +822,7 @@ An empty list signifiels that all protocol groups will be stopped.">  stop-proto
                     <td>current</td>
                     <td nowrap>/oht:sessions/oht:config/oht:stop-protocols/oht:output</td>
                     </tr> 
-<tr id="1-1-3-7-16-39" class="a">
+<tr id="1-1-3-6-11-8" class="a">
                        <td nowrap id="p4000">
                           <div id="p5000" class="tier6">
                              <a href="#" id="p6000"
@@ -1373,7 +840,7 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                     <td>current</td>
                     <td nowrap>/oht:sessions/oht:config/oht:stop-protocols/oht:output/oht:errata</td>
                     </tr> 
-<tr id="1-1-3-7-16-39-14" class="a">
+<tr id="1-1-3-6-11-8-14" class="a">
                        <td nowrap>
                           <div id=9999 class=tier7>
                              <a class="leaf">&nbsp;</a>
@@ -1387,7 +854,7 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                        <td></td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:config/oht:stop-protocols/oht:output/oht:errata/oht:name</td</tr> 
-<tr id="1-1-3-7-16-39-15" class="a">
+<tr id="1-1-3-6-11-8-15" class="a">
                        <td nowrap>
                           <div id=9999 class=tier7>
                              <a class="leaf">&nbsp;</a>
@@ -1401,7 +868,7 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:config/oht:stop-protocols/oht:output/oht:errata/oht:detail</td</tr> 
-<tr id="1-1-3-7-16-39-16" class="a">
+<tr id="1-1-3-6-11-8-16" class="a">
                        <td nowrap>
                           <div id=9999 class=tier7>
                              <a class="leaf">&nbsp;</a>
@@ -1415,7 +882,7 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:config/oht:stop-protocols/oht:output/oht:errata/oht:stack-trace</td</tr> 
-<tr id="1-1-3-8" class="a">
+<tr id="1-1-3-7" class="a">
                        <td nowrap id="p4000">
                           <div id="p5000" class="tier4">
                              <a href="#" id="p6000"
@@ -1432,7 +899,7 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                     <td>current</td>
                     <td nowrap>/oht:sessions/oht:config/oht:traffic-groups</td>
                     </tr> 
-<tr id="1-1-3-8-17" class="a">
+<tr id="1-1-3-7-12" class="a">
                        <td nowrap>
                           <div id=9999 class=tier5>
                              <a class="leaf">&nbsp;</a>
@@ -1446,7 +913,7 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                        <td></td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:config/oht:traffic-groups/oht:name</td</tr> 
-<tr id="1-1-3-9" class="a">
+<tr id="1-1-3-8" class="a">
                        <td nowrap>
                           <div id=9999 class=tier4>
                              <a class="action">&nbsp;</a>
@@ -1462,7 +929,7 @@ An empty list signifies that all traffic groups will be started.">  start-traffi
                        <td></td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:config/oht:start-traffic</td</tr> 
-<tr id="1-1-3-9-18" class="a">
+<tr id="1-1-3-8-13" class="a">
                        <td nowrap id="p4000">
                           <div id="p5000" class="tier5">
                              <a href="#" id="p6000"
@@ -1479,7 +946,7 @@ An empty list signifies that all traffic groups will be started.">  start-traffi
                     <td>current</td>
                     <td nowrap>/oht:sessions/oht:config/oht:start-traffic/oht:input</td>
                     </tr> 
-<tr id="1-1-3-9-18-40" class="a">
+<tr id="1-1-3-8-13-9" class="a">
                        <td nowrap>
                           <div id=9999 class=tier6>
                              <a class="leaf-list">&nbsp;</a>
@@ -1493,7 +960,7 @@ An empty list signifies that all traffic groups will be started.">  start-traffi
                        <td>*</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:config/oht:start-traffic/oht:input/oht:traffic-group-names</td</tr> 
-<tr id="1-1-3-9-19" class="a">
+<tr id="1-1-3-8-14" class="a">
                        <td nowrap id="p4000">
                           <div id="p5000" class="tier5">
                              <a href="#" id="p6000"
@@ -1510,7 +977,7 @@ An empty list signifies that all traffic groups will be started.">  start-traffi
                     <td>current</td>
                     <td nowrap>/oht:sessions/oht:config/oht:start-traffic/oht:output</td>
                     </tr> 
-<tr id="1-1-3-9-19-41" class="a">
+<tr id="1-1-3-8-14-10" class="a">
                        <td nowrap id="p4000">
                           <div id="p5000" class="tier6">
                              <a href="#" id="p6000"
@@ -1528,7 +995,7 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                     <td>current</td>
                     <td nowrap>/oht:sessions/oht:config/oht:start-traffic/oht:output/oht:errata</td>
                     </tr> 
-<tr id="1-1-3-9-19-41-17" class="a">
+<tr id="1-1-3-8-14-10-17" class="a">
                        <td nowrap>
                           <div id=9999 class=tier7>
                              <a class="leaf">&nbsp;</a>
@@ -1542,7 +1009,7 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                        <td></td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:config/oht:start-traffic/oht:output/oht:errata/oht:name</td</tr> 
-<tr id="1-1-3-9-19-41-18" class="a">
+<tr id="1-1-3-8-14-10-18" class="a">
                        <td nowrap>
                           <div id=9999 class=tier7>
                              <a class="leaf">&nbsp;</a>
@@ -1556,7 +1023,7 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:config/oht:start-traffic/oht:output/oht:errata/oht:detail</td</tr> 
-<tr id="1-1-3-9-19-41-19" class="a">
+<tr id="1-1-3-8-14-10-19" class="a">
                        <td nowrap>
                           <div id=9999 class=tier7>
                              <a class="leaf">&nbsp;</a>
@@ -1570,7 +1037,7 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:config/oht:start-traffic/oht:output/oht:errata/oht:stack-trace</td</tr> 
-<tr id="1-1-3-10" class="a">
+<tr id="1-1-3-9" class="a">
                        <td nowrap>
                           <div id=9999 class=tier4>
                              <a class="action">&nbsp;</a>
@@ -1586,7 +1053,7 @@ An empty list signifies that all traffic groups will be stopped.">  stop-traffic
                        <td></td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:config/oht:stop-traffic</td</tr> 
-<tr id="1-1-3-10-20" class="a">
+<tr id="1-1-3-9-15" class="a">
                        <td nowrap id="p4000">
                           <div id="p5000" class="tier5">
                              <a href="#" id="p6000"
@@ -1603,7 +1070,7 @@ An empty list signifies that all traffic groups will be stopped.">  stop-traffic
                     <td>current</td>
                     <td nowrap>/oht:sessions/oht:config/oht:stop-traffic/oht:input</td>
                     </tr> 
-<tr id="1-1-3-10-20-42" class="a">
+<tr id="1-1-3-9-15-11" class="a">
                        <td nowrap>
                           <div id=9999 class=tier6>
                              <a class="leaf-list">&nbsp;</a>
@@ -1617,7 +1084,7 @@ An empty list signifies that all traffic groups will be stopped.">  stop-traffic
                        <td>*</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:config/oht:stop-traffic/oht:input/oht:traffic-group-names</td</tr> 
-<tr id="1-1-3-10-21" class="a">
+<tr id="1-1-3-9-16" class="a">
                        <td nowrap id="p4000">
                           <div id="p5000" class="tier5">
                              <a href="#" id="p6000"
@@ -1634,7 +1101,7 @@ An empty list signifies that all traffic groups will be stopped.">  stop-traffic
                     <td>current</td>
                     <td nowrap>/oht:sessions/oht:config/oht:stop-traffic/oht:output</td>
                     </tr> 
-<tr id="1-1-3-10-21-43" class="a">
+<tr id="1-1-3-9-16-12" class="a">
                        <td nowrap id="p4000">
                           <div id="p5000" class="tier6">
                              <a href="#" id="p6000"
@@ -1652,7 +1119,7 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                     <td>current</td>
                     <td nowrap>/oht:sessions/oht:config/oht:stop-traffic/oht:output/oht:errata</td>
                     </tr> 
-<tr id="1-1-3-10-21-43-20" class="a">
+<tr id="1-1-3-9-16-12-20" class="a">
                        <td nowrap>
                           <div id=9999 class=tier7>
                              <a class="leaf">&nbsp;</a>
@@ -1666,7 +1133,7 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                        <td></td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:config/oht:stop-traffic/oht:output/oht:errata/oht:name</td</tr> 
-<tr id="1-1-3-10-21-43-21" class="a">
+<tr id="1-1-3-9-16-12-21" class="a">
                        <td nowrap>
                           <div id=9999 class=tier7>
                              <a class="leaf">&nbsp;</a>
@@ -1680,7 +1147,7 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:config/oht:stop-traffic/oht:output/oht:errata/oht:detail</td</tr> 
-<tr id="1-1-3-10-21-43-22" class="a">
+<tr id="1-1-3-9-16-12-22" class="a">
                        <td nowrap>
                           <div id=9999 class=tier7>
                              <a class="leaf">&nbsp;</a>
@@ -1694,7 +1161,7 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:config/oht:stop-traffic/oht:output/oht:errata/oht:stack-trace</td</tr> 
-<tr id="1-1-3-11" class="a">
+<tr id="1-1-3-10" class="a">
                        <td nowrap>
                           <div id=9999 class=tier4>
                              <a class="action">&nbsp;</a>
@@ -1707,7 +1174,7 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                        <td></td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:config/oht:clear</td</tr> 
-<tr id="1-1-3-11-22" class="a">
+<tr id="1-1-3-10-17" class="a">
                        <td nowrap id="p4000">
                           <div id="p5000" class="tier5">
                              <a href="#" id="p6000"
@@ -1724,7 +1191,7 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                     <td>current</td>
                     <td nowrap>/oht:sessions/oht:config/oht:clear/oht:input</td>
                     </tr> 
-<tr id="1-1-3-11-23" class="a">
+<tr id="1-1-3-10-18" class="a">
                        <td nowrap id="p4000">
                           <div id="p5000" class="tier5">
                              <a href="#" id="p6000"
@@ -1741,7 +1208,7 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                     <td>current</td>
                     <td nowrap>/oht:sessions/oht:config/oht:clear/oht:output</td>
                     </tr> 
-<tr id="1-1-3-12" class="a">
+<tr id="1-1-3-11" class="a">
                        <td nowrap>
                           <div id=9999 class=tier4>
                              <a class="action">&nbsp;</a>
@@ -1755,7 +1222,7 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                        <td></td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:config/oht:load</td</tr> 
-<tr id="1-1-3-12-24" class="a">
+<tr id="1-1-3-11-19" class="a">
                        <td nowrap id="p4000">
                           <div id="p5000" class="tier5">
                              <a href="#" id="p6000"
@@ -1772,7 +1239,7 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                     <td>current</td>
                     <td nowrap>/oht:sessions/oht:config/oht:load/oht:output</td>
                     </tr> 
-<tr id="1-1-3-12-25" class="a">
+<tr id="1-1-3-11-20" class="a">
                        <td nowrap id="p4000">
                           <div id="p5000" class="tier5">
                              <a href="#" id="p6000"
@@ -1789,7 +1256,7 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                     <td>current</td>
                     <td nowrap>/oht:sessions/oht:config/oht:load/oht:input</td>
                     </tr> 
-<tr id="1-1-3-12-25-44" class="a">
+<tr id="1-1-3-11-20-13" class="a">
                        <td nowrap>
                           <div id=9999 class=tier6>
                              <a class="leaf">&nbsp;</a>
@@ -1820,35 +1287,7 @@ An empty list indicates no errors occurred">errata[name]</abbr>
                     <td>current</td>
                     <td nowrap>/oht:sessions/oht:statistics</td>
                     </tr> 
-<tr id="1-1-4-13" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier4>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title="name of authenticated user who started the session">  username </abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="string
-">string</abbr></td>
-                       <td nowrap>config</td>
-                       <td></td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:statistics/oht:username</td</tr> 
-<tr id="1-1-4-14" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier4>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title="a vendor specific link to a user interface"> <em> vendor-user-interface </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="string
-">string</abbr></td>
-                       <td nowrap>no config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:statistics/oht:vendor-user-interface</td</tr> 
-<tr id="1-1-4-15" class="a">
+<tr id="1-1-4-12" class="a">
                        <td nowrap>
                           <div id=9999 class=tier4>
                              <a class="leaf">&nbsp;</a>
@@ -1863,7 +1302,7 @@ string
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:statistics/oht:first-activity-timestamp</td</tr> 
-<tr id="1-1-4-16" class="a">
+<tr id="1-1-4-13" class="a">
                        <td nowrap>
                           <div id=9999 class=tier4>
                              <a class="leaf">&nbsp;</a>
@@ -1878,7 +1317,7 @@ string
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:statistics/oht:last-activity-timestamp</td</tr> 
-<tr id="1-1-4-17" class="a">
+<tr id="1-1-4-14" class="a">
                        <td nowrap id="p4000">
                           <div id="p5000" class="tier4">
                              <a href="#" id="p6000"
@@ -1895,7 +1334,7 @@ string
                     <td>current</td>
                     <td nowrap>/oht:sessions/oht:statistics/oht:ports</td>
                     </tr> 
-<tr id="1-1-4-17-26" class="a">
+<tr id="1-1-4-14-21" class="a">
                        <td nowrap>
                           <div id=9999 class=tier5>
                              <a class="leaf">&nbsp;</a>
@@ -1909,7 +1348,7 @@ string
                        <td></td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:statistics/oht:ports/oht:name</td</tr> 
-<tr id="1-1-4-17-27" class="a">
+<tr id="1-1-4-14-22" class="a">
                        <td nowrap>
                           <div id=9999 class=tier5>
                              <a class="leaf">&nbsp;</a>
@@ -1924,7 +1363,7 @@ Empty if the abstract port is not connected to a test port."> <em> connected-tes
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:statistics/oht:ports/oht:connected-test-port-id</td</tr> 
-<tr id="1-1-4-17-28" class="a">
+<tr id="1-1-4-14-23" class="a">
                        <td nowrap>
                           <div id=9999 class=tier5>
                              <a class="leaf">&nbsp;</a>
@@ -1940,7 +1379,7 @@ Empty if the abstract port is not connected to a test port."> <em> connected-tes
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:statistics/oht:ports/oht:connected-test-port-description</td</tr> 
-<tr id="1-1-4-17-29" class="a">
+<tr id="1-1-4-14-24" class="a">
                        <td nowrap>
                           <div id=9999 class=tier5>
                              <a class="leaf">&nbsp;</a>
@@ -1955,7 +1394,7 @@ test port or virtual machine test port"> <em> connection-state </em></abbr>
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:statistics/oht:ports/oht:connection-state</td</tr> 
-<tr id="1-1-4-17-30" class="a">
+<tr id="1-1-4-14-25" class="a">
                        <td nowrap>
                           <div id=9999 class=tier5>
                              <a class="leaf">&nbsp;</a>
@@ -1971,7 +1410,7 @@ Empty if the abstract port is not connected to a test port."> <em> connection-st
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:statistics/oht:ports/oht:connection-state-details</td</tr> 
-<tr id="1-1-4-17-31" class="a">
+<tr id="1-1-4-14-26" class="a">
                        <td nowrap>
                           <div id=9999 class=tier5>
                              <a class="leaf">&nbsp;</a>
@@ -1986,7 +1425,7 @@ Empty if the abstract port is not connected to a test port."> <em> speed </em></
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:statistics/oht:ports/oht:speed</td</tr> 
-<tr id="1-1-4-17-32" class="a">
+<tr id="1-1-4-14-27" class="a">
                        <td nowrap>
                           <div id=9999 class=tier5>
                              <a class="leaf">&nbsp;</a>
@@ -2001,7 +1440,7 @@ Empty if the abstract port is not connected to a test port."> <em> tx-frames </e
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:statistics/oht:ports/oht:tx-frames</td</tr> 
-<tr id="1-1-4-17-33" class="a">
+<tr id="1-1-4-14-28" class="a">
                        <td nowrap>
                           <div id=9999 class=tier5>
                              <a class="leaf">&nbsp;</a>
@@ -2016,7 +1455,7 @@ Empty if the abstract port is not connected to a test port."> <em> rx-frames </e
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:statistics/oht:ports/oht:rx-frames</td</tr> 
-<tr id="1-1-4-18" class="a">
+<tr id="1-1-4-15" class="a">
                        <td nowrap>
                           <div id=9999 class=tier4>
                              <a class="action">&nbsp;</a>
@@ -2029,7 +1468,7 @@ Empty if the abstract port is not connected to a test port."> <em> rx-frames </e
                        <td></td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:statistics/oht:clear</td</tr> 
-<tr id="1-1-4-18-34" class="a">
+<tr id="1-1-4-15-29" class="a">
                        <td nowrap id="p4000">
                           <div id="p5000" class="tier5">
                              <a href="#" id="p6000"
@@ -2046,7 +1485,7 @@ Empty if the abstract port is not connected to a test port."> <em> rx-frames </e
                     <td>current</td>
                     <td nowrap>/oht:sessions/oht:statistics/oht:clear/oht:input</td>
                     </tr> 
-<tr id="1-1-4-18-35" class="a">
+<tr id="1-1-4-15-30" class="a">
                        <td nowrap id="p4000">
                           <div id="p5000" class="tier5">
                              <a href="#" id="p6000"
@@ -2080,35 +1519,7 @@ Empty if the abstract port is not connected to a test port."> <em> rx-frames </e
                     <td>current</td>
                     <td nowrap>/oht:sessions/oht:statistic-events</td>
                     </tr> 
-<tr id="1-1-5-19" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier4>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title="name of authenticated user who started the session">  username </abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="string
-">string</abbr></td>
-                       <td nowrap>no config</td>
-                       <td></td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:statistic-events/oht:username</td</tr> 
-<tr id="1-1-5-20" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier4>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title="a vendor specific link to a user interface"> <em> vendor-user-interface </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="string
-">string</abbr></td>
-                       <td nowrap>no config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:sessions/oht:statistic-events/oht:vendor-user-interface</td</tr> 
-<tr id="1-1-5-21" class="a">
+<tr id="1-1-5-16" class="a">
                        <td nowrap>
                           <div id=9999 class=tier4>
                              <a class="leaf">&nbsp;</a>
@@ -2123,7 +1534,7 @@ string
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:statistic-events/oht:first-activity-timestamp</td</tr> 
-<tr id="1-1-5-22" class="a">
+<tr id="1-1-5-17" class="a">
                        <td nowrap>
                           <div id=9999 class=tier4>
                              <a class="leaf">&nbsp;</a>
@@ -2138,7 +1549,7 @@ string
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:statistic-events/oht:last-activity-timestamp</td</tr> 
-<tr id="1-1-5-23" class="a">
+<tr id="1-1-5-18" class="a">
                        <td nowrap id="p4000">
                           <div id="p5000" class="tier4">
                              <a href="#" id="p6000"
@@ -2155,7 +1566,7 @@ string
                     <td>current</td>
                     <td nowrap>/oht:sessions/oht:statistic-events/oht:ports</td>
                     </tr> 
-<tr id="1-1-5-23-36" class="a">
+<tr id="1-1-5-18-31" class="a">
                        <td nowrap>
                           <div id=9999 class=tier5>
                              <a class="leaf">&nbsp;</a>
@@ -2169,7 +1580,7 @@ string
                        <td></td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:statistic-events/oht:ports/oht:name</td</tr> 
-<tr id="1-1-5-23-37" class="a">
+<tr id="1-1-5-18-32" class="a">
                        <td nowrap>
                           <div id=9999 class=tier5>
                              <a class="leaf">&nbsp;</a>
@@ -2184,7 +1595,7 @@ Empty if the abstract port is not connected to a test port."> <em> connected-tes
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:statistic-events/oht:ports/oht:connected-test-port-id</td</tr> 
-<tr id="1-1-5-23-38" class="a">
+<tr id="1-1-5-18-33" class="a">
                        <td nowrap>
                           <div id=9999 class=tier5>
                              <a class="leaf">&nbsp;</a>
@@ -2200,7 +1611,7 @@ Empty if the abstract port is not connected to a test port."> <em> connected-tes
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:statistic-events/oht:ports/oht:connected-test-port-description</td</tr> 
-<tr id="1-1-5-23-39" class="a">
+<tr id="1-1-5-18-34" class="a">
                        <td nowrap>
                           <div id=9999 class=tier5>
                              <a class="leaf">&nbsp;</a>
@@ -2215,7 +1626,7 @@ test port or virtual machine test port"> <em> connection-state </em></abbr>
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:statistic-events/oht:ports/oht:connection-state</td</tr> 
-<tr id="1-1-5-23-40" class="a">
+<tr id="1-1-5-18-35" class="a">
                        <td nowrap>
                           <div id=9999 class=tier5>
                              <a class="leaf">&nbsp;</a>
@@ -2231,7 +1642,7 @@ Empty if the abstract port is not connected to a test port."> <em> connection-st
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:statistic-events/oht:ports/oht:connection-state-details</td</tr> 
-<tr id="1-1-5-23-41" class="a">
+<tr id="1-1-5-18-36" class="a">
                        <td nowrap>
                           <div id=9999 class=tier5>
                              <a class="leaf">&nbsp;</a>
@@ -2246,7 +1657,7 @@ Empty if the abstract port is not connected to a test port."> <em> speed </em></
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:statistic-events/oht:ports/oht:speed</td</tr> 
-<tr id="1-1-5-23-42" class="a">
+<tr id="1-1-5-18-37" class="a">
                        <td nowrap>
                           <div id=9999 class=tier5>
                              <a class="leaf">&nbsp;</a>
@@ -2261,7 +1672,7 @@ Empty if the abstract port is not connected to a test port."> <em> tx-frames </e
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:statistic-events/oht:ports/oht:tx-frames</td</tr> 
-<tr id="1-1-5-23-43" class="a">
+<tr id="1-1-5-18-38" class="a">
                        <td nowrap>
                           <div id=9999 class=tier5>
                              <a class="leaf">&nbsp;</a>
@@ -2276,110 +1687,6 @@ Empty if the abstract port is not connected to a test port."> <em> rx-frames </e
                        <td>?</td>
                        <td>current</td>
                        <td nowrap>/oht:sessions/oht:statistic-events/oht:ports/oht:rx-frames</td</tr> 
-<tr id="2" class="a">
-                         <td nowrap id="p1000">
-                            <div id="p2000" class="tier1">
-                               <a href="#" id="p3000"
-                                  onclick="toggleRows(this);
-                                  return false;" class="folder">&nbsp;
-                               </a>
-                               oht:rpcs
-                            </div>
-                         </td> 
-<td></td><td></td><td></td><td></td><td></td></tr>
-<tr id="2-2" class="a">
-                       <td nowrap id="p4000">
-                          <div id="p5000" class="tier2">
-                             <a href="#" id="p6000"
-                                onclick="toggleRows(this);return false"
-                                class="folder">&nbsp;
-                             </a>
-                             <abbr title="No description">authenticate</abbr>
-                          </div>
-                       </td> 
-<td nowrap>rpc</td>
-                    <td nowrap></td>
-                    <td nowrap></td>
-                    <td></td>
-                    <td>current</td>
-                    <td nowrap>/oht:authenticate</td>
-                    </tr> 
-<tr id="2-2-6" class="a">
-                       <td nowrap id="p4000">
-                          <div id="p5000" class="tier3">
-                             <a href="#" id="p6000"
-                                onclick="toggleRows(this);return false"
-                                class="folder">&nbsp;
-                             </a>
-                             <abbr title="No description">input</abbr>
-                          </div>
-                       </td> 
-<td nowrap>input</td>
-                    <td nowrap></td>
-                    <td nowrap>no config</td>
-                    <td></td>
-                    <td>current</td>
-                    <td nowrap>/oht:authenticate/oht:input</td>
-                    </tr> 
-<tr id="2-2-6-24" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier4>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title="No description"> <em> username </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="string
-">string</abbr></td>
-                       <td nowrap>no config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:authenticate/oht:input/oht:username</td</tr> 
-<tr id="2-2-6-25" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier4>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title="No description"> <em> password </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="string
-">string</abbr></td>
-                       <td nowrap>no config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:authenticate/oht:input/oht:password</td</tr> 
-<tr id="2-2-7" class="a">
-                       <td nowrap id="p4000">
-                          <div id="p5000" class="tier3">
-                             <a href="#" id="p6000"
-                                onclick="toggleRows(this);return false"
-                                class="folder">&nbsp;
-                             </a>
-                             <abbr title="No description">output</abbr>
-                          </div>
-                       </td> 
-<td nowrap>output</td>
-                    <td nowrap></td>
-                    <td nowrap>no config</td>
-                    <td></td>
-                    <td>current</td>
-                    <td nowrap>/oht:authenticate/oht:output</td>
-                    </tr> 
-<tr id="2-2-7-26" class="a">
-                       <td nowrap>
-                          <div id=9999 class=tier4>
-                             <a class="leaf">&nbsp;</a>
-                             <abbr title="No description"> <em> api-key </em></abbr>
-                          </div>
-                       </td>
-                       <td>leaf</td>
-                       <td nowrap><abbr title="string
-">string</abbr></td>
-                       <td nowrap>no config</td>
-                       <td>?</td>
-                       <td>current</td>
-                       <td nowrap>/oht:authenticate/oht:output/oht:api-key</td</tr> 
 
 </table>
 </div>
