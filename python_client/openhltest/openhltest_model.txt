@@ -1,0 +1,142 @@
+module: openhltest-session
+    +--rw sessions* [name]
+       +--rw name                string
+       +--rw session-type        enumeration
+       +--rw config
+       |  +--rw ports* [name]
+       |  |  +--rw name    string
+       |  +---x connect-ports
+       |  |  +---w input
+       |  |  |  +---w port-map* [port-name]
+       |  |  |     +---w port-name    string
+       |  |  |     +---w chassis?     string
+       |  |  |     +---w card?        uint16
+       |  |  |     +---w port?        uint16
+       |  |  +--ro output
+       |  |     +--ro errata* [name]
+       |  |        +--ro name           string
+       |  |        +--ro detail?        string
+       |  |        +--ro stack-trace?   string
+       |  +---x disconnect-ports
+       |  |  +---w input
+       |  |  |  +---w port-names*   string
+       |  |  +--ro output
+       |  |     +--ro errata* [name]
+       |  |        +--ro name           string
+       |  |        +--ro detail?        string
+       |  |        +--ro stack-trace?   string
+       |  +--rw physical-layers* [name]
+       |  |  +--rw name           string
+       |  |  +--rw port-names*    string
+       |  |  +--rw layer-type?    enumeration
+       |  |  +--rw ethernet
+       |  |  |  +--rw auto-mdix?                          boolean
+       |  |  |  +--rw media?                              enumeration
+       |  |  |  +--rw ppm-enable?                         boolean
+       |  |  |  +--rw ppm?                                int32
+       |  |  |  +--rw loopback?                           enumeration
+       |  |  |  +--rw autonegotiate?                      boolean
+       |  |  |  +--rw autonegotiate-advertise*            enumeration
+       |  |  |  +--rw autonegotiate-masterslave-enable?   boolean
+       |  |  |  +--rw autonegotiate-masterslave?          enumeration
+       |  |  |  +--rw flow-control?                       boolean
+       |  |  |  +--rw forward-error-correction?           boolean
+       |  |  |  +--rw forward-error-correction-mode?      enumeration
+       |  |  |  +--rw ignore-link-status?                 boolean
+       |  |  |  +--rw speed?                              enumeration
+       |  |  |  +--rw auto-instrumentation?               enumeration
+       |  |  +--rw ten-gig-lan
+       |  |     +--rw auto-mdix?                          boolean
+       |  |     +--rw media?                              enumeration
+       |  |     +--rw ppm-enable?                         boolean
+       |  |     +--rw ppm?                                int32
+       |  |     +--rw loopback?                           enumeration
+       |  |     +--rw autonegotiate?                      boolean
+       |  |     +--rw autonegotiate-advertise*            enumeration
+       |  |     +--rw autonegotiate-masterslave-enable?   boolean
+       |  |     +--rw autonegotiate-masterslave?          enumeration
+       |  |     +--rw flow-control?                       boolean
+       |  |     +--rw forward-error-correction?           boolean
+       |  |     +--rw forward-error-correction-mode?      enumeration
+       |  |     +--rw ignore-link-status?                 boolean
+       |  |     +--rw speed?                              enumeration
+       |  |     +--rw lasi-monitoring-enabled?            boolean
+       |  |     +--rw flow-control-directed-address?      string
+       |  +--rw protocol-groups* [name]
+       |  |  +--rw name          string
+       |  |  +--rw port-names*   string
+       |  +---x start-protocols
+       |  |  +---w input
+       |  |  |  +---w protocol-group-names*   string
+       |  |  +--ro output
+       |  |     +--ro errata* [name]
+       |  |        +--ro name           string
+       |  |        +--ro detail?        string
+       |  |        +--ro stack-trace?   string
+       |  +---x stop-protocols
+       |  |  +---w input
+       |  |  |  +---w protocol-group-names*   string
+       |  |  +--ro output
+       |  |     +--ro errata* [name]
+       |  |        +--ro name           string
+       |  |        +--ro detail?        string
+       |  |        +--ro stack-trace?   string
+       |  +--rw traffic-groups* [name]
+       |  |  +--rw name    string
+       |  +---x start-traffic
+       |  |  +---w input
+       |  |  |  +---w traffic-group-names*   string
+       |  |  +--ro output
+       |  |     +--ro errata* [name]
+       |  |        +--ro name           string
+       |  |        +--ro detail?        string
+       |  |        +--ro stack-trace?   string
+       |  +---x stop-traffic
+       |  |  +---w input
+       |  |  |  +---w traffic-group-names*   string
+       |  |  +--ro output
+       |  |     +--ro errata* [name]
+       |  |        +--ro name           string
+       |  |        +--ro detail?        string
+       |  |        +--ro stack-trace?   string
+       |  +---x clear
+       |  +---x load
+       |     +---w input
+       |        +---w vendor-config?   binary
+       +--rw statistics
+       |  +--rw username                    string
+       |  +--ro vendor-user-interface?      string
+       |  +--ro first-activity-timestamp?   yang:date-and-time
+       |  +--ro last-activity-timestamp?    yang:date-and-time
+       |  +--ro ports* [name]
+       |  |  +--ro name                               string
+       |  |  +--ro connected-test-port-id?            string
+       |  |  +--ro connected-test-port-description?   string
+       |  |  +--ro connection-state?                  enumeration
+       |  |  +--ro connection-state-details?          string
+       |  |  +--ro speed?                             string
+       |  |  +--ro tx-frames?                         string
+       |  |  +--ro rx-frames?                         string
+       |  +---x clear
+       +---n statistic-events
+          +---- username                    string
+          +--ro vendor-user-interface?      string
+          +--ro first-activity-timestamp?   yang:date-and-time
+          +--ro last-activity-timestamp?    yang:date-and-time
+          +--ro ports* [name]
+             +--ro name                               string
+             +--ro connected-test-port-id?            string
+             +--ro connected-test-port-description?   string
+             +--ro connection-state?                  enumeration
+             +--ro connection-state-details?          string
+             +--ro speed?                             string
+             +--ro tx-frames?                         string
+             +--ro rx-frames?                         string
+
+  rpcs:
+    +---x authenticate
+       +---w input
+       |  +---w username?   string
+       |  +---w password?   string
+       +--ro output
+          +--ro api-key?   string

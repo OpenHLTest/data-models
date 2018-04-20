@@ -9,11 +9,11 @@ from setuptools import setup, find_packages
 
 class CiBuild(object):
 
-    def __init__(self, root_module_filename):
+    def __init__(self):
+        self._root_model = 'openhltest-session.yang'
         self._root_dir = os.getcwd()
         self._python = os.path.normpath(sys.executable)
         self._python_dir = os.path.dirname(self._python)
-        self._root_model = root_module_filename
         self._view_models_dir = os.path.normpath('%s/views' % self._root_dir)
         self._openhltest_dir = os.path.normpath('%s/python_client/openhltest' % self._root_dir)
         if os.name == 'nt':
@@ -240,7 +240,7 @@ class CiBuild(object):
         self._git_commit_push()
 
 
-cibuild = CiBuild('openhltest-session.yang')
+cibuild = CiBuild()
 cibuild.detect_model_changes()
 cibuild.validate_models()
 cibuild.generate_model_views()

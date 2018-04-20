@@ -1,4 +1,4 @@
-from HttpTransport import HttpTransport
+from httptransport import HttpTransport
 
 class YangBase(object):
     '''Base class that encapsulates CRUDX methods and property access'''
