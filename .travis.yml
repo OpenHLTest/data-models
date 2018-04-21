@@ -7,6 +7,7 @@ install:
 - pip install lxml
 - pip install setuptools
 - pip install pydoc-markdown
+- pip install urllib3
 script:
 - python build.py
 

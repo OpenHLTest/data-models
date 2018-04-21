@@ -75,7 +75,7 @@ class CiBuild(object):
             'push',
             '--all'
         ]
-        self._run_rocess(process_args, self._root_dir)
+        self._run_process(process_args, self._root_dir)
 
     def validate_models(self):
         print('validating openhltest models...')
