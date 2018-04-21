@@ -198,7 +198,7 @@ class CiBuild(object):
         if os.name == 'nt':
             pydoc_cmd = os.path.normpath('%s/lib/pydoc.py' % self._python_dir)
         else:
-            pydoc_cmd = find('pydoc', os.path.normpath('%s/..'% self._python_dir))
+            pydoc_cmd = self._find('pydoc', os.path.normpath('%s/..' % self._python_dir))
         print('pydoc location %s' % pydoc_cmd)
         output_file = 'openhltest.html'
         docs_dir = os.path.normpath('%s/python_client/openhltest' % self._root_dir)
