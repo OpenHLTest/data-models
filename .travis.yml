@@ -6,6 +6,7 @@ install:
 - pip install pyang
 - pip install lxml
 - pip install setuptools
+- pip install pydocmd
 script:
 - python build.py
 
