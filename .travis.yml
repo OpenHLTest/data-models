@@ -5,6 +5,7 @@ python:
 install:
 - pip install pyang
 - pip install lxml
+- pip install setuptools
 script:
 - python build.py
 
