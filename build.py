@@ -196,18 +196,18 @@ class CiBuild(object):
         self._git_add(os.path.join(docs_dir, output_file))
 
         if os.name == 'nt':
-			process_args = [
-				self._python,
-				os.path.normpath('%s/lib/pydoc.py' % self._python_dir),
-				'-w',
-				'openhltest'
-			]
-		else:
-			process_args = [
-				'pydoc',
-				'-w',
-				'openhltest'
-			]
+            process_args = [
+                self._python,
+                os.path.normpath('%s/lib/pydoc.py' % self._python_dir),
+                '-w',
+                'openhltest'
+            ]
+        else:
+            process_args = [
+                'pydoc',
+                '-w',
+                'openhltest'
+            ]
         output_file = 'openhltest.html'
         docs_dir = os.path.normpath('%s/python_client/openhltest' % self._root_dir)
         self._run_process(process_args, docs_dir)
