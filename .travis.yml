@@ -6,7 +6,7 @@ install:
 - pip install pyang
 - pip install lxml
 - pip install setuptools
-- pip install pydocmd
+- pip install pydocmd-markdown
 script:
 - python build.py
 
