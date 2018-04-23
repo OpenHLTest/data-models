@@ -1,93 +1,93 @@
 module: openhltest
-    +--rw sessions* [name]
-       +--rw name                string
-       +--rw session-type        enumeration
-       +--rw config
-       |  +--rw ports* [name]
-       |  |  +--rw name    string
-       |  +---x connect-ports
-       |  |  +---w input
-       |  |  |  +---w port-map* [port-name]
-       |  |  |     +---w port-name    string
-       |  |  |     +---w chassis?     string
-       |  |  |     +---w card?        uint16
-       |  |  |     +---w port?        uint16
-       |  |  +--ro output
-       |  |     +--ro errata* [name]
-       |  |        +--ro name           string
-       |  |        +--ro detail?        string
-       |  |        +--ro stack-trace?   string
-       |  +---x disconnect-ports
-       |  |  +---w input
-       |  |  |  +---w port-names*   string
-       |  |  +--ro output
-       |  |     +--ro errata* [name]
-       |  |        +--ro name           string
-       |  |        +--ro detail?        string
-       |  |        +--ro stack-trace?   string
-       |  +--rw protocol-groups* [name]
-       |  |  +--rw name          string
-       |  |  +--rw port-names*   string
-       |  +---x start-protocols
-       |  |  +---w input
-       |  |  |  +---w protocol-group-names*   string
-       |  |  +--ro output
-       |  |     +--ro errata* [name]
-       |  |        +--ro name           string
-       |  |        +--ro detail?        string
-       |  |        +--ro stack-trace?   string
-       |  +---x stop-protocols
-       |  |  +---w input
-       |  |  |  +---w protocol-group-names*   string
-       |  |  +--ro output
-       |  |     +--ro errata* [name]
-       |  |        +--ro name           string
-       |  |        +--ro detail?        string
-       |  |        +--ro stack-trace?   string
-       |  +--rw traffic-groups* [name]
-       |  |  +--rw name    string
-       |  +---x start-traffic
-       |  |  +---w input
-       |  |  |  +---w traffic-group-names*   string
-       |  |  +--ro output
-       |  |     +--ro errata* [name]
-       |  |        +--ro name           string
-       |  |        +--ro detail?        string
-       |  |        +--ro stack-trace?   string
-       |  +---x stop-traffic
-       |  |  +---w input
-       |  |  |  +---w traffic-group-names*   string
-       |  |  +--ro output
-       |  |     +--ro errata* [name]
-       |  |        +--ro name           string
-       |  |        +--ro detail?        string
-       |  |        +--ro stack-trace?   string
-       |  +---x clear
-       |  +---x load
-       |     +---w input
-       |        +---w vendor-config?   binary
-       +--rw statistics
-       |  +--ro first-activity-timestamp?   yang:date-and-time
-       |  +--ro last-activity-timestamp?    yang:date-and-time
-       |  +--ro ports* [name]
-       |  |  +--ro name                               string
-       |  |  +--ro connected-test-port-id?            string
-       |  |  +--ro connected-test-port-description?   string
-       |  |  +--ro connection-state?                  enumeration
-       |  |  +--ro connection-state-details?          string
-       |  |  +--ro speed?                             string
-       |  |  +--ro tx-frames?                         string
-       |  |  +--ro rx-frames?                         string
-       |  +---x clear
-       +---n statistic-events
-          +--ro first-activity-timestamp?   yang:date-and-time
-          +--ro last-activity-timestamp?    yang:date-and-time
-          +--ro ports* [name]
-             +--ro name                               string
-             +--ro connected-test-port-id?            string
-             +--ro connected-test-port-description?   string
-             +--ro connection-state?                  enumeration
-             +--ro connection-state-details?          string
-             +--ro speed?                             string
-             +--ro tx-frames?                         string
-             +--ro rx-frames?                         string
+  +--rw sessions* [name]
+     +--rw name                string
+     +--rw session-type        enumeration
+     +--rw config
+     |  +--rw ports* [name]
+     |  |  +--rw name    string
+     |  +---x connect-ports
+     |  |  +---w input
+     |  |  |  +---w port-map* [port-name]
+     |  |  |     +---w port-name    string
+     |  |  |     +---w chassis?     string
+     |  |  |     +---w card?        uint16
+     |  |  |     +---w port?        uint16
+     |  |  +--ro output
+     |  |     +--ro errata* [name]
+     |  |        +--ro name           string
+     |  |        +--ro detail?        string
+     |  |        +--ro stack-trace?   string
+     |  +---x disconnect-ports
+     |  |  +---w input
+     |  |  |  +---w port-names*   string
+     |  |  +--ro output
+     |  |     +--ro errata* [name]
+     |  |        +--ro name           string
+     |  |        +--ro detail?        string
+     |  |        +--ro stack-trace?   string
+     |  +--rw protocol-groups* [name]
+     |  |  +--rw name          string
+     |  |  +--rw port-names*   string
+     |  +---x start-protocols
+     |  |  +---w input
+     |  |  |  +---w protocol-group-names*   string
+     |  |  +--ro output
+     |  |     +--ro errata* [name]
+     |  |        +--ro name           string
+     |  |        +--ro detail?        string
+     |  |        +--ro stack-trace?   string
+     |  +---x stop-protocols
+     |  |  +---w input
+     |  |  |  +---w protocol-group-names*   string
+     |  |  +--ro output
+     |  |     +--ro errata* [name]
+     |  |        +--ro name           string
+     |  |        +--ro detail?        string
+     |  |        +--ro stack-trace?   string
+     |  +--rw traffic-groups* [name]
+     |  |  +--rw name    string
+     |  +---x start-traffic
+     |  |  +---w input
+     |  |  |  +---w traffic-group-names*   string
+     |  |  +--ro output
+     |  |     +--ro errata* [name]
+     |  |        +--ro name           string
+     |  |        +--ro detail?        string
+     |  |        +--ro stack-trace?   string
+     |  +---x stop-traffic
+     |  |  +---w input
+     |  |  |  +---w traffic-group-names*   string
+     |  |  +--ro output
+     |  |     +--ro errata* [name]
+     |  |        +--ro name           string
+     |  |        +--ro detail?        string
+     |  |        +--ro stack-trace?   string
+     |  +---x clear
+     |  +---x load
+     |     +---w input
+     |        +---w vendor-config?   binary
+     +--rw statistics
+     |  +--ro first-activity-timestamp?   yang:date-and-time
+     |  +--ro last-activity-timestamp?    yang:date-and-time
+     |  +--ro ports* [name]
+     |  |  +--ro name                               string
+     |  |  +--ro connected-test-port-id?            string
+     |  |  +--ro connected-test-port-description?   string
+     |  |  +--ro connection-state?                  enumeration
+     |  |  +--ro connection-state-details?          string
+     |  |  +--ro speed?                             string
+     |  |  +--ro tx-frames?                         string
+     |  |  +--ro rx-frames?                         string
+     |  +---x clear
+     +---n statistic-events
+        +--ro first-activity-timestamp?   yang:date-and-time
+        +--ro last-activity-timestamp?    yang:date-and-time
+        +--ro ports* [name]
+           +--ro name                               string
+           +--ro connected-test-port-id?            string
+           +--ro connected-test-port-description?   string
+           +--ro connection-state?                  enumeration
+           +--ro connection-state-details?          string
+           +--ro speed?                             string
+           +--ro tx-frames?                         string
+           +--ro rx-frames?                         string
