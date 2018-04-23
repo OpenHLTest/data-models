@@ -31,11 +31,11 @@ class CiBuild(object):
         #     self._branch
         # ]
         # self._run_process(process_args, self._root_dir)
-        # process_args = [
-        #     'git',
-        #     'remote'
-        # ]
-        # self._run_process(process_args, self._root_dir)
+        process_args = [
+            'git',
+            'remote'
+        ]
+        self._run_process(process_args, self._root_dir)
         process_args = [
             'git',
             'config',
@@ -94,7 +94,7 @@ class CiBuild(object):
         process_args = [
             'git',
             'push',
-            'https://%s@github.com/openhltest/data-models.git' %(os.environ['GH_TOKEN']),
+            'https://%s@github.com/OpenHLTest/data-models.git' %(os.environ['GH_TOKEN']),
             self._branch
         ]
         self._run_process(process_args, self._root_dir)
