@@ -1,14 +1,17 @@
 # validate models
 language: python
 python:
-- '2.7'
+  - '2.7'
 install:
-- pip install pyang
-- pip install lxml
-- pip install setuptools
-- pip install pydoc-markdown
-- pip install urllib3
+  - pip install pyang
+  - pip install lxml
+  - pip install setuptools
+  - pip install pydoc-markdown
+  - pip install urllib3
 script:
-- python build.py
+  - python build.py
+env:
+  global:
+    - secure: "EIwpNGpXdC7Qo27ieDFx3x7scpJEnWtPjb2YDd3v9ungM73tMH6x0DfdFoeNgZzxZG6Shnt8G0cVx7bY9KBOQggBkAZaagKdENkPs7lQX7CKLpIwmKZwwNNlSBYBYANVxRWsbTsF/yFtGZCxcRjJ5I8+RYm8V1SbbXj5CZQuPsGWmB8IUuYD+LPQZBNujssxGB1hRP5GqyXouKP8tM+jbORQOwa94qHAKDnmGI0XRKX1RtGhwahVASXCvYlRZMIbdNxwNC3rfec7D2UutuXmHic07eALBiyKxh8pRm5Bb383y2XiUNj4pnI50QMdZ304hEe6BVXtVKsteXfKRfsL6kRqpjIxAJTNWT5CRTRs9cBuysAJtVOFzJW9Nto0GG1SmnlXViapeA0sKltVDWI4QosT97z3rsN337NFY1C3WS/UCDxCss0Abmt6r1NXXHa8X1s3GnFz/JYtvne0EF8J1Wm4PSFNIAwu9px9D5QkcBV25UwEl0lV6GduS4wCiP0vRf9RAKxp0y3HjMdKj/hCItBZ8kb4/mf7fvaqntxiXY5293zoDTdRWp8JJlhgoWgXKn0bKQEio5rCRO4NjAgOR8VowuMeBWFDPZca7BBubuM3EQ4EQREOoCunwX+SysfR2j2rB0nBwHK+BeO1qUnaJbG+lgYTbaIAs0i+3pvG7J4="
 
 
