@@ -3,12 +3,13 @@ language: python
 python:
   - '2.7'
 install:
-  - pip install urllib3 --force --upgrade --no-cache-dir
-  - pip install requests --upgrade --no-cache-dir
-  - pip install pyang --upgrade --no-cache-dir
-  - pip install lxml --upgrade --no-cache-dir
-  - pip install setuptools --upgrade --no-cache-dir
-  - pip install pydoc-markdown --upgrade --no-cache-dir
+  - pip uninstall requests
+  - pip install urllib3
+  - pip install requests
+  - pip install pyang
+  - pip install lxml
+  - pip install setuptools
+  - pip install pydoc-markdown
 script:
   - python build.py
 env:
