@@ -23,6 +23,12 @@ class CiBuild(object):
         print('pyang location %s' % self._pyang)
         self._data_models_dir = os.path.normpath('%s/models' % self._root_dir)
         print('data models location %s' % self._data_models_dir)
+        process_args = [
+            'git',
+            'config',
+            '--list'
+        ]
+        self._run_process(process_args, self._root_dir)		
 
     def _find(self, name, path):
         for root, dirs, files in os.walk(path):
