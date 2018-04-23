@@ -26,6 +26,13 @@ class CiBuild(object):
         print('data models location %s' % self._data_models_dir)
         process_args = [
             'git',
+            'checkout',
+            '-b',
+            sef._branch
+        ]
+        self._run_process(process_args, self._root_dir)
+        process_args = [
+            'git',
             'remote'
         ]
         self._run_process(process_args, self._root_dir)
