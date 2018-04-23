@@ -35,7 +35,7 @@ class CiBuild(object):
         #     'git',
         #     'remote'
         # ]
-        self._run_process(process_args, self._root_dir)
+        # self._run_process(process_args, self._root_dir)
         process_args = [
             'git',
             'config',
