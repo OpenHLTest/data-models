@@ -68,9 +68,11 @@ class CiBuild(object):
                     self._process_output += stdout_data
 
     def _git_add(self, filename):
+        print('git add of %s' % filename)
         process_args = [
             'git',
             'add',
+            '--all',
             filename
         ]
         self._run_process(process_args, self._root_dir)
@@ -235,6 +237,7 @@ class CiBuild(object):
             self._git_add(dst)
 
     def update_repository(self):
+        print('commit and push of updated files')
         self._git_commit_push()
 
 
