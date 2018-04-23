@@ -3,7 +3,7 @@ language: python
 python:
   - '2.7'
 install:
-  - pip install urllib3 --upgrade --no-cache-dir
+  - pip install urllib3 --force --upgrade --no-cache-dir
   - pip install requests --upgrade --no-cache-dir
   - pip install pyang --upgrade --no-cache-dir
   - pip install lxml --upgrade --no-cache-dir
