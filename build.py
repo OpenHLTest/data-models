@@ -28,7 +28,7 @@ class CiBuild(object):
             'git',
             'checkout',
             '-b',
-            sef._branch
+            self._branch
         ]
         self._run_process(process_args, self._root_dir)
         process_args = [
