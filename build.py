@@ -28,7 +28,7 @@ class CiBuild(object):
             'remote'
         ]
         self._run_process(process_args, self._root_dir)
-		process_args = [
+        process_args = [
             'git',
             'config',
             '--list'
@@ -84,7 +84,7 @@ class CiBuild(object):
         process_args = [
             'git',
             'push',
-			'https://%s@github.com/openhltest/data-models' % (os.environ('GH_TOKEN'))
+            'https://%s@github.com/openhltest/data-models' % (os.environ['GH_TOKEN'])
         ]
         self._run_process(process_args, self._root_dir)
 
