@@ -1,4 +1,4 @@
-module: openhltest-session
+module: openhltest
     +--rw sessions* [name]
        +--rw name                string
        +--rw session-type        enumeration
@@ -25,43 +25,6 @@ module: openhltest-session
        |  |        +--ro name           string
        |  |        +--ro detail?        string
        |  |        +--ro stack-trace?   string
-       |  +--rw physical-layers* [name]
-       |  |  +--rw name           string
-       |  |  +--rw port-names*    string
-       |  |  +--rw layer-type?    enumeration
-       |  |  +--rw ethernet
-       |  |  |  +--rw auto-mdix?                          boolean
-       |  |  |  +--rw media?                              enumeration
-       |  |  |  +--rw ppm-enable?                         boolean
-       |  |  |  +--rw ppm?                                int32
-       |  |  |  +--rw loopback?                           enumeration
-       |  |  |  +--rw autonegotiate?                      boolean
-       |  |  |  +--rw autonegotiate-advertise*            enumeration
-       |  |  |  +--rw autonegotiate-masterslave-enable?   boolean
-       |  |  |  +--rw autonegotiate-masterslave?          enumeration
-       |  |  |  +--rw flow-control?                       boolean
-       |  |  |  +--rw forward-error-correction?           boolean
-       |  |  |  +--rw forward-error-correction-mode?      enumeration
-       |  |  |  +--rw ignore-link-status?                 boolean
-       |  |  |  +--rw speed?                              enumeration
-       |  |  |  +--rw auto-instrumentation?               enumeration
-       |  |  +--rw ten-gig-lan
-       |  |     +--rw auto-mdix?                          boolean
-       |  |     +--rw media?                              enumeration
-       |  |     +--rw ppm-enable?                         boolean
-       |  |     +--rw ppm?                                int32
-       |  |     +--rw loopback?                           enumeration
-       |  |     +--rw autonegotiate?                      boolean
-       |  |     +--rw autonegotiate-advertise*            enumeration
-       |  |     +--rw autonegotiate-masterslave-enable?   boolean
-       |  |     +--rw autonegotiate-masterslave?          enumeration
-       |  |     +--rw flow-control?                       boolean
-       |  |     +--rw forward-error-correction?           boolean
-       |  |     +--rw forward-error-correction-mode?      enumeration
-       |  |     +--rw ignore-link-status?                 boolean
-       |  |     +--rw speed?                              enumeration
-       |  |     +--rw lasi-monitoring-enabled?            boolean
-       |  |     +--rw flow-control-directed-address?      string
        |  +--rw protocol-groups* [name]
        |  |  +--rw name          string
        |  |  +--rw port-names*   string
@@ -104,8 +67,6 @@ module: openhltest-session
        |     +---w input
        |        +---w vendor-config?   binary
        +--rw statistics
-       |  +--rw username                    string
-       |  +--ro vendor-user-interface?      string
        |  +--ro first-activity-timestamp?   yang:date-and-time
        |  +--ro last-activity-timestamp?    yang:date-and-time
        |  +--ro ports* [name]
@@ -119,8 +80,6 @@ module: openhltest-session
        |  |  +--ro rx-frames?                         string
        |  +---x clear
        +---n statistic-events
-          +---- username                    string
-          +--ro vendor-user-interface?      string
           +--ro first-activity-timestamp?   yang:date-and-time
           +--ro last-activity-timestamp?    yang:date-and-time
           +--ro ports* [name]
@@ -132,11 +91,3 @@ module: openhltest-session
              +--ro speed?                             string
              +--ro tx-frames?                         string
              +--ro rx-frames?                         string
-
-  rpcs:
-    +---x authenticate
-       +---w input
-       |  +---w username?   string
-       |  +---w password?   string
-       +--ro output
-          +--ro api-key?   string

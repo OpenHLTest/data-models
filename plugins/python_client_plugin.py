@@ -7,7 +7,6 @@ import sys
 import os
 import glob
 import re
-import dumper
 
 from pyang import plugin
 from pyang import statements

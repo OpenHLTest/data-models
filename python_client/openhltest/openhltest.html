@@ -22,12 +22,9 @@
 <dt><font face="helvetica, arial"><a href="yangbase.html#YangBase">yangbase.YangBase</a>(<a href="__builtin__.html#object">__builtin__.object</a>)
 </font></dt><dd>
 <dl>
-<dt><font face="helvetica, arial"><a href="openhltest.html#OpenhltestSession">OpenhltestSession</a>
+<dt><font face="helvetica, arial"><a href="openhltest.html#Openhltest">Openhltest</a>
 </font></dt><dt><font face="helvetica, arial"><a href="openhltest.html#Sessions">Sessions</a>
 </font></dt><dt><font face="helvetica, arial"><a href="openhltest.html#SessionsConfig">SessionsConfig</a>
-</font></dt><dt><font face="helvetica, arial"><a href="openhltest.html#SessionsConfigPhysicalLayers">SessionsConfigPhysicalLayers</a>
-</font></dt><dt><font face="helvetica, arial"><a href="openhltest.html#SessionsConfigPhysicalLayersEthernet">SessionsConfigPhysicalLayersEthernet</a>
-</font></dt><dt><font face="helvetica, arial"><a href="openhltest.html#SessionsConfigPhysicalLayersTenGigLan">SessionsConfigPhysicalLayersTenGigLan</a>
 </font></dt><dt><font face="helvetica, arial"><a href="openhltest.html#SessionsConfigPorts">SessionsConfigPorts</a>
 </font></dt><dt><font face="helvetica, arial"><a href="openhltest.html#SessionsConfigProtocolGroups">SessionsConfigProtocolGroups</a>
 </font></dt><dt><font face="helvetica, arial"><a href="openhltest.html#SessionsConfigTrafficGroups">SessionsConfigTrafficGroups</a>
@@ -41,23 +38,23 @@
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ffc8d8">
 <td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#000000" face="helvetica, arial"><a name="OpenhltestSession">class <strong>OpenhltestSession</strong></a>(<a href="yangbase.html#YangBase">yangbase.YangBase</a>)</font></td></tr>
+<font color="#000000" face="helvetica, arial"><a name="Openhltest">class <strong>Openhltest</strong></a>(<a href="yangbase.html#YangBase">yangbase.YangBase</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>This&nbsp;module&nbsp;defines&nbsp;session&nbsp;capabilities.<br>&nbsp;</tt></td></tr>
+<td colspan=2><tt>This&nbsp;module&nbsp;is&nbsp;the&nbsp;top&nbsp;level&nbsp;of&nbsp;the&nbsp;test&nbsp;hierarchy.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
-<dd><a href="openhltest.html#OpenhltestSession">OpenhltestSession</a></dd>
+<dd><a href="openhltest.html#Openhltest">Openhltest</a></dd>
 <dd><a href="yangbase.html#YangBase">yangbase.YangBase</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="OpenhltestSession-__init__"><strong>__init__</strong></a>(self, ip_address, rest_port)</dt></dl>
+<dl><dt><a name="Openhltest-__init__"><strong>__init__</strong></a>(self, ip_address, rest_port)</dt></dl>
 
-<dl><dt><a name="OpenhltestSession-create_sessions"><strong>create_sessions</strong></a>(self, name)</dt><dd><tt>Create&nbsp;a&nbsp;sessions&nbsp;instance&nbsp;on&nbsp;the&nbsp;server.<br>
+<dl><dt><a name="Openhltest-create_sessions"><strong>create_sessions</strong></a>(self, name)</dt><dd><tt>Create&nbsp;a&nbsp;sessions&nbsp;instance&nbsp;on&nbsp;the&nbsp;server.<br>
 &nbsp;<br>
-A&nbsp;list&nbsp;of&nbsp;test&nbsp;tool&nbsp;sessions.&nbsp;To&nbsp;start&nbsp;a&nbsp;test&nbsp;tool&nbsp;session&nbsp;create&nbsp;a&nbsp;new&nbsp;session.&nbsp;To&nbsp;stop&nbsp;a&nbsp;test&nbsp;tool&nbsp;session&nbsp;delete&nbsp;an&nbsp;existing&nbsp;session.<br>
+A&nbsp;list&nbsp;of&nbsp;test&nbsp;tool&nbsp;sessions.<br>
 &nbsp;<br>
 Args:&nbsp;&nbsp;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name&nbsp;(str):&nbsp;A&nbsp;unique&nbsp;key&nbsp;value&nbsp;that&nbsp;does&nbsp;not&nbsp;exist&nbsp;in&nbsp;the&nbsp;list&nbsp;on&nbsp;the&nbsp;server.&nbsp;&nbsp;<br>
@@ -69,9 +66,9 @@ Raises:&nbsp;&nbsp;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AlreadyExistsError:&nbsp;An&nbsp;instance&nbsp;of&nbsp;sessions&nbsp;with&nbsp;the&nbsp;supplied&nbsp;key&nbsp;value&nbsp;already&nbsp;exists&nbsp;on&nbsp;the&nbsp;server.&nbsp;&nbsp;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ServerError:&nbsp;An&nbsp;abnormal&nbsp;server&nbsp;error&nbsp;has&nbsp;occurred.</tt></dd></dl>
 
-<dl><dt><a name="OpenhltestSession-sessions"><strong>sessions</strong></a>(self, name<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;the&nbsp;sessions&nbsp;object(s)&nbsp;from&nbsp;the&nbsp;server.<br>
+<dl><dt><a name="Openhltest-sessions"><strong>sessions</strong></a>(self, name<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;the&nbsp;sessions&nbsp;object(s)&nbsp;from&nbsp;the&nbsp;server.<br>
 &nbsp;<br>
-A&nbsp;list&nbsp;of&nbsp;test&nbsp;tool&nbsp;sessions.&nbsp;To&nbsp;start&nbsp;a&nbsp;test&nbsp;tool&nbsp;session&nbsp;create&nbsp;a&nbsp;new&nbsp;session.&nbsp;To&nbsp;stop&nbsp;a&nbsp;test&nbsp;tool&nbsp;session&nbsp;delete&nbsp;an&nbsp;existing&nbsp;session.<br>
+A&nbsp;list&nbsp;of&nbsp;test&nbsp;tool&nbsp;sessions.<br>
 &nbsp;<br>
 Args:&nbsp;&nbsp;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name&nbsp;(:obj:`str`,&nbsp;optional,&nbsp;default=None):&nbsp;A&nbsp;key&nbsp;value&nbsp;in&nbsp;the&nbsp;sessions&nbsp;list.&nbsp;&nbsp;<br>
@@ -85,11 +82,11 @@ Raises:&nbsp;&nbsp;<br>
 
 <hr>
 Methods inherited from <a href="yangbase.html#YangBase">yangbase.YangBase</a>:<br>
-<dl><dt><a name="OpenhltestSession-create_sibling"><strong>create_sibling</strong></a>(self, yang_key_value)</dt></dl>
+<dl><dt><a name="Openhltest-create_sibling"><strong>create_sibling</strong></a>(self, yang_key_value)</dt></dl>
 
-<dl><dt><a name="OpenhltestSession-dump"><strong>dump</strong></a>(self)</dt></dl>
+<dl><dt><a name="Openhltest-dump"><strong>dump</strong></a>(self)</dt></dl>
 
-<dl><dt><a name="OpenhltestSession-refresh"><strong>refresh</strong></a>(self)</dt></dl>
+<dl><dt><a name="Openhltest-refresh"><strong>refresh</strong></a>(self)</dt></dl>
 
 <hr>
 Data descriptors inherited from <a href="yangbase.html#YangBase">yangbase.YangBase</a>:<br>
@@ -108,7 +105,7 @@ Data descriptors inherited from <a href="yangbase.html#YangBase">yangbase.YangBa
 <font color="#000000" face="helvetica, arial"><a name="Sessions">class <strong>Sessions</strong></a>(<a href="yangbase.html#YangBase">yangbase.YangBase</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>A&nbsp;list&nbsp;of&nbsp;test&nbsp;tool&nbsp;sessions.&nbsp;To&nbsp;start&nbsp;a&nbsp;test&nbsp;tool&nbsp;session&nbsp;create&nbsp;a&nbsp;new&nbsp;session.&nbsp;To&nbsp;stop&nbsp;a&nbsp;test&nbsp;tool&nbsp;session&nbsp;delete&nbsp;an&nbsp;existing&nbsp;session.<br>&nbsp;</tt></td></tr>
+<td colspan=2><tt>A&nbsp;list&nbsp;of&nbsp;test&nbsp;tool&nbsp;sessions.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="openhltest.html#Sessions">Sessions</a></dd>
@@ -142,13 +139,13 @@ Raises:&nbsp;&nbsp;<br>
 <hr>
 Data descriptors defined here:<br>
 <dl><dt><strong>name</strong></dt>
-<dd><tt>str:&nbsp;The&nbsp;unique&nbsp;name&nbsp;of&nbsp;test&nbsp;tool&nbsp;session</tt></dd>
+<dd><tt>str:&nbsp;The&nbsp;unique&nbsp;name&nbsp;of&nbsp;the&nbsp;test&nbsp;tool&nbsp;session.&nbsp;Once&nbsp;the&nbsp;session&nbsp;has&nbsp;been&nbsp;created&nbsp;the&nbsp;name&nbsp;cannot&nbsp;be&nbsp;modified.</tt></dd>
 </dl>
 <dl><dt><strong>session_type</strong></dt>
-<dd><tt>:str:`enum`:&nbsp;The&nbsp;type&nbsp;of&nbsp;test&nbsp;tool&nbsp;session.&nbsp;Once&nbsp;the&nbsp;session&nbsp;has&nbsp;been&nbsp;created&nbsp;the&nbsp;session-type&nbsp;cannot&nbsp;be&nbsp;changed.&nbsp;&nbsp;<br>
+<dd><tt>:str:`enum`:&nbsp;The&nbsp;type&nbsp;of&nbsp;test&nbsp;tool&nbsp;session.&nbsp;Once&nbsp;the&nbsp;session&nbsp;has&nbsp;been&nbsp;created&nbsp;the&nbsp;session-type&nbsp;cannot&nbsp;be&nbsp;modified.&nbsp;&nbsp;<br>
 Enums:&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L2L3:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L4L7:&nbsp;TBD</tt></dd>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L2L3:&nbsp;A&nbsp;layer&nbsp;23&nbsp;test&nbsp;tool&nbsp;session&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L4L7:&nbsp;A&nbsp;layer&nbsp;47&nbsp;test&nbsp;tool&nbsp;session.&nbsp;This&nbsp;is&nbsp;currently&nbsp;not&nbsp;supported&nbsp;and&nbsp;is&nbsp;a&nbsp;feature&nbsp;placeholder</tt></dd>
 </dl>
 <hr>
 Methods inherited from <a href="yangbase.html#YangBase">yangbase.YangBase</a>:<br>
@@ -199,20 +196,6 @@ Connect&nbsp;abstract&nbsp;test&nbsp;ports&nbsp;to&nbsp;physical&nbsp;hardware&n
 &nbsp;<br>
 :return:&nbsp;ConnectPortsOutput.&nbsp;&nbsp;<br>
 :raises&nbsp;ServerException:&nbsp;An&nbsp;abnormal&nbsp;server&nbsp;error&nbsp;has&nbsp;occurred.</tt></dd></dl>
-
-<dl><dt><a name="SessionsConfig-create_physical_layers"><strong>create_physical_layers</strong></a>(self, name)</dt><dd><tt>Create&nbsp;a&nbsp;physical-layers&nbsp;instance&nbsp;on&nbsp;the&nbsp;server.<br>
-&nbsp;<br>
-A&nbsp;list&nbsp;of&nbsp;physical&nbsp;layer&nbsp;definitions<br>
-&nbsp;<br>
-Args:&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name&nbsp;(str):&nbsp;A&nbsp;unique&nbsp;key&nbsp;value&nbsp;that&nbsp;does&nbsp;not&nbsp;exist&nbsp;in&nbsp;the&nbsp;list&nbsp;on&nbsp;the&nbsp;server.&nbsp;&nbsp;<br>
-&nbsp;<br>
-Returns:&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:obj:`<a href="#SessionsConfigPhysicalLayers">SessionsConfigPhysicalLayers</a>`:&nbsp;An&nbsp;object&nbsp;encapsulating&nbsp;an&nbsp;instance&nbsp;of&nbsp;the&nbsp;physical-layers&nbsp;model.&nbsp;&nbsp;<br>
-&nbsp;<br>
-Raises:&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AlreadyExistsError:&nbsp;An&nbsp;instance&nbsp;of&nbsp;physical-layers&nbsp;with&nbsp;the&nbsp;supplied&nbsp;key&nbsp;value&nbsp;already&nbsp;exists&nbsp;on&nbsp;the&nbsp;server.&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ServerError:&nbsp;An&nbsp;abnormal&nbsp;server&nbsp;error&nbsp;has&nbsp;occurred.</tt></dd></dl>
 
 <dl><dt><a name="SessionsConfig-create_ports"><strong>create_ports</strong></a>(self, name)</dt><dd><tt>Create&nbsp;a&nbsp;ports&nbsp;instance&nbsp;on&nbsp;the&nbsp;server.<br>
 &nbsp;<br>
@@ -269,20 +252,6 @@ Load&nbsp;a&nbsp;vendor&nbsp;specific&nbsp;configuration<br>
 &nbsp;<br>
 :return:&nbsp;None.&nbsp;&nbsp;<br>
 :raises&nbsp;ServerException:&nbsp;An&nbsp;abnormal&nbsp;server&nbsp;error&nbsp;has&nbsp;occurred.</tt></dd></dl>
-
-<dl><dt><a name="SessionsConfig-physical_layers"><strong>physical_layers</strong></a>(self, name<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;the&nbsp;physical-layers&nbsp;object(s)&nbsp;from&nbsp;the&nbsp;server.<br>
-&nbsp;<br>
-A&nbsp;list&nbsp;of&nbsp;physical&nbsp;layer&nbsp;definitions<br>
-&nbsp;<br>
-Args:&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name&nbsp;(:obj:`str`,&nbsp;optional,&nbsp;default=None):&nbsp;A&nbsp;key&nbsp;value&nbsp;in&nbsp;the&nbsp;physical-layers&nbsp;list.&nbsp;&nbsp;<br>
-&nbsp;<br>
-Returns:&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:obj:`list`&nbsp;of&nbsp;:obj:`<a href="#SessionsConfigPhysicalLayers">SessionsConfigPhysicalLayers</a>`&nbsp;|&nbsp;:obj:`<a href="#SessionsConfigPhysicalLayers">SessionsConfigPhysicalLayers</a>`:&nbsp;If&nbsp;arg&nbsp;name&nbsp;is&nbsp;None&nbsp;a&nbsp;list&nbsp;of&nbsp;<a href="#SessionsConfigPhysicalLayers">SessionsConfigPhysicalLayers</a>&nbsp;objects&nbsp;otherwise&nbsp;a&nbsp;single&nbsp;<a href="#SessionsConfigPhysicalLayers">SessionsConfigPhysicalLayers</a>&nbsp;object.&nbsp;&nbsp;<br>
-&nbsp;<br>
-Raises:&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NotFoundError:&nbsp;name&nbsp;is&nbsp;not&nbsp;in&nbsp;the&nbsp;list&nbsp;of&nbsp;physical-layers&nbsp;objects.&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ServerError:&nbsp;An&nbsp;abnormal&nbsp;server&nbsp;error&nbsp;has&nbsp;occurred.</tt></dd></dl>
 
 <dl><dt><a name="SessionsConfig-ports"><strong>ports</strong></a>(self, name<font color="#909090">=None</font>)</dt><dd><tt>Get&nbsp;the&nbsp;ports&nbsp;object(s)&nbsp;from&nbsp;the&nbsp;server.<br>
 &nbsp;<br>
@@ -389,313 +358,6 @@ Methods inherited from <a href="yangbase.html#YangBase">yangbase.YangBase</a>:<b
 <dl><dt><a name="SessionsConfig-dump"><strong>dump</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="SessionsConfig-refresh"><strong>refresh</strong></a>(self)</dt></dl>
-
-<hr>
-Data descriptors inherited from <a href="yangbase.html#YangBase">yangbase.YangBase</a>:<br>
-<dl><dt><strong>__dict__</strong></dt>
-<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
-</dl>
-<dl><dt><strong>__weakref__</strong></dt>
-<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
-</dl>
-<dl><dt><strong>url</strong></dt>
-</dl>
-</td></tr></table> <p>
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
-<tr bgcolor="#ffc8d8">
-<td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#000000" face="helvetica, arial"><a name="SessionsConfigPhysicalLayers">class <strong>SessionsConfigPhysicalLayers</strong></a>(<a href="yangbase.html#YangBase">yangbase.YangBase</a>)</font></td></tr>
-    
-<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>A&nbsp;list&nbsp;of&nbsp;physical&nbsp;layer&nbsp;definitions<br>&nbsp;</tt></td></tr>
-<tr><td>&nbsp;</td>
-<td width="100%"><dl><dt>Method resolution order:</dt>
-<dd><a href="openhltest.html#SessionsConfigPhysicalLayers">SessionsConfigPhysicalLayers</a></dd>
-<dd><a href="yangbase.html#YangBase">yangbase.YangBase</a></dd>
-<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
-</dl>
-<hr>
-Methods defined here:<br>
-<dl><dt><a name="SessionsConfigPhysicalLayers-__init__"><strong>__init__</strong></a>(self, parent, yang_key_value<font color="#909090">=None</font>)</dt></dl>
-
-<dl><dt><a name="SessionsConfigPhysicalLayers-ethernet"><strong>ethernet</strong></a>(self)</dt><dd><tt>Get&nbsp;the&nbsp;ethernet&nbsp;object&nbsp;from&nbsp;the&nbsp;server<br>
-&nbsp;<br>
-The&nbsp;conditional&nbsp;container&nbsp;for&nbsp;detailed&nbsp;ethernet&nbsp;physical&nbsp;layer&nbsp;information<br>
-&nbsp;<br>
-Returns:&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:obj:`<a href="#SessionsConfigPhysicalLayersEthernet">SessionsConfigPhysicalLayersEthernet</a>`:&nbsp;An&nbsp;object&nbsp;encapsulating&nbsp;an&nbsp;instance&nbsp;of&nbsp;the&nbsp;ethernet&nbsp;model.&nbsp;&nbsp;<br>
-&nbsp;<br>
-Raises:&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ServerError:&nbsp;An&nbsp;abnormal&nbsp;server&nbsp;error&nbsp;has&nbsp;occurred.</tt></dd></dl>
-
-<dl><dt><a name="SessionsConfigPhysicalLayers-ten_gig_lan"><strong>ten_gig_lan</strong></a>(self)</dt><dd><tt>Get&nbsp;the&nbsp;ten-gig-lan&nbsp;object&nbsp;from&nbsp;the&nbsp;server<br>
-&nbsp;<br>
-The&nbsp;conditional&nbsp;container&nbsp;for&nbsp;detailed&nbsp;ten&nbsp;gig&nbsp;&nbsp;lan&nbsp;physical&nbsp;layer&nbsp;information<br>
-&nbsp;<br>
-Returns:&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:obj:`<a href="#SessionsConfigPhysicalLayersTenGigLan">SessionsConfigPhysicalLayersTenGigLan</a>`:&nbsp;An&nbsp;object&nbsp;encapsulating&nbsp;an&nbsp;instance&nbsp;of&nbsp;the&nbsp;ten-gig-lan&nbsp;model.&nbsp;&nbsp;<br>
-&nbsp;<br>
-Raises:&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ServerError:&nbsp;An&nbsp;abnormal&nbsp;server&nbsp;error&nbsp;has&nbsp;occurred.</tt></dd></dl>
-
-<hr>
-Data descriptors defined here:<br>
-<dl><dt><strong>layer_type</strong></dt>
-<dd><tt>:str:`enum`:&nbsp;Determines&nbsp;which&nbsp;detailed&nbsp;physical&nbsp;layer&nbsp;conditional&nbsp;container&nbsp;is&nbsp;active&nbsp;&nbsp;<br>
-Enums:&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ETHERNET:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEN_GIG_LAN:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEN_GIG_WAN:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FORTY_GIG:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HUNDRED_GIG:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FOUR_HUNDRED_GIG:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ATM:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;POS:&nbsp;TBD</tt></dd>
-</dl>
-<dl><dt><strong>name</strong></dt>
-<dd><tt>str:&nbsp;The&nbsp;unique&nbsp;name&nbsp;of&nbsp;the&nbsp;physical&nbsp;layer&nbsp;definition</tt></dd>
-</dl>
-<hr>
-Methods inherited from <a href="yangbase.html#YangBase">yangbase.YangBase</a>:<br>
-<dl><dt><a name="SessionsConfigPhysicalLayers-create_sibling"><strong>create_sibling</strong></a>(self, yang_key_value)</dt></dl>
-
-<dl><dt><a name="SessionsConfigPhysicalLayers-dump"><strong>dump</strong></a>(self)</dt></dl>
-
-<dl><dt><a name="SessionsConfigPhysicalLayers-refresh"><strong>refresh</strong></a>(self)</dt></dl>
-
-<hr>
-Data descriptors inherited from <a href="yangbase.html#YangBase">yangbase.YangBase</a>:<br>
-<dl><dt><strong>__dict__</strong></dt>
-<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
-</dl>
-<dl><dt><strong>__weakref__</strong></dt>
-<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
-</dl>
-<dl><dt><strong>url</strong></dt>
-</dl>
-</td></tr></table> <p>
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
-<tr bgcolor="#ffc8d8">
-<td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#000000" face="helvetica, arial"><a name="SessionsConfigPhysicalLayersEthernet">class <strong>SessionsConfigPhysicalLayersEthernet</strong></a>(<a href="yangbase.html#YangBase">yangbase.YangBase</a>)</font></td></tr>
-    
-<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>The&nbsp;conditional&nbsp;container&nbsp;for&nbsp;detailed&nbsp;ethernet&nbsp;physical&nbsp;layer&nbsp;information<br>&nbsp;</tt></td></tr>
-<tr><td>&nbsp;</td>
-<td width="100%"><dl><dt>Method resolution order:</dt>
-<dd><a href="openhltest.html#SessionsConfigPhysicalLayersEthernet">SessionsConfigPhysicalLayersEthernet</a></dd>
-<dd><a href="yangbase.html#YangBase">yangbase.YangBase</a></dd>
-<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
-</dl>
-<hr>
-Methods defined here:<br>
-<dl><dt><a name="SessionsConfigPhysicalLayersEthernet-__init__"><strong>__init__</strong></a>(self, parent)</dt></dl>
-
-<hr>
-Data descriptors defined here:<br>
-<dl><dt><strong>auto_instrumentation</strong></dt>
-<dd><tt>:str:`enum`:&nbsp;TBD&nbsp;&nbsp;<br>
-Enums:&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END_OF_FRAME:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FLOATING:&nbsp;TBD</tt></dd>
-</dl>
-<dl><dt><strong>auto_mdix</strong></dt>
-<dd><tt>bool:&nbsp;Detect&nbsp;if&nbsp;the&nbsp;connection&nbsp;would&nbsp;require&nbsp;a&nbsp;crossover,&nbsp;and&nbsp;automatically&nbsp;chooses&nbsp;&nbsp;the&nbsp;MDI&nbsp;or&nbsp;MDI-X&nbsp;configuration&nbsp;to&nbsp;properly&nbsp;match&nbsp;the&nbsp;other&nbsp;end&nbsp;of&nbsp;the&nbsp;link</tt></dd>
-</dl>
-<dl><dt><strong>autonegotiate</strong></dt>
-<dd><tt>bool:&nbsp;TBD</tt></dd>
-</dl>
-<dl><dt><strong>autonegotiate_masterslave</strong></dt>
-<dd><tt>:str:`enum`:&nbsp;TBD&nbsp;&nbsp;<br>
-Enums:&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MASTER:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SLAVE:&nbsp;TBD</tt></dd>
-</dl>
-<dl><dt><strong>autonegotiate_masterslave_enable</strong></dt>
-<dd><tt>bool:&nbsp;TBD</tt></dd>
-</dl>
-<dl><dt><strong>flow_control</strong></dt>
-<dd><tt>bool:&nbsp;Manage&nbsp;the&nbsp;rate&nbsp;of&nbsp;data&nbsp;transmission&nbsp;by&nbsp;enabling&nbsp;PAUSE&nbsp;frames.</tt></dd>
-</dl>
-<dl><dt><strong>forward_error_correction</strong></dt>
-<dd><tt>bool:&nbsp;Enable&nbsp;message&nbsp;encoding&nbsp;to&nbsp;control&nbsp;data&nbsp;transmission&nbsp;errors.</tt></dd>
-</dl>
-<dl><dt><strong>forward_error_correction_mode</strong></dt>
-<dd><tt>:str:`enum`:&nbsp;TBD&nbsp;&nbsp;<br>
-Enums:&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NONE:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RS_FEC:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;KR_FEC:&nbsp;TBD</tt></dd>
-</dl>
-<dl><dt><strong>ignore_link_status</strong></dt>
-<dd><tt>bool:&nbsp;Allow&nbsp;the&nbsp;port&nbsp;to&nbsp;continue&nbsp;transmitting&nbsp;traffic&nbsp;if&nbsp;the&nbsp;link(s)&nbsp;with&nbsp;its&nbsp;peer&nbsp;port(s)&nbsp;goes&nbsp;down</tt></dd>
-</dl>
-<dl><dt><strong>loopback</strong></dt>
-<dd><tt>:str:`enum`:&nbsp;TBD&nbsp;&nbsp;<br>
-Enums:&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NORMAL:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOOPBACK:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MONITOR:&nbsp;TBD</tt></dd>
-</dl>
-<dl><dt><strong>media</strong></dt>
-<dd><tt>:str:`enum`:&nbsp;TBD&nbsp;&nbsp;<br>
-Enums:&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;COPPER:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FIBER:&nbsp;TBD</tt></dd>
-</dl>
-<dl><dt><strong>ppm</strong></dt>
-<dd><tt>int32:&nbsp;TBD</tt></dd>
-</dl>
-<dl><dt><strong>ppm_enable</strong></dt>
-<dd><tt>bool:&nbsp;TBD</tt></dd>
-</dl>
-<dl><dt><strong>speed</strong></dt>
-<dd><tt>:str:`enum`:&nbsp;TBD&nbsp;&nbsp;<br>
-Enums:&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEN_M:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ONE_HUNDRED_M:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ONE_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TWO_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;THREE_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FOUR_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FIVE_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SIX_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SEVEN_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EIGHT_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NINE_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEN_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TWENTY_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TWENTY_FIVE_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;THIRTY_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FORTY_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FIFTY_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HUNDRED_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FOUR_HUNDRED_G:&nbsp;TBD</tt></dd>
-</dl>
-<hr>
-Methods inherited from <a href="yangbase.html#YangBase">yangbase.YangBase</a>:<br>
-<dl><dt><a name="SessionsConfigPhysicalLayersEthernet-create_sibling"><strong>create_sibling</strong></a>(self, yang_key_value)</dt></dl>
-
-<dl><dt><a name="SessionsConfigPhysicalLayersEthernet-dump"><strong>dump</strong></a>(self)</dt></dl>
-
-<dl><dt><a name="SessionsConfigPhysicalLayersEthernet-refresh"><strong>refresh</strong></a>(self)</dt></dl>
-
-<hr>
-Data descriptors inherited from <a href="yangbase.html#YangBase">yangbase.YangBase</a>:<br>
-<dl><dt><strong>__dict__</strong></dt>
-<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
-</dl>
-<dl><dt><strong>__weakref__</strong></dt>
-<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
-</dl>
-<dl><dt><strong>url</strong></dt>
-</dl>
-</td></tr></table> <p>
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
-<tr bgcolor="#ffc8d8">
-<td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#000000" face="helvetica, arial"><a name="SessionsConfigPhysicalLayersTenGigLan">class <strong>SessionsConfigPhysicalLayersTenGigLan</strong></a>(<a href="yangbase.html#YangBase">yangbase.YangBase</a>)</font></td></tr>
-    
-<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>The&nbsp;conditional&nbsp;container&nbsp;for&nbsp;detailed&nbsp;ten&nbsp;gig&nbsp;&nbsp;lan&nbsp;physical&nbsp;layer&nbsp;information<br>&nbsp;</tt></td></tr>
-<tr><td>&nbsp;</td>
-<td width="100%"><dl><dt>Method resolution order:</dt>
-<dd><a href="openhltest.html#SessionsConfigPhysicalLayersTenGigLan">SessionsConfigPhysicalLayersTenGigLan</a></dd>
-<dd><a href="yangbase.html#YangBase">yangbase.YangBase</a></dd>
-<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
-</dl>
-<hr>
-Methods defined here:<br>
-<dl><dt><a name="SessionsConfigPhysicalLayersTenGigLan-__init__"><strong>__init__</strong></a>(self, parent)</dt></dl>
-
-<hr>
-Data descriptors defined here:<br>
-<dl><dt><strong>auto_mdix</strong></dt>
-<dd><tt>bool:&nbsp;Detect&nbsp;if&nbsp;the&nbsp;connection&nbsp;would&nbsp;require&nbsp;a&nbsp;crossover,&nbsp;and&nbsp;automatically&nbsp;chooses&nbsp;&nbsp;the&nbsp;MDI&nbsp;or&nbsp;MDI-X&nbsp;configuration&nbsp;to&nbsp;properly&nbsp;match&nbsp;the&nbsp;other&nbsp;end&nbsp;of&nbsp;the&nbsp;link</tt></dd>
-</dl>
-<dl><dt><strong>autonegotiate</strong></dt>
-<dd><tt>bool:&nbsp;TBD</tt></dd>
-</dl>
-<dl><dt><strong>autonegotiate_masterslave</strong></dt>
-<dd><tt>:str:`enum`:&nbsp;TBD&nbsp;&nbsp;<br>
-Enums:&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MASTER:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SLAVE:&nbsp;TBD</tt></dd>
-</dl>
-<dl><dt><strong>autonegotiate_masterslave_enable</strong></dt>
-<dd><tt>bool:&nbsp;TBD</tt></dd>
-</dl>
-<dl><dt><strong>flow_control</strong></dt>
-<dd><tt>bool:&nbsp;Manage&nbsp;the&nbsp;rate&nbsp;of&nbsp;data&nbsp;transmission&nbsp;by&nbsp;enabling&nbsp;PAUSE&nbsp;frames.</tt></dd>
-</dl>
-<dl><dt><strong>flow_control_directed_address</strong></dt>
-<dd><tt>str:&nbsp;TBD</tt></dd>
-</dl>
-<dl><dt><strong>forward_error_correction</strong></dt>
-<dd><tt>bool:&nbsp;Enable&nbsp;message&nbsp;encoding&nbsp;to&nbsp;control&nbsp;data&nbsp;transmission&nbsp;errors.</tt></dd>
-</dl>
-<dl><dt><strong>forward_error_correction_mode</strong></dt>
-<dd><tt>:str:`enum`:&nbsp;TBD&nbsp;&nbsp;<br>
-Enums:&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NONE:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RS_FEC:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;KR_FEC:&nbsp;TBD</tt></dd>
-</dl>
-<dl><dt><strong>ignore_link_status</strong></dt>
-<dd><tt>bool:&nbsp;Allow&nbsp;the&nbsp;port&nbsp;to&nbsp;continue&nbsp;transmitting&nbsp;traffic&nbsp;if&nbsp;the&nbsp;link(s)&nbsp;with&nbsp;its&nbsp;peer&nbsp;port(s)&nbsp;goes&nbsp;down</tt></dd>
-</dl>
-<dl><dt><strong>lasi_monitoring_enabled</strong></dt>
-<dd><tt>bool:&nbsp;TBD</tt></dd>
-</dl>
-<dl><dt><strong>loopback</strong></dt>
-<dd><tt>:str:`enum`:&nbsp;TBD&nbsp;&nbsp;<br>
-Enums:&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NORMAL:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOOPBACK:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MONITOR:&nbsp;TBD</tt></dd>
-</dl>
-<dl><dt><strong>media</strong></dt>
-<dd><tt>:str:`enum`:&nbsp;TBD&nbsp;&nbsp;<br>
-Enums:&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;COPPER:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FIBER:&nbsp;TBD</tt></dd>
-</dl>
-<dl><dt><strong>ppm</strong></dt>
-<dd><tt>int32:&nbsp;TBD</tt></dd>
-</dl>
-<dl><dt><strong>ppm_enable</strong></dt>
-<dd><tt>bool:&nbsp;TBD</tt></dd>
-</dl>
-<dl><dt><strong>speed</strong></dt>
-<dd><tt>:str:`enum`:&nbsp;TBD&nbsp;&nbsp;<br>
-Enums:&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEN_M:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ONE_HUNDRED_M:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ONE_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TWO_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;THREE_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FOUR_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FIVE_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SIX_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SEVEN_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EIGHT_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NINE_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEN_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TWENTY_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TWENTY_FIVE_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;THIRTY_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FORTY_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FIFTY_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HUNDRED_G:&nbsp;TBD&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FOUR_HUNDRED_G:&nbsp;TBD</tt></dd>
-</dl>
-<hr>
-Methods inherited from <a href="yangbase.html#YangBase">yangbase.YangBase</a>:<br>
-<dl><dt><a name="SessionsConfigPhysicalLayersTenGigLan-create_sibling"><strong>create_sibling</strong></a>(self, yang_key_value)</dt></dl>
-
-<dl><dt><a name="SessionsConfigPhysicalLayersTenGigLan-dump"><strong>dump</strong></a>(self)</dt></dl>
-
-<dl><dt><a name="SessionsConfigPhysicalLayersTenGigLan-refresh"><strong>refresh</strong></a>(self)</dt></dl>
 
 <hr>
 Data descriptors inherited from <a href="yangbase.html#YangBase">yangbase.YangBase</a>:<br>
@@ -958,12 +620,6 @@ Data descriptors defined here:<br>
 </dl>
 <dl><dt><strong>last_activity_timestamp</strong></dt>
 <dd><tt>yang:date-and-time:&nbsp;Timestamp&nbsp;of&nbsp;the&nbsp;last&nbsp;request&nbsp;to&nbsp;this&nbsp;session</tt></dd>
-</dl>
-<dl><dt><strong>username</strong></dt>
-<dd><tt>str:&nbsp;name&nbsp;of&nbsp;authenticated&nbsp;user&nbsp;who&nbsp;started&nbsp;the&nbsp;session</tt></dd>
-</dl>
-<dl><dt><strong>vendor_user_interface</strong></dt>
-<dd><tt>str:&nbsp;a&nbsp;vendor&nbsp;specific&nbsp;link&nbsp;to&nbsp;a&nbsp;user&nbsp;interface</tt></dd>
 </dl>
 <hr>
 Methods inherited from <a href="yangbase.html#YangBase">yangbase.YangBase</a>:<br>

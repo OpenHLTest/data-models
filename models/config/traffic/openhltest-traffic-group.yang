@@ -1,7 +1,7 @@
 submodule openhltest-traffic-group {
 
     yang-version "1.1";
-    belongs-to "openhltest-session" {
+    belongs-to "openhltest" {
 		prefix "oht";
 	}
 

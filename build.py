@@ -10,7 +10,7 @@ from setuptools import setup, find_packages
 class CiBuild(object):
 
     def __init__(self):
-        self._root_model = 'openhltest-session.yang'
+        self._root_model = 'openhltest.yang'
         self._root_dir = os.getcwd()
         self._python = os.path.normpath(sys.executable)
         self._python_dir = os.path.dirname(self._python)
@@ -67,7 +67,7 @@ class CiBuild(object):
         process_args = [
             'git',
             'commit',
-            '-m "model change, auto generate model views, python client and documentation"'
+            '-m "model change, auto generate model views, python client and documentation [skip ci]"'
         ]
         self._run_process(process_args, self._root_dir)
         process_args = [
@@ -75,24 +75,7 @@ class CiBuild(object):
             'push',
             '--all'
         ]
-        self._run_rocess(process_args, self._root_dir)
-
-    def detect_model_changes(self):
-        print('detecting any model changes...')
-        process_args = [
-            'git',
-            'diff',
-            '--name-only'
-        ]
         self._run_process(process_args, self._root_dir)
-        model_change = False
-        for changed_file in self._process_output.split('\n'):
-            if changed_file.startswith('models/'):
-                model_change = True
-                print('model change!!!: %s' % changed_file)
-        if model_change is False:
-            print('stopping build, no model changes')
-            sys.exit(0)
 
     def validate_models(self):
         print('validating openhltest models...')
@@ -213,18 +196,20 @@ class CiBuild(object):
         self._git_add(os.path.join(docs_dir, output_file))
 
         if os.name == 'nt':
-            pydoc_cmd = os.path.normpath('%s/lib/pydoc.py' % self._python_dir)
+            process_args = [
+                self._python,
+                os.path.normpath('%s/lib/pydoc.py' % self._python_dir),
+                '-w',
+                'openhltest'
+            ]
         else:
-            pydoc_cmd = find('pydoc', os.path.normpath('%s/..'% self._python_dir))
-        print('pydoc location %s' % pydoc_cmd)
+            process_args = [
+                'pydoc',
+                '-w',
+                'openhltest'
+            ]
         output_file = 'openhltest.html'
         docs_dir = os.path.normpath('%s/python_client/openhltest' % self._root_dir)
-        process_args = [
-            self._python,
-            pydoc_cmd,
-            '-w',
-            'openhltest'
-        ]
         self._run_process(process_args, docs_dir)
         self._git_add(os.path.join(docs_dir, output_file))
 
@@ -241,7 +226,6 @@ class CiBuild(object):
 
 
 cibuild = CiBuild()
-cibuild.detect_model_changes()
 cibuild.validate_models()
 cibuild.generate_model_views()
 cibuild.generate_openhltest_client()
