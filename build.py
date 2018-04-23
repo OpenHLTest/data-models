@@ -19,17 +19,11 @@ class CiBuild(object):
         if os.name == 'nt':
             self._pyang = os.path.normpath('%s/scripts/pyang' % self._python_dir)
         else:
-            self._pyang = self._find('pyang', os.path.normpath('%s/..'% self._python_dir))
+            self._pyang = self._find('pyang', os.path.normpath('%s/..' % self._python_dir))
+        self._branch = os.environ['TRAVIS_BRANCH']
         print('pyang location %s' % self._pyang)
         self._data_models_dir = os.path.normpath('%s/models' % self._root_dir)
         print('data models location %s' % self._data_models_dir)
-        process_args = [
-            'git',
-            'symbolic-ref',
-            '--short',
-            'HEAD'
-        ]        
-        self._branch = self._run_process(process_args, self._root_dir)
         process_args = [
             'git',
             'remote'
