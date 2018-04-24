@@ -55,8 +55,8 @@ class CiBuild(object):
         process = subprocess.Popen(process_args, bufsize=1, cwd=default_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         while process.returncode is None:
             stdout_data, stderr_data = process.communicate()
-			stdout_data = stdout_data.decode('utf-8')
-			stderr_data = stderr_data.decode('utf-8')
+            stdout_data = stdout_data.decode('utf-8')
+            stderr_data = stderr_data.decode('utf-8')
             if process.returncode == 0:
                 if fid is not None:
                     fid.write(stdout_data)
