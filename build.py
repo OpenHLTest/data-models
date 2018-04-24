@@ -196,7 +196,7 @@ class CiBuild(object):
         
         print('install openhltest python client package...')
         dist_dir = os.path.normpath('%s/python_client/dist' % self._root_dir)
-        wheel = 'openhltest-0.0-py2-none-any.whl'
+        wheel = 'openhltest-0.0-py%s-none-any.whl' % sys.version_info.major
         process_args = [
             'pip',
             'install',
