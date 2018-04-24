@@ -55,6 +55,8 @@ class CiBuild(object):
         process = subprocess.Popen(process_args, bufsize=1, cwd=default_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         while process.returncode is None:
             stdout_data, stderr_data = process.communicate()
+            stdout_data = stdout_data.decode('utf-8')
+            stderr_data = stderr_data.decode('utf-8')
             if process.returncode == 0:
                 if fid is not None:
                     fid.write(stdout_data)
@@ -194,7 +196,7 @@ class CiBuild(object):
         
         print('install openhltest python client package...')
         dist_dir = os.path.normpath('%s/python_client/dist' % self._root_dir)
-        wheel = 'openhltest-0.0-py2-none-any.whl'
+        wheel = 'openhltest-0.0-py%s-none-any.whl' % sys.version_info.major
         process_args = [
             'pip',
             'install',

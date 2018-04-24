@@ -364,7 +364,7 @@ class OpenHlTestPythonClient(plugin.PyangPlugin):
 
     def _to_snake_case(self, not_snake_case):
         final = ''
-        for i in xrange(len(not_snake_case)):
+        for i in range(len(not_snake_case)):
             item = not_snake_case[i]
             if i < len(not_snake_case) - 1: next_char_will_be_underscored = (not_snake_case[i+1] == "_" or not_snake_case[i+1] == " " or not_snake_case[i+1].isupper())
             if (item == " " or item == "_") and next_char_will_be_underscored:

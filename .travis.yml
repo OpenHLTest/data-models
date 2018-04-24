@@ -1,9 +1,9 @@
 # validate models
-language: python
+language: 
+  - python
 python:
-  - '2.7'
+  - '3.6'
 install:
-  - pip install urllib3
   - pip install requests
   - pip install pyang
   - pip install lxml
