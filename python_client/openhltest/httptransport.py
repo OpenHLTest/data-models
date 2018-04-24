@@ -7,13 +7,7 @@ import ssl
 import time
 import json
 import requests
-import urllib3
 
-if sys.version < '2.7.9':
-    import requests.packages.urllib3
-    requests.packages.urllib3.disable_warnings()
-else:
-    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 class HttpTransport(object):
     """OpenHlTest Restconf transport."""
@@ -25,6 +19,12 @@ class HttpTransport(object):
             hostname: hostname or ip address
             rest_port: the rest port of the host
         """
+        if sys.version < '2.7.9':
+            import requests.packages.urllib3
+            requests.packages.urllib3.disable_warnings()
+        else:
+            import urllib3
+            urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
         self._headers = {}
         self._verify_cert = False
         self.trace = False

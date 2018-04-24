@@ -1,10 +1,14 @@
-from OpenHlTest import *
-from YangBase import *
+import sys
+import os
+path = os.path.realpath(__file__)
+sys.path.insert(0, path[0:path.rfind('openhltest') + len('openhltest')])
+
+from openhltest import Openhltest
 import base64
 import time
 
 
-openhltest = OpenHlTest('127.0.0.1', 443)
+openhltest = Openhltest('127.0.0.1', 443)
 
 # authenticate_input = OpenHlTest.AuthenticateInput()
 # authenticate_input.username = 'admin'
@@ -13,7 +17,7 @@ openhltest = OpenHlTest('127.0.0.1', 443)
 # OR
 # authenticate_input = OpenHlTest.AuthenticateInput({'openhltest-session:input: { 'username': 'admin', 'password': 'admin' }})
 
-session = openhltest.create_sessions('demo', description='Vendor prototype demo session')
+session = openhltest.create_sessions('demo')
 session.dump()
 
 config = session.config()
