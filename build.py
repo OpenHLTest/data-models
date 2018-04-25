@@ -260,7 +260,7 @@ class CiBuild(object):
         with open(build_filename) as fid:
             version = fid.read()
         for dir_name in ['dist', 'build', 'openhltest.egg-info']:
-            shutil.rmtree(os.path.normpath('%s/python_client/build' % dir_name))
+            shutil.rmtree(os.path.join(self._root_dir, 'python_client', dir_name))
         wheel = self.install_python_package(version='0.1a%s' % (version))
         process_args = [
             'twine',
