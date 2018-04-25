@@ -164,7 +164,7 @@ class CiBuild(object):
         self._git_add(output_file)
 
     def install_python_package(self, version='0.0'):
-        print('create openhltest python client package...')
+        print('create openhltest %s python client package...' % version)
         cwd = os.getcwd()
         os.chdir(os.path.normpath('%s/python_client' % self._root_dir))
         with open(os.path.join(self._openhltest_dir, 'README.md'), encoding='utf-8') as fid:
