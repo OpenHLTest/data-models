@@ -1,22 +1,25 @@
-# OpenHlTest yang model generated python client
-This openhltest folder is the repository for the OpenHlTest python client module.
+# OpenHlTest Python Client
+The openhltest folder is the repository for the OpenHlTest python client module.
 
 ## Auto generated python client
 The auto generated library will follow these guidelines:
 1) It will be auto-generated every time there is a model change that has been successfully validated.
 2) It will be hierarchical and match the hierarchy of the yang model.
-3) It will consist of base infrastructure that encapsulates transport and serialization.
+3) It will consist of base infrastructure that encapsulates transport, serialization and errors.
 4) Once the library has been generated and unit tests pass it will be packaged and posted on pypi.python.org.  
-   - it will be available for install using pip install openhltest
+5) The library will be available for install using the command:
+```
+pip install openhltest
+```
 
-### Base infrastructure that is not auto-generated:
-1) Https transport class named HttpTransport
+## Base infrastructure that is not auto-generated
+1) Https transport class encapsulated in HttpTransport
 2) Crudx and utility methods encapsulated in YangBase  
    - dump method
    - convert python dict objects to openhltest input/output objects
    - convert openhltest input/output objects to python dict objects 
 
-### The pyang plugin python_client_plugin.py will generate the following:
+## The pyang plugin python_client_plugin.py will auto generate the following
 1) classes for the following yang keywords:  
    - container
    - list
@@ -44,4 +47,4 @@ The auto generated library will follow these guidelines:
    - markdown generated from docstrings
 
 ### Sample code
-Sample code can be found in the openhltest/samples folder.
+Sample code is located in the openhltest/samples folder.
