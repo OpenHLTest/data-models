@@ -167,7 +167,7 @@ class CiBuild(object):
         print('create openhltest python client package...')
         cwd = os.getcwd()
         os.chdir(os.path.normpath('%s/python_client' % self._root_dir))
-        with open(path.join(self._openhltest_dir, 'README.md'), encoding='utf-8') as fid:
+        with open(os.path.join(self._openhltest_dir, 'README.md'), encoding='utf-8') as fid:
             long_description = fid.read()
         distribution = setup(
             name='openhltest',
@@ -266,7 +266,7 @@ class CiBuild(object):
             '-u',
             'abalogh',
             '-p',
-            os.environ['GH_TOKEN'],
+            os.environ['PYPI_TOKEN'],
             wheel
         ]
         if self._run_process(process_args, self._dist_dir) > 0:
