@@ -300,30 +300,30 @@ class OpenHlTestPythonClient(plugin.PyangPlugin):
                     self._write_line('\t\t"""')
                     self._write_line("\t\treturn self._read(%s(self))" % python_class_name)
 
-    def _write_class_properties(self, module, stmt):
+    def _write_class_properties(self, module, stmt, indent_level=0, input_output=False):
         for child in stmt.i_children:
-            if child.keyword == 'leaf':
+            if child.keyword in ['leaf', 'leaf-list']:
                 property_name = child.arg.replace('-', '_')
                 self._write_line()
-                self._write_line("\t@property")
-                self._write_line("\tdef %s(self):" %(property_name))
+                self._write_line("%s@property" % ('\t' * (1 + indent_level)))
+                self._write_line("%sdef %s(self):" % ('\t' * (1 + indent_level), property_name))
                 typename = self._get_typename(child)
-                property_docstring = '\t\t"""%s: %s' %(typename, self._get_yang_description(child))
+                property_docstring = '%s"""%s: %s' % ('\t' * (2 + indent_level), typename, self._get_yang_description(child))
                 if '`enum`' in typename:
-                    property_docstring += '  \n\t\tEnums:'
+                    property_docstring += '  \n%sEnums:' % ('\t' * (2 + indent_level))
                     for enum in child.search_one('type').search('enum'):
-                        property_docstring += '  \n\t\t\t%s: %s' %(enum.arg, self._get_yang_description(enum))
-                    property_docstring += '  \n\t\t"""'
+                        property_docstring += '  \n%s%s: %s' % ('\t' * (3 + indent_level), enum.arg, self._get_yang_description(enum))
+                    property_docstring += '  \n%s"""' % ('\t' * (2 + indent_level))
                 else:
                     property_docstring += '"""'
                 self._write_line(property_docstring)
-                self._write_line("\t\treturn self._get_value('%s')" % (child.arg))
+                self._write_line("%sreturn self._get_value('%s')" % ('\t' * (2 + indent_level), child.arg))
 
-                if child.i_config is True and child.arg != self._get_key_name(stmt):
+                if child.i_config is True and child.arg != self._get_key_name(stmt) or input_output is True:
                     self._write_line()
-                    self._write_line("\t@%s.setter" % property_name)
-                    self._write_line("\tdef %s(self, value):" % (child.arg.replace('-', '_')))
-                    self._write_line("\t\treturn self._set_value('%s', value)" % (child.arg))
+                    self._write_line("%s@%s.setter" % ('\t' * (1 + indent_level), property_name))
+                    self._write_line("%sdef %s(self, value):" % ('\t' * (1 + indent_level), child.arg.replace('-', '_')))
+                    self._write_line("%sreturn self._set_value('%s', value)" % ('\t' * (2 + indent_level), child.arg))
 
     def _write_class_actions(self, module, stmt):
         for child in stmt.i_children:
@@ -338,9 +338,19 @@ class OpenHlTestPythonClient(plugin.PyangPlugin):
                 self._write_line('\t\t"""Execute the %s action on the server' % child.arg)
                 self._write_line()
                 self._write_line("\t\t%s" % self._get_yang_description(child))
+                if io_details['input'] is not None:
+                    self._write_line()
+                    self._write_line("\t\tArgs:  ")
+                    self._write_line("\t\t\t%s (:obj:`%s`):  An object encapsulating an instance of the %s action %s model.  " % (self._to_snake_case(io_details['input']), io_details['input'], child.arg, 'input'))
+                if io_details['output'] is not None:
+                    self._write_line()
+                    self._write_line("\t\tReturns:  ")
+                    self._write_line("\t\t\t:obj:`%s`:  An object encapsulating an instance of the %s action %s model.  " % (io_details['output'], child.arg, 'output'))
                 self._write_line()
-                self._write_line("\t\t:return: %s.  " % (io_details['output']))
-                self._write_line("\t\t:raises ServerException: An abnormal server error has occurred.  ")
+                self._write_line("\t\tRaises:  ")
+                if io_details['input'] is not None:
+                    self._write_line("\t\t\tBadRequestError: The %s arg has invalid values.  " % (self._to_snake_case(io_details['input'])))
+                self._write_line("\t\t\tServerError: An abnormal server error has occurred.  ")
                 self._write_line('\t\t"""')
                 self._write_line("\t\treturn self._execute(self.url + '/%s'%s)" % (child.arg, input_arg))
 
@@ -350,16 +360,28 @@ class OpenHlTestPythonClient(plugin.PyangPlugin):
             'output': None
         }
         for child in stmt.i_children:
-            if child.keyword in['input', 'output'] and len(child.i_children) > 0:
-                self._write_line()
-                io_class_name = '%s%s' % (self._get_yang_name(stmt.arg), self._get_yang_name(child.keyword))
-                self._write_line("\tclass %s(object):" % (io_class_name))  
-                self._write_line("\t\tdef __init__(self):")
-                self._write_line("\t\t\tself.YANG_PATH = '%s:%s'" %(module.arg, child.keyword))
-                io_details[child.keyword] = io_class_name
+            if child.keyword in ['input', 'output'] and len(child.i_children) > 0:
+                io_details[child.keyword] = '%s%s' % (self._get_yang_name(stmt.arg), self._get_yang_name(child.keyword))
+                self._write_input_output_class(module, child, io_details[child.keyword])
         return io_details
 
-    def _write_line(self, line = ""):
+    def _write_input_output_class(self, module, stmt, class_name, indent_level=0):
+        self._write_line()
+        self._write_line("%sclass %s(object):" % ('\t' * (1 + indent_level), class_name))  
+        self._write_line('%s"""%s' % ('\t' * (2 + indent_level), self._get_yang_description(stmt)))
+        self._write_line('%s"""' % ('\t' * (2 + indent_level)))
+        self._write_line("%sdef __init__(self):" %('\t' * (2 + indent_level)))
+        if indent_level == 0:
+            self._write_line("%sself.YANG_PATH = '%s:%s'" %('\t' * (3 + indent_level), module.arg, stmt.keyword))
+        for child in stmt.i_children:
+            property_name = child.arg.replace('-', '_')
+            property_type = self._get_python_type(child)
+            self._write_line("%sself.%s = %s" % ('\t' * (3 + indent_level), property_name, property_type))
+        for child in stmt.i_children:
+            if child.keyword in ['list', 'container']:
+                self._write_input_output_class(module, child, self._get_yang_name(child.arg), indent_level=indent_level + 1)
+
+    def _write_line(self, line=""):
         self._fid.write(line + '\n')
 
     def _to_snake_case(self, not_snake_case):
@@ -499,4 +521,11 @@ class OpenHlTestPythonClient(plugin.PyangPlugin):
         else:
             return 'str'
 
+    def _get_python_type(self, stmt):
+        if stmt.keyword == 'list':
+            return "[]"
+        elif stmt.keyword == 'container':
+            return "None"
+        else:
+            return "''"
 

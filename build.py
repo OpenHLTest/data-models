@@ -209,7 +209,7 @@ class CiBuild(object):
     def generate_python_documentation(self):
         print('generating client documentation...')
         output_file = 'openhltest.md'
-        docs_dir = os.path.normpath('%s/python_client/openhltest' % self._root_dir)
+        docs_dir = os.path.normpath('%s/python_client/openhltest/docs' % self._root_dir)
         process_args = [
             'pydocmd',
             'simple',
@@ -232,7 +232,7 @@ class CiBuild(object):
                 'openhltest'
             ]
         output_file = 'openhltest.html'
-        docs_dir = os.path.normpath('%s/python_client/openhltest' % self._root_dir)
+        docs_dir = os.path.normpath('%s/python_client/openhltest/docs' % self._root_dir)
         self._run_process(process_args, docs_dir)
         self._git_add(os.path.join(docs_dir, output_file))
 
@@ -240,7 +240,7 @@ class CiBuild(object):
         print('including model documentation in python client documentation...')
         for filename in os.listdir(self._view_models_dir):
             src = os.path.join(self._view_models_dir, filename)
-            dst = os.path.join(self._openhltest_dir, filename)
+            dst = os.path.join(self._openhltest_dir, 'docs', filename)
             shutil.copyfile(src, dst)
             self._git_add(dst)
 

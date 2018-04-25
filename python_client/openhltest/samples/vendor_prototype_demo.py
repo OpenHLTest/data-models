@@ -3,25 +3,17 @@ import os
 path = os.path.realpath(__file__)
 sys.path.insert(0, path[0:path.rfind('openhltest') + len('openhltest')])
 
-from openhltest import Openhltest
+from openhltest import *
 import base64
 import time
 
-
 openhltest = Openhltest('127.0.0.1', 443)
-
-# authenticate_input = OpenHlTest.AuthenticateInput()
-# authenticate_input.username = 'admin'
-# authenticate_input.password = 'admin'
-# openhltest.authenticate(authenticate_input)
-# OR
-# authenticate_input = OpenHlTest.AuthenticateInput({'openhltest-session:input: { 'username': 'admin', 'password': 'admin' }})
 
 session = openhltest.create_sessions('demo')
 session.dump()
 
 config = session.config()
-load_input = Config.LoadInput()
+load_input = config.LoadInput()
 with open('c:/temp/demo.ixncfg', 'rb') as fid:
     load_input.vendor_config = base64.b64encode(fid.read())
 config.load(load_input)

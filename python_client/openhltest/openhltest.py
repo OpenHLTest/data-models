@@ -210,110 +210,245 @@ class SessionsConfig(YangBase):
 		return self._create(SessionsConfigTrafficGroups(self, name), locals())
 
 	class ConnectPortsInput(object):
+		"""TBD
+		"""
 		def __init__(self):
 			self.YANG_PATH = 'openhltest:input'
+			self.port_map = []
+
+		class PortMap(object):
+			"""TBD
+			"""
+			def __init__(self):
+				self.port_name = ''
+				self.chassis = ''
+				self.card = ''
+				self.port = ''
 
 	class ConnectPortsOutput(object):
+		"""TBD
+		"""
 		def __init__(self):
 			self.YANG_PATH = 'openhltest:output'
+			self.errata = []
+
+		class Errata(object):
+			"""A list of rpc errors.  An empty list indicates no errors occurred
+			"""
+			def __init__(self):
+				self.name = ''
+				self.detail = ''
+				self.stack_trace = ''
 
 	def connect_ports(self, connect_ports_input):
 		"""Execute the connect-ports action on the server
 
 		Connect abstract test ports to physical hardware test ports and/or  virtual machine test ports
 
-		:return: ConnectPortsOutput.  
-		:raises ServerException: An abnormal server error has occurred.  
+		Args:  
+			connect_ports_input (:obj:`ConnectPortsInput`):  An object encapsulating an instance of the connect-ports action input model.  
+
+		Returns:  
+			:obj:`ConnectPortsOutput`:  An object encapsulating an instance of the connect-ports action output model.  
+
+		Raises:  
+			BadRequestError: The connect_ports_input arg has invalid values.  
+			ServerError: An abnormal server error has occurred.  
 		"""
 		return self._execute(self.url + '/connect-ports', connect_ports_input)
 
 	class DisconnectPortsInput(object):
+		"""TBD
+		"""
 		def __init__(self):
 			self.YANG_PATH = 'openhltest:input'
+			self.port_names = ''
 
 	class DisconnectPortsOutput(object):
+		"""TBD
+		"""
 		def __init__(self):
 			self.YANG_PATH = 'openhltest:output'
+			self.errata = []
+
+		class Errata(object):
+			"""A list of rpc errors.  An empty list indicates no errors occurred
+			"""
+			def __init__(self):
+				self.name = ''
+				self.detail = ''
+				self.stack_trace = ''
 
 	def disconnect_ports(self, disconnect_ports_input):
 		"""Execute the disconnect-ports action on the server
 
 		Disconnect abstract test ports from any connected physical hardware test ports and/or virtual machine test ports
 
-		:return: DisconnectPortsOutput.  
-		:raises ServerException: An abnormal server error has occurred.  
+		Args:  
+			disconnect_ports_input (:obj:`DisconnectPortsInput`):  An object encapsulating an instance of the disconnect-ports action input model.  
+
+		Returns:  
+			:obj:`DisconnectPortsOutput`:  An object encapsulating an instance of the disconnect-ports action output model.  
+
+		Raises:  
+			BadRequestError: The disconnect_ports_input arg has invalid values.  
+			ServerError: An abnormal server error has occurred.  
 		"""
 		return self._execute(self.url + '/disconnect-ports', disconnect_ports_input)
 
 	class StartProtocolsInput(object):
+		"""TBD
+		"""
 		def __init__(self):
 			self.YANG_PATH = 'openhltest:input'
+			self.protocol_group_names = ''
 
 	class StartProtocolsOutput(object):
+		"""TBD
+		"""
 		def __init__(self):
 			self.YANG_PATH = 'openhltest:output'
+			self.errata = []
+
+		class Errata(object):
+			"""A list of rpc errors.  An empty list indicates no errors occurred
+			"""
+			def __init__(self):
+				self.name = ''
+				self.detail = ''
+				self.stack_trace = ''
 
 	def start_protocols(self, start_protocols_input):
 		"""Execute the start-protocols action on the server
 
 		Start one or more emulated protocol groups. An empty list signifies that all protocol groups will be started.
 
-		:return: StartProtocolsOutput.  
-		:raises ServerException: An abnormal server error has occurred.  
+		Args:  
+			start_protocols_input (:obj:`StartProtocolsInput`):  An object encapsulating an instance of the start-protocols action input model.  
+
+		Returns:  
+			:obj:`StartProtocolsOutput`:  An object encapsulating an instance of the start-protocols action output model.  
+
+		Raises:  
+			BadRequestError: The start_protocols_input arg has invalid values.  
+			ServerError: An abnormal server error has occurred.  
 		"""
 		return self._execute(self.url + '/start-protocols', start_protocols_input)
 
 	class StopProtocolsInput(object):
+		"""TBD
+		"""
 		def __init__(self):
 			self.YANG_PATH = 'openhltest:input'
+			self.protocol_group_names = ''
 
 	class StopProtocolsOutput(object):
+		"""TBD
+		"""
 		def __init__(self):
 			self.YANG_PATH = 'openhltest:output'
+			self.errata = []
+
+		class Errata(object):
+			"""A list of rpc errors.  An empty list indicates no errors occurred
+			"""
+			def __init__(self):
+				self.name = ''
+				self.detail = ''
+				self.stack_trace = ''
 
 	def stop_protocols(self, stop_protocols_input):
 		"""Execute the stop-protocols action on the server
 
 		Stop one or more protocol groups.  An empty list signifiels that all protocol groups will be stopped.
 
-		:return: StopProtocolsOutput.  
-		:raises ServerException: An abnormal server error has occurred.  
+		Args:  
+			stop_protocols_input (:obj:`StopProtocolsInput`):  An object encapsulating an instance of the stop-protocols action input model.  
+
+		Returns:  
+			:obj:`StopProtocolsOutput`:  An object encapsulating an instance of the stop-protocols action output model.  
+
+		Raises:  
+			BadRequestError: The stop_protocols_input arg has invalid values.  
+			ServerError: An abnormal server error has occurred.  
 		"""
 		return self._execute(self.url + '/stop-protocols', stop_protocols_input)
 
 	class StartTrafficInput(object):
+		"""TBD
+		"""
 		def __init__(self):
 			self.YANG_PATH = 'openhltest:input'
+			self.traffic_group_names = ''
 
 	class StartTrafficOutput(object):
+		"""TBD
+		"""
 		def __init__(self):
 			self.YANG_PATH = 'openhltest:output'
+			self.errata = []
+
+		class Errata(object):
+			"""A list of rpc errors.  An empty list indicates no errors occurred
+			"""
+			def __init__(self):
+				self.name = ''
+				self.detail = ''
+				self.stack_trace = ''
 
 	def start_traffic(self, start_traffic_input):
 		"""Execute the start-traffic action on the server
 
 		Start one or more traffic groups. An empty list signifies that all traffic groups will be started.
 
-		:return: StartTrafficOutput.  
-		:raises ServerException: An abnormal server error has occurred.  
+		Args:  
+			start_traffic_input (:obj:`StartTrafficInput`):  An object encapsulating an instance of the start-traffic action input model.  
+
+		Returns:  
+			:obj:`StartTrafficOutput`:  An object encapsulating an instance of the start-traffic action output model.  
+
+		Raises:  
+			BadRequestError: The start_traffic_input arg has invalid values.  
+			ServerError: An abnormal server error has occurred.  
 		"""
 		return self._execute(self.url + '/start-traffic', start_traffic_input)
 
 	class StopTrafficInput(object):
+		"""TBD
+		"""
 		def __init__(self):
 			self.YANG_PATH = 'openhltest:input'
+			self.traffic_group_names = ''
 
 	class StopTrafficOutput(object):
+		"""TBD
+		"""
 		def __init__(self):
 			self.YANG_PATH = 'openhltest:output'
+			self.errata = []
+
+		class Errata(object):
+			"""A list of rpc errors.  An empty list indicates no errors occurred
+			"""
+			def __init__(self):
+				self.name = ''
+				self.detail = ''
+				self.stack_trace = ''
 
 	def stop_traffic(self, stop_traffic_input):
 		"""Execute the stop-traffic action on the server
 
 		Stop one or more traffic groups.  An empty list signifies that all traffic groups will be stopped.
 
-		:return: StopTrafficOutput.  
-		:raises ServerException: An abnormal server error has occurred.  
+		Args:  
+			stop_traffic_input (:obj:`StopTrafficInput`):  An object encapsulating an instance of the stop-traffic action input model.  
+
+		Returns:  
+			:obj:`StopTrafficOutput`:  An object encapsulating an instance of the stop-traffic action output model.  
+
+		Raises:  
+			BadRequestError: The stop_traffic_input arg has invalid values.  
+			ServerError: An abnormal server error has occurred.  
 		"""
 		return self._execute(self.url + '/stop-traffic', stop_traffic_input)
 
@@ -322,22 +457,29 @@ class SessionsConfig(YangBase):
 
 		Clear the current configuration
 
-		:return: None.  
-		:raises ServerException: An abnormal server error has occurred.  
+		Raises:  
+			ServerError: An abnormal server error has occurred.  
 		"""
 		return self._execute(self.url + '/clear')
 
 	class LoadInput(object):
+		"""TBD
+		"""
 		def __init__(self):
 			self.YANG_PATH = 'openhltest:input'
+			self.vendor_config = ''
 
 	def load(self, load_input):
 		"""Execute the load action on the server
 
 		Load a vendor specific configuration
 
-		:return: None.  
-		:raises ServerException: An abnormal server error has occurred.  
+		Args:  
+			load_input (:obj:`LoadInput`):  An object encapsulating an instance of the load action input model.  
+
+		Raises:  
+			BadRequestError: The load_input arg has invalid values.  
+			ServerError: An abnormal server error has occurred.  
 		"""
 		return self._execute(self.url + '/load', load_input)
 
@@ -370,6 +512,15 @@ class SessionsConfigProtocolGroups(YangBase):
 	def name(self):
 		"""str: The unique name of an emulated protocol group"""
 		return self._get_value('name')
+
+	@property
+	def port_names(self):
+		"""str: A list of abstract test port names"""
+		return self._get_value('port-names')
+
+	@port_names.setter
+	def port_names(self, value):
+		return self._set_value('port-names', value)
 
 
 class SessionsConfigTrafficGroups(YangBase):
@@ -444,8 +595,8 @@ class SessionsStatistics(YangBase):
 
 		Clear all statistic counters.
 
-		:return: None.  
-		:raises ServerException: An abnormal server error has occurred.  
+		Raises:  
+			ServerError: An abnormal server error has occurred.  
 		"""
 		return self._execute(self.url + '/clear')
 

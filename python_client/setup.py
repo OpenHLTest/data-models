@@ -62,7 +62,7 @@ setup(
     # simple. Or you can use find_packages().
     packages = ['openhltest'],
 	package_data = {
-		'': ['*.md', '*.html', '*.txt']
+		'': ['samples/*.py', 'docs/*.*']
 	},
 
     # If your project only runs on certain Python versions, 
