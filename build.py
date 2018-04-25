@@ -208,7 +208,7 @@ class CiBuild(object):
             'install',
             wheel
         ]
-        if self._run_process(process_args, dist_dir) > 0:
+        if self._run_process(process_args, self._dist_dir) > 0:
             print('openhltest package install failed')
             sys.exit(1)
         return wheel
