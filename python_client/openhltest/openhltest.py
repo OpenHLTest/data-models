@@ -28,7 +28,7 @@ class Openhltest(YangBase):
 		return self._read(Sessions(self, name))
 
 	def create_sessions(self, name):
-		"""Create a sessions instance on the server.
+		"""Create a sibling sessions instance on the server.
 
 		A list of test tool sessions.
 
@@ -80,6 +80,28 @@ class Sessions(YangBase):
 		"""
 		return self._read(SessionsStatistics(self))
 
+	def delete(self):
+		"""Delete this sessions instance on the server.
+
+		A list of test tool sessions.
+
+		Raises:  
+			NotFoundError: This instance does not exist on the server.  
+			ServerError: An abnormal server error has occurred.  
+		"""
+		return self._delete()
+
+	def update(self):
+		"""Update this sessions instance on the server with any changed property values.
+
+		A list of test tool sessions.
+
+		Raises:  
+			NotFoundError: This instance does not exist on the server.  
+			ServerError: An abnormal server error has occurred.  
+		"""
+		return self._update()
+
 	@property
 	def name(self):
 		"""str: The unique name of the test tool session. Once the session has been created the name cannot be modified."""
@@ -125,7 +147,7 @@ class SessionsConfig(YangBase):
 		return self._read(SessionsConfigPorts(self, name))
 
 	def create_ports(self, name):
-		"""Create a ports instance on the server.
+		"""Create a sibling ports instance on the server.
 
 		A list of abstract test ports
 
@@ -159,7 +181,7 @@ class SessionsConfig(YangBase):
 		return self._read(SessionsConfigProtocolGroups(self, name))
 
 	def create_protocol_groups(self, name):
-		"""Create a protocol-groups instance on the server.
+		"""Create a sibling protocol-groups instance on the server.
 
 		A list of emulated protocol groups
 
@@ -193,7 +215,7 @@ class SessionsConfig(YangBase):
 		return self._read(SessionsConfigTrafficGroups(self, name))
 
 	def create_traffic_groups(self, name):
-		"""Create a traffic-groups instance on the server.
+		"""Create a sibling traffic-groups instance on the server.
 
 		A list of traffic groups
 
@@ -208,6 +230,17 @@ class SessionsConfig(YangBase):
 			ServerError: An abnormal server error has occurred.  
 		"""
 		return self._create(SessionsConfigTrafficGroups(self, name), locals())
+
+	def delete(self):
+		"""Delete this config instance on the server.
+
+		This container aggregates all other top level configuration submodules.
+
+		Raises:  
+			NotFoundError: This instance does not exist on the server.  
+			ServerError: An abnormal server error has occurred.  
+		"""
+		return self._delete()
 
 	class ConnectPortsInput(object):
 		"""TBD
@@ -233,7 +266,7 @@ class SessionsConfig(YangBase):
 			self.errata = []
 
 		class Errata(object):
-			"""A list of rpc errors.  An empty list indicates no errors occurred
+			"""A list of rpc errors. An empty list indicates no errors occurred
 			"""
 			def __init__(self):
 				self.name = ''
@@ -243,7 +276,7 @@ class SessionsConfig(YangBase):
 	def connect_ports(self, connect_ports_input):
 		"""Execute the connect-ports action on the server
 
-		Connect abstract test ports to physical hardware test ports and/or  virtual machine test ports
+		Connect abstract test ports to physical hardware test ports and/or virtual machine test ports
 
 		Args:  
 			connect_ports_input (:obj:`ConnectPortsInput`):  An object encapsulating an instance of the connect-ports action input model.  
@@ -262,7 +295,7 @@ class SessionsConfig(YangBase):
 		"""
 		def __init__(self):
 			self.YANG_PATH = 'openhltest:input'
-			self.port_names = ''
+			self.port_names = []
 
 	class DisconnectPortsOutput(object):
 		"""TBD
@@ -272,7 +305,7 @@ class SessionsConfig(YangBase):
 			self.errata = []
 
 		class Errata(object):
-			"""A list of rpc errors.  An empty list indicates no errors occurred
+			"""A list of rpc errors. An empty list indicates no errors occurred
 			"""
 			def __init__(self):
 				self.name = ''
@@ -301,7 +334,7 @@ class SessionsConfig(YangBase):
 		"""
 		def __init__(self):
 			self.YANG_PATH = 'openhltest:input'
-			self.protocol_group_names = ''
+			self.protocol_group_names = []
 
 	class StartProtocolsOutput(object):
 		"""TBD
@@ -311,7 +344,7 @@ class SessionsConfig(YangBase):
 			self.errata = []
 
 		class Errata(object):
-			"""A list of rpc errors.  An empty list indicates no errors occurred
+			"""A list of rpc errors. An empty list indicates no errors occurred
 			"""
 			def __init__(self):
 				self.name = ''
@@ -340,7 +373,7 @@ class SessionsConfig(YangBase):
 		"""
 		def __init__(self):
 			self.YANG_PATH = 'openhltest:input'
-			self.protocol_group_names = ''
+			self.protocol_group_names = []
 
 	class StopProtocolsOutput(object):
 		"""TBD
@@ -350,7 +383,7 @@ class SessionsConfig(YangBase):
 			self.errata = []
 
 		class Errata(object):
-			"""A list of rpc errors.  An empty list indicates no errors occurred
+			"""A list of rpc errors. An empty list indicates no errors occurred
 			"""
 			def __init__(self):
 				self.name = ''
@@ -360,7 +393,7 @@ class SessionsConfig(YangBase):
 	def stop_protocols(self, stop_protocols_input):
 		"""Execute the stop-protocols action on the server
 
-		Stop one or more protocol groups.  An empty list signifiels that all protocol groups will be stopped.
+		Stop one or more protocol groups. An empty list signifiels that all protocol groups will be stopped.
 
 		Args:  
 			stop_protocols_input (:obj:`StopProtocolsInput`):  An object encapsulating an instance of the stop-protocols action input model.  
@@ -379,7 +412,7 @@ class SessionsConfig(YangBase):
 		"""
 		def __init__(self):
 			self.YANG_PATH = 'openhltest:input'
-			self.traffic_group_names = ''
+			self.traffic_group_names = []
 
 	class StartTrafficOutput(object):
 		"""TBD
@@ -389,7 +422,7 @@ class SessionsConfig(YangBase):
 			self.errata = []
 
 		class Errata(object):
-			"""A list of rpc errors.  An empty list indicates no errors occurred
+			"""A list of rpc errors. An empty list indicates no errors occurred
 			"""
 			def __init__(self):
 				self.name = ''
@@ -418,7 +451,7 @@ class SessionsConfig(YangBase):
 		"""
 		def __init__(self):
 			self.YANG_PATH = 'openhltest:input'
-			self.traffic_group_names = ''
+			self.traffic_group_names = []
 
 	class StopTrafficOutput(object):
 		"""TBD
@@ -428,7 +461,7 @@ class SessionsConfig(YangBase):
 			self.errata = []
 
 		class Errata(object):
-			"""A list of rpc errors.  An empty list indicates no errors occurred
+			"""A list of rpc errors. An empty list indicates no errors occurred
 			"""
 			def __init__(self):
 				self.name = ''
@@ -438,7 +471,7 @@ class SessionsConfig(YangBase):
 	def stop_traffic(self, stop_traffic_input):
 		"""Execute the stop-traffic action on the server
 
-		Stop one or more traffic groups.  An empty list signifies that all traffic groups will be stopped.
+		Stop one or more traffic groups. An empty list signifies that all traffic groups will be stopped.
 
 		Args:  
 			stop_traffic_input (:obj:`StopTrafficInput`):  An object encapsulating an instance of the stop-traffic action input model.  
@@ -493,6 +526,28 @@ class SessionsConfigPorts(YangBase):
 		self.YANG_KEY = 'name'
 		super(SessionsConfigPorts, self).__init__(parent, yang_key_value)
 
+	def delete(self):
+		"""Delete this ports instance on the server.
+
+		A list of abstract test ports
+
+		Raises:  
+			NotFoundError: This instance does not exist on the server.  
+			ServerError: An abnormal server error has occurred.  
+		"""
+		return self._delete()
+
+	def update(self):
+		"""Update this ports instance on the server with any changed property values.
+
+		A list of abstract test ports
+
+		Raises:  
+			NotFoundError: This instance does not exist on the server.  
+			ServerError: An abnormal server error has occurred.  
+		"""
+		return self._update()
+
 	@property
 	def name(self):
 		"""str: The unique name of an abstract test port"""
@@ -507,6 +562,28 @@ class SessionsConfigProtocolGroups(YangBase):
 		self.YANG_CLASS = 'protocol-groups'
 		self.YANG_KEY = 'name'
 		super(SessionsConfigProtocolGroups, self).__init__(parent, yang_key_value)
+
+	def delete(self):
+		"""Delete this protocol-groups instance on the server.
+
+		A list of emulated protocol groups
+
+		Raises:  
+			NotFoundError: This instance does not exist on the server.  
+			ServerError: An abnormal server error has occurred.  
+		"""
+		return self._delete()
+
+	def update(self):
+		"""Update this protocol-groups instance on the server with any changed property values.
+
+		A list of emulated protocol groups
+
+		Raises:  
+			NotFoundError: This instance does not exist on the server.  
+			ServerError: An abnormal server error has occurred.  
+		"""
+		return self._update()
 
 	@property
 	def name(self):
@@ -531,6 +608,28 @@ class SessionsConfigTrafficGroups(YangBase):
 		self.YANG_CLASS = 'traffic-groups'
 		self.YANG_KEY = 'name'
 		super(SessionsConfigTrafficGroups, self).__init__(parent, yang_key_value)
+
+	def delete(self):
+		"""Delete this traffic-groups instance on the server.
+
+		A list of traffic groups
+
+		Raises:  
+			NotFoundError: This instance does not exist on the server.  
+			ServerError: An abnormal server error has occurred.  
+		"""
+		return self._delete()
+
+	def update(self):
+		"""Update this traffic-groups instance on the server with any changed property values.
+
+		A list of traffic groups
+
+		Raises:  
+			NotFoundError: This instance does not exist on the server.  
+			ServerError: An abnormal server error has occurred.  
+		"""
+		return self._update()
 
 	@property
 	def name(self):
@@ -564,7 +663,7 @@ class SessionsStatistics(YangBase):
 		return self._read(SessionsStatisticsPorts(self, name))
 
 	def create_ports(self, name):
-		"""Create a ports instance on the server.
+		"""Create a sibling ports instance on the server.
 
 		TBD
 
@@ -579,6 +678,28 @@ class SessionsStatistics(YangBase):
 			ServerError: An abnormal server error has occurred.  
 		"""
 		return self._create(SessionsStatisticsPorts(self, name), locals())
+
+	def delete(self):
+		"""Delete this statistics instance on the server.
+
+		The statistics pull model
+
+		Raises:  
+			NotFoundError: This instance does not exist on the server.  
+			ServerError: An abnormal server error has occurred.  
+		"""
+		return self._delete()
+
+	def update(self):
+		"""Update this statistics instance on the server with any changed property values.
+
+		The statistics pull model
+
+		Raises:  
+			NotFoundError: This instance does not exist on the server.  
+			ServerError: An abnormal server error has occurred.  
+		"""
+		return self._update()
 
 	@property
 	def first_activity_timestamp(self):
@@ -610,6 +731,17 @@ class SessionsStatisticsPorts(YangBase):
 		self.YANG_KEY = 'name'
 		super(SessionsStatisticsPorts, self).__init__(parent, yang_key_value)
 
+	def update(self):
+		"""Update this ports instance on the server with any changed property values.
+
+		TBD
+
+		Raises:  
+			NotFoundError: This instance does not exist on the server.  
+			ServerError: An abnormal server error has occurred.  
+		"""
+		return self._update()
+
 	@property
 	def name(self):
 		"""str: An abstract test port name"""
@@ -617,7 +749,7 @@ class SessionsStatisticsPorts(YangBase):
 
 	@property
 	def connected_test_port_id(self):
-		"""str: The id of the connected test port.  Empty if the abstract port is not connected to a test port."""
+		"""str: The id of the connected test port. Empty if the abstract port is not connected to a test port."""
 		return self._get_value('connected-test-port-id')
 
 	@property
@@ -627,7 +759,7 @@ class SessionsStatisticsPorts(YangBase):
 
 	@property
 	def connection_state(self):
-		""":str:`enum`: The state of the connection to the physical hardware  test port or virtual machine test port  
+		""":str:`enum`: The state of the connection to the physical hardware test port or virtual machine test port  
 		Enums:  
 			CONNECTING: TBD  
 			CONNECTED_LINK_UP: TBD  
@@ -667,6 +799,17 @@ class SessionsStatisticEventsPorts(YangBase):
 		self.YANG_KEY = 'name'
 		super(SessionsStatisticEventsPorts, self).__init__(parent, yang_key_value)
 
+	def update(self):
+		"""Update this ports instance on the server with any changed property values.
+
+		TBD
+
+		Raises:  
+			NotFoundError: This instance does not exist on the server.  
+			ServerError: An abnormal server error has occurred.  
+		"""
+		return self._update()
+
 	@property
 	def name(self):
 		"""str: An abstract test port name"""
@@ -674,7 +817,7 @@ class SessionsStatisticEventsPorts(YangBase):
 
 	@property
 	def connected_test_port_id(self):
-		"""str: The id of the connected test port.  Empty if the abstract port is not connected to a test port."""
+		"""str: The id of the connected test port. Empty if the abstract port is not connected to a test port."""
 		return self._get_value('connected-test-port-id')
 
 	@property
@@ -684,7 +827,7 @@ class SessionsStatisticEventsPorts(YangBase):
 
 	@property
 	def connection_state(self):
-		""":str:`enum`: The state of the connection to the physical hardware  test port or virtual machine test port  
+		""":str:`enum`: The state of the connection to the physical hardware test port or virtual machine test port  
 		Enums:  
 			CONNECTING: TBD  
 			CONNECTED_LINK_UP: TBD  
