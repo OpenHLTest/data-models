@@ -237,11 +237,43 @@ class OpenHlTestPythonClient(plugin.PyangPlugin):
             self._write_line("\t\tsuper(%s, self).__init__(parent, None)" % python_class_name)
 
         self._write_class_child_gets(module, stmt)
+        self._write_class_delete(module, stmt)
+        self._write_class_update(module, stmt)
         self._write_class_properties(module, stmt)
         self._write_class_actions(module, stmt)
 
         self._write_line()
         self._write_line()            
+
+    def _write_class_delete(self, module, stmt):
+        if hasattr(stmt, 'i_config') and stmt.i_config is True:
+            self._write_line()
+            self._write_line("\tdef delete(self):")
+            self._write_line('\t\t"""Delete this %s instance on the server.' %(stmt.arg))
+            self._write_line()
+            self._write_line("\t\t%s" % self._get_yang_description(stmt))
+            self._write_line()
+            self._write_line("\t\tRaises:  ")
+            self._write_line("\t\t\tNotFoundError: This instance does not exist on the server.  ")
+            self._write_line("\t\t\tServerError: An abnormal server error has occurred.  ")
+            self._write_line('\t\t"""')
+            self._write_line("\t\treturn self._delete()")
+
+    def _write_class_update(self, module, stmt):
+        for child in stmt.i_children:
+            if child.keyword in ['leaf', 'leaf-list']:
+                self._write_line()
+                self._write_line("\tdef update(self):")
+                self._write_line('\t\t"""Update this %s instance on the server with any changed property values.' %(stmt.arg))
+                self._write_line()
+                self._write_line("\t\t%s" % self._get_yang_description(stmt))
+                self._write_line()
+                self._write_line("\t\tRaises:  ")
+                self._write_line("\t\t\tNotFoundError: This instance does not exist on the server.  ")
+                self._write_line("\t\t\tServerError: An abnormal server error has occurred.  ")
+                self._write_line('\t\t"""')
+                self._write_line("\t\treturn self._update()")
+                break
 
     def _write_class_child_gets(self, module, stmt):
         # methods for accessing child container/list keywords
@@ -270,7 +302,7 @@ class OpenHlTestPythonClient(plugin.PyangPlugin):
 
                     self._write_line()
                     self._write_line("\tdef create_%s(self, %s):" %(child.arg.replace('-', '_'), key_name))
-                    self._write_line('\t\t"""Create a %s instance on the server.' %(child.arg))
+                    self._write_line('\t\t"""Create a sibling %s instance on the server.' %(child.arg))
                     self._write_line()
                     self._write_line("\t\t%s" % self._get_yang_description(child))
                     self._write_line()
@@ -285,7 +317,6 @@ class OpenHlTestPythonClient(plugin.PyangPlugin):
                     self._write_line("\t\t\tServerError: An abnormal server error has occurred.  ")
                     self._write_line('\t\t"""')
                     self._write_line("\t\treturn self._create(%s(self, %s), locals())" % (python_class_name, key_name))
-
                 else:
                     self._write_line("\tdef %s(self):" % (child.arg.replace('-', '_')))
                     self._write_line('\t\t"""Get the %s object from the server' % child.arg)
@@ -522,7 +553,7 @@ class OpenHlTestPythonClient(plugin.PyangPlugin):
             return 'str'
 
     def _get_python_type(self, stmt):
-        if stmt.keyword == 'list':
+        if stmt.keyword in ['list', 'leaf-list']:
             return "[]"
         elif stmt.keyword == 'container':
             return "None"

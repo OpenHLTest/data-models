@@ -31,15 +31,15 @@ for port in config.ports():
     portId += 1
 errata = config.connect_ports(connect_ports_input)
 
-# start_protocols_input = Config.StartProtocolsInput()
-# for protocol_group in config.protocol_groups():
-#     start_protocols_input.protocol_group_names.append(protocol_group.name)
-config.start_protocols(Config.StartProtocolsInput())
+start_protocols_input = config.StartProtocolsInput()
+for protocol_group in config.protocol_groups():
+    start_protocols_input.protocol_group_names.append(protocol_group.name)
+config.start_protocols(start_protocols_input)
 
-# start_traffic_input = Config.StartTrafficInput()
-# for traffic_group in config.traffic_groups():
-#     start_traffic_input.traffic_group_names.append(traffic_group.name)
-config.start_traffic(Config.StartTrafficInput())
+start_traffic_input = config.StartTrafficInput()
+for traffic_group in config.traffic_groups():
+    start_traffic_input.traffic_group_names.append(traffic_group.name)
+config.start_traffic(start_traffic_input)
 
 stats = session.statistics()
 for i in range(0, 10):

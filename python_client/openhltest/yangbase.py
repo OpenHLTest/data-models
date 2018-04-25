@@ -122,6 +122,8 @@ class YangInputEncoder(JSONEncoder):
                     for item in value:
                         items.append(self._yang_encode(item))
                     yang_dict[yang_property] = items
+                elif isinstance(value, bytes):
+                    yang_dict[yang_property] = value.decode('utf-8')
                 else:
                     yang_dict[yang_property] = value
             return yang_dict
