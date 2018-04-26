@@ -24,7 +24,7 @@ class CiBuild(object):
             self._branch = os.environ['TRAVIS_BRANCH']
         else:
             self._branch = 'master'
-        self._commit_range = ''
+        self._commit_range = None
         if 'TRAVIS_COMMIT_RANGE' in os.environ.keys():
             self._commit_range = os.environ['TRAVIS_COMMIT_RANGE']
         print('pyang location %s' % self._pyang)
@@ -115,17 +115,20 @@ class CiBuild(object):
         process_args = [
             'git',
             'diff',
-            '--name-only',
-            self._commit_range
+            '--name-only'
         ]
-        changed_files = self._run_process(process_args, self._root_dir)
-        continue_build = False
-        for changed_file in changed_files:
-            if changed_file.startswith('model/') or changed_file.startswith('python_client/') or changed_file.startswith('plugins/'):
-                print(changed_file)
-                continue_build = True
-        if continue_build is False:
-            print('stopping build, no model or client generation updates')
+        if self._commit_range is not None:
+            process_args.append(self._commit_range)
+        if self._run_process(process_args, self._root_dir) == 0:
+            continue_build = False
+            for changed_file in self._process_output.split('\n'):
+                if changed_file.startswith('model/') or changed_file.startswith('python_client/') or changed_file.startswith('plugins/'):
+                    continue_build = True
+            if continue_build is False:
+                print('stopping build, no model or client generation updates')
+                sys.exit(0)
+        else:
+            print('stopping build, git diff failed')
             sys.exit(1)
 
     def validate_models(self):
