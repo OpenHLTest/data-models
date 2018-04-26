@@ -64,7 +64,7 @@ The statistics pull model
 ```python
 SessionsStatistics.create_ports(self, name)
 ```
-Create a sibling ports instance on the server.
+Create a child sibling ports instance on the server.
 
 TBD
 
@@ -335,7 +335,7 @@ Raises:
 ```python
 Openhltest.create_sessions(self, name)
 ```
-Create a sibling sessions instance on the server.
+Create a child sibling sessions instance on the server.
 
 A list of test tool sessions.
 
@@ -636,7 +636,7 @@ TBD
 ```python
 SessionsConfig.create_ports(self, name)
 ```
-Create a sibling ports instance on the server.
+Create a child sibling ports instance on the server.
 
 A list of abstract test ports
 
@@ -707,7 +707,7 @@ Raises:
 ```python
 SessionsConfig.create_protocol_groups(self, name)
 ```
-Create a sibling protocol-groups instance on the server.
+Create a child sibling protocol-groups instance on the server.
 
 A list of emulated protocol groups
 
@@ -733,7 +733,7 @@ TBD
 ```python
 SessionsConfig.create_traffic_groups(self, name)
 ```
-Create a sibling traffic-groups instance on the server.
+Create a child sibling traffic-groups instance on the server.
 
 A list of traffic groups
 

@@ -28,7 +28,7 @@ class Openhltest(YangBase):
 		return self._read(Sessions(self, name))
 
 	def create_sessions(self, name):
-		"""Create a sibling sessions instance on the server.
+		"""Create a child sibling sessions instance on the server.
 
 		A list of test tool sessions.
 
@@ -147,7 +147,7 @@ class SessionsConfig(YangBase):
 		return self._read(SessionsConfigPorts(self, name))
 
 	def create_ports(self, name):
-		"""Create a sibling ports instance on the server.
+		"""Create a child sibling ports instance on the server.
 
 		A list of abstract test ports
 
@@ -181,7 +181,7 @@ class SessionsConfig(YangBase):
 		return self._read(SessionsConfigProtocolGroups(self, name))
 
 	def create_protocol_groups(self, name):
-		"""Create a sibling protocol-groups instance on the server.
+		"""Create a child sibling protocol-groups instance on the server.
 
 		A list of emulated protocol groups
 
@@ -215,7 +215,7 @@ class SessionsConfig(YangBase):
 		return self._read(SessionsConfigTrafficGroups(self, name))
 
 	def create_traffic_groups(self, name):
-		"""Create a sibling traffic-groups instance on the server.
+		"""Create a child sibling traffic-groups instance on the server.
 
 		A list of traffic groups
 
@@ -663,7 +663,7 @@ class SessionsStatistics(YangBase):
 		return self._read(SessionsStatisticsPorts(self, name))
 
 	def create_ports(self, name):
-		"""Create a sibling ports instance on the server.
+		"""Create a child sibling ports instance on the server.
 
 		TBD
 
