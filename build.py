@@ -27,7 +27,8 @@ class CiBuild(object):
         print('pyang location %s' % self._pyang)
         self._data_models_dir = os.path.normpath('%s/models' % self._root_dir)
         print('data models location %s' % self._data_models_dir)
-        with open(path.join(here, 'CURRENT_BUILD_NUMBER.txt')) as fid:
+        self._python_client_dir = os.path.join(self._root_dir, 'python_client')
+        with open(os.path.join(self._python_client_dir, 'CURRENT_BUILD_NUMBER.txt')) as fid:
             self._build_number = fid.read()
             self._version = '0.1a%s' % (self._build_number)
         process_args = [
@@ -214,7 +215,7 @@ class CiBuild(object):
         
         print('install openhltest python client package...')
         self._dist_dir = os.path.normpath('%s/python_client/dist' % self._root_dir)
-        wheel = 'openhltest-0.1a100-py%s-none-any.whl' % (sys.version_info.major)
+        wheel = 'openhltest-%s-py%s-none-any.whl' % (self._version, sys.version_info.major)
         process_args = [
             'pip',
             'install',
