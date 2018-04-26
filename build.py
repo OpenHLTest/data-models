@@ -169,7 +169,6 @@ class CiBuild(object):
         os.chdir(os.path.normpath('%s/python_client' % self._root_dir))
         with open(os.path.join(self._openhltest_dir, 'README.md'), encoding='utf-8') as fid:
             long_description = fid.read()
-        distutils.command.clean('--all')
         distribution = setup(
             name='openhltest',
             version=version,
@@ -188,7 +187,7 @@ class CiBuild(object):
 	        package_data = {'': ['samples/*.py', 'docs/*.*']},
             python_requires='>=2.7, <4',
             install_requires = ['requests'],
-            script_args=['bdist_wheel']
+            script_args=['clean', '--all', 'bdist_wheel']
         )
         os.chdir(cwd)
 
