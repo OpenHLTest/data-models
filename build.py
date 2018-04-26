@@ -20,10 +20,16 @@ class CiBuild(object):
             self._pyang = os.path.normpath('%s/scripts/pyang' % self._python_dir)
         else:
             self._pyang = self._find('pyang', os.path.normpath('%s/..' % self._python_dir))
-        self._branch = os.environ['TRAVIS_BRANCH']
+        if 'TRAVIS_BRANCH' in os.environ.keys():
+            self._branch = os.environ['TRAVIS_BRANCH']
+        else:
+            self._branch = 'master'
         print('pyang location %s' % self._pyang)
         self._data_models_dir = os.path.normpath('%s/models' % self._root_dir)
         print('data models location %s' % self._data_models_dir)
+        with open(path.join(here, 'CURRENT_BUILD_NUMBER.txt')) as fid:
+            self._build_number = fid.read()
+            self._version = '0.1a%s' % (self._build_number)
         process_args = [
             'git',
             'checkout',
@@ -163,33 +169,39 @@ class CiBuild(object):
             sys.exit(1)
         self._git_add(output_file)
 
-    def install_python_package(self, version='0.0'):
-        print('create openhltest %s python client package...' % version)
-        cwd = os.getcwd()
-        os.chdir(os.path.normpath('%s/python_client' % self._root_dir))
-        with open(os.path.join(self._openhltest_dir, 'README.md'), encoding='utf-8') as fid:
-            long_description = fid.read()
-        distribution = setup(
-            name='openhltest',
-            version=version,
-            description='OpenHLTest Python Client',
-            long_description=long_description,
-            url='https://github.com/openhltest/data-models',
-            author='OpenHLTest',
-            author_email='https://github.com/OpenHLTest/data-models/issues',
-            license='MIT',
-            classifiers=['Development Status :: 3 - Alpha', 'Intended Audience :: Developers', 'Topic :: Software Development',
-                'License :: OSI Approved :: MIT License',
-                'Programming Language :: Python :: 2.7',
-                'Programming Language :: Python :: 3'],
-            keywords='openhltest test tool ixia spirent restconf automation',
-            packages = ['openhltest'],
-	        package_data = {'': ['samples/*.py', 'docs/*.*']},
-            python_requires='>=2.7, <4',
-            install_requires = ['requests'],
-            script_args=['clean', '--all', 'bdist_wheel']
-        )
-        os.chdir(cwd)
+    def install_python_package(self):
+        print('create openhltest python client wheel...')
+        # cwd = os.getcwd()
+        # os.chdir(os.path.normpath('%s/python_client' % self._root_dir))
+        # with open(os.path.join(self._openhltest_dir, 'README.md')) as fid:
+        #     long_description = fid.read()
+        # distribution = setup(
+        #     name='openhltest',
+        #     version=version,
+        #     description='OpenHLTest Python Client',
+        #     long_description=long_description,
+        #     url='https://github.com/openhltest/data-models',
+        #     author='OpenHLTest',
+        #     author_email='https://github.com/OpenHLTest/data-models/issues',
+        #     license='MIT',
+        #     classifiers=['Development Status :: 3 - Alpha', 'Intended Audience :: Developers', 'Topic :: Software Development',
+        #         'License :: OSI Approved :: MIT License',
+        #         'Programming Language :: Python :: 2.7',
+        #         'Programming Language :: Python :: 3'],
+        #     keywords='openhltest test tool ixia spirent restconf automation',
+        #     packages = ['openhltest'],
+	    #     package_data = {'': ['samples/*.py', 'docs/*.*']},
+        #     python_requires='>=2.7, <4',
+        #     install_requires = ['requests'],
+        #     script_args=['bdist_wheel']
+        # )
+        # os.chdir(cwd)
+        process_args = [
+            self._python,
+            'setup.py',
+            ['bdist_wheel']
+        ]
+        self._run_process(process_args, os.path.join(self._root_dir, 'python_client'))
 
         print('uninstall openhltest python client package...')
         process_args = [
@@ -202,7 +214,7 @@ class CiBuild(object):
         
         print('install openhltest python client package...')
         self._dist_dir = os.path.normpath('%s/python_client/dist' % self._root_dir)
-        wheel = 'openhltest-%s-py%s-none-any.whl' % (version, sys.version_info.major)
+        wheel = 'openhltest-0.1a100-py%s-none-any.whl' % (sys.version_info.major)
         process_args = [
             'pip',
             'install',
@@ -256,12 +268,7 @@ class CiBuild(object):
         self._git_commit_push()
 
     def deploy_openhltest_client(self):
-        build_filename = os.path.join(self._openhltest_dir, 'CURRENT_BUILD_NUMBER.txt')
-        with open(build_filename) as fid:
-            version = fid.read()
-        # for dir_name in ['dist', 'build', 'openhltest.egg-info']:
-        #     shutil.rmtree(os.path.join(self._root_dir, 'python_client', dir_name))
-        wheel = self.install_python_package(version='0.1a%s' % (version))
+        wheel = self.install_python_package()
         process_args = [
             'twine',
             'upload',
@@ -274,9 +281,10 @@ class CiBuild(object):
         if self._run_process(process_args, self._dist_dir) > 0:
             print('openhltest package deployment failed')
             sys.exit(1)        
+        build_filename = os.path.join(self._root_dir, 'python_client', 'CURRENT_BUILD_NUMBER.txt')
         with open(build_filename, 'w+') as fid:
             fid.write(str(int(version) + 1))
-
+        self._git_add(build_filename)
 
 
 cibuild = CiBuild()
@@ -286,5 +294,5 @@ cibuild.generate_openhltest_client()
 cibuild.install_python_package()
 cibuild.generate_python_documentation()
 cibuild.move_model_views_to_openhltest_client()
-cibuild.update_repository()
 cibuild.deploy_openhltest_client()
+cibuild.update_repository()
