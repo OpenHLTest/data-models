@@ -200,7 +200,7 @@ class CiBuild(object):
         process_args = [
             self._python,
             'setup.py',
-            ['bdist_wheel']
+            'bdist_wheel'
         ]
         self._run_process(process_args, os.path.join(self._root_dir, 'python_client'))
 
