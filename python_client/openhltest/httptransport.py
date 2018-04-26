@@ -20,6 +20,7 @@ class HttpError(Exception):
 
 class AlreadyExistsError(HttpError):
     def __init__(self, response):
+        """The object requested does not exist on the server"""
         super(AlreadyExistsError, self).__init__(response)
 
 class BadRequestError(HttpError):
