@@ -302,7 +302,7 @@ class OpenHlTestPythonClient(plugin.PyangPlugin):
 
                     self._write_line()
                     self._write_line("\tdef create_%s(self, %s):" %(child.arg.replace('-', '_'), key_name))
-                    self._write_line('\t\t"""Create a sibling %s instance on the server.' %(child.arg))
+                    self._write_line('\t\t"""Create a child sibling %s instance on the server.' %(child.arg))
                     self._write_line()
                     self._write_line("\t\t%s" % self._get_yang_description(child))
                     self._write_line()

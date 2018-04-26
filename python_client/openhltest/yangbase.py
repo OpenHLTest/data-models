@@ -3,9 +3,15 @@
 from httptransport import HttpTransport
 
 class YangBase(object):
-    """Base class that encapsulates CRUDX methods and property access"""
-
     def __init__(self, parent, yang_key_value):
+        """Base class that encapsulates CRUDX methods and property access
+        
+            Args:
+                parent (HttpTransport | YangBase): Openhltest object will pass in an HttpTransport while 
+                    all other objects should pass in self.
+                yang_key_value (str | None): If the corresponding model is a rw list container then this 
+                    will be the key value for a specific object or None for all objects
+        """
         self._values = {}
         self._dirty = []
 
@@ -26,19 +32,17 @@ class YangBase(object):
             
     @property
     def url(self):
+        """str: The rest url for this object"""
         return self._rest_path
 
-    def create_sibling(self, yang_key_value):
-        sibling = self.__class__(self, None)
-        sibling._rest_path = '%s=%s' % (self._rest_path, yang_key_value)
-        return sibling
-
     def dump(self):
+        """Output this object's rest url and property values"""
         print('object: %s' % self.url)
         for key in self._values.keys():
             print('\t%s: %s' %(key, self._values[key]))
 
     def refresh(self):
+        """Get all properties for this object"""
         self._read(self)
 
     def _get_value(self, key):
@@ -53,12 +57,12 @@ class YangBase(object):
 
     def _create(self, target, payload):
         '''Create an instance of the target nested under this instance'''
-        return self._http_transport.create(self, target, payload)
+        return self._http_transport._create(self, target, payload)
 
     def _read(self, target):
         '''Get and populate the target object'''
         self._dirty = []
-        return self._http_transport.get(target)
+        return self._http_transport._get(target)
 
     def _update(self):
         '''Update the object with any values that are dirty.'''
@@ -66,15 +70,15 @@ class YangBase(object):
         for property_name in self._dirty:
             payload[property_name] = getattr(self, property_name)
         self._dirty = []
-        return self._http_transport.update(self.url, payload=payload)
+        return self._http_transport._update(self.url, payload=payload)
     
     def _delete(self):
         '''Delete the current object'''
-        return self._http_transport.delete(self.url)
+        return self._http_transport._delete(self.url)
     
     def _execute(self, url, input_object, output_object=None):
         payload = YangInputEncoder().encode(input_object)
-        response = self._http_transport.execute(url, payload)
+        response = self._http_transport._execute(url, payload)
         if response is not None and output_object is not None:
             return self._yang_output_decoder(response, output_object)
         else:

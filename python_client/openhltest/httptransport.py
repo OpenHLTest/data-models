@@ -10,6 +10,7 @@ import requests
 
 class HttpError(Exception):
     def __init__(self, response):
+        """The base error class for all OpenHlTest errors"""
         self._status_code = response.status_code
         self._reason = response.reason
         self._text = response.text
@@ -20,30 +21,33 @@ class HttpError(Exception):
 
 class AlreadyExistsError(HttpError):
     def __init__(self, response):
-        """The object requested exists on the server"""
+        """The requested object exists on the server"""
         super(AlreadyExistsError, self).__init__(response)
 
 class BadRequestError(HttpError):
     def __init__(self, response):
+        """The server has determined that the request is incorrect"""
         super(BadRequestError, self).__init__(response)
 
 class NotFoundError(HttpError):
     def __init__(self, response):
+        """The requested object does not exist on the server"""
         super(NotFoundError, self).__init__(response)
 
 class ServerError(HttpError):
     def __init__(self, response):
+        """The server has encountered an uncategorized error condition"""
         super(ServerError, self).__init__(response)
 
 class HttpTransport(object):
     """OpenHlTest Restconf transport."""
 
     def __init__(self, hostname, rest_port=443):
-        """ Setup the https connection parameters to a rest server
+        """ Set the connection parameters to a rest server
 
         Args:
-            hostname: hostname or ip address
-            rest_port: the rest port of the host
+            hostname (str): hostname or ip address
+            rest_port (int, optional, default=443): the rest port of the host
         """
         if sys.version < '2.7.9':
             import requests.packages.urllib3
@@ -59,17 +63,17 @@ class HttpTransport(object):
 
     @property
     def trace(self):
-        """True/False to trace all http commands and responses."""
+        """bool: Trace all requests and responses."""
         return self._trace
     @trace.setter
     def trace(self, value):
         self._trace = value
 
-    def get(self, target):
+    def _get(self, target):
         response = self._send_recv('GET', target.url)
         return self._populate_target(response, target)
 
-    def create(self, parent, target, arg_dict):
+    def _create(self, parent, target, arg_dict):
         object_key = '%s:%s' % (target.YANG_MODULE, target.YANG_CLASS)
         payload = { object_key: {} }
         for key in arg_dict.keys():
@@ -79,13 +83,13 @@ class HttpTransport(object):
         location = self._send_recv('POST', parent.url, payload)
         return self.get(target)
 
-    def update(self, url, payload):
+    def _update(self, url, payload):
         return self._send_recv('PATCH', url, payload)
 
-    def delete(self, url):
+    def _delete(self, url):
         return self._send_recv('DELETE', url)
 
-    def execute(self, url, payload):
+    def _execute(self, url, payload):
         return self._send_recv('POST', url, payload)
 
     def _print_trace(self, * args):
