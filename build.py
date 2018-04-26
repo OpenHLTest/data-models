@@ -26,7 +26,7 @@ class CiBuild(object):
             self._branch = 'master'
         self._commit_range = ''
         if 'TRAVIS_COMMIT_RANGE' in os.environ.keys():
-            self._commit_range = os.environ('TRAVIS_COMMIT_RANGE')
+            self._commit_range = os.environ['TRAVIS_COMMIT_RANGE']
         print('pyang location %s' % self._pyang)
         self._data_models_dir = os.path.normpath('%s/models' % self._root_dir)
         print('data models location %s' % self._data_models_dir)
