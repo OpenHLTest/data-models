@@ -1,7 +1,9 @@
+"""Base class that encapsulates CRUDX methods and property access
+"""
 from httptransport import HttpTransport
 
 class YangBase(object):
-    '''Base class that encapsulates CRUDX methods and property access'''
+    """Base class that encapsulates CRUDX methods and property access"""
 
     def __init__(self, parent, yang_key_value):
         self._values = {}

@@ -107,6 +107,24 @@ class CiBuild(object):
         ]
         self._run_process(process_args, self._root_dir)
 
+    def check_changed_files(self):
+        print('checking for changed files...')
+        process_args = [
+            'git',
+            'diff',
+            '--name-only',
+            filename
+        ]
+        changed_files = self._run_process(process_args, self._root_dir)
+        continue_build = False
+        for changed_file in changed_files:
+            if changed_file.startswith('model/') or changed_file.startswith('python_client/') or changed_file.startswith('plugins/'):
+                print(changed_file)
+                continue_build = True
+        if continue_build is False:
+            print('stopping build, no model or client generation updates')
+            sys.exit(1)
+
     def validate_models(self):
         print('validating openhltest models...')
         validate = [
@@ -290,6 +308,7 @@ class CiBuild(object):
 
 
 cibuild = CiBuild()
+cibuild.check_changed_files()
 cibuild.validate_models()
 cibuild.generate_model_views()
 cibuild.generate_openhltest_client()

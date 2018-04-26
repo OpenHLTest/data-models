@@ -8,6 +8,31 @@ import time
 import json
 import requests
 
+class HttpError(Exception):
+    def __init__(self, response):
+        self._status_code = response.status_code
+        self._reason = response.reason
+        self._text = response.text
+
+    @property
+    def message(self):
+        return '%s %s %s' % (self._status_code, self._reason, self._text)
+
+class AlreadyExistsError(HttpError):
+    def __init__(self, response):
+        super(AlreadyExistsError, self).__init__(response)
+
+class BadRequestError(HttpError):
+    def __init__(self, response):
+        super(BadRequestError, self).__init__(response)
+
+class NotFoundError(HttpError):
+    def __init__(self, response):
+        super(NotFoundError, self).__init__(response)
+
+class ServerError(HttpError):
+    def __init__(self, response):
+        super(ServerError, self).__init__(response)
 
 class HttpTransport(object):
     """OpenHlTest Restconf transport."""
@@ -108,8 +133,14 @@ class HttpTransport(object):
                 if 'application/json' in response.headers['Content-Type']:
                    return response.json()
             return None
+        elif response.status_code == 400:
+            raise BadRequestError(response)
+        elif response.status_code == 404:
+            raise NotFoundError(response)
+        elif response.status_code == 409:
+            raise AlreadyExistsError(response)
         else:
-            raise Exception('%s %s %s' % (response.status_code, response.reason, response.text))
+            raise ServerError(response)
 
     def _populate_target(self, payload, target):
         payload = payload['%s:%s' % (target.YANG_MODULE, target.YANG_CLASS)]
