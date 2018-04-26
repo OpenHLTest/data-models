@@ -234,7 +234,7 @@ class CiBuild(object):
         process_args = [
             'pydocmd',
             'simple',
-            'openhltest++'
+            'openhltest.openhltest++'
         ]
         self._run_process(process_args, docs_dir, redirect_stdout_to=output_file)
         self._git_add(os.path.join(docs_dir, output_file))
