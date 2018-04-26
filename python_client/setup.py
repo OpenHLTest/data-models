@@ -14,7 +14,7 @@ with open(path.join(here, './openhltest/README.md')) as f:
     long_description = f.read()
 
 with open(path.join(here, 'CURRENT_BUILD_NUMBER.txt')) as fid:
-    version = fid.read()
+    build_number = fid.read()
 
 setup(
     name='openhltest',
@@ -22,7 +22,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.1a%s' % (version),
+    version='0.1a%s' % (build_number),
 
     description='OpenHLTest Python Client',
     long_description=long_description,

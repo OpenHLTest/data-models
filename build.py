@@ -200,7 +200,8 @@ class CiBuild(object):
         process_args = [
             self._python,
             'setup.py',
-            'bdist_wheel'
+            'bdist_wheel',
+            '--universal'
         ]
         self._run_process(process_args, os.path.join(self._root_dir, 'python_client'))
 
@@ -215,7 +216,7 @@ class CiBuild(object):
         
         print('install openhltest python client package...')
         self._dist_dir = os.path.normpath('%s/python_client/dist' % self._root_dir)
-        wheel = 'openhltest-%s-py%s-none-any.whl' % (self._version, sys.version_info.major)
+        wheel = 'openhltest-%s-py2.py3-none-any.whl' % (self._version)
         process_args = [
             'pip',
             'install',
@@ -284,7 +285,7 @@ class CiBuild(object):
             sys.exit(1)        
         build_filename = os.path.join(self._root_dir, 'python_client', 'CURRENT_BUILD_NUMBER.txt')
         with open(build_filename, 'w+') as fid:
-            fid.write(str(int(version) + 1))
+            fid.write(str(int(self._build_number) + 1))
         self._git_add(build_filename)
 
 
