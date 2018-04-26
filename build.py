@@ -187,7 +187,7 @@ class CiBuild(object):
 	        package_data = {'': ['samples/*.py', 'docs/*.*']},
             python_requires='>=2.7, <4',
             install_requires = ['requests'],
-            script_args=['bdist_wheel']
+            script_args=['clean', '-all', 'bdist_wheel']
         )
         os.chdir(cwd)
 
@@ -259,8 +259,8 @@ class CiBuild(object):
         build_filename = os.path.join(self._openhltest_dir, 'CURRENT_BUILD_NUMBER.txt')
         with open(build_filename) as fid:
             version = fid.read()
-        for dir_name in ['dist', 'build', 'openhltest.egg-info']:
-            shutil.rmtree(os.path.join(self._root_dir, 'python_client', dir_name))
+        # for dir_name in ['dist', 'build', 'openhltest.egg-info']:
+        #     shutil.rmtree(os.path.join(self._root_dir, 'python_client', dir_name))
         wheel = self.install_python_package(version='0.1a%s' % (version))
         process_args = [
             'twine',
