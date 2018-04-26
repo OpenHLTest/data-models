@@ -1,20 +1,20 @@
-# OpenHlTest
+# OpenHLTest
 [![Validated](https://travis-ci.org/OpenHLTest/data-models.svg?branch=master)](https://travis-ci.org/OpenHLTest/data-models)
 [![Package](https://img.shields.io/pypi/v/openhltest.svg)](https://pypi.org/project/openhltest)
 [![Version](https://img.shields.io/pypi/pyversions/openhltest.svg)](https://pypi.org/project/openhltest)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://en.wikipedia.org/wiki/MIT_License)
 
-OpenHlTest is a collaborative effort by test vendors to develop programmatic interfaces and tools for agnosticly managing test equipment.  
+OpenHLTest is a collaborative effort by test vendors to develop agnostic programmatic interfaces and tools for managing test equipment.  
 
-OpenHlTest's initial focus is the following:
+OpenHLTest's initial focus is the following:
 - a consistent set of vendor-neutral data models (written in YANG)
 - continuous integration yielding a single set of client tools
 - test vendor server implementations of the data models
 
-## Contributing to OpenHlTest
-This repository is primarily for publishing the models, documents, and other material developed by the OpenHlTest working group. We generally do not accept pull requests in this repository.
+## Contributing to OpenHLTest
+This repository is primarily for publishing the models, documents, and other material developed by the OpenHLTest working group. We generally do not accept pull requests in this repository.
 
-Feedback and suggestions to improve OpenHlTest models is welcomed on the public mailing list, or by opening a GitHub issue
+Feedback and suggestions to improve OpenHLTest models is welcomed by opening a [GitHub issue](https://github.com/OpenHLTest/data-models/issues).
 
 # Continuous Integration
 On every commit to the repository folder travis continuous integration will start and do the following:
@@ -28,5 +28,5 @@ On every commit to the repository folder travis continuous integration will star
 - package and upload the openhltest folder as the [openhltest python package](https://pypi.org/project/openhltest/) to pypi.python.org
 
 ## OK continuous integration is great but what does it mean to me?
-Anytime the model is updated you can install the latest version of the OpenHlTest python client simply by doing the following:  
+Anytime the model is updated you can install the latest version of the OpenHLTest python client simply by doing the following:  
 - **pip install openhltest --upgrade --no-cache-dir**
