@@ -81,7 +81,7 @@ class HttpTransport(object):
                 continue
             payload[object_key][key] = arg_dict[key]
         location = self._send_recv('POST', parent.url, payload)
-        return self.get(target)
+        return self._get(target)
 
     def _update(self, url, payload):
         return self._send_recv('PATCH', url, payload)
