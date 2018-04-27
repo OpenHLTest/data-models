@@ -47,7 +47,7 @@ class HttpTransport(object):
 
         Args:
             hostname (str): hostname or ip address
-            rest_port (int, optional, default=443): the rest port of the host
+            rest_port (int, optional, default=443): the rest port of the server
         """
         if sys.version < '2.7.9':
             import requests.packages.urllib3
