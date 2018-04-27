@@ -64,6 +64,11 @@ class YangBase(object):
         self._dirty = []
         return self._http_transport._get(target)
 
+    def _create_sibling(self, yang_key_value):
+        sibling = self.__class__(self, None)
+        sibling._rest_path = '%s=%s' % (self._rest_path, yang_key_value)
+        return sibling
+
     def _update(self):
         '''Update the object with any values that are dirty.'''
         payload = {}

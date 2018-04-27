@@ -152,7 +152,7 @@ class HttpTransport(object):
         if isinstance(payload, list):
             target_list = []
             for item in payload:
-                target_item = target.create_sibling(item[target.YANG_KEY])
+                target_item = target._create_sibling(item[target.YANG_KEY])
                 target_item._values = item
                 target_list.append(target_item)
             return target_list
