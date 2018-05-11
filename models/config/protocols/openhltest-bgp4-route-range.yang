@@ -1,0 +1,34 @@
+submodule openhltest-ipv4 {
+
+    yang-version "1.1";
+    belongs-to "openhltest" {
+		prefix "oht";
+	}
+
+	import ietf-yang-types {
+		prefix yang;
+	}
+	includes openhltest-ipv4-route-range;
+
+	organization
+      "OpenHlTest working group";
+    contact
+      "OpenHlTest working group";
+    description
+      "This module describes the simulated bgp4 route range.";
+
+    revision 2018-02-09 {
+        description
+          "Initial revision.";
+        reference
+          "0.0.1";
+    }
+	
+	grouping bgp4-route-range-group {
+		container bgp4-route-range {
+			uses ipv4-route-range-group;
+		}
+	}
+}
+
+	

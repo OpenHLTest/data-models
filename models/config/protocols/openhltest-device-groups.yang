@@ -1,0 +1,200 @@
+submodule openhltest-device-groups {
+
+    yang-version "1.1";
+    belongs-to "openhltest" {
+		prefix "oht";
+	}
+
+    import openhltest-types {
+        prefix t;
+    }
+	include openhltest-ethernet;
+	include openhltest-vlan;
+	include openhltest-ipv4;
+	include openhltest-bgp4;
+
+	organization
+      "OpenHlTest working group";
+    contact
+      "OpenHlTest working group";
+    description
+      "This module describes a collection of emulated device groups.";
+
+    revision 2018-02-09 {
+        description
+          "Initial revision.";
+        reference
+          "0.0.1";
+    }
+
+    grouping device-groups-top {
+        description
+        "A grouping of device groups.";
+
+		list device-groups {
+			key "name";
+			description
+			"A list of device groups.
+			Each device group can contain n..0 devices.";
+			leaf name {
+				type string;
+				description
+				"The unique name of the device group.";
+			}
+			leaf-list port-names {
+				description 
+				"A list of abstract test port names. 
+				Every instance in the devices and protocols lists will share the ports assigned to a device-groups instance.
+				A port cannot be assigned to more than one device group.";
+				type string;
+			}
+			leaf count-per-port {
+				description "The number of devices that will be created on each
+				abstract port specified in the port-names list.";
+				type uint32;
+			}
+
+			list devices {
+				description "A list of devices. Each device can contain n..0 protocols";
+				key "name";
+				leaf "name" {
+					type string;
+				}
+				leaf device-link {
+					description "The root device is always null.";
+					type union {
+						type leafref {
+							path "../name";
+						}
+						type empty;
+					}
+				}
+				list protocols {
+					description "A list of emulated protocols.
+					Each emulated protocol is a container for one and only one of the emulated protocol types.";
+					key "name";
+					leaf "name" {
+						type string;
+					}
+					leaf-list child-protocol-links {
+						description "Identifies which protocols are children of this protocol.
+						The first protocol in a stack is always null.";
+						type union {
+							type leafref {
+								path "../name";
+							}
+							type empty;
+						}
+					}
+					leaf protocol-type {
+						description "Determines which detailed emulated protocol container is active.";
+						mandatory true;
+						type enumeration {
+							enum ETHERNET;
+							enum VLAN;
+							enum IPV4;
+							enum BGP4;
+						}
+					}
+					uses ethernet-group {
+						description "The conditional container for detailed ethernet information";
+						when "../protocol-type = ETHERNET";
+					}
+					uses vlan-group {
+						description "The conditional container for detailed vlan information"; 
+						when "../protocol-type = VLAN";
+					}
+					uses ipv4-group {
+						description "The conditional container for detailed ipv4 information"; 
+						when "../protocol-type = IPV4";
+					}
+					uses bgp4-group {
+						description "The conditional container for detailed bgp4 information"; 
+						when "../protocol-type = BGP4";
+					}
+				}
+			}
+		}
+
+		action create-bgp4 {
+			input {
+				leaf device-group-name {
+					mandatory true;
+					type string;
+				}
+				leaf device-name {
+					mandatory true;
+					type string;
+				}
+				uses ethernet-group {
+					augment ethernet {
+						leaf name {
+							mandatory true;
+							type string;
+						}
+					}
+				}
+				uses vlan-group {
+					augment vlan {
+						leaf name {
+							mandatory true;
+							type string;
+						}
+					}					
+				}
+				uses ipv4-group {
+					augment ipv4 {
+						leaf name {
+							mandatory true;
+							type string;
+						}
+					}
+				}
+				uses bgp4-group {
+					augment bgp4 {
+						leaf name {
+							mandatory true;
+							type string;
+						}
+					}
+				}
+			}
+		}
+		action start-protocols {
+			description
+			"Start one or more emulated protocol groups.
+			An empty list signifies that all protocol groups will be started.";
+
+			input {
+				leaf-list protocol-group-names {
+					description "A list of protocol group names";
+					type string;
+				}
+			}
+			output {
+				uses t:errata-group {
+					description "A list of protocol group resources that failed to start.
+					An empty list signifies that all protocol groups successfully started.";
+				}
+			}
+		}
+		action stop-protocols {
+			description
+			"Stop one or more protocol groups. 
+			An empty list signifiels that all protocol groups will be stopped.";
+
+			input {
+				leaf-list protocol-group-names {
+					description "A list of protocol group names";
+					type string;
+				}
+			}
+			output {
+				uses t:errata-group {
+					description "A list of protocol group resources that failed to stop.
+					An empty list signifies that all protocol groups successfully stopped.";
+				}
+			}
+		}
+	}
+}

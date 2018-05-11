@@ -6,9 +6,13 @@ module openhltest {
 
 	include openhltest-sessions;
 	include openhltest-config;
-    include openhltest-port;
-	include openhltest-protocol-group;
-	include openhltest-traffic-group;
+  include openhltest-port;
+	include openhltest-device-groups;
+	include openhltest-ethernet;
+	include openhltest-vlan;
+	include openhltest-ipv4;
+	include openhltest-bgp4;
+  include openhltest-traffic-group;
 	include openhltest-statistics;
 	include openhltest-port-statistics;
 
