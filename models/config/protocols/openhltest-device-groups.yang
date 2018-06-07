@@ -48,7 +48,7 @@ submodule openhltest-device-groups {
 				A port cannot be assigned to more than one device group.";
 				type string;
 			}
-			leaf deivce-count-per-port {
+			leaf device-count-per-port {
 				description "The number of devices that will be created on each
 				abstract port specified in the port-names list.";
 				type uint32;
