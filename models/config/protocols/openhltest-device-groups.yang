@@ -48,11 +48,6 @@ submodule openhltest-device-groups {
 				An abstract test port name cannot be assigned to more than one emulated-networks object.";
 				type string;
 			}
-			leaf device-count-per-port {
-				description "The number of devices that will be created on each
-				abstract port specified in the port-names list.";
-				type uint32;
-			}
 
 			list device-groups {
 				description "A list of device-groups. 
@@ -60,6 +55,11 @@ submodule openhltest-device-groups {
 				key "name";
 				leaf "name" {
 					type string;
+				}
+				leaf device-count-per-port {
+					description "The number of devices that will be created on each
+					abstract test port specified in the port-names list.";
+					type uint32;
 				}
 				leaf device-link {
 					description "Identifies which device-groups object is connected to this object.
