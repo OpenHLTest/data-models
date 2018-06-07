@@ -31,7 +31,7 @@ submodule openhltest-device-groups {
         description
         "A grouping of device groups.";
 
-		list device-groups {
+		list emulated-networks {
 			key "name";
 			description
 			"A list of device groups.
@@ -48,13 +48,13 @@ submodule openhltest-device-groups {
 				A port cannot be assigned to more than one device group.";
 				type string;
 			}
-			leaf count-per-port {
+			leaf deivce-count-per-port {
 				description "The number of devices that will be created on each
 				abstract port specified in the port-names list.";
 				type uint32;
 			}
 
-			list devices {
+			list device-groups {
 				description "A list of devices. Each device can contain n..0 protocols";
 				key "name";
 				leaf "name" {
