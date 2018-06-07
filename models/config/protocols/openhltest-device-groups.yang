@@ -76,9 +76,20 @@ submodule openhltest-device-groups {
 					leaf "name" {
 						type string;
 					}
-					leaf-list child-protocol-links {
-						description "Identifies which protocols are children of this protocol.
-						The first protocol in a stack is always null.";
+					leaf parent-protocol-link {
+						description "Identifies which protocol is the parent of this protocol.
+						The first protocol in a stack is always empty.";
+						type union {
+							type leafref {
+								path "../name";
+							}
+							type empty;
+						}
+					}
+					leaf device-groups-protocol-link {
+						description "Identifies which protocol in another device-group is connected to this protocol.
+						The protocol name cannot be in the same protocols container.
+						An empty link indicates no connection";
 						type union {
 							type leafref {
 								path "../name";
