@@ -14,11 +14,11 @@ submodule openhltest-device-groups {
 	include openhltest-bgp4;
 
 	organization
-      "OpenHlTest working group";
+    "OpenHlTest working group";
     contact
-      "OpenHlTest working group";
+    "OpenHlTest working group";
     description
-      "This module describes a collection of emulated device groups.";
+    "This module describes a collection of emulated networks.";
 
     revision 2018-02-09 {
         description
