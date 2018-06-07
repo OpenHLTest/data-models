@@ -29,23 +29,23 @@ submodule openhltest-device-groups {
 
     grouping device-groups-top {
         description
-        "A grouping of device groups.";
+        "A grouping of emulated networks.";
 
 		list emulated-networks {
 			key "name";
 			description
-			"A list of device groups.
-			Each device group can contain n..0 devices.";
+			"A list of emulated networks.
+			Each emulated-networks object can contain n..0 device-groups.";
 			leaf name {
 				type string;
 				description
-				"The unique name of the device group.";
+				"The unique name of the emulated-networks object.";
 			}
 			leaf-list port-names {
 				description 
 				"A list of abstract test port names. 
-				Every instance in the devices and protocols lists will share the ports assigned to a device-groups instance.
-				A port cannot be assigned to more than one device group.";
+				Every object in the device-groups and protocols lists will share the ports assigned to a emulated-networks object.
+				An abstract test port name cannot be assigned to more than one emulated-networks object.";
 				type string;
 			}
 			leaf device-count-per-port {
@@ -55,13 +55,16 @@ submodule openhltest-device-groups {
 			}
 
 			list device-groups {
-				description "A list of devices. Each device can contain n..0 protocols";
+				description "A list of device-groups. 
+				Each device-groups object can contain n..0 protocols objects";
 				key "name";
 				leaf "name" {
 					type string;
 				}
 				leaf device-link {
-					description "The root device is always null.";
+					description "Identifies which device-groups object is connected to this object.
+					This is used to create device-groups behind device-groups.
+					The first device-groups object in a stack is always null.";
 					type union {
 						type leafref {
 							path "../name";
@@ -78,6 +81,7 @@ submodule openhltest-device-groups {
 					}
 					leaf parent-protocol-link {
 						description "Identifies which protocol is the parent of this protocol.
+						This link only applies to protocol objects in one container.
 						The first protocol in a stack is always empty.";
 						type union {
 							type leafref {
@@ -86,10 +90,10 @@ submodule openhltest-device-groups {
 							type empty;
 						}
 					}
-					leaf device-groups-protocol-link {
-						description "Identifies which protocol in another device-group is connected to this protocol.
+					leaf connected-protocol-link {
+						description "Identifies which protocol in another protocol container is connected to this protocol.
 						The protocol name cannot be in the same protocols container.
-						An empty link indicates no connection";
+						An empty link indicates no protocol connection";
 						type union {
 							type leafref {
 								path "../name";
