@@ -5,8 +5,8 @@ submodule openhltest-vlan {
 		prefix "oht";
 	}
 
-	import ietf-yang-types {
-		prefix yang;
+	import openhltest-types {
+			prefix t;
 	}
 
 	organization
@@ -26,16 +26,41 @@ submodule openhltest-vlan {
 	grouping vlan-group {
 		container vlan {
 			leaf tpid {
-				type string;
+				if-feature t:unresolved-type;
+				type enumeration {
+					enum 0X8100 {
+						value "33024";
+					}
+					enum 0x88A8 {
+						value "34984";
+					}
+					enum 0X9100 {
+						value "37120";
+					}
+					enum 0X9200 {
+						value "37376";
+					}
+					enum 0X9300 {
+						value "37632";
+					}
+				}
+				default "0X8100";
 			}
 			leaf priority {
-				type string;
-			}
-			leaf cfi {
-				type string;
+				if-feature t:unresolved-type;
+				type uint8 {
+      		range 0..7;
+    		}
+				default "0";
 			}
 			leaf id {
-				type string;
+				if-feature t:unresolved-type;
+				description
+					"A single-tagged VLAN id";  		
+				type uint16 {
+      		range 1..4095;
+    		}
+				default "1";
 			}
 		}
 	}

@@ -8,6 +8,9 @@ submodule openhltest-ethernet {
 	import ietf-yang-types {
 		prefix yang;
 	}
+	import openhltest-types {
+			prefix t;
+	}
 
 	organization
       "OpenHlTest working group";
@@ -25,10 +28,12 @@ submodule openhltest-ethernet {
 
 	grouping ethernet-group {
 		container ethernet {
-			leaf mac-address {
+			leaf mac-address {				
+				if-feature t:unresolved-type;
 				type yang:mac-address;
 			}
 			leaf mtu {
+				if-feature t:unresolved-type;
 				type uint16 {
 					range "68 .. 9216";
 				}

@@ -37,25 +37,29 @@ submodule openhltest-device-groups {
 			"A list of emulated networks.
 			Each emulated-networks object can contain n..0 device-groups.";
 			leaf name {
-				type string;
+				type t:config-list-key;
 				description
-				"The unique name of the emulated-networks object.";
+				"The unique name of an emulated-networks object.";
 			}
 			leaf-list port-names {
 				description 
 				"A list of abstract test port names. 
-				Every object in the device-groups and protocols lists will share the ports assigned to a emulated-networks object.
+				Every object in the device-groups and protocols lists will share the ports assigned to an emulated-networks object.
 				An abstract test port name cannot be assigned to more than one emulated-networks object.";
 				type string;
 			}
 
 			list device-groups {
-				description "A list of device-groups. 
+				description "A list of device-groups objects. 
 				Each device-groups object can contain n..0 protocols objects";
+				
 				key "name";
-				leaf "name" {
-					type string;
+				leaf name {
+					type t:config-list-key;
+					description
+					"The unique name of a device-groups object.";
 				}
+
 				leaf device-count-per-port {
 					description "The number of devices that will be created on each
 					abstract test port specified in the port-names list.";
@@ -77,7 +81,8 @@ submodule openhltest-device-groups {
 					Each emulated protocol is a container for one and only one of the emulated protocol types.";
 					key "name";
 					leaf "name" {
-						type string;
+						type t:config-list-key;
+						description "The unique name of a protocols object";
 					}
 					leaf parent-protocol-link {
 						description "Identifies which protocol is the parent of this protocol.

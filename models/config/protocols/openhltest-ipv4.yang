@@ -5,8 +5,11 @@ submodule openhltest-ipv4 {
 		prefix "oht";
 	}
 
-	import ietf-yang-types {
-		prefix yang;
+	import ietf-inet-types {
+		prefix inet;
+	}
+	import openhltest-types {
+			prefix t;
 	}
 
 	organization
@@ -26,10 +29,12 @@ submodule openhltest-ipv4 {
 	grouping ipv4-group {
 		container ipv4 {
 			leaf source-address {
-				type string;
+				if-feature t:unresolved-type;
+				type inet:ipv4-address;
 			}
 			leaf gateway-address {
-				type string;
+				if-feature t:unresolved-type;
+				type inet:ipv4-address;
 			}
 		}
 	}
