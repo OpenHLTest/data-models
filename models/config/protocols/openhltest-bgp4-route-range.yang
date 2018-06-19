@@ -1,14 +1,11 @@
-submodule openhltest-ipv4 {
+submodule openhltest-bgp4-route-range {
 
     yang-version "1.1";
     belongs-to "openhltest" {
 		prefix "oht";
 	}
 
-	import ietf-yang-types {
-		prefix yang;
-	}
-	includes openhltest-ipv4-route-range;
+	include openhltest-ipv4-route-range;
 
 	organization
       "OpenHlTest working group";

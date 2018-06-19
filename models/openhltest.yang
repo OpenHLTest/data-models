@@ -1,35 +1,36 @@
 module openhltest {
 
-    yang-version "1.1";
-    namespace "http://openhltest.org/yang/oht";
-    prefix "oht";
+	yang-version "1.1";
+	namespace "http://openhltest.org/yang/oht";
+	prefix "oht";
 
 	include openhltest-sessions;
 	include openhltest-config;
-  include openhltest-port;
+	include openhltest-port;
 	include openhltest-device-groups;
 	include openhltest-ethernet;
 	include openhltest-vlan;
 	include openhltest-ipv4;
 	include openhltest-bgp4;
-  include openhltest-traffic-group;
+	include openhltest-traffic-group;
 	include openhltest-statistics;
 	include openhltest-port-statistics;
+	include openhltest-ipv4-route-range;
+	include openhltest-bgp4-route-range;
 
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
-    description
-      "This module is the top level of the test hierarchy.
-	  ";
+	organization
+	"OpenHlTest working group";
+	contact
+	"OpenHlTest working group";
+	description
+	"This module is the top level of the test hierarchy.";
 
-    revision 2018-01-01 {
-        description
-          "Initial revision.";
-        reference
-          "0.0.1";
-    }
+	revision 2018-01-01 {
+		description
+		"Initial revision.";
+		reference
+		"0.0.1";
+	}
 
 	uses session-top;
 }
