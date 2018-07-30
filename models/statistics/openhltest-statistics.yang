@@ -9,6 +9,7 @@ submodule openhltest-statistics {
 		prefix yang;
 	}
 	include openhltest-port-statistics;
+    include openhltest-bgp-statistics;
 
     organization
       "OpenHlTest working group";
@@ -28,6 +29,21 @@ submodule openhltest-statistics {
     }
 
 	grouping statistics-top {
+
+        /*leaf result-type {
+            type enumeration {
+                enum PORT;
+                enum BGP4;
+            }
+            default "PORT";
+        }*/
+        
+        leaf-list port-name {
+            type string;
+            description
+            "The list of port-names";
+        }
+
 		leaf first-activity-timestamp {
 			config false;
 			description "Timestamp of the first request to this session.";
@@ -39,14 +55,8 @@ submodule openhltest-statistics {
 			type yang:date-and-time;
 		}		
 		
-		list ports {
-			config false;
-			key "name";
-			leaf name {
-				description "An abstract test port name";
-				type string;
-			}
-			uses port-statistics-top;
-		}
+		uses port-statistics-top;
+        uses bgp4-statistics;
+        uses bgp6-statistics;
 	}
 }

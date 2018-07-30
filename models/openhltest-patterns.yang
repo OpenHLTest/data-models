@@ -1,0 +1,360 @@
+module openhltest-patterns {
+
+    yang-version "1.1";
+    namespace "http://openhltest.org/yang/patterns";
+    prefix "oht";
+
+	import ietf-yang-types {
+		prefix yang;
+	}
+	import ietf-inet-types {
+		prefix inet;
+	}
+
+    organization
+      "OpenHlTest working group";
+    contact
+      "OpenHlTest working group";
+    description
+      "This module defines types specific to the OpenHLTest models.";
+
+    revision 2018-02-01 {
+        description
+          "Initial revision.";
+        reference
+          "0.0.1";
+    }
+
+    
+    grouping patterns-common-config {
+    
+        leaf pattern-type {
+            type enumeration {
+                enum INCREMENT;
+                enum VALUE_LIST;
+                enum DECREMENT;
+            }
+            default "INCREMENT";
+        }
+    }
+    
+    grouping patterns-config {
+        description
+          "A grouping of value patterns";
+       
+        typedef pattern-format {
+            type string;
+        }
+
+        uses patterns-common-config;
+
+        container increment {
+            when "../pattern-type = INCREMENT";
+            leaf start {
+                type pattern-format;
+                description
+                  "The starting value of the increment pattern";
+            }
+            leaf step {
+                type pattern-format;
+                description
+                  "The value that the pattern will increment by";
+            }
+        }
+
+        container decrement {
+            when "../pattern-type = DECREMENT";
+            leaf start {
+                type pattern-format;
+                description
+                  "The starting value of the decrement pattern";
+            }
+            leaf step {
+                type pattern-format;
+                description
+                  "The value that the pattern will decrement by";
+            }
+        }
+        
+        leaf-list value-list {
+            when "../pattern-type = VALUE_LIST";
+            type pattern-format;
+            description
+              "A list of values that will be repeated or truncated";
+        }
+    }
+    
+    
+    grouping patterns-int32-config {
+        description
+          "A grouping of value patterns";
+
+        typedef pattern-format {
+            type int32;
+        }
+
+        uses patterns-common-config;
+
+        container increment {
+            when "../pattern-type = INCREMENT";
+            leaf start {
+                type pattern-format;
+                description
+                  "The starting value of the increment pattern";
+            }
+            leaf step {
+                type pattern-format;
+                description
+                  "The value that the pattern will increment by";
+            }
+        }
+
+        container decrement {
+            when "../pattern-type = DECREMENT";
+            leaf start {
+                type pattern-format;
+                description
+                  "The starting value of the decrement pattern";
+            }
+            leaf step {
+                type pattern-format;
+                description
+                  "The value that the pattern will decrement by";
+            }
+        }
+        
+        leaf-list value-list {
+            when "../pattern-type = VALUE_LIST";
+            type pattern-format;
+            description
+              "A list of values that will be repeated or truncated";
+        }
+    }
+    
+    grouping patterns-ipv4-config {
+        description
+          "A grouping of value patterns";
+
+       
+        typedef pattern-format {
+			type inet:ipv4-address;
+        }
+
+        uses patterns-common-config;
+
+        container increment {
+            when "../pattern-type = INCREMENT";
+            leaf start {
+                type pattern-format;
+                description
+                  "The starting value of the increment pattern";
+            }
+            leaf step {
+                type pattern-format;
+                description
+                  "The value that the pattern will increment by";
+            }
+        }
+
+        container decrement {
+            when "../pattern-type = DECREMENT";
+            leaf start {
+                type pattern-format;
+                description
+                  "The starting value of the decrement pattern";
+            }
+            leaf step {
+                type pattern-format;
+                description
+                  "The value that the pattern will decrement by";
+            }
+        }
+        leaf-list value-list {
+            when "../pattern-type = VALUE_LIST";
+            type pattern-format;
+            description
+              "A list of values that will be repeated or truncated";
+        }
+    }
+    
+    grouping patterns-ipv6-config {
+        description
+          "A grouping of value patterns";
+
+       
+        typedef pattern-format {
+			type inet:ipv6-address;
+        }
+
+        uses patterns-common-config;
+
+        container increment {
+            when "../pattern-type = INCREMENT";
+            leaf start {
+                type pattern-format;
+                description
+                  "The starting value of the increment pattern";
+            }
+            leaf step {
+                type pattern-format;
+                description
+                  "The value that the pattern will increment by";
+            }
+        }
+
+        container decrement {
+            when "../pattern-type = DECREMENT";
+            leaf start {
+                type pattern-format;
+                description
+                  "The starting value of the decrement pattern";
+            }
+            leaf step {
+                type pattern-format;
+                description
+                  "The value that the pattern will decrement by";
+            }
+        }
+        leaf-list value-list {
+            when "../pattern-type = VALUE_LIST";
+            type pattern-format;
+            description
+              "A list of values that will be repeated or truncated";
+        }
+    }
+
+    grouping patterns-mac-config {
+        description
+          "A grouping of value patterns";
+
+       
+        typedef pattern-format {
+			type yang:mac-address;
+        }
+
+        uses patterns-common-config;
+
+        container increment {
+            when "../pattern-type = INCREMENT";
+            leaf start {
+                type pattern-format;
+                description
+                  "The starting value of the increment pattern";
+            }
+            leaf step {
+                type pattern-format;
+                description
+                  "The value that the pattern will increment by";
+            }
+        }
+
+        container decrement {
+            when "../pattern-type = DECREMENT";
+            leaf start {
+                type pattern-format;
+                description
+                  "The starting value of the decrement pattern";
+            }
+            leaf step {
+                type pattern-format;
+                description
+                  "The value that the pattern will decrement by";
+            }
+        }
+        leaf-list value-list {
+            when "../pattern-type = VALUE_LIST";
+            type pattern-format;
+            description
+              "A list of values that will be repeated or truncated";
+        }
+    }
+    
+    grouping patterns-uint32-config {
+        description
+          "A grouping of value patterns";
+
+        typedef pattern-format {
+            type uint32;
+        }
+
+        uses patterns-common-config;
+
+        container increment {
+            when "../pattern-type = INCREMENT";
+            leaf start {
+                type pattern-format;
+                description
+                  "The starting value of the increment pattern";
+            }
+            leaf step {
+                type pattern-format;
+                description
+                  "The value that the pattern will increment by";
+            }
+        }
+        container decrement {
+            when "../pattern-type = DECREMENT";
+            leaf start {
+                type pattern-format;
+                description
+                  "The starting value of the decrement pattern";
+            }
+            leaf step {
+                type pattern-format;
+                description
+                  "The value that the pattern will decrement by";
+            }
+        }
+        leaf-list value-list {
+            when "../pattern-type = VALUE_LIST";
+            type pattern-format;
+            description
+              "A list of values that will be repeated or truncated";
+        }
+    }
+    
+    grouping patterns-uint64-config {
+        description
+          "A grouping of value patterns";
+
+        typedef pattern-format {
+            type uint32;
+        }
+
+        uses patterns-common-config;
+
+        container increment {
+            when "../pattern-type = INCREMENT";
+            leaf start {
+                type pattern-format;
+                description
+                  "The starting value of the increment pattern";
+            }
+            leaf step {
+                type pattern-format;
+                description
+                  "The value that the pattern will increment by";
+            }
+        }
+        container decrement {
+            when "../pattern-type = DECREMENT";
+            leaf start {
+                type pattern-format;
+                description
+                  "The starting value of the decrement pattern";
+            }
+            leaf step {
+                type pattern-format;
+                description
+                  "The value that the pattern will decrement by";
+            }
+        }
+        leaf-list value-list {
+            when "../pattern-type = VALUE_LIST";
+            type pattern-format;
+            description
+              "A list of values that will be repeated or truncated";
+        }
+    }
+    
+}

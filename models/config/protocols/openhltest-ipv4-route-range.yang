@@ -1,0 +1,45 @@
+submodule openhltest-ipv4-route-range {
+
+    yang-version "1.1";
+    belongs-to "openhltest" {
+		prefix "oht";
+	}
+	import ietf-inet-types {
+		prefix inet;
+	}
+    import openhltest-patterns {
+		prefix p;
+	}
+    
+	organization
+      "OpenHlTest working group";
+    contact
+      "OpenHlTest working group";
+    description
+      "This module describes the ipv4 route range protocol.";
+
+    revision 2018-02-09 {
+        description
+          "Initial revision.";
+        reference
+          "0.0.1";
+    }
+		
+	grouping ipv4-route-range-group {
+        leaf address {
+            type inet:ipv4-address;
+        }
+        container address-modifier {
+            uses p:patterns-ipv4-config;
+        }
+        leaf prefix-length {
+            type uint32;
+        }
+        container prefix-length-modifier {
+            uses p:patterns-uint32-config;
+        }
+        leaf active {
+            type boolean;
+        }
+	}
+}

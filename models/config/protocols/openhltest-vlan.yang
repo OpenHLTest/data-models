@@ -1,0 +1,77 @@
+submodule openhltest-vlan {
+
+    yang-version "1.1";
+    belongs-to "openhltest" {
+		prefix "oht";
+	}
+
+    import openhltest-patterns {
+		prefix p;
+	}
+	import openhltest-types {
+			prefix t;
+	}
+
+	organization
+      "OpenHlTest working group";
+    contact
+      "OpenHlTest working group";
+    description
+      "This module describes the vlan emulated protocol.";
+
+    revision 2018-02-09 {
+        description
+          "Initial revision.";
+        reference
+          "0.0.1";
+    }
+	
+	grouping vlan-group {
+		container vlan {
+			leaf tpid {
+				if-feature t:unresolved-type;
+				type enumeration {
+					enum 0X8100 {
+						value "33024";
+					}
+					enum 0x88A8 {
+						value "34984";
+					}
+					enum 0X9100 {
+						value "37120";
+					}
+					enum 0X9200 {
+						value "37376";
+					}
+					enum 0X9300 {
+						value "37632";
+					}
+				}
+				default "0X8100";
+			}
+			leaf priority {
+				if-feature t:unresolved-type;
+				type uint8 {
+                    range 0..7;
+                }
+				default "0";
+			}
+            container priority-modifier {
+                uses p:patterns-int32-config;
+			}
+			leaf id {
+				if-feature t:unresolved-type;
+				description
+					"A single-tagged VLAN id";  		
+				type uint16 {
+                    range 1..4095;
+                }
+				default "1";
+			}
+            container id-modifier {
+                uses p:patterns-int32-config;
+			}
+            
+		}
+	}
+}

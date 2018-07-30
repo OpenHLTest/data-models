@@ -1,0 +1,82 @@
+submodule openhltest-traffic-ipv6-group {
+
+    yang-version "1.1";
+    belongs-to "openhltest" {
+		prefix "oht";
+	}
+
+    import openhltest-types {
+        prefix t;
+    }
+    import openhltest-patterns {
+		prefix p;
+	}
+	import ietf-inet-types {
+		prefix inet;
+	}
+	
+    organization
+      "OpenHlTest working group";
+    contact
+      "OpenHlTest working group";
+    description
+      "This module describes a collection of traffic groups
+	  and associated rpcs.";
+
+    revision 2018-02-09 {
+        description
+          "Initial revision.";
+        reference
+          "0.0.1";
+    }
+
+    grouping traffic-ipv6-group-top {
+        description
+        "A grouping of traffic groups.
+		 A traffic group is a collection of traffic streams and flows.";
+		
+        list ipv6 {
+            key "name";
+            description
+            "A list frames";
+            
+            leaf name {
+                type string;
+                description
+                "The unique name";
+            }
+            leaf frame-link {
+                type string;
+                description
+                "frame link";
+            }
+            leaf source-address {
+                type inet:ipv6-address;
+                description
+                "Source ipv6 Address";
+            }
+            container source-address-modifier {
+                description
+                "Source ipv6 Address modifier";
+                uses p:patterns-ipv6-config;
+            }
+            leaf destination-address {
+                type inet:ipv6-address;
+                description
+                "Destination ipv6 Address";
+            }
+            container destination-address-modifier {
+                description
+                "Source ipv6 Address modifier";
+                uses p:patterns-ipv6-config;
+            }
+			leaf ttl {
+				description
+				"The limited number of iterations that a unit of data can experience before 
+                the data is discarded.";
+				type uint8;
+			}
+        }
+    }
+
+}

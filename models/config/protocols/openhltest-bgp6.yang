@@ -1,0 +1,47 @@
+submodule openhltest-bgp6 {
+
+    yang-version "1.1";
+    belongs-to "openhltest" {
+		prefix "oht";
+	}
+    
+	import ietf-inet-types {
+		prefix inet;
+	}
+    import openhltest-patterns {
+		prefix p;
+	}
+    
+    include openhltest-bgp-common;
+
+	organization
+      "OpenHlTest working group";
+    contact
+      "OpenHlTest working group";
+    description
+      "This module describes the bgp6 emulated protocol.";
+
+    revision 2018-02-09 {
+        description
+          "Initial revision.";
+        reference
+          "0.0.1";
+    }
+
+	grouping bgp6-group {
+		container bgp6 {
+			
+            leaf dut-ipv6-address {
+				description
+				"ipv6 address of the BGP peer for the session.";
+				type inet:ipv6-address;
+			}
+            
+            container dut-ipv6-address-modifier {
+                uses p:patterns-ipv6-config;
+            }
+            
+            uses bgp-common-group;
+		}
+	}
+}

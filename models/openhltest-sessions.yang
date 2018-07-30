@@ -5,6 +5,10 @@ submodule openhltest-sessions {
 		prefix "oht";
 	}
 
+    import openhltest-types {
+        prefix t;
+    }
+
 	include openhltest-config;
 	include openhltest-statistics;
 	include openhltest-port-statistics;
@@ -33,7 +37,7 @@ submodule openhltest-sessions {
 				description
 				"The unique name of the test tool session.
 				Once the session has been created the name cannot be modified.";
-				type string;
+				type t:config-list-key;
 			}
 			leaf session-type {
 				description

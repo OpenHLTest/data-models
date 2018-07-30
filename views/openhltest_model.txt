@@ -1,10 +1,13 @@
 module: openhltest
   +--rw sessions* [name]
-     +--rw name                string
+     +--rw name                t:config-list-key
      +--rw session-type        enumeration
      +--rw config
      |  +--rw ports* [name]
-     |  |  +--rw name    string
+     |  |  +--rw name       t:config-list-key
+     |  |  +--rw chassis?   string
+     |  |  +--rw card?      uint16
+     |  |  +--rw port?      uint16
      |  +---x connect-ports
      |  |  +---w input
      |  |  |  +---w port-map* [port-name]
@@ -14,7 +17,7 @@ module: openhltest
      |  |  |     +---w port?        uint16
      |  |  +--ro output
      |  |     +--ro errata* [name]
-     |  |        +--ro name           string
+     |  |        +--ro name           config-list-key
      |  |        +--ro detail?        string
      |  |        +--ro stack-trace?   string
      |  +---x disconnect-ports
@@ -22,36 +25,520 @@ module: openhltest
      |  |  |  +---w port-names*   string
      |  |  +--ro output
      |  |     +--ro errata* [name]
-     |  |        +--ro name           string
+     |  |        +--ro name           config-list-key
      |  |        +--ro detail?        string
      |  |        +--ro stack-trace?   string
-     |  +--rw protocol-groups* [name]
-     |  |  +--rw name          string
-     |  |  +--rw port-names*   string
+     |  +--rw device-groups* [name]
+     |  |  +--rw name                  t:config-list-key
+     |  |  +--rw ports*                -> ../../ports/name
+     |  |  +--rw devices* [name]
+     |  |  |  +--rw name                     t:config-list-key
+     |  |  |  +--rw device-count-per-port?   uint32
+     |  |  |  +--rw parent-link              union
+     |  |  |  +--rw protocols* [name]
+     |  |  |     +--rw name             t:config-list-key
+     |  |  |     +--rw parent-link      union
+     |  |  |     +--rw flow-link        union
+     |  |  |     +--rw protocol-type    enumeration
+     |  |  |     +--rw ethernet
+     |  |  |     |  +--rw mac-address?            yang:mac-address {t:unresolved-type}?
+     |  |  |     |  +--rw mac-address-modifier
+     |  |  |     |  |  +--rw pattern-type?   enumeration
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   pattern-format
+     |  |  |     |  |  |  +--rw step?    pattern-format
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   pattern-format
+     |  |  |     |  |  |  +--rw step?    pattern-format
+     |  |  |     |  |  +--rw value-list*     pattern-format
+     |  |  |     |  +--rw mtu?                    uint16 {t:unresolved-type}?
+     |  |  |     +--rw vlan
+     |  |  |     |  +--rw tpid?                enumeration {t:unresolved-type}?
+     |  |  |     |  +--rw priority?            uint8 {t:unresolved-type}?
+     |  |  |     |  +--rw priority-modifier
+     |  |  |     |  |  +--rw pattern-type?   enumeration
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   pattern-format
+     |  |  |     |  |  |  +--rw step?    pattern-format
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   pattern-format
+     |  |  |     |  |  |  +--rw step?    pattern-format
+     |  |  |     |  |  +--rw value-list*     pattern-format
+     |  |  |     |  +--rw id?                  uint16 {t:unresolved-type}?
+     |  |  |     |  +--rw id-modifier
+     |  |  |     |     +--rw pattern-type?   enumeration
+     |  |  |     |     +--rw increment
+     |  |  |     |     |  +--rw start?   pattern-format
+     |  |  |     |     |  +--rw step?    pattern-format
+     |  |  |     |     +--rw decrement
+     |  |  |     |     |  +--rw start?   pattern-format
+     |  |  |     |     |  +--rw step?    pattern-format
+     |  |  |     |     +--rw value-list*     pattern-format
+     |  |  |     +--rw ipv4
+     |  |  |     |  +--rw source-address?    inet:ipv4-address {t:unresolved-type}?
+     |  |  |     |  +--rw gateway-address?   inet:ipv4-address {t:unresolved-type}?
+     |  |  |     +--rw ipv6
+     |  |  |     |  +--rw source-address?    inet:ipv6-address {t:unresolved-type}?
+     |  |  |     |  +--rw gateway-address?   inet:ipv6-address {t:unresolved-type}?
+     |  |  |     +--rw bgp4
+     |  |  |     |  +--rw dut-ipv4-address?            inet:ipv4-address
+     |  |  |     |  +--rw dut-ipv4-address-modifier
+     |  |  |     |  |  +--rw pattern-type?   enumeration
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   pattern-format
+     |  |  |     |  |  |  +--rw step?    pattern-format
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   pattern-format
+     |  |  |     |  |  |  +--rw step?    pattern-format
+     |  |  |     |  |  +--rw value-list*     pattern-format
+     |  |  |     |  +--rw as-number-2-byte
+     |  |  |     |  |  +--rw as-number?                uint32
+     |  |  |     |  |  +--rw as-number-modifier
+     |  |  |     |  |  |  +--rw pattern-type?   enumeration
+     |  |  |     |  |  |  +--rw increment
+     |  |  |     |  |  |  |  +--rw start?   pattern-format
+     |  |  |     |  |  |  |  +--rw step?    pattern-format
+     |  |  |     |  |  |  +--rw decrement
+     |  |  |     |  |  |  |  +--rw start?   pattern-format
+     |  |  |     |  |  |  |  +--rw step?    pattern-format
+     |  |  |     |  |  |  +--rw value-list*     pattern-format
+     |  |  |     |  |  +--rw dut-as-number?            uint32
+     |  |  |     |  |  +--rw dut-as-number-modifier
+     |  |  |     |  |     +--rw pattern-type?   enumeration
+     |  |  |     |  |     +--rw increment
+     |  |  |     |  |     |  +--rw start?   pattern-format
+     |  |  |     |  |     |  +--rw step?    pattern-format
+     |  |  |     |  |     +--rw decrement
+     |  |  |     |  |     |  +--rw start?   pattern-format
+     |  |  |     |  |     |  +--rw step?    pattern-format
+     |  |  |     |  |     +--rw value-list*     pattern-format
+     |  |  |     |  +--rw as-number-4-byte
+     |  |  |     |  |  +--rw as-number?                string
+     |  |  |     |  |  +--rw as-number-modifier
+     |  |  |     |  |  |  +--rw pattern-type?   enumeration
+     |  |  |     |  |  |  +--rw increment
+     |  |  |     |  |  |  |  +--rw start?   pattern-format
+     |  |  |     |  |  |  |  +--rw step?    pattern-format
+     |  |  |     |  |  |  +--rw decrement
+     |  |  |     |  |  |  |  +--rw start?   pattern-format
+     |  |  |     |  |  |  |  +--rw step?    pattern-format
+     |  |  |     |  |  |  +--rw value-list*     pattern-format
+     |  |  |     |  |  +--rw dut-as-number?            string
+     |  |  |     |  |  +--rw dut-as-number-modifier
+     |  |  |     |  |     +--rw pattern-type?   enumeration
+     |  |  |     |  |     +--rw increment
+     |  |  |     |  |     |  +--rw start?   pattern-format
+     |  |  |     |  |     |  +--rw step?    pattern-format
+     |  |  |     |  |     +--rw decrement
+     |  |  |     |  |     |  +--rw start?   pattern-format
+     |  |  |     |  |     |  +--rw step?    pattern-format
+     |  |  |     |  |     +--rw value-list*     pattern-format
+     |  |  |     |  +--rw bgp-type?                    enumeration
+     |  |  |     |  +--rw hold-time-interval?          uint32
+     |  |  |     |  +--rw keep-alive-interval?         uint32
+     |  |  |     |  +--rw graceful-restart
+     |  |  |     |  |  +--rw restart-time?    uint32
+     |  |  |     |  |  +--rw restart-delay?   uint32
+     |  |  |     |  |  +--rw advertise-eor?   boolean
+     |  |  |     |  +--rw authentication
+     |  |  |     |  |  +--rw authentication-type?   enumeration
+     |  |  |     |  |  +--rw md5-password?          string
+     |  |  |     |  +--rw ttl?                         uint8
+     |  |  |     +--rw bgp6
+     |  |  |        +--rw dut-ipv6-address?            inet:ipv6-address
+     |  |  |        +--rw dut-ipv6-address-modifier
+     |  |  |        |  +--rw pattern-type?   enumeration
+     |  |  |        |  +--rw increment
+     |  |  |        |  |  +--rw start?   pattern-format
+     |  |  |        |  |  +--rw step?    pattern-format
+     |  |  |        |  +--rw decrement
+     |  |  |        |  |  +--rw start?   pattern-format
+     |  |  |        |  |  +--rw step?    pattern-format
+     |  |  |        |  +--rw value-list*     pattern-format
+     |  |  |        +--rw as-number-2-byte
+     |  |  |        |  +--rw as-number?                uint32
+     |  |  |        |  +--rw as-number-modifier
+     |  |  |        |  |  +--rw pattern-type?   enumeration
+     |  |  |        |  |  +--rw increment
+     |  |  |        |  |  |  +--rw start?   pattern-format
+     |  |  |        |  |  |  +--rw step?    pattern-format
+     |  |  |        |  |  +--rw decrement
+     |  |  |        |  |  |  +--rw start?   pattern-format
+     |  |  |        |  |  |  +--rw step?    pattern-format
+     |  |  |        |  |  +--rw value-list*     pattern-format
+     |  |  |        |  +--rw dut-as-number?            uint32
+     |  |  |        |  +--rw dut-as-number-modifier
+     |  |  |        |     +--rw pattern-type?   enumeration
+     |  |  |        |     +--rw increment
+     |  |  |        |     |  +--rw start?   pattern-format
+     |  |  |        |     |  +--rw step?    pattern-format
+     |  |  |        |     +--rw decrement
+     |  |  |        |     |  +--rw start?   pattern-format
+     |  |  |        |     |  +--rw step?    pattern-format
+     |  |  |        |     +--rw value-list*     pattern-format
+     |  |  |        +--rw as-number-4-byte
+     |  |  |        |  +--rw as-number?                string
+     |  |  |        |  +--rw as-number-modifier
+     |  |  |        |  |  +--rw pattern-type?   enumeration
+     |  |  |        |  |  +--rw increment
+     |  |  |        |  |  |  +--rw start?   pattern-format
+     |  |  |        |  |  |  +--rw step?    pattern-format
+     |  |  |        |  |  +--rw decrement
+     |  |  |        |  |  |  +--rw start?   pattern-format
+     |  |  |        |  |  |  +--rw step?    pattern-format
+     |  |  |        |  |  +--rw value-list*     pattern-format
+     |  |  |        |  +--rw dut-as-number?            string
+     |  |  |        |  +--rw dut-as-number-modifier
+     |  |  |        |     +--rw pattern-type?   enumeration
+     |  |  |        |     +--rw increment
+     |  |  |        |     |  +--rw start?   pattern-format
+     |  |  |        |     |  +--rw step?    pattern-format
+     |  |  |        |     +--rw decrement
+     |  |  |        |     |  +--rw start?   pattern-format
+     |  |  |        |     |  +--rw step?    pattern-format
+     |  |  |        |     +--rw value-list*     pattern-format
+     |  |  |        +--rw bgp-type?                    enumeration
+     |  |  |        +--rw hold-time-interval?          uint32
+     |  |  |        +--rw keep-alive-interval?         uint32
+     |  |  |        +--rw graceful-restart
+     |  |  |        |  +--rw restart-time?    uint32
+     |  |  |        |  +--rw restart-delay?   uint32
+     |  |  |        |  +--rw advertise-eor?   boolean
+     |  |  |        +--rw authentication
+     |  |  |        |  +--rw authentication-type?   enumeration
+     |  |  |        |  +--rw md5-password?          string
+     |  |  |        +--rw ttl?                         uint8
+     |  |  +--rw simulated-networks* [name]
+     |  |     +--rw name           t:config-list-key
+     |  |     +--rw parent-link    union
+     |  |     +--rw networks* [name]
+     |  |        +--rw name                        t:config-list-key
+     |  |        +--rw network-count-per-device?   uint32
+     |  |        +--rw flow-link                   union
+     |  |        +--rw network-type                enumeration
+     |  |        +--rw bgp4-route-range* [name]
+     |  |        |  +--rw name                         t:config-list-key
+     |  |        |  +--rw address?                     inet:ipv4-address
+     |  |        |  +--rw address-modifier
+     |  |        |  |  +--rw pattern-type?   enumeration
+     |  |        |  |  +--rw increment
+     |  |        |  |  |  +--rw start?   pattern-format
+     |  |        |  |  |  +--rw step?    pattern-format
+     |  |        |  |  +--rw decrement
+     |  |        |  |  |  +--rw start?   pattern-format
+     |  |        |  |  |  +--rw step?    pattern-format
+     |  |        |  |  +--rw value-list*     pattern-format
+     |  |        |  +--rw prefix-length?               uint32
+     |  |        |  +--rw prefix-length-modifier
+     |  |        |  |  +--rw pattern-type?   enumeration
+     |  |        |  |  +--rw increment
+     |  |        |  |  |  +--rw start?   pattern-format
+     |  |        |  |  |  +--rw step?    pattern-format
+     |  |        |  |  +--rw decrement
+     |  |        |  |  |  +--rw start?   pattern-format
+     |  |        |  |  |  +--rw step?    pattern-format
+     |  |        |  |  +--rw value-list*     pattern-format
+     |  |        |  +--rw active?                      boolean
+     |  |        |  +--rw as-path?                     uint64
+     |  |        |  +--rw next-hop-address?            inet:ipv4-address
+     |  |        |  +--rw next-hop-address-modifier
+     |  |        |  |  +--rw pattern-type?   enumeration
+     |  |        |  |  +--rw increment
+     |  |        |  |  |  +--rw start?   pattern-format
+     |  |        |  |  |  +--rw step?    pattern-format
+     |  |        |  |  +--rw decrement
+     |  |        |  |  |  +--rw start?   pattern-format
+     |  |        |  |  |  +--rw step?    pattern-format
+     |  |        |  |  +--rw value-list*     pattern-format
+     |  |        |  +--rw aigp
+     |  |        |  |  +--rw aigp-metric?            uint64
+     |  |        |  |  +--rw aigp-metric-modifier
+     |  |        |  |     +--rw pattern-type?   enumeration
+     |  |        |  |     +--rw increment
+     |  |        |  |     |  +--rw start?   pattern-format
+     |  |        |  |     |  +--rw step?    pattern-format
+     |  |        |  |     +--rw decrement
+     |  |        |  |     |  +--rw start?   pattern-format
+     |  |        |  |     |  +--rw step?    pattern-format
+     |  |        |  |     +--rw value-list*     pattern-format
+     |  |        |  +--rw atomic-aggregate
+     |  |        |     +--rw aggregate-as?   uint64
+     |  |        |     +--rw aggregate-ip?   inet:ipv4-address
+     |  |        +--rw bgp6-route-range* [name]
+     |  |           +--rw name                         t:config-list-key
+     |  |           +--rw address?                     inet:ipv6-address
+     |  |           +--rw address-modifier
+     |  |           |  +--rw pattern-type?   enumeration
+     |  |           |  +--rw increment
+     |  |           |  |  +--rw start?   pattern-format
+     |  |           |  |  +--rw step?    pattern-format
+     |  |           |  +--rw decrement
+     |  |           |  |  +--rw start?   pattern-format
+     |  |           |  |  +--rw step?    pattern-format
+     |  |           |  +--rw value-list*     pattern-format
+     |  |           +--rw prefix-length?               uint32
+     |  |           +--rw prefix-length-modifier
+     |  |           |  +--rw pattern-type?   enumeration
+     |  |           |  +--rw increment
+     |  |           |  |  +--rw start?   pattern-format
+     |  |           |  |  +--rw step?    pattern-format
+     |  |           |  +--rw decrement
+     |  |           |  |  +--rw start?   pattern-format
+     |  |           |  |  +--rw step?    pattern-format
+     |  |           |  +--rw value-list*     pattern-format
+     |  |           +--rw active?                      boolean
+     |  |           +--rw as-path?                     uint64
+     |  |           +--rw next-hop-address?            inet:ipv6-address
+     |  |           +--rw next-hop-address-modifier
+     |  |              +--rw pattern-type?   enumeration
+     |  |              +--rw increment
+     |  |              |  +--rw start?   pattern-format
+     |  |              |  +--rw step?    pattern-format
+     |  |              +--rw decrement
+     |  |              |  +--rw start?   pattern-format
+     |  |              |  +--rw step?    pattern-format
+     |  |              +--rw value-list*     pattern-format
+     |  +---x create-bgp4
+     |  |  +---w input
+     |  |     +---w device-group-name    string
+     |  |     +---w device-name          string
+     |  |     +---w ethernet
+     |  |     |  +---w mac-address?            yang:mac-address {t:unresolved-type}?
+     |  |     |  +---w mac-address-modifier
+     |  |     |  |  +---w pattern-type?   enumeration
+     |  |     |  |  +---w increment
+     |  |     |  |  |  +---w start?   pattern-format
+     |  |     |  |  |  +---w step?    pattern-format
+     |  |     |  |  +---w decrement
+     |  |     |  |  |  +---w start?   pattern-format
+     |  |     |  |  |  +---w step?    pattern-format
+     |  |     |  |  +---w value-list*     pattern-format
+     |  |     |  +---w mtu?                    uint16 {t:unresolved-type}?
+     |  |     |  +---w name                    string
+     |  |     +---w vlan
+     |  |     |  +---w tpid?                enumeration {t:unresolved-type}?
+     |  |     |  +---w priority?            uint8 {t:unresolved-type}?
+     |  |     |  +---w priority-modifier
+     |  |     |  |  +---w pattern-type?   enumeration
+     |  |     |  |  +---w increment
+     |  |     |  |  |  +---w start?   pattern-format
+     |  |     |  |  |  +---w step?    pattern-format
+     |  |     |  |  +---w decrement
+     |  |     |  |  |  +---w start?   pattern-format
+     |  |     |  |  |  +---w step?    pattern-format
+     |  |     |  |  +---w value-list*     pattern-format
+     |  |     |  +---w id?                  uint16 {t:unresolved-type}?
+     |  |     |  +---w id-modifier
+     |  |     |  |  +---w pattern-type?   enumeration
+     |  |     |  |  +---w increment
+     |  |     |  |  |  +---w start?   pattern-format
+     |  |     |  |  |  +---w step?    pattern-format
+     |  |     |  |  +---w decrement
+     |  |     |  |  |  +---w start?   pattern-format
+     |  |     |  |  |  +---w step?    pattern-format
+     |  |     |  |  +---w value-list*     pattern-format
+     |  |     |  +---w name                 string
+     |  |     +---w ipv4
+     |  |     |  +---w source-address?    inet:ipv4-address {t:unresolved-type}?
+     |  |     |  +---w gateway-address?   inet:ipv4-address {t:unresolved-type}?
+     |  |     |  +---w name               string
+     |  |     +---w bgp4
+     |  |        +---w dut-ipv4-address?            inet:ipv4-address
+     |  |        +---w dut-ipv4-address-modifier
+     |  |        |  +---w pattern-type?   enumeration
+     |  |        |  +---w increment
+     |  |        |  |  +---w start?   pattern-format
+     |  |        |  |  +---w step?    pattern-format
+     |  |        |  +---w decrement
+     |  |        |  |  +---w start?   pattern-format
+     |  |        |  |  +---w step?    pattern-format
+     |  |        |  +---w value-list*     pattern-format
+     |  |        +---w as-number-2-byte
+     |  |        |  +---w as-number?                uint32
+     |  |        |  +---w as-number-modifier
+     |  |        |  |  +---w pattern-type?   enumeration
+     |  |        |  |  +---w increment
+     |  |        |  |  |  +---w start?   pattern-format
+     |  |        |  |  |  +---w step?    pattern-format
+     |  |        |  |  +---w decrement
+     |  |        |  |  |  +---w start?   pattern-format
+     |  |        |  |  |  +---w step?    pattern-format
+     |  |        |  |  +---w value-list*     pattern-format
+     |  |        |  +---w dut-as-number?            uint32
+     |  |        |  +---w dut-as-number-modifier
+     |  |        |     +---w pattern-type?   enumeration
+     |  |        |     +---w increment
+     |  |        |     |  +---w start?   pattern-format
+     |  |        |     |  +---w step?    pattern-format
+     |  |        |     +---w decrement
+     |  |        |     |  +---w start?   pattern-format
+     |  |        |     |  +---w step?    pattern-format
+     |  |        |     +---w value-list*     pattern-format
+     |  |        +---w as-number-4-byte
+     |  |        |  +---w as-number?                string
+     |  |        |  +---w as-number-modifier
+     |  |        |  |  +---w pattern-type?   enumeration
+     |  |        |  |  +---w increment
+     |  |        |  |  |  +---w start?   pattern-format
+     |  |        |  |  |  +---w step?    pattern-format
+     |  |        |  |  +---w decrement
+     |  |        |  |  |  +---w start?   pattern-format
+     |  |        |  |  |  +---w step?    pattern-format
+     |  |        |  |  +---w value-list*     pattern-format
+     |  |        |  +---w dut-as-number?            string
+     |  |        |  +---w dut-as-number-modifier
+     |  |        |     +---w pattern-type?   enumeration
+     |  |        |     +---w increment
+     |  |        |     |  +---w start?   pattern-format
+     |  |        |     |  +---w step?    pattern-format
+     |  |        |     +---w decrement
+     |  |        |     |  +---w start?   pattern-format
+     |  |        |     |  +---w step?    pattern-format
+     |  |        |     +---w value-list*     pattern-format
+     |  |        +---w bgp-type?                    enumeration
+     |  |        +---w hold-time-interval?          uint32
+     |  |        +---w keep-alive-interval?         uint32
+     |  |        +---w graceful-restart
+     |  |        |  +---w restart-time?    uint32
+     |  |        |  +---w restart-delay?   uint32
+     |  |        |  +---w advertise-eor?   boolean
+     |  |        +---w authentication
+     |  |        |  +---w authentication-type?   enumeration
+     |  |        |  +---w md5-password?          string
+     |  |        +---w ttl?                         uint8
+     |  |        +---w name                         string
      |  +---x start-protocols
      |  |  +---w input
-     |  |  |  +---w protocol-group-names*   string
+     |  |  |  +---w protocol-names*   string
      |  |  +--ro output
      |  |     +--ro errata* [name]
-     |  |        +--ro name           string
+     |  |        +--ro name           config-list-key
      |  |        +--ro detail?        string
      |  |        +--ro stack-trace?   string
      |  +---x stop-protocols
      |  |  +---w input
-     |  |  |  +---w protocol-group-names*   string
+     |  |  |  +---w protocol-names*   string
      |  |  +--ro output
      |  |     +--ro errata* [name]
-     |  |        +--ro name           string
+     |  |        +--ro name           config-list-key
      |  |        +--ro detail?        string
      |  |        +--ro stack-trace?   string
      |  +--rw traffic-groups* [name]
-     |  |  +--rw name    string
+     |  |  +--rw name                     t:config-list-key
+     |  |  +--rw port-name?               t:config-list-key
+     |  |  +--rw endpoint-mapping?        enumeration
+     |  |  +--rw source-endpoints*        string
+     |  |  +--rw destination-endpoints*   string
+     |  |  +--rw encapsulation?           enumeration
+     |  |  +--rw frame-length
+     |  |  |  +--rw fixed-mode
+     |  |  |     +--rw frame-size?   int32
+     |  |  +--rw frame-load
+     |  |  |  +--rw value?   int32
+     |  |  |  +--rw unit?    enumeration
+     |  |  +--rw bidirectional?           boolean
+     |  |  +--rw frame
+     |  |     +--rw ethernet* [name]
+     |  |     |  +--rw name                            string
+     |  |     |  +--rw frame-link?                     string
+     |  |     |  +--rw source-address?                 yang:mac-address
+     |  |     |  +--rw source-address-modifier
+     |  |     |  |  +--rw pattern-type?   enumeration
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   pattern-format
+     |  |     |  |  |  +--rw step?    pattern-format
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   pattern-format
+     |  |     |  |  |  +--rw step?    pattern-format
+     |  |     |  |  +--rw value-list*     pattern-format
+     |  |     |  +--rw destination-address?            yang:mac-address
+     |  |     |  +--rw destination-address-modifier
+     |  |     |  |  +--rw pattern-type?   enumeration
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   pattern-format
+     |  |     |  |  |  +--rw step?    pattern-format
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   pattern-format
+     |  |     |  |  |  +--rw step?    pattern-format
+     |  |     |  |  +--rw value-list*     pattern-format
+     |  |     |  +--rw ethernet-type?                  enumeration
+     |  |     +--rw vlan* [name]
+     |  |     |  +--rw name                 string
+     |  |     |  +--rw frame-link?          string
+     |  |     |  +--rw priority?            uint8 {t:unresolved-type}?
+     |  |     |  +--rw priority-modifier
+     |  |     |  |  +--rw pattern-type?   enumeration
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   pattern-format
+     |  |     |  |  |  +--rw step?    pattern-format
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   pattern-format
+     |  |     |  |  |  +--rw step?    pattern-format
+     |  |     |  |  +--rw value-list*     pattern-format
+     |  |     |  +--rw id?                  uint16 {t:unresolved-type}?
+     |  |     |  +--rw id-modifier
+     |  |     |     +--rw pattern-type?   enumeration
+     |  |     |     +--rw increment
+     |  |     |     |  +--rw start?   pattern-format
+     |  |     |     |  +--rw step?    pattern-format
+     |  |     |     +--rw decrement
+     |  |     |     |  +--rw start?   pattern-format
+     |  |     |     |  +--rw step?    pattern-format
+     |  |     |     +--rw value-list*     pattern-format
+     |  |     +--rw ipv4* [name]
+     |  |     |  +--rw name                            string
+     |  |     |  +--rw frame-link?                     string
+     |  |     |  +--rw source-address?                 inet:ipv4-address
+     |  |     |  +--rw source-address-modifier
+     |  |     |  |  +--rw pattern-type?   enumeration
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   pattern-format
+     |  |     |  |  |  +--rw step?    pattern-format
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   pattern-format
+     |  |     |  |  |  +--rw step?    pattern-format
+     |  |     |  |  +--rw value-list*     pattern-format
+     |  |     |  +--rw destination-address?            inet:ipv4-address
+     |  |     |  +--rw destination-address-modifier
+     |  |     |  |  +--rw pattern-type?   enumeration
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   pattern-format
+     |  |     |  |  |  +--rw step?    pattern-format
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   pattern-format
+     |  |     |  |  |  +--rw step?    pattern-format
+     |  |     |  |  +--rw value-list*     pattern-format
+     |  |     |  +--rw ttl?                            uint8
+     |  |     +--rw ipv6* [name]
+     |  |        +--rw name                            string
+     |  |        +--rw frame-link?                     string
+     |  |        +--rw source-address?                 inet:ipv6-address
+     |  |        +--rw source-address-modifier
+     |  |        |  +--rw pattern-type?   enumeration
+     |  |        |  +--rw increment
+     |  |        |  |  +--rw start?   pattern-format
+     |  |        |  |  +--rw step?    pattern-format
+     |  |        |  +--rw decrement
+     |  |        |  |  +--rw start?   pattern-format
+     |  |        |  |  +--rw step?    pattern-format
+     |  |        |  +--rw value-list*     pattern-format
+     |  |        +--rw destination-address?            inet:ipv6-address
+     |  |        +--rw destination-address-modifier
+     |  |        |  +--rw pattern-type?   enumeration
+     |  |        |  +--rw increment
+     |  |        |  |  +--rw start?   pattern-format
+     |  |        |  |  +--rw step?    pattern-format
+     |  |        |  +--rw decrement
+     |  |        |  |  +--rw start?   pattern-format
+     |  |        |  |  +--rw step?    pattern-format
+     |  |        |  +--rw value-list*     pattern-format
+     |  |        +--rw ttl?                            uint8
      |  +---x start-traffic
      |  |  +---w input
      |  |  |  +---w traffic-group-names*   string
      |  |  +--ro output
      |  |     +--ro errata* [name]
-     |  |        +--ro name           string
+     |  |        +--ro name           config-list-key
      |  |        +--ro detail?        string
      |  |        +--ro stack-trace?   string
      |  +---x stop-traffic
@@ -59,7 +546,7 @@ module: openhltest
      |  |  |  +---w traffic-group-names*   string
      |  |  +--ro output
      |  |     +--ro errata* [name]
-     |  |        +--ro name           string
+     |  |        +--ro name           config-list-key
      |  |        +--ro detail?        string
      |  |        +--ro stack-trace?   string
      |  +---x clear
@@ -67,27 +554,61 @@ module: openhltest
      |     +---w input
      |        +---w vendor-config?   binary
      +--rw statistics
+     |  +--rw port-name*                  string
      |  +--ro first-activity-timestamp?   yang:date-and-time
      |  +--ro last-activity-timestamp?    yang:date-and-time
      |  +--ro ports* [name]
-     |  |  +--ro name                               string
+     |  |  +--ro name                               t:config-list-key
      |  |  +--ro connected-test-port-id?            string
      |  |  +--ro connected-test-port-description?   string
      |  |  +--ro connection-state?                  enumeration
      |  |  +--ro connection-state-details?          string
      |  |  +--ro speed?                             string
-     |  |  +--ro tx-frames?                         string
-     |  |  +--ro rx-frames?                         string
+     |  |  +--ro tx-frames?                         uint64
+     |  |  +--ro rx-frames?                         uint64
+     |  +--ro bgp4-statistics* [device-name]
+     |  |  +--ro device-name                 string
+     |  |  +--ro port-name?                  string
+     |  |  +--ro router-state?               enumeration
+     |  |  +--ro tx-advertise-route-count?   uint64
+     |  |  +--ro rx-advertise-route-count?   uint64
+     |  |  +--ro tx-withdraw-route-count?    uint64
+     |  |  +--ro rx-withdraw-route-count?    uint64
+     |  +--ro bgp6-statistics* [device-name]
+     |  |  +--ro device-name                 string
+     |  |  +--ro port-name?                  string
+     |  |  +--ro router-state?               enumeration
+     |  |  +--ro tx-advertise-route-count?   uint64
+     |  |  +--ro rx-advertise-route-count?   uint64
+     |  |  +--ro tx-withdraw-route-count?    uint64
+     |  |  +--ro rx-withdraw-route-count?    uint64
      |  +---x clear
      +---n statistic-events
+        +-- port-name*                  string
         +--ro first-activity-timestamp?   yang:date-and-time
         +--ro last-activity-timestamp?    yang:date-and-time
         +--ro ports* [name]
-           +--ro name                               string
-           +--ro connected-test-port-id?            string
-           +--ro connected-test-port-description?   string
-           +--ro connection-state?                  enumeration
-           +--ro connection-state-details?          string
-           +--ro speed?                             string
-           +--ro tx-frames?                         string
-           +--ro rx-frames?                         string
+        |  +--ro name                               t:config-list-key
+        |  +--ro connected-test-port-id?            string
+        |  +--ro connected-test-port-description?   string
+        |  +--ro connection-state?                  enumeration
+        |  +--ro connection-state-details?          string
+        |  +--ro speed?                             string
+        |  +--ro tx-frames?                         uint64
+        |  +--ro rx-frames?                         uint64
+        +--ro bgp4-statistics* [device-name]
+        |  +--ro device-name                 string
+        |  +--ro port-name?                  string
+        |  +--ro router-state?               enumeration
+        |  +--ro tx-advertise-route-count?   uint64
+        |  +--ro rx-advertise-route-count?   uint64
+        |  +--ro tx-withdraw-route-count?    uint64
+        |  +--ro rx-withdraw-route-count?    uint64
+        +--ro bgp6-statistics* [device-name]
+           +--ro device-name                 string
+           +--ro port-name?                  string
+           +--ro router-state?               enumeration
+           +--ro tx-advertise-route-count?   uint64
+           +--ro rx-advertise-route-count?   uint64
+           +--ro tx-withdraw-route-count?    uint64
+           +--ro rx-withdraw-route-count?    uint64

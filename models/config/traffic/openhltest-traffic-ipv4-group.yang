@@ -1,0 +1,82 @@
+submodule openhltest-traffic-ipv4-group {
+
+    yang-version "1.1";
+    belongs-to "openhltest" {
+		prefix "oht";
+	}
+
+    import openhltest-types {
+        prefix t;
+    }
+    import openhltest-patterns {
+		prefix p;
+	}
+	import ietf-inet-types {
+		prefix inet;
+	}
+	
+    organization
+      "OpenHlTest working group";
+    contact
+      "OpenHlTest working group";
+    description
+      "This module describes a collection of traffic groups
+	  and associated rpcs.";
+
+    revision 2018-02-09 {
+        description
+          "Initial revision.";
+        reference
+          "0.0.1";
+    }
+
+    grouping traffic-ipv4-group-top {
+        description
+        "A grouping of traffic groups.
+		 A traffic group is a collection of traffic streams and flows.";
+		
+        list ipv4 {
+            key "name";
+            description
+            "A list frames";
+            
+            leaf name {
+                type string;
+                description
+                "The unique name";
+            }
+            leaf frame-link {
+                type string;
+                description
+                "Frame Stack";
+            }
+            leaf source-address {
+                type inet:ipv4-address;
+                description
+                "Source IPv4 Address";
+            }
+            container source-address-modifier {
+                description
+                "Source IPv4 Address modifier";
+                uses p:patterns-ipv4-config;
+            }
+            leaf destination-address {
+                type inet:ipv4-address;
+                description
+                "Destination IPv4 Address";
+            }
+            container destination-address-modifier {
+                description
+                "Source IPv4 Address modifier";
+                uses p:patterns-ipv4-config;
+            }
+			leaf ttl {
+				description
+				"The limited number of iterations that a unit of data can experience before 
+                the data is discarded.";
+				type uint8;
+			}
+        }
+    }
+
+}

@@ -1,0 +1,328 @@
+submodule openhltest-device-groups {
+
+	yang-version "1.1";
+	belongs-to "openhltest" {
+		prefix "oht";
+	}
+
+	import openhltest-types {
+		prefix t;
+	}
+	include openhltest-ethernet;
+	include openhltest-vlan;
+	include openhltest-ipv4;
+	include openhltest-ipv6;
+	include openhltest-bgp4;
+	include openhltest-bgp6;
+	include openhltest-port;
+	include openhltest-bgp4-route-range;
+	include openhltest-bgp6-route-range;
+    
+	organization
+	"OpenHlTest working group";
+	contact
+	"OpenHlTest working group";
+	description
+	"This module describes a collection of emulated networks.";
+
+	revision 2018-02-09 {
+		description
+		  "Initial revision.";
+		reference
+		  "0.0.1";
+	}
+
+	grouping device-groups-top {
+		description
+		"A grouping of device-groups, devices and protocols.";
+
+		list device-groups {
+			key "name";
+			description
+			"A list of device-groups.
+			Each device-groups object can contain 0..n devices.";
+
+			leaf name {
+				type t:config-list-key;
+				description
+				"The unique name of a device-groups object.";
+			}
+			leaf-list ports {
+				description 
+				"A list of abstract test port names. 
+				Every object in the devices and protocols lists will share the ports assigned to a device-groups object.
+				An abstract test port name cannot be assigned to more than one device-groups object.";
+				type leafref {
+					path "../../ports/name";
+				}
+			}
+
+			list devices {
+				description 
+				"A list of devices. 
+				Each devices object can contain 0..n protocols objects";
+				
+				key "name";
+				leaf name {
+					type t:config-list-key;
+					description
+					"The unique name of a devices object.";
+				}
+				leaf device-count-per-port {
+					description "The number of devices that will be created on each
+					abstract test port specified in the port-names list.";
+					type uint32 {
+						range 1..200000;
+					}
+					default "1";
+				}
+				leaf parent-link {
+					description
+					"Identifies which devices object or simulated-networks object is connected to this object.
+					This is used to create a devices container behind a devices or simulated networks container.
+					An empty link indicates that the object is at the top of the stack.";
+					mandatory true;
+					type union {
+						type leafref {
+							path "../name";
+						}
+						type leafref {
+							path "../../simulated-networks/name";
+						}
+						type empty;
+					}
+				}
+				list protocols {
+					description "A list of emulated protocols.
+					Each emulated protocols object is a container for one and only one of the emulated protocol types.
+					The protocol-type is used to specify what type of protocol is contained in a protocols object.";
+
+					key "name";
+					leaf "name" {
+						type t:config-list-key;
+						description "The unique name of a protocols object";
+					}
+					leaf parent-link {
+						description "Identifies which protocols object is the parent of this protocol.
+						This link only applies to protocol objects in one container.
+						The link can be used to specify a vertical or horizontal relationship.
+						To specify the first protocols object in a stack the value must be empty.";
+						mandatory true;
+						type union {
+							type leafref {
+								path "../name";
+							}
+							type empty;
+						}
+					}
+					leaf flow-link {
+						description
+						"Identifies which object in another container is the next hop from this container.
+						The name cannot be one of the names in this devices container.
+						An empty link indicates no flow link";
+						mandatory true;
+						type union {
+							type leafref {
+								path "../name";
+							}
+							type leafref {
+								path "../../simulated-networks/name";
+							}
+							type empty;
+						}
+					}
+					leaf protocol-type {
+						description "Determines which detailed emulated protocol container is active.";
+						mandatory true;
+						type enumeration {
+							enum ETHERNET;
+							enum VLAN;
+							enum IPV4;
+                            enum IPV6;
+							enum BGP4;
+                            enum BGP6;
+						}
+					}
+					uses ethernet-group {
+						description "The conditional container for detailed ethernet information";
+						when "../protocol-type = ETHERNET";
+					}
+					uses vlan-group {
+						description "The conditional container for detailed vlan information"; 
+						when "../protocol-type = VLAN";
+					}
+					uses ipv4-group {
+						description "The conditional container for detailed ipv4 information"; 
+						when "../protocol-type = IPV4";
+					}
+					uses ipv6-group {
+						description "The conditional container for detailed ipv6 information"; 
+						when "../protocol-type = IPV6";
+					}
+					uses bgp4-group {
+						description "The conditional container for detailed bgp4 information"; 
+						when "../protocol-type = BGP4";
+					}
+					uses bgp6-group {
+						description "The conditional container for detailed bgp6 information"; 
+						when "../protocol-type = BGP6";
+					}
+				}
+			}
+
+			list simulated-networks {
+				description 
+				"A list of simulated networks. 
+				Each simulated networks object can contain 0..n networks objects";
+				key "name";
+				leaf name {
+					type t:config-list-key;
+					description
+					"The unique name of the simulated-networks object.";
+				}
+				leaf parent-link {
+					description 
+					"Identifies which devices object or simulated-networks object is connected to this object.
+					This is used to create a simulated netwworks container behind a devices or simulated networks container.";
+					mandatory true;
+					type union {
+						type leafref {
+							path "../../device-groups/devices/name";
+						}
+					}
+				}
+				list networks {
+					description "A list of emulated networks.
+					Each emulated networks object is a container for one and only one of the emulated network types.
+					The network-type is used to specify what type of network is contained in a networks object.";
+					
+					key "name";
+					leaf name {
+						type t:config-list-key;
+						description
+						"The unique name of the networks object.";
+					}
+                    leaf network-count-per-device {
+                        description 
+                        "The number of devices that will be created on each
+                        abstract test port specified in the port-names list.";
+                        type uint32 {
+                            range 1..200000;
+                        }
+                        default "1";
+                    }
+					leaf flow-link {
+						description
+						"Identifies which object in another container is the next hop from this container.
+						The name cannot be one of the names in this networks container.
+						An empty link indicates no flow link";
+						mandatory true;
+						type union {
+							type leafref {
+								path "../../device-groups/devices/protocols/name";
+							}
+							type empty;
+						}
+					}
+					leaf network-type {
+						description "Determines which detailed network container is active.";
+						mandatory true;
+						type enumeration {
+							enum "BGP4_ROUTE_RANGE";
+							enum "BGP6_ROUTE_RANGE";
+						}
+					}
+					uses bgp4-route-range-group {
+						description "The conditional container for detailed bgp4 route range information"; 
+						when "../network-type = BGPV4_ROUTE_RANGE";
+					}
+					uses bgp6-route-range-group {
+						description "The conditional container for detailed bgp4 route range information"; 
+						when "../network-type = BGPV6_ROUTE_RANGE";
+					}
+				}
+			}
+		}
+
+		action create-bgp4 {
+			input {
+				leaf device-group-name {
+					mandatory true;
+					type string;
+				}
+				leaf device-name {
+					mandatory true;
+					type string;
+				}
+				uses ethernet-group {
+					augment ethernet {
+						leaf name {
+							mandatory true;
+							type string;
+						}
+					}
+				}
+				uses vlan-group {
+					augment vlan {
+						leaf name {
+							mandatory true;
+							type string;
+						}
+					}					
+				}
+				uses ipv4-group {
+					augment ipv4 {
+						leaf name {
+							mandatory true;
+							type string;
+						}
+					}
+				}
+				uses bgp4-group {
+					augment bgp4 {
+						leaf name {
+							mandatory true;
+							type string;
+						}
+					}
+				}
+			}
+		}
+		action start-protocols {
+			description
+			"Start one or more emulated protocol groups.
+			An empty list signifies that all protocol groups will be started.";
+
+			input {
+				leaf-list protocol-names {
+					description "A list of protocol group names";
+					type string;
+				}
+			}
+			output {
+				uses t:errata-group {
+					description "A list of protocol group resources that failed to start.
+					An empty list signifies that all protocol groups successfully started.";
+				}
+			}
+		}
+		action stop-protocols {
+			description
+			"Stop one or more protocol groups. 
+			An empty list signifiels that all protocol groups will be stopped.";
+
+			input {
+				leaf-list protocol-names {
+					description "A list of protocol group names";
+					type string;
+				}
+			}
+			output {
+				uses t:errata-group {
+					description "A list of protocol group resources that failed to stop.
+					An empty list signifies that all protocol groups successfully stopped.";
+				}
+			}
+		}
+	}
+}

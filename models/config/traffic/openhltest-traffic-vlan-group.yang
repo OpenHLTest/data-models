@@ -1,0 +1,75 @@
+submodule openhltest-traffic-vlan-group {
+
+    yang-version "1.1";
+    belongs-to "openhltest" {
+		prefix "oht";
+	}
+
+    import openhltest-types {
+        prefix t;
+    }
+    import openhltest-patterns {
+		prefix p;
+	}
+    
+    organization
+      "OpenHlTest working group";
+    contact
+      "OpenHlTest working group";
+    description
+      "This module describes a collection of traffic groups
+	  and associated rpcs.";
+
+    revision 2018-02-09 {
+        description
+          "Initial revision.";
+        reference
+          "0.0.1";
+    }
+
+    grouping traffic-vlan-group-top {
+        description
+        "A grouping of traffic groups.
+		 A traffic group is a collection of traffic streams and flows.";
+		
+        list vlan {
+            key "name";
+            description
+            "A list frames";
+            
+            leaf name {
+                type string;
+                description
+                "The unique name";
+            }
+            leaf frame-link {
+                type string;
+                description
+                "Frame Stack";
+            }
+			leaf priority {
+				if-feature t:unresolved-type;
+				type uint8 {
+                    range 0..7;
+                }
+				default "0";
+			}
+            container priority-modifier {
+                uses p:patterns-int32-config;
+			}
+			leaf id {
+				if-feature t:unresolved-type;
+				description
+					"A single-tagged VLAN id";  		
+				type uint16 {
+                    range 1..4095;
+                }
+				default "1";
+			}
+            container id-modifier {
+                uses p:patterns-int32-config;
+			}
+        }
+    }
+
+}

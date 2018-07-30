@@ -1,0 +1,46 @@
+submodule openhltest-bgp4 {
+
+    yang-version "1.1";
+    belongs-to "openhltest" {
+		prefix "oht";
+	}
+    
+	import ietf-inet-types {
+		prefix inet;
+	}
+    import openhltest-patterns {
+		prefix p;
+	}
+
+    include openhltest-bgp-common;
+    
+	organization
+      "OpenHlTest working group";
+    contact
+      "OpenHlTest working group";
+    description
+      "This module describes the bgp4 emulated protocol.";
+
+    revision 2018-02-09 {
+        description
+          "Initial revision.";
+        reference
+          "0.0.1";
+    }
+
+	grouping bgp4-group {
+		container bgp4 {
+            leaf dut-ipv4-address {
+				description
+				"IPv4 address of the BGP peer for the session.";
+				type inet:ipv4-address;
+			}
+            
+            container dut-ipv4-address-modifier {
+                uses p:patterns-ipv4-config;
+            }
+            
+            uses bgp-common-group;
+		}
+	}
+}

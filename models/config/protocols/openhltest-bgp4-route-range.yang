@@ -1,0 +1,98 @@
+submodule openhltest-bgp4-route-range {
+
+    yang-version "1.1";
+    belongs-to "openhltest" {
+		prefix "oht";
+	}
+
+	import openhltest-types {
+		prefix t;
+	}
+	import ietf-inet-types {
+		prefix inet;
+	}
+    import openhltest-patterns {
+		prefix p;
+	}
+    
+	include openhltest-ipv4-route-range;
+
+	organization
+      "OpenHlTest working group";
+    contact
+      "OpenHlTest working group";
+    description
+      "This module describes the simulated bgp4 route range.";
+
+    revision 2018-02-09 {
+        description
+          "Initial revision.";
+        reference
+          "0.0.1";
+    }
+	
+	grouping bgp4-route-range-group {
+		list bgp4-route-range {
+            key "name";
+            leaf name {
+                type t:config-list-key;
+                description
+                "The unique name of the networks object.";
+            }
+	
+            uses ipv4-route-range-group;
+            
+            leaf as-path {
+                type uint64 {
+                    range 0..2147483647;
+                }
+                description
+                "Used in the AS_PATH attribute in BGP UPDATE messages.";
+                default "1";
+            }
+			leaf next-hop-address {
+				description
+				"The next hop is the node to which packets should be sent to get them closer 
+                to the destination. Specify the IP address of the border router that should be 
+                used as the next hop to the destinations listed in the UPDATE message. 
+                This is the mandatory NEXT_HOP path attribute in UPDATE messages.";
+				type inet:ipv4-address;
+			}
+            container next-hop-address-modifier {
+                uses p:patterns-ipv4-config;
+			}
+            container aigp {
+                description
+                    "configure the Accumulated Interior Gateway Protocol (AIGP)";
+                leaf aigp-metric {
+                    description
+                    "Value of the first accumulated interior gateway protocol metric";
+                    type uint64;
+                    default 10;
+                }
+                container aigp-metric-modifier {
+                    description
+                    "patterns to create additional AIGP metrics.";
+                    uses p:patterns-uint64-config;
+                }
+            }
+            
+            container atomic-aggregate {
+                description
+                    "Indicates whether to include the ATOMIC_AGGREGATE attribute in BGP UPDATE messages";
+                leaf aggregate-as {
+                    description
+                    "The AS number to use for the AGGREGATOR attribute";
+                    type uint64;
+                }
+                leaf aggregate-ip {
+                    description
+                    "The IP address to use for the AGGREGATOR attribute.";
+                    type inet:ipv4-address;
+                }
+            }
+		}
+	}
+}
+
+	

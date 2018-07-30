@@ -1,0 +1,177 @@
+submodule openhltest-bgp-common {
+
+    yang-version "1.1";
+    belongs-to "openhltest" {
+		prefix "oht";
+	}
+    
+	import ietf-inet-types {
+		prefix inet;
+	}
+    import openhltest-patterns {
+		prefix p;
+	}
+
+	organization
+      "OpenHlTest working group";
+    contact
+      "OpenHlTest working group";
+    description
+      "This module describes the bgp-common emulated protocol.";
+
+    revision 2018-02-09 {
+        description
+          "Initial revision.";
+        reference
+          "0.0.1";
+    }
+
+	grouping bgp-common-group {
+        container as-number-2-byte {
+            description
+                "2-Byte Autonomous system number";
+            leaf as-number {
+                description
+                "Autonomous system number for the emulated BGP router";
+                type uint32 {
+                    range 0..65535;
+                }
+                default "1";
+            }
+            
+            container as-number-modifier {
+                uses p:patterns-uint32-config;
+            }
+            
+            leaf dut-as-number {
+                description
+                "Autonomous system number configured for the DUT.";
+                type uint32 {
+                    range 0..65535;
+                }
+                default "1001";
+            }
+            
+            container dut-as-number-modifier {
+                uses p:patterns-uint32-config;
+            }
+        }
+
+        container as-number-4-byte {
+            description
+                "4-Byte Autonomous system number";            
+            leaf as-number {
+                description
+                "4-byte autonomous system number for the emulated BGP router";
+                type string;
+            }
+            container as-number-modifier {
+                uses p:patterns-config;
+            }
+
+            leaf dut-as-number {
+                description
+                "4-byte autonomous system number configured for the DUT.";
+                type string;
+            }
+            container dut-as-number-modifier {
+                uses p:patterns-config;
+            }
+        }
+        
+        leaf bgp-type {
+            description
+            "The type of BGP topology you create. Options include the following:
+                External-External BGP (EBGP)-used for BGP links between two or more Autonomous Systems (ASs)
+                Internal-Internal BGP (IBGP)-used within a single Autonomous System (AS)";
+            default EXTERNAL;
+            type enumeration {
+                enum EXTERNAL;
+                enum INTERNAL;
+            }
+        }
+        leaf hold-time-interval {
+            description
+            "BGP Hold Time in seconds to use when negotiating with peers. If the router 
+            does not receive KEEPALIVE or UPDATE or NOTIFICATION messages within the 
+            Hold Time field of the OPEN message, the BGP connection to the peer will be closed.";
+            type uint32 {
+                range 3..65535;
+            }
+            default "90";
+        }
+        leaf keep-alive-interval {
+            description
+            "Number of seconds between transmissions of Keep Alive messages by the emulated router 
+            (in the absence of the sending of any other BGP packets) to the DUT. The standard 
+            keep-alive transmit time is every 30 seconds, or one-third of the Hold Time.";
+            type uint32 {
+                range 1..65535;
+            }
+            default "30";
+        }
+        container graceful-restart {
+            description
+            "Enable Graceful Restart on the emulated BGP router.
+                Specified:  Causes an emulated router's peer to retain the router's advertised 
+                       routes in the peer's route database when the session is closed. 
+                       Restart Time must be set.
+                Not Specified: Causes an emulated router's peer to remove the router's advertised
+                       routes from its route database when the session is closed ";            
+            leaf restart-time {
+                description
+                "BGP graceful restart time. The amount of time (in seconds) that the emulated 
+                router will wait for its peer to re-establish the session. If the session is 
+                not re-established within this time frame, the stale routes will be removed 
+                from the route database.";
+                type uint32 {
+                    range 0..4095;
+                }
+                default "90";
+            }
+            leaf restart-delay {
+                description
+                "The amount of time to wait before initiating a new BGP session. Traffic generator
+                will not initiate a new session until this timer expires. If the DUT initiates a
+                new session, Spirent TestCenter will process it and establish the session.";
+                type uint32 {
+                    range 0..4095;
+                }
+                default "1";
+            }
+            leaf advertise-eor {
+                description
+                "Advertise End-of-RIB
+                    TRUE  : Send end-of-RIB marker in the update packet
+                    FALSE : Do not send end-of-RIB marker in the update packet";
+                default true;
+                type boolean;
+            }
+        }
+        container authentication {
+            description
+                "Type of authentication to be used";
+            leaf authentication-type {
+                description
+                "Type of authentication to be used";
+                default NONE;
+                type enumeration {
+                    enum NONE;
+                    enum MD5;
+                }
+            }
+            leaf md5-password {
+                description
+                "Type a value to be used as a secret MD5 Key for authentication. 
+                This field is available only if you select MD5 as the type of Authentication.";
+                type string;
+            }
+        }
+        leaf ttl {
+            description
+            "The limited number of iterations that a unit of data can experience before 
+            the data is discarded.";
+            type uint8;
+        }
+	}
+}
