@@ -5,7 +5,9 @@ submodule openhltest-bgp4-route-range {
 		prefix "oht";
 	}
 
-	include openhltest-ipv4-route-range;
+    import openhltest-patterns {
+		prefix p;
+	}
 
 	organization
       "OpenHlTest working group";
@@ -23,7 +25,25 @@ submodule openhltest-bgp4-route-range {
 	
 	grouping bgp4-route-range-group {
 		container bgp4-route-range {
-			uses ipv4-route-range-group;
+			container address {
+				uses p:ipv4-pattern-group;
+			}	
+			container prefix-length {
+				uses p:base-pattern-group {
+					refine pattern-format {
+						default '0..32';
+					}
+				}
+			}
+			container step {
+				uses p:int-32-pattern-group;
+			}
+			leaf address-count {
+				type uint8;
+			}
+			container active {
+				uses p:bool-pattern-group;
+			}
 		}
 	}
 }

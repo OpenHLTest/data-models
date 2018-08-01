@@ -11,11 +11,12 @@ module openhltest {
 	include openhltest-ethernet;
 	include openhltest-vlan;
 	include openhltest-ipv4;
+	include openhltest-bgp-common;
 	include openhltest-bgp4;
+	include openhltest-bgp6;
 	include openhltest-traffic-group;
 	include openhltest-statistics;
 	include openhltest-port-statistics;
-	include openhltest-ipv4-route-range;
 	include openhltest-bgp4-route-range;
 
 	organization

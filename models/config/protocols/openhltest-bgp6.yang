@@ -1,21 +1,21 @@
-submodule openhltest-bgp4 {
+submodule openhltest-bgp6 {
 
     yang-version "1.1";
     belongs-to "openhltest" {
 		prefix "oht";
 	}
-
-	import openhltest-patterns {
+    
+    import openhltest-patterns {
 		prefix p;
 	}
-	include openhltest-bgp-common;
+    include openhltest-bgp-common;
 
 	organization
       "OpenHlTest working group";
     contact
       "OpenHlTest working group";
     description
-      "This module describes the bgp4 emulated protocol.";
+      "This module describes the bgp6 emulated protocol.";
 
     revision 2018-02-09 {
         description
@@ -24,14 +24,14 @@ submodule openhltest-bgp4 {
           "0.0.1";
     }
 
-	grouping bgp4-group {
-		container bgp4 {
+	grouping bgp6-group {
+		container bgp6 {
 			uses bgp-common-group;
 
-           	container dut-ipv4-address {
+            container dut-ipv6-address {
 				description
-				"IPv4 address of the BGP peer for the session.";
-				uses p:ipv4-pattern-group;
+				"Ipv6 address of the BGP peer for the session.";
+				uses p:ipv6-pattern-group;
 			}
 		}
 	}

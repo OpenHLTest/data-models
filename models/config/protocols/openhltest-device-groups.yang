@@ -12,8 +12,8 @@ submodule openhltest-device-groups {
 	include openhltest-vlan;
 	include openhltest-ipv4;
 	include openhltest-bgp4;
+	include openhltest-bgp6;
 	include openhltest-port;
-	include openhltest-ipv4-route-range;
 	include openhltest-bgp4-route-range;
 
 	organization
@@ -69,9 +69,7 @@ submodule openhltest-device-groups {
 				leaf device-count-per-port {
 					description "The number of devices that will be created on each
 					abstract test port specified in the port-names list.";
-					type uint32 {
-						range 1..200000;
-					}
+					type uint32;
 					default "1";
 				}
 				leaf parent-link {
@@ -137,6 +135,7 @@ submodule openhltest-device-groups {
 							enum VLAN;
 							enum IPV4;
 							enum BGP4;
+							enum BGP6;
 						}
 					}
 					uses ethernet-group {
@@ -155,6 +154,10 @@ submodule openhltest-device-groups {
 						description "The conditional container for detailed bgp4 information"; 
 						when "../protocol-type = BGP4";
 					}
+					uses bgp6-group {
+						description "The conditional container for detailed bgp6 information"; 
+						when "../protocol-type = BGP6";
+					}
 				}
 			}
 
@@ -172,9 +175,7 @@ submodule openhltest-device-groups {
 					description 
 					"The number of devices that will be created on each
 					abstract test port specified in the port-names list.";
-					type uint32 {
-						range 1..200000;
-					}
+					type uint32;
 					default "1";
 				}
 				leaf parent-link {
@@ -187,7 +188,7 @@ submodule openhltest-device-groups {
 							path "../name";
 						}
 						type leafref {
-							path "../../device-groups/name";
+							path "../../device-groups/devices/name";
 						}
 					}
 				}
@@ -204,7 +205,7 @@ submodule openhltest-device-groups {
 					}
 					leaf flow-link {
 						description
-						"Identifies which object in another container is the next hop from this container.
+						"Identifies which object in another container is the next hop from this networks object.
 						The name cannot be one of the names in this networks container.
 						An empty link indicates no flow link";
 						mandatory true;
@@ -213,26 +214,14 @@ submodule openhltest-device-groups {
 								path "../name";
 							}
 							type leafref {
-								path "../../device-groups/protocols/name";
+								path "../../device-groups/devices/protocols/name";
 							}
 							type empty;
 						}
 					}
-					leaf network-type {
-						description "Determines which detailed network container is active.";
-						mandatory true;
-						type enumeration {
-							enum "IPV4_ROUTE_RANGE";
-							enum "BGP4_ROUTE_RANGE";
-						}
-					}
-					uses ipv4-route-range-group {
-						description "The conditional container for detailed ipv4 route range information"; 
-						when "../network-type = IPV4_ROUTE_RANGE";
-					}
 					uses bgp4-route-range-group {
 						description "The conditional container for detailed bgp4 route range information"; 
-						when "../network-type = BGPV4_ROUTE_RANGE";
+						when "../../device-groups/devices/protocols/protocol-type == BGP4";
 					}
 				}
 			}

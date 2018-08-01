@@ -5,8 +5,8 @@ submodule openhltest-vlan {
 		prefix "oht";
 	}
 
-	import openhltest-types {
-			prefix t;
+	import openhltest-patterns {
+		prefix p;
 	}
 
 	organization
@@ -25,43 +25,40 @@ submodule openhltest-vlan {
 	
 	grouping vlan-group {
 		container vlan {
-			leaf tpid {
-				if-feature t:unresolved-type;
-				type enumeration {
-					enum 0X8100 {
-						value "33024";
+			container tpid {
+				description "Tag Protocol Identifier";
+				uses p:enum-pattern-group {
+					refine pattern-format {
+						default "(0X8100|0x88A8|0X9100|0X9200|0X9300)";
 					}
-					enum 0x88A8 {
-						value "34984";
-					}
-					enum 0X9100 {
-						value "37120";
-					}
-					enum 0X9200 {
-						value "37376";
-					}
-					enum 0X9300 {
-						value "37632";
+					refine single {
+						default "0x8100";
 					}
 				}
-				default "0X8100";
 			}
-			leaf priority {
-				if-feature t:unresolved-type;
-				type uint8 {
-      		range 0..7;
-    		}
-				default "0";
+			container priority {
+				description "Priority";
+				uses p:base-pattern-group {
+					refine pattern-format {
+						default "0..7";
+					}
+					refine single {
+						default "1";
+					}
+				}
 			}
-			leaf id {
-				if-feature t:unresolved-type;
-				description
-					"A single-tagged VLAN id";  		
-				type uint16 {
-      		range 1..4095;
-    		}
-				default "1";
+			container id {
+				description	"VLAN id";  		
+				uses p:base-pattern-group {
+					refine pattern-format {
+						default "0..4094";
+					}
+					refine single {
+						default "1";
+					}
+				}
 			}
 		}
 	}
 }
+
