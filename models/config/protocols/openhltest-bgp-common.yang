@@ -75,6 +75,18 @@ submodule openhltest-bgp-common {
 				}
 			}
 		}
+		container as-number-set-mode {
+			description
+			"Option to exclude, include or prepend the local AS number.";
+			uses p:enum-pattern-group {
+				refine pattern-format {
+					default "(EXCLUDE_AS|INCLUDE_AS_SEQ|INCLUDE_AS_SET|INCLUDE_AS_SEQ_CONFED|INCLUDE_AS_SET_CONFED|PREPEND_AS)";
+				}
+				refine single {
+					default "EXCLUDE_AS";
+				}
+			}
+		}
         container bgp-type {
             description
             "The type of BGP topology you create. Options include the following:
@@ -125,7 +137,19 @@ submodule openhltest-bgp-common {
                        Restart Time must be set.
                 Not Specified: Causes an emulated router's peer to remove the router's advertised
                        routes from its route database when the session is closed ";            
-            container restart-time {
+            container long-lived-graceful-restart {
+                description
+                "BGP long lived graceful restart allows a network operator to choose to maintain stale routing information 
+				from a failed BGP peer much longer than the existing BGP graceful restart facility.
+                    TRUE  : Enable long lived graceful restart
+                    FALSE : Disable long lived graceful restart";
+				uses p:bool-pattern-group {
+					refine single {
+						default "true";
+					}
+				}
+            }
+			container restart-time {
                 description
                 "BGP graceful restart time. The amount of time (in seconds) that the emulated 
                 router will wait for its peer to re-establish the session. If the session is 

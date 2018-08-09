@@ -1,26 +1,30 @@
 module openhltest-patterns {
 
-    yang-version "1.1";
-    namespace "http://openhltest.org/yang/types";
-    prefix "oht";
+	yang-version "1.1";
+	namespace "http://openhltest.org/yang/types";
+	prefix "oht";
 
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
-    description
-      "This module defines patterns specific to the OpenHLTest models.";
+	organization
+	  "OpenHlTest working group";
+	contact
+	  "OpenHlTest working group";
+	description
+	  "This module defines patterns specific to the OpenHLTest models.";
 
-    revision 2018-02-01 {
-        description
-          "Initial revision.";
-        reference
-          "0.0.1";
-    }
+	revision 2018-02-01 {
+		description
+		  "Initial revision.";
+		reference
+		  "0.0.1";
+	}
 
 	grouping base-pattern-group {
 		description
-		"Base patterns for types such as decimal, ipv4, mac, ipv6";
+		"Base patterns for types such as decimal, ipv4, mac, ipv6
+		The pattern is dependent on the re-match() function which allows this pattern group to be extended by models based on the type.
+		Models will create a container which will use a patttern-group. The container will then refine the pattern-format default.
+		The pattern group is extended in this module to provide some common pattern types such as decimal, mac, ipv4, ipv6.
+		";
 		leaf pattern-type {
 			type enumeration {
 				enum SINGLE;
@@ -94,7 +98,7 @@ module openhltest-patterns {
 	grouping bool-pattern-group {
 		uses base-pattern-group {
 			refine pattern-format {
-				default '^(true|false|1|0)$';
+				default '^(true|false)$';
 			}
 		}
 	}
@@ -142,7 +146,7 @@ module openhltest-patterns {
 	}
 	grouping enum-pattern-group {
 		description
-		"Enum patterns.
+		"An extended pattern-group that limits the number of patterns for enums.
 		Modelers must refine the pattern-format default with a regex of valid enum choices.
 		e.g., 
 		refine pattern-format {
@@ -175,17 +179,12 @@ module openhltest-patterns {
 	}
 	grouping string-pattern-group {
 		description
-		"String patterns.
-		Modelers must refine the pattern-format default with a regex of valid enum choices.
-		e.g., 
-		refine pattern-format {
-			default '(8100|88a8|9100|9200|9300)'
-		}
+		"Supports the ability to specify a string pattern in addition to single values.
 		";
 		leaf pattern-format {
 			config false;
 			description
-			"Refine this leaf value with a regex of valid enum choices";
+			"Refine this leaf value with a regex";
 			type string;
 		}
 		leaf pattern-type {
