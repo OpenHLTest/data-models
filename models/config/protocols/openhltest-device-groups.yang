@@ -171,7 +171,7 @@ submodule openhltest-device-groups {
 					description
 					"The unique name of the simulated-networks object.";
 				}
-				leaf device-count-per-port {
+				leaf network-count-per-port {
 					description 
 					"The number of devices that will be created on each
 					abstract test port specified in the port-names list.";
