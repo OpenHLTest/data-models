@@ -108,7 +108,6 @@ submodule openhltest-traffic-group {
 					leaf name {
 						type t:config-list-key;
 					}
-
 				}
 				list custom-frames {
 					key "name";
@@ -122,6 +121,7 @@ submodule openhltest-traffic-group {
 							path "../name";
 						}
 					}
+					uses traffic-protocols-group;
 				}            
 			}
 			container frame-length {
@@ -151,13 +151,17 @@ submodule openhltest-traffic-group {
                         type int32;
 						default 64;
                         description
-                        "Fixed value for frame length";
+                        "Starting increment value for frame length";
                     }
 					leaf to {
 						type int32;
+                        description
+                        "Maximum increment value for frame length";
 					}
 					leaf step {
 						type int32;
+                        description
+                        "Step increment value for frame length";
 					}
 				}
 			}

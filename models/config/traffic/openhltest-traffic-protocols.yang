@@ -54,10 +54,10 @@ submodule openhltest-traffic-protocols {
 		// 	description "The conditional container for detailed vlan information"; 
 		// 	when "../protocol-type = VLAN";
 		// }
-		// uses ipv4-frame-group {
-		// 	description "The conditional container for detailed ipv4 information"; 
-		// 	when "../protocol-type = IPV4";
-		// }
+		uses ipv4-frame-group {
+			description "The conditional container for detailed ipv4 information"; 
+			when "../protocol-type = IPV4";
+		}
 		// uses ipv6-frame-group {
 		// 	description "The conditional container for detailed ipv4 information"; 
 		// 	when "../protocol-type = IPV6";
@@ -72,16 +72,28 @@ submodule openhltest-traffic-protocols {
 		// }
 	}
 	grouping ethernet-frame-group {
-		container destination {
-			uses p:mac-pattern-group;
-		}
-		container source {
-			uses p:mac-pattern-group;
-		}
-		container fcs {
-			presence "Create the fcs container to override the frame check sequence value.";
-			uses p:hex-pattern-group {
+		container ethernet {
+			container destination {
+				uses p:mac-pattern-group;
+			}
+			container source {
+				uses p:mac-pattern-group;
+			}
+			container fcs {
+				presence "Create the fcs container to override the frame check sequence value.";
+				uses p:hex-pattern-group {
 
+				}
+			}
+		}
+	}
+	grouping ipv4-frame-group {
+		container ipv4 {
+			container destination {
+				uses p:ipv4-pattern-group;
+			}
+			container source {
+				uses p:ipv4-pattern-group;
 			}
 		}
 	}
