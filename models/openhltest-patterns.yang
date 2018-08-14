@@ -1,7 +1,7 @@
 module openhltest-patterns {
 
 	yang-version "1.1";
-	namespace "http://openhltest.org/yang/types";
+	namespace "http://openhltest.org/yang/patterns";
 	prefix "oht";
 
 	organization
@@ -53,37 +53,37 @@ module openhltest-patterns {
 			when "../pattern-type == INCREMENT";
 			leaf start {
 				type string;
-				must "re-match(single, ../pattern-format)";
+				must "re-match(start, ../pattern-format)";
 			}
 			leaf step {
 				type string;
-				must "re-match(single, ../pattern-format)";
+				must "re-match(step, ../pattern-format)";
 			}
 		}
 		container decrement {
 			when "../pattern-type == DECREMENT";
 			leaf start {
 				type string;
-				must "re-match(single, ../pattern-format)";
+				must "re-match(start, ../pattern-format)";
 			}
 			leaf step {
 				type string;
-				must "re-match(single, ../pattern-format)";
+				must "re-match(step, ../pattern-format)";
 			}
 		}
 		container random {
 			when "../pattern-type == RANDOM";
 			leaf min {
 				type string;
-				must "re-match(single, ../pattern-format)";
+				must "re-match(min, ../pattern-format)";
 			}			
 			leaf max {
 				type string;
-				must "re-match(single, ../pattern-format)";
+				must "re-match(max, ../pattern-format)";
 			}			
 			leaf step {
 				type string;
-				must "re-match(single, ../pattern-format)";
+				must "re-match(step, ../pattern-format)";
 			}			
 			leaf seed {
 				type uint32;
@@ -92,20 +92,27 @@ module openhltest-patterns {
 		leaf-list value-list {
 			when "../pattern-type == VALUE_LIST";
 			type string;
-			must "re-match(single, ../pattern-format)";
+			must "re-match(value-list, ../pattern-format)";
+		}
+	}
+	grouping hex-pattern-group {
+		uses base-pattern-group {
+			refine pattern-format {
+				default "[0-9a-f]+";
+			}
 		}
 	}
 	grouping bool-pattern-group {
 		uses base-pattern-group {
 			refine pattern-format {
-				default '^(true|false)$';
+				default '(true|false)';
 			}
 		}
 	}
 	grouping int-32-pattern-group {
 		uses base-pattern-group {
 			refine pattern-format {
-				default '^(-?(1\d{0,9}|2(0\d{8}|1[0-3]\d{7}|14[0-6]\d{6}|147[0-3]\d{5}|1474[0-7]\d{4}|14748[0-2]\d{3}|147483[0-5]\d{2}|1474836[0-3]\d|14748364[0-7])|[1-9]\d{0,8})|0|-2147483648)$';
+				default '(-?(1\d{0,9}|2(0\d{8}|1[0-3]\d{7}|14[0-6]\d{6}|147[0-3]\d{5}|1474[0-7]\d{4}|14748[0-2]\d{3}|147483[0-5]\d{2}|1474836[0-3]\d|14748364[0-7])|[1-9]\d{0,8})|0|-2147483648)';
 			}
 		}
 	}

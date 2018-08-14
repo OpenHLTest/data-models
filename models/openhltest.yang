@@ -15,6 +15,7 @@ module openhltest {
 	include openhltest-bgp4;
 	include openhltest-bgp6;
 	include openhltest-traffic-group;
+	include openhltest-traffic-protocols;
 	include openhltest-statistics;
 	include openhltest-port-statistics;
 	include openhltest-bgp4-route-range;

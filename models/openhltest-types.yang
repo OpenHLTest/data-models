@@ -23,7 +23,9 @@ module openhltest-types {
 	}
 
 	typedef config-list-key {
-		description "A type that contains only alpha numeric characters suitable for use in a list leaf node designated as the key.";
+		description "A type that contains only alpha numeric characters suitable 
+		for use in a list leaf node designated as the key.
+		";
 		type string {
 			description "The pattern is a regex that defines a name to be used in all OpenHLTest keyed lists.
 			Use the pattern to determine if the supplied value is valid alpha numeric.

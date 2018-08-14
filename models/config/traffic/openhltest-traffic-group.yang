@@ -8,7 +8,9 @@ submodule openhltest-traffic-group {
     import openhltest-types {
         prefix t;
     }
-	
+	include openhltest-traffic-protocols;
+	include openhltest-port;
+
     organization
       "OpenHlTest working group";
     contact
@@ -27,7 +29,12 @@ submodule openhltest-traffic-group {
     grouping traffic-group-top {
         description
         "A grouping of traffic groups.
-		 A traffic group is a collection of traffic streams and flows.";
+		 A traffic group is a collection of traffic streams and flows.
+		 Each traffic group has an enpoint-map of a source and destination endpoint.
+		 The destination endpoint may be empty if the source endpoint is a /port.
+		 Generated frames may be created by the system depending on the encapsulation.
+		 The generated and custom frames will al share the same frame-length, frame-load.
+		 ";
 		
 		list traffic-groups {
 			key "name";
@@ -35,10 +42,112 @@ submodule openhltest-traffic-group {
 			"A list of traffic groups";
 
 			leaf name {
-				type string;
+				type t:config-list-key;
 				description
 				"The unique name of a traffic group";
 			}
+			leaf encapsulation-type {
+				type enumeration {
+					enum RAW;
+					enum ETHERNET;
+					enum VLAN;
+					enum IPV4;
+					enum IPV6;
+				}
+				default "RAW";
+				description "";
+			}
+			container raw-endpoint-map {
+				when "../encapsulation-type = RAW";
+				leaf-list sources {
+					type leafref {
+						path "../../../ports/name";
+					}
+				}
+				leaf-list destinations {
+					type leafref {
+						path "../../../ports/name";
+					}
+				}
+			}
+			leaf bidirectional {
+				type boolean;
+				default false;
+				description
+				"Direction of traffic flow between two end points";
+			}
+			leaf map-type {
+				description
+				"The type of endpoint mapping between source and destination endpoints.";
+				default "ONE_TO_ONE";
+				type enumeration {
+					enum ONE_TO_ONE;
+					enum FULL_MESHED;
+				}
+			}
+            container frames {
+				list generated-frames {
+					config false;
+					key "name";
+					description "List of generated frames driven by the encapsulation.
+					Changing the encapsulation will create a new list of frames as dictated by the type of encapsulation.";
+					leaf name {
+						type t:config-list-key;
+					}
+
+				}
+				list custom-frames {
+					key "name";
+					description "List of user defined custom frames. 
+					Changing the encapsulation will clear the list of custom frames.";
+					leaf name {
+						type t:config-list-key;
+					}
+					leaf frame-link {
+						type leafref {
+							path "../name";
+						}
+					}
+				}            
+			}
+			container frame-length {
+				leaf length-type {
+					type enumeration {
+						enum FIXED;
+						enum INCREMENTAL;
+					}
+				}
+                container fixed {
+					when "../length-type = FIXED";
+                    leaf frame-size {
+                        type int32;
+						default 64;
+                        description
+                        "Fixed value for frame length";
+                    }
+                }
+			}
+            container frame-load {
+                leaf load-type {
+                    description
+                    "Load unit applied to the stream block.";
+                    type enumeration {
+                        enum BPS;
+                        enum KBPS;
+                        enum MPBS;
+                        enum FRAMES_PER_SECOND;
+						enum INTER_PACKET_GAP;
+						enum PERCENT_LINE_RATE;
+                    }
+                }
+                leaf bps {
+					when "../load-type = BPS";
+					default "1024000";
+                    type int32;
+                    description
+                    "Load value set on the streamblock/traffic-item in bits per second.";
+                }
+            }
 		}
 
 		action start-traffic {
