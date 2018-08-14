@@ -10,6 +10,7 @@ submodule openhltest-traffic-group {
     }
 	include openhltest-traffic-protocols;
 	include openhltest-port;
+	include openhltest-device-groups;
 
     organization
       "OpenHlTest working group";
@@ -57,7 +58,7 @@ submodule openhltest-traffic-group {
 				default "RAW";
 				description "";
 			}
-			container raw-endpoint-map {
+			container raw-map {
 				when "../encapsulation-type = RAW";
 				leaf-list sources {
 					type leafref {
@@ -69,6 +70,19 @@ submodule openhltest-traffic-group {
 						path "../../../ports/name";
 					}
 				}
+			}
+			container ethernet-map {
+				when "../encapsulation-type = ETHERNET";
+				leaf-list sources {
+					type leafref {
+						path "../../../device-groups/devices/protocols/name";
+					}
+				}
+				leaf-list destinations {
+					type leafref {
+						path "../../../device-groups/devices/protocols/name";
+					}
+				}				
 			}
 			leaf bidirectional {
 				type boolean;
@@ -115,6 +129,11 @@ submodule openhltest-traffic-group {
 					type enumeration {
 						enum FIXED;
 						enum INCREMENTAL;
+						enum RANDOM;
+						enum AUTO;
+						enum PRESET_DISTRIBUTION;
+						enum QUAD_GUASSIAN;
+						enum WEIGHTED_PAIRS;
 					}
 				}
                 container fixed {
@@ -126,6 +145,21 @@ submodule openhltest-traffic-group {
                         "Fixed value for frame length";
                     }
                 }
+				container increment {
+					when "../length-type = INCREMENT";
+                    leaf from {
+                        type int32;
+						default 64;
+                        description
+                        "Fixed value for frame length";
+                    }
+					leaf to {
+						type int32;
+					}
+					leaf step {
+						type int32;
+					}
+				}
 			}
             container frame-load {
                 leaf load-type {
