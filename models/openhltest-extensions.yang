@@ -1,0 +1,25 @@
+module openhltest-extensions {
+    yang-version "1.1";
+    namespace "http://openhltest.org/yang/extensions";
+    prefix "oht";
+
+    organization
+      "OpenHlTest working group";
+    contact
+      "OpenHlTest working group";
+    description
+      "This module defines extensions specific to the OpenHLTest models.";
+
+    revision 2018-02-01 {
+        description
+          "Initial revision.";
+        reference
+          "0.0.1";
+    }
+
+	extension server-generated {
+		description "The existence of this extension in a list that is configurable
+		indicates that the list of items is generated and the client cannot add or remove the items from the list.
+		This indicates to any pyang code generator to not generate add or remove functionality.";
+	}
+}

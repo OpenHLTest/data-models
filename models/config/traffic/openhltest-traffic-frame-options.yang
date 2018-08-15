@@ -1,0 +1,76 @@
+submodule openhltest-traffic-frame-options {
+
+	yang-version "1.1";
+	belongs-to "openhltest" {
+		prefix "oht";
+	}
+
+	import openhltest-types {
+		prefix t;
+	}
+	import openhltest-patterns {
+		prefix p;
+	}
+
+	grouping traffic-frame-options-group {
+		container frame-length {
+			leaf length-type {
+				type enumeration {
+					enum FIXED;
+					enum INCREMENTAL;
+					enum RANDOM;
+					enum AUTO;
+					enum PRESET_DISTRIBUTION;
+					enum QUAD_GUASSIAN;
+					enum WEIGHTED_PAIRS;
+				}
+			}
+			leaf fixed {
+				when "../length-type = FIXED";
+				description	"Fixed value for frame length";
+				type int32;
+				default "64";
+			}
+			container increment {
+				when "../length-type = INCREMENT";
+				leaf from {
+					type int32;
+					default 64;
+					description
+					"Starting increment value for frame length";
+				}
+				leaf to {
+					type int32;
+					description
+					"Maximum increment value for frame length";
+				}
+				leaf step {
+					type int32;
+					description
+					"Step increment value for frame length";
+				}
+			}
+		}
+		container frame-load {
+			leaf load-type {
+				description
+				"Load unit applied to the stream block.";
+				type enumeration {
+					enum BPS;
+					enum KBPS;
+					enum MPBS;
+					enum FRAMES_PER_SECOND;
+					enum INTER_PACKET_GAP;
+					enum PERCENT_LINE_RATE;
+				}
+			}
+			leaf bps {
+				when "../load-type = BPS";
+				default "1024000";
+				type int32;
+				description
+				"Load value set on the streamblock/traffic-item in bits per second.";
+			}
+		}
+	}
+}

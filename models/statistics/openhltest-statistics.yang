@@ -8,6 +8,9 @@ submodule openhltest-statistics {
 	import ietf-yang-types {
 		prefix yang;
 	}
+	import openhltest-types {
+		prefix t;
+	}
 	include openhltest-port-statistics;
 
     organization
@@ -44,7 +47,7 @@ submodule openhltest-statistics {
 			key "name";
 			leaf name {
 				description "An abstract test port name";
-				type string;
+				type t:config-list-key;
 			}
 			uses port-statistics-top;
 		}

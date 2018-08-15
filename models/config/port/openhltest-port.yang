@@ -35,7 +35,7 @@ submodule openhltest-port {
 			"A list of abstract test ports";
 
 			leaf name {
-				type string;
+				type t:config-list-key;
 				description
 				"The unique name of an abstract test port";
 			}	
@@ -50,7 +50,7 @@ submodule openhltest-port {
 					key "port-name";
 					leaf port-name {
 						description "The name of an abstract test port";
-						type string;
+						type t:config-list-key;
 					}
 					uses t:chassis-card-port-group;
 				}
@@ -66,7 +66,7 @@ submodule openhltest-port {
 			input {
 				leaf-list port-names {
 					description "A list of abstract test port names. Names can also be regex";
-					type string;
+					type t:config-list-key;
 				}
 			}
 			output {

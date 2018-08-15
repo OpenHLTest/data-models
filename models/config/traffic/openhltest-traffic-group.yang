@@ -8,6 +8,10 @@ submodule openhltest-traffic-group {
     import openhltest-types {
         prefix t;
     }
+	import openhltest-extensions {
+		prefix e;
+	}
+	include openhltest-traffic-frame-options;
 	include openhltest-traffic-protocols;
 	include openhltest-port;
 	include openhltest-device-groups;
@@ -47,7 +51,24 @@ submodule openhltest-traffic-group {
 				description
 				"The unique name of a traffic group";
 			}
-			leaf encapsulation-type {
+			leaf bidirectional {
+				type boolean;
+				default false;
+				description
+				"Direction of traffic flow between two end points";
+			}
+			leaf mesh-type {
+				description
+				"The type of mapping between sources and destinations endpoints.";
+				default "ONE_TO_ONE";
+				type enumeration {
+					enum ONE_TO_ONE;
+					enum FULL_MESHED;
+				}
+			}
+			leaf encapsulation {
+				description "The encapsulation determines what the generated-flows list will contain based on the sources and destinations.
+				Any time an update is done on any one or more of encapsulation, sources or destinations the generated-flows list can possibly change.";
 				type enumeration {
 					enum RAW;
 					enum ETHERNET;
@@ -56,136 +77,77 @@ submodule openhltest-traffic-group {
 					enum IPV6;
 				}
 				default "RAW";
+			}
+			leaf-list sources {
+				description "List of 1..n abstract ports, device-groups, devices, protocols references.";
+				type union {
+					type leafref {
+						path "../../../ports/name";
+					}
+					type leafref {
+						path "../../../device-groups/name";
+					}
+					type leafref {
+						path "../../../device-groups/devices/name";
+					}
+					type leafref {
+						path "../../../device-groups/devices/protocols/name";
+					}
+				}
+			}
+			leaf-list destinations {
+				description "List of 0..n abstract ports, device-groups, devices, protocols references.
+				If the mesh-type is FULLY_MESHED then all destinations will be ignored.";
+				type union {
+					type leafref {
+						path "../../../ports/name";
+					}
+					type leafref {
+						path "../../../device-groups/name";
+					}
+					type leafref {
+						path "../../../device-groups/devices/name";
+					}
+					type leafref {
+						path "../../../device-groups/devices/protocols/name";
+					}
+				}
+			}
+			list generated-flows {
+				e:server-generated;
+				key "name";
 				description "";
-			}
-			container raw-map {
-				when "../encapsulation-type = RAW";
-				leaf-list sources {
-					type leafref {
-						path "../../../ports/name";
-					}
+				leaf name {
+					e:server-generated;
+					type t:config-list-key;
 				}
-				leaf-list destinations {
-					type leafref {
-						path "../../../ports/name";
-					}
-				}
-			}
-			container ethernet-map {
-				when "../encapsulation-type = ETHERNET";
-				leaf-list sources {
-					type leafref {
-						path "../../../device-groups/devices/protocols/name";
-					}
-				}
-				leaf-list destinations {
-					type leafref {
-						path "../../../device-groups/devices/protocols/name";
-					}
-				}				
-			}
-			leaf bidirectional {
-				type boolean;
-				default false;
-				description
-				"Direction of traffic flow between two end points";
-			}
-			leaf map-type {
-				description
-				"The type of endpoint mapping between source and destination endpoints.";
-				default "ONE_TO_ONE";
-				type enumeration {
-					enum ONE_TO_ONE;
-					enum FULL_MESHED;
-				}
-			}
-            container frames {
-				list generated-frames {
-					config false;
+				list encapsulation-frames {
+					e:server-generated;
 					key "name";
 					description "List of generated frames driven by the encapsulation.
 					Changing the encapsulation will create a new list of frames as dictated by the type of encapsulation.";
 					leaf name {
+						e:server-generated;
 						type t:config-list-key;
 					}
+					uses traffic-protocols-group;
 				}
-				list custom-frames {
+				list user-frames {
 					key "name";
 					description "List of user defined custom frames. 
 					Changing the encapsulation will clear the list of custom frames.";
 					leaf name {
 						type t:config-list-key;
 					}
-					leaf frame-link {
-						type leafref {
-							path "../name";
-						}
-					}
 					uses traffic-protocols-group;
-				}            
+				}  
+				uses traffic-frame-options-group {
+					description "Allows a user to customize each flows traffic options";
+				}   
 			}
-			container frame-length {
-				leaf length-type {
-					type enumeration {
-						enum FIXED;
-						enum INCREMENTAL;
-						enum RANDOM;
-						enum AUTO;
-						enum PRESET_DISTRIBUTION;
-						enum QUAD_GUASSIAN;
-						enum WEIGHTED_PAIRS;
-					}
-				}
-                container fixed {
-					when "../length-type = FIXED";
-                    leaf frame-size {
-                        type int32;
-						default 64;
-                        description
-                        "Fixed value for frame length";
-                    }
-                }
-				container increment {
-					when "../length-type = INCREMENT";
-                    leaf from {
-                        type int32;
-						default 64;
-                        description
-                        "Starting increment value for frame length";
-                    }
-					leaf to {
-						type int32;
-                        description
-                        "Maximum increment value for frame length";
-					}
-					leaf step {
-						type int32;
-                        description
-                        "Step increment value for frame length";
-					}
-				}
+			uses traffic-frame-options-group {
+				description "Allows a user to set traffic options that will be used as a template during generation of flows.";
 			}
-            container frame-load {
-                leaf load-type {
-                    description
-                    "Load unit applied to the stream block.";
-                    type enumeration {
-                        enum BPS;
-                        enum KBPS;
-                        enum MPBS;
-                        enum FRAMES_PER_SECOND;
-						enum INTER_PACKET_GAP;
-						enum PERCENT_LINE_RATE;
-                    }
-                }
-                leaf bps {
-					when "../load-type = BPS";
-					default "1024000";
-                    type int32;
-                    description
-                    "Load value set on the streamblock/traffic-item in bits per second.";
-                }
-            }
 		}
 
 		action start-traffic {

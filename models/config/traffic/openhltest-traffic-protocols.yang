@@ -74,15 +74,24 @@ submodule openhltest-traffic-protocols {
 	grouping ethernet-frame-group {
 		container ethernet {
 			container destination {
+				presence "Create the destination container to override the automatic destination mac address";
 				uses p:mac-pattern-group;
+				leaf count {
+					type int32;
+				}
 			}
 			container source {
+				presence "Create the source container to override the automatic source mac address";
 				uses p:mac-pattern-group;
+				leaf count {
+					type int32;
+				}
 			}
 			container fcs {
-				presence "Create the fcs container to override the frame check sequence value.";
-				uses p:hex-pattern-group {
-
+				presence "Create the fcs container to override the automatic frame check sequence value.";
+				uses p:hex-pattern-group;
+				leaf count {
+					type int32;
 				}
 			}
 		}
