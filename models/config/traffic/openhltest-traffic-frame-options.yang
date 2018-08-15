@@ -20,9 +20,9 @@ submodule openhltest-traffic-frame-options {
 					enum INCREMENTAL;
 					enum RANDOM;
 					enum AUTO;
-					enum PRESET_DISTRIBUTION;
-					enum QUAD_GUASSIAN;
-					enum WEIGHTED_PAIRS;
+					enum IMIX;
+					enum CUSTOM_IMIX;
+					enum QUAD_GAUSSIAN;
 				}
 			}
 			leaf fixed {
@@ -30,6 +30,16 @@ submodule openhltest-traffic-frame-options {
 				description	"Fixed value for frame length";
 				type int32;
 				default "64";
+			}
+			container random {
+				when "../length-type = RANDOM";
+				description "Random frame size options";
+				leaf max {
+					type int32;
+				}
+				leaf min {
+					type int32;
+				}
 			}
 			container increment {
 				when "../length-type = INCREMENT";
@@ -50,9 +60,53 @@ submodule openhltest-traffic-frame-options {
 					"Step increment value for frame length";
 				}
 			}
+			leaf imix {
+				when "../length-type = IMIX";
+				type enumeration {
+					enum CISCO;
+					enum IMIX;
+					enum IPSEC_IMIX;
+					enum IPV6_IMIX;
+					enum RPR_QUAR;
+					enum RPR_TRI;
+					enum STANDARD_IMIX;
+					enum TCP_IMIX;
+					enum TOLLY;
+				}
+				default "CISCO";
+			}
+			list custom-imix {
+				when "../length-type = CUSTOM_IMIX";
+				key "name";
+				leaf "name" {
+					type t:config-list-key;
+				} 
+				leaf size {
+					type int32;
+				}
+				leaf weight {
+					type int32;
+				}
+			}
+			list quad-gaussian {
+				when "../length-type = QUAD_GAUSSIAN";
+				key "name";
+				leaf name {
+					type t:config-list-key;
+				}
+				leaf center {
+					type int32;
+				}
+				leaf width-at-half {
+					type int32;
+				}
+				leaf weight {
+					type int32;
+				}
+			}
 		}
-		container frame-load {
-			leaf load-type {
+		container frame-rate {
+			leaf rate-type {
 				description
 				"Load unit applied to the stream block.";
 				type enumeration {
@@ -65,11 +119,34 @@ submodule openhltest-traffic-frame-options {
 				}
 			}
 			leaf bps {
-				when "../load-type = BPS";
+				when "../rate-type = BPS";
 				default "1024000";
 				type int32;
 				description
 				"Load value set on the streamblock/traffic-item in bits per second.";
+			}
+		}
+		container frame-payload {
+			leaf payload-type {
+				type enumeration {
+					enum INCREMENT_BYTE;
+					enum DECREMENT_BYTE;
+					enum INCREMENT_WORD;
+					enum DECREMENT_WORD;
+					enum CRPAT;
+					enum CJPAT;
+					enum RANDOM;
+					enum CUSTOM;
+				}
+			}
+			container custom {
+				when "../payload-type = CUSTOM";
+				leaf pattern {
+					type string;
+				}
+				leaf repeat {
+					type boolean;
+				}
 			}
 		}
 	}
