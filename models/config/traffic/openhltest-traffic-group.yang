@@ -148,6 +148,15 @@ submodule openhltest-traffic-group {
 					description "Allows a user to customize each flows traffic options";
 				}   
 			}
+			list user-frames {
+				key "name";
+				description "List of user defined frames. 
+				Changing the encapsulation will clear the list of custom frames.";
+				leaf name {
+					type t:config-list-key;
+				}
+				uses traffic-protocols-group;
+			}  			
 			uses traffic-frame-options-group {
 				description "Allows a user to set traffic options that will be used as a template during generation of flows.";
 			}
