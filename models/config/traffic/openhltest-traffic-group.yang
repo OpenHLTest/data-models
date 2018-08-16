@@ -97,7 +97,7 @@ submodule openhltest-traffic-group {
 			}
 			leaf-list destinations {
 				description "List of 0..n abstract ports, device-groups, devices, protocols references.
-				If the mesh-type is FULLY_MESHED then all destinations will be ignored.";
+				If the mesh-type is FULLY_MESHED then sources and destinations should be merged and any duplicates will be ignored.";
 				type union {
 					type leafref {
 						path "../../../ports/name";
