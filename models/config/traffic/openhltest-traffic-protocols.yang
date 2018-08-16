@@ -5,6 +5,9 @@ submodule openhltest-traffic-protocols {
 		prefix "oht";
 	}
 
+	import ietf-yang-types {
+		prefix iyt;
+	}
 	import openhltest-types {
 		prefix t;
 	}
@@ -59,17 +62,21 @@ submodule openhltest-traffic-protocols {
 			when "../protocol-type = IPV4";
 		}
 		// uses ipv6-frame-group {
-		// 	description "The conditional container for detailed ipv4 information"; 
+		// 	description "The conditional container for detailed ipv6 information"; 
 		// 	when "../protocol-type = IPV6";
 		// }
 		// uses tcp-frame-group {
-		// 	description "The conditional container for detailed bgp4 information"; 
+		// 	description "The conditional container for detailed tcp information"; 
 		// 	when "../protocol-type = TCP";
 		// }
 		// uses udp-frame-group {
-		// 	description "The conditional container for detailed bgp6 information"; 
+		// 	description "The conditional container for detailed udp information"; 
 		// 	when "../protocol-type = UDP";
 		// }
+		uses custom-frame-group {
+			description "The conditional container for custom frame information";
+			when "../protocol-type = CUSTOM";
+		}
 	}
 	grouping ethernet-frame-group {
 		container ethernet {
@@ -103,6 +110,38 @@ submodule openhltest-traffic-protocols {
 			}
 			container source {
 				uses p:ipv4-pattern-group;
+			}
+		}
+	}
+	grouping custom-frame-group {
+		container custom {
+			leaf payload-type {
+				type enumeration {
+					enum INCREMENT_BYTE;
+					enum DECREMENT_BYTE;
+					enum INCREMENT_WORD;
+					enum DECREMENT_WORD;
+					enum CRPAT;
+					enum CJPAT;
+					enum RANDOM;
+					enum CUSTOM;
+				}
+			}
+			container payload {
+				leaf data {
+					when "../payload-type = CUSTOM";
+					type iyt:hex-string;
+					default "00";
+				}
+				leaf repeat {
+					description "Repeat the payload data to fill the length specified";
+					type boolean;
+					default "false";
+				}
+				leaf length {
+					type int32;
+					default 0;
+				}
 			}
 		}
 	}

@@ -126,28 +126,5 @@ submodule openhltest-traffic-frame-options {
 				"Load value set on the streamblock/traffic-item in bits per second.";
 			}
 		}
-		container frame-payload {
-			leaf payload-type {
-				type enumeration {
-					enum INCREMENT_BYTE;
-					enum DECREMENT_BYTE;
-					enum INCREMENT_WORD;
-					enum DECREMENT_WORD;
-					enum CRPAT;
-					enum CJPAT;
-					enum RANDOM;
-					enum CUSTOM;
-				}
-			}
-			container custom {
-				when "../payload-type = CUSTOM";
-				leaf pattern {
-					type string;
-				}
-				leaf repeat {
-					type boolean;
-				}
-			}
-		}
 	}
 }
