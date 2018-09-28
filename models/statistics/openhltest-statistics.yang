@@ -12,6 +12,9 @@ submodule openhltest-statistics {
     include openhltest-traffic-port-statistics;
     include openhltest-traffic-groups-statistics;
     include openhltest-bgp-statistics;
+    include openhltest-ospf-statistics;
+    include openhltest-isis-statistics;
+    include openhltest-bfd-statistics;
 
     organization
       "OpenHlTest working group";
@@ -31,6 +34,7 @@ submodule openhltest-statistics {
     }
 
 	grouping statistics-top {
+
 		leaf first-activity-timestamp {
 			config false;
 			description "Timestamp of the first request to this session.";
@@ -47,5 +51,11 @@ submodule openhltest-statistics {
         uses traffic-groups-statistics-top;
         uses bgp4-statistics;
         uses bgp6-statistics;
+        uses ospfv2-statistics;
+        uses ospfv3-statistics;
+        uses isisv4-statistics;
+        uses isisv6-statistics;
+        uses bfdv4-statistics;
+        uses bfdv6-statistics;
 	}
 }

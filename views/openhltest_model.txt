@@ -1,10 +1,13 @@
 module: openhltest
   +--rw sessions* [name]
-     +--rw name                string
+     +--rw name                t:config-list-key
      +--rw session-type        enumeration
      +--rw config
      |  +--rw ports* [name]
-     |  |  +--rw name    string
+     |  |  +--rw name       t:config-list-key
+     |  |  +--rw chassis?   string
+     |  |  +--rw card?      uint16
+     |  |  +--rw port?      uint16
      |  +---x connect-ports
      |  |  +---w input
      |  |  |  +---w port-map* [port-name]
@@ -14,7 +17,7 @@ module: openhltest
      |  |  |     +---w port?        uint16
      |  |  +--ro output
      |  |     +--ro errata* [name]
-     |  |        +--ro name           string
+     |  |        +--ro name           config-list-key
      |  |        +--ro detail?        string
      |  |        +--ro stack-trace?   string
      |  +---x disconnect-ports
@@ -22,36 +25,2807 @@ module: openhltest
      |  |  |  +---w port-names*   string
      |  |  +--ro output
      |  |     +--ro errata* [name]
-     |  |        +--ro name           string
+     |  |        +--ro name           config-list-key
      |  |        +--ro detail?        string
      |  |        +--ro stack-trace?   string
-     |  +--rw protocol-groups* [name]
-     |  |  +--rw name          string
-     |  |  +--rw port-names*   string
+     |  +--rw device-groups* [name]
+     |  |  +--rw name                  t:config-list-key
+     |  |  +--rw ports*                -> ../../ports/name
+     |  |  +--rw devices* [name]
+     |  |  |  +--rw name                     t:config-list-key
+     |  |  |  +--rw device-count-per-port?   uint32
+     |  |  |  +--rw parent-link              union
+     |  |  |  +--rw protocols* [name]
+     |  |  |     +--rw name             t:config-list-key
+     |  |  |     +--rw parent-link      union
+     |  |  |     +--rw flow-link        union
+     |  |  |     +--rw protocol-type    enumeration
+     |  |  |     +--rw ethernet
+     |  |  |     |  +--rw mac
+     |  |  |     |     +--rw pattern-type?     enumeration
+     |  |  |     |     +--ro pattern-format?   string
+     |  |  |     |     +--rw single?           string
+     |  |  |     |     +--rw increment
+     |  |  |     |     |  +--rw start?   string
+     |  |  |     |     |  +--rw step?    string
+     |  |  |     |     |  +--rw count?   string
+     |  |  |     |     +--rw decrement
+     |  |  |     |     |  +--rw start?   string
+     |  |  |     |     |  +--rw step?    string
+     |  |  |     |     |  +--rw count?   string
+     |  |  |     |     +--rw random
+     |  |  |     |     |  +--rw min?    string
+     |  |  |     |     |  +--rw max?    string
+     |  |  |     |     |  +--rw step?   string
+     |  |  |     |     |  +--rw seed?   uint32
+     |  |  |     |     +--rw value-list*       string
+     |  |  |     +--rw vlan
+     |  |  |     |  +--rw tpid
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw priority
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw id
+     |  |  |     |     +--rw pattern-type?     enumeration
+     |  |  |     |     +--ro pattern-format?   string
+     |  |  |     |     +--rw single?           string
+     |  |  |     |     +--rw increment
+     |  |  |     |     |  +--rw start?   string
+     |  |  |     |     |  +--rw step?    string
+     |  |  |     |     |  +--rw count?   string
+     |  |  |     |     +--rw decrement
+     |  |  |     |     |  +--rw start?   string
+     |  |  |     |     |  +--rw step?    string
+     |  |  |     |     |  +--rw count?   string
+     |  |  |     |     +--rw random
+     |  |  |     |     |  +--rw min?    string
+     |  |  |     |     |  +--rw max?    string
+     |  |  |     |     |  +--rw step?   string
+     |  |  |     |     |  +--rw seed?   uint32
+     |  |  |     |     +--rw value-list*       string
+     |  |  |     +--rw ipv4
+     |  |  |     |  +--rw source-address
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw gateway-address
+     |  |  |     |     +--rw pattern-type?     enumeration
+     |  |  |     |     +--ro pattern-format?   string
+     |  |  |     |     +--rw single?           string
+     |  |  |     |     +--rw increment
+     |  |  |     |     |  +--rw start?   string
+     |  |  |     |     |  +--rw step?    string
+     |  |  |     |     |  +--rw count?   string
+     |  |  |     |     +--rw decrement
+     |  |  |     |     |  +--rw start?   string
+     |  |  |     |     |  +--rw step?    string
+     |  |  |     |     |  +--rw count?   string
+     |  |  |     |     +--rw random
+     |  |  |     |     |  +--rw min?    string
+     |  |  |     |     |  +--rw max?    string
+     |  |  |     |     |  +--rw step?   string
+     |  |  |     |     |  +--rw seed?   uint32
+     |  |  |     |     +--rw value-list*       string
+     |  |  |     +--rw ipv6
+     |  |  |     |  +--rw source-address
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw gateway-address
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw link-local-address
+     |  |  |     |     +--rw pattern-type?     enumeration
+     |  |  |     |     +--ro pattern-format?   string
+     |  |  |     |     +--rw single?           string
+     |  |  |     |     +--rw increment
+     |  |  |     |     |  +--rw start?   string
+     |  |  |     |     |  +--rw step?    string
+     |  |  |     |     |  +--rw count?   string
+     |  |  |     |     +--rw decrement
+     |  |  |     |     |  +--rw start?   string
+     |  |  |     |     |  +--rw step?    string
+     |  |  |     |     |  +--rw count?   string
+     |  |  |     |     +--rw random
+     |  |  |     |     |  +--rw min?    string
+     |  |  |     |     |  +--rw max?    string
+     |  |  |     |     |  +--rw step?   string
+     |  |  |     |     |  +--rw seed?   uint32
+     |  |  |     |     +--rw value-list*       string
+     |  |  |     +--rw bgp4
+     |  |  |     |  +--rw as-number-2-byte!
+     |  |  |     |  |  +--rw as-number
+     |  |  |     |  |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  |  +--ro pattern-format?   string
+     |  |  |     |  |  |  +--rw single?           string
+     |  |  |     |  |  |  +--rw increment
+     |  |  |     |  |  |  |  +--rw start?   string
+     |  |  |     |  |  |  |  +--rw step?    string
+     |  |  |     |  |  |  |  +--rw count?   string
+     |  |  |     |  |  |  +--rw decrement
+     |  |  |     |  |  |  |  +--rw start?   string
+     |  |  |     |  |  |  |  +--rw step?    string
+     |  |  |     |  |  |  |  +--rw count?   string
+     |  |  |     |  |  |  +--rw random
+     |  |  |     |  |  |  |  +--rw min?    string
+     |  |  |     |  |  |  |  +--rw max?    string
+     |  |  |     |  |  |  |  +--rw step?   string
+     |  |  |     |  |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  |  +--rw value-list*       string
+     |  |  |     |  |  +--rw dut-as-number
+     |  |  |     |  |     +--rw pattern-type?     enumeration
+     |  |  |     |  |     +--ro pattern-format?   string
+     |  |  |     |  |     +--rw single?           string
+     |  |  |     |  |     +--rw increment
+     |  |  |     |  |     |  +--rw start?   string
+     |  |  |     |  |     |  +--rw step?    string
+     |  |  |     |  |     |  +--rw count?   string
+     |  |  |     |  |     +--rw decrement
+     |  |  |     |  |     |  +--rw start?   string
+     |  |  |     |  |     |  +--rw step?    string
+     |  |  |     |  |     |  +--rw count?   string
+     |  |  |     |  |     +--rw random
+     |  |  |     |  |     |  +--rw min?    string
+     |  |  |     |  |     |  +--rw max?    string
+     |  |  |     |  |     |  +--rw step?   string
+     |  |  |     |  |     |  +--rw seed?   uint32
+     |  |  |     |  |     +--rw value-list*       string
+     |  |  |     |  +--rw as-number-4-byte!
+     |  |  |     |  |  +--rw as-number
+     |  |  |     |  |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  |  +--ro pattern-format?   string
+     |  |  |     |  |  |  +--rw single?           string
+     |  |  |     |  |  |  +--rw increment
+     |  |  |     |  |  |  |  +--rw start?   string
+     |  |  |     |  |  |  |  +--rw step?    string
+     |  |  |     |  |  |  |  +--rw count?   string
+     |  |  |     |  |  |  +--rw decrement
+     |  |  |     |  |  |  |  +--rw start?   string
+     |  |  |     |  |  |  |  +--rw step?    string
+     |  |  |     |  |  |  |  +--rw count?   string
+     |  |  |     |  |  |  +--rw random
+     |  |  |     |  |  |  |  +--rw min?    string
+     |  |  |     |  |  |  |  +--rw max?    string
+     |  |  |     |  |  |  |  +--rw step?   string
+     |  |  |     |  |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  |  +--rw value-list*       string
+     |  |  |     |  |  +--rw dut-as-number
+     |  |  |     |  |     +--rw pattern-type?     enumeration
+     |  |  |     |  |     +--ro pattern-format?   string
+     |  |  |     |  |     +--rw single?           string
+     |  |  |     |  |     +--rw increment
+     |  |  |     |  |     |  +--rw start?   string
+     |  |  |     |  |     |  +--rw step?    string
+     |  |  |     |  |     |  +--rw count?   string
+     |  |  |     |  |     +--rw decrement
+     |  |  |     |  |     |  +--rw start?   string
+     |  |  |     |  |     |  +--rw step?    string
+     |  |  |     |  |     |  +--rw count?   string
+     |  |  |     |  |     +--rw random
+     |  |  |     |  |     |  +--rw min?    string
+     |  |  |     |  |     |  +--rw max?    string
+     |  |  |     |  |     |  +--rw step?   string
+     |  |  |     |  |     |  +--rw seed?   uint32
+     |  |  |     |  |     +--rw value-list*       string
+     |  |  |     |  +--rw as-number-set-mode
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw bgp-type
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw hold-time-interval
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw keep-alive-interval
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw graceful-restart!
+     |  |  |     |  |  +--rw restart-time
+     |  |  |     |  |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  |  +--ro pattern-format?   string
+     |  |  |     |  |  |  +--rw single?           string
+     |  |  |     |  |  |  +--rw increment
+     |  |  |     |  |  |  |  +--rw start?   string
+     |  |  |     |  |  |  |  +--rw step?    string
+     |  |  |     |  |  |  |  +--rw count?   string
+     |  |  |     |  |  |  +--rw decrement
+     |  |  |     |  |  |  |  +--rw start?   string
+     |  |  |     |  |  |  |  +--rw step?    string
+     |  |  |     |  |  |  |  +--rw count?   string
+     |  |  |     |  |  |  +--rw random
+     |  |  |     |  |  |  |  +--rw min?    string
+     |  |  |     |  |  |  |  +--rw max?    string
+     |  |  |     |  |  |  |  +--rw step?   string
+     |  |  |     |  |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  |  +--rw value-list*       string
+     |  |  |     |  |  +--rw restart-delay
+     |  |  |     |  |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  |  +--ro pattern-format?   string
+     |  |  |     |  |  |  +--rw single?           string
+     |  |  |     |  |  |  +--rw increment
+     |  |  |     |  |  |  |  +--rw start?   string
+     |  |  |     |  |  |  |  +--rw step?    string
+     |  |  |     |  |  |  |  +--rw count?   string
+     |  |  |     |  |  |  +--rw decrement
+     |  |  |     |  |  |  |  +--rw start?   string
+     |  |  |     |  |  |  |  +--rw step?    string
+     |  |  |     |  |  |  |  +--rw count?   string
+     |  |  |     |  |  |  +--rw random
+     |  |  |     |  |  |  |  +--rw min?    string
+     |  |  |     |  |  |  |  +--rw max?    string
+     |  |  |     |  |  |  |  +--rw step?   string
+     |  |  |     |  |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  |  +--rw value-list*       string
+     |  |  |     |  |  +--rw advertise-eor
+     |  |  |     |  |     +--rw pattern-type?     enumeration
+     |  |  |     |  |     +--ro pattern-format?   string
+     |  |  |     |  |     +--rw single?           string
+     |  |  |     |  |     +--rw increment
+     |  |  |     |  |     |  +--rw start?   string
+     |  |  |     |  |     |  +--rw step?    string
+     |  |  |     |  |     |  +--rw count?   string
+     |  |  |     |  |     +--rw decrement
+     |  |  |     |  |     |  +--rw start?   string
+     |  |  |     |  |     |  +--rw step?    string
+     |  |  |     |  |     |  +--rw count?   string
+     |  |  |     |  |     +--rw random
+     |  |  |     |  |     |  +--rw min?    string
+     |  |  |     |  |     |  +--rw max?    string
+     |  |  |     |  |     |  +--rw step?   string
+     |  |  |     |  |     |  +--rw seed?   uint32
+     |  |  |     |  |     +--rw value-list*       string
+     |  |  |     |  +--rw authentication!
+     |  |  |     |  |  +--rw authentication-type
+     |  |  |     |  |  |  +--ro pattern-format?   string
+     |  |  |     |  |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  |  +--rw single?           string
+     |  |  |     |  |  |  +--rw value-list*       string
+     |  |  |     |  |  +--rw md5-password
+     |  |  |     |  |     +--ro pattern-format?   string
+     |  |  |     |  |     +--rw pattern-type?     enumeration
+     |  |  |     |  |     +--rw single?           string
+     |  |  |     |  |     +--rw string?           string
+     |  |  |     |  |     +--rw value-list*       string
+     |  |  |     |  +--rw ttl
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw dut-ipv4-address
+     |  |  |     |     +--rw pattern-type?     enumeration
+     |  |  |     |     +--ro pattern-format?   string
+     |  |  |     |     +--rw single?           string
+     |  |  |     |     +--rw increment
+     |  |  |     |     |  +--rw start?   string
+     |  |  |     |     |  +--rw step?    string
+     |  |  |     |     |  +--rw count?   string
+     |  |  |     |     +--rw decrement
+     |  |  |     |     |  +--rw start?   string
+     |  |  |     |     |  +--rw step?    string
+     |  |  |     |     |  +--rw count?   string
+     |  |  |     |     +--rw random
+     |  |  |     |     |  +--rw min?    string
+     |  |  |     |     |  +--rw max?    string
+     |  |  |     |     |  +--rw step?   string
+     |  |  |     |     |  +--rw seed?   uint32
+     |  |  |     |     +--rw value-list*       string
+     |  |  |     +--rw bgp6
+     |  |  |     |  +--rw as-number-2-byte!
+     |  |  |     |  |  +--rw as-number
+     |  |  |     |  |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  |  +--ro pattern-format?   string
+     |  |  |     |  |  |  +--rw single?           string
+     |  |  |     |  |  |  +--rw increment
+     |  |  |     |  |  |  |  +--rw start?   string
+     |  |  |     |  |  |  |  +--rw step?    string
+     |  |  |     |  |  |  |  +--rw count?   string
+     |  |  |     |  |  |  +--rw decrement
+     |  |  |     |  |  |  |  +--rw start?   string
+     |  |  |     |  |  |  |  +--rw step?    string
+     |  |  |     |  |  |  |  +--rw count?   string
+     |  |  |     |  |  |  +--rw random
+     |  |  |     |  |  |  |  +--rw min?    string
+     |  |  |     |  |  |  |  +--rw max?    string
+     |  |  |     |  |  |  |  +--rw step?   string
+     |  |  |     |  |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  |  +--rw value-list*       string
+     |  |  |     |  |  +--rw dut-as-number
+     |  |  |     |  |     +--rw pattern-type?     enumeration
+     |  |  |     |  |     +--ro pattern-format?   string
+     |  |  |     |  |     +--rw single?           string
+     |  |  |     |  |     +--rw increment
+     |  |  |     |  |     |  +--rw start?   string
+     |  |  |     |  |     |  +--rw step?    string
+     |  |  |     |  |     |  +--rw count?   string
+     |  |  |     |  |     +--rw decrement
+     |  |  |     |  |     |  +--rw start?   string
+     |  |  |     |  |     |  +--rw step?    string
+     |  |  |     |  |     |  +--rw count?   string
+     |  |  |     |  |     +--rw random
+     |  |  |     |  |     |  +--rw min?    string
+     |  |  |     |  |     |  +--rw max?    string
+     |  |  |     |  |     |  +--rw step?   string
+     |  |  |     |  |     |  +--rw seed?   uint32
+     |  |  |     |  |     +--rw value-list*       string
+     |  |  |     |  +--rw as-number-4-byte!
+     |  |  |     |  |  +--rw as-number
+     |  |  |     |  |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  |  +--ro pattern-format?   string
+     |  |  |     |  |  |  +--rw single?           string
+     |  |  |     |  |  |  +--rw increment
+     |  |  |     |  |  |  |  +--rw start?   string
+     |  |  |     |  |  |  |  +--rw step?    string
+     |  |  |     |  |  |  |  +--rw count?   string
+     |  |  |     |  |  |  +--rw decrement
+     |  |  |     |  |  |  |  +--rw start?   string
+     |  |  |     |  |  |  |  +--rw step?    string
+     |  |  |     |  |  |  |  +--rw count?   string
+     |  |  |     |  |  |  +--rw random
+     |  |  |     |  |  |  |  +--rw min?    string
+     |  |  |     |  |  |  |  +--rw max?    string
+     |  |  |     |  |  |  |  +--rw step?   string
+     |  |  |     |  |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  |  +--rw value-list*       string
+     |  |  |     |  |  +--rw dut-as-number
+     |  |  |     |  |     +--rw pattern-type?     enumeration
+     |  |  |     |  |     +--ro pattern-format?   string
+     |  |  |     |  |     +--rw single?           string
+     |  |  |     |  |     +--rw increment
+     |  |  |     |  |     |  +--rw start?   string
+     |  |  |     |  |     |  +--rw step?    string
+     |  |  |     |  |     |  +--rw count?   string
+     |  |  |     |  |     +--rw decrement
+     |  |  |     |  |     |  +--rw start?   string
+     |  |  |     |  |     |  +--rw step?    string
+     |  |  |     |  |     |  +--rw count?   string
+     |  |  |     |  |     +--rw random
+     |  |  |     |  |     |  +--rw min?    string
+     |  |  |     |  |     |  +--rw max?    string
+     |  |  |     |  |     |  +--rw step?   string
+     |  |  |     |  |     |  +--rw seed?   uint32
+     |  |  |     |  |     +--rw value-list*       string
+     |  |  |     |  +--rw as-number-set-mode
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw bgp-type
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw hold-time-interval
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw keep-alive-interval
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw graceful-restart!
+     |  |  |     |  |  +--rw restart-time
+     |  |  |     |  |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  |  +--ro pattern-format?   string
+     |  |  |     |  |  |  +--rw single?           string
+     |  |  |     |  |  |  +--rw increment
+     |  |  |     |  |  |  |  +--rw start?   string
+     |  |  |     |  |  |  |  +--rw step?    string
+     |  |  |     |  |  |  |  +--rw count?   string
+     |  |  |     |  |  |  +--rw decrement
+     |  |  |     |  |  |  |  +--rw start?   string
+     |  |  |     |  |  |  |  +--rw step?    string
+     |  |  |     |  |  |  |  +--rw count?   string
+     |  |  |     |  |  |  +--rw random
+     |  |  |     |  |  |  |  +--rw min?    string
+     |  |  |     |  |  |  |  +--rw max?    string
+     |  |  |     |  |  |  |  +--rw step?   string
+     |  |  |     |  |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  |  +--rw value-list*       string
+     |  |  |     |  |  +--rw restart-delay
+     |  |  |     |  |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  |  +--ro pattern-format?   string
+     |  |  |     |  |  |  +--rw single?           string
+     |  |  |     |  |  |  +--rw increment
+     |  |  |     |  |  |  |  +--rw start?   string
+     |  |  |     |  |  |  |  +--rw step?    string
+     |  |  |     |  |  |  |  +--rw count?   string
+     |  |  |     |  |  |  +--rw decrement
+     |  |  |     |  |  |  |  +--rw start?   string
+     |  |  |     |  |  |  |  +--rw step?    string
+     |  |  |     |  |  |  |  +--rw count?   string
+     |  |  |     |  |  |  +--rw random
+     |  |  |     |  |  |  |  +--rw min?    string
+     |  |  |     |  |  |  |  +--rw max?    string
+     |  |  |     |  |  |  |  +--rw step?   string
+     |  |  |     |  |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  |  +--rw value-list*       string
+     |  |  |     |  |  +--rw advertise-eor
+     |  |  |     |  |     +--rw pattern-type?     enumeration
+     |  |  |     |  |     +--ro pattern-format?   string
+     |  |  |     |  |     +--rw single?           string
+     |  |  |     |  |     +--rw increment
+     |  |  |     |  |     |  +--rw start?   string
+     |  |  |     |  |     |  +--rw step?    string
+     |  |  |     |  |     |  +--rw count?   string
+     |  |  |     |  |     +--rw decrement
+     |  |  |     |  |     |  +--rw start?   string
+     |  |  |     |  |     |  +--rw step?    string
+     |  |  |     |  |     |  +--rw count?   string
+     |  |  |     |  |     +--rw random
+     |  |  |     |  |     |  +--rw min?    string
+     |  |  |     |  |     |  +--rw max?    string
+     |  |  |     |  |     |  +--rw step?   string
+     |  |  |     |  |     |  +--rw seed?   uint32
+     |  |  |     |  |     +--rw value-list*       string
+     |  |  |     |  +--rw authentication!
+     |  |  |     |  |  +--rw authentication-type
+     |  |  |     |  |  |  +--ro pattern-format?   string
+     |  |  |     |  |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  |  +--rw single?           string
+     |  |  |     |  |  |  +--rw value-list*       string
+     |  |  |     |  |  +--rw md5-password
+     |  |  |     |  |     +--ro pattern-format?   string
+     |  |  |     |  |     +--rw pattern-type?     enumeration
+     |  |  |     |  |     +--rw single?           string
+     |  |  |     |  |     +--rw string?           string
+     |  |  |     |  |     +--rw value-list*       string
+     |  |  |     |  +--rw ttl
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw dut-ipv6-address
+     |  |  |     |     +--rw pattern-type?     enumeration
+     |  |  |     |     +--ro pattern-format?   string
+     |  |  |     |     +--rw single?           string
+     |  |  |     |     +--rw increment
+     |  |  |     |     |  +--rw start?   string
+     |  |  |     |     |  +--rw step?    string
+     |  |  |     |     |  +--rw count?   string
+     |  |  |     |     +--rw decrement
+     |  |  |     |     |  +--rw start?   string
+     |  |  |     |     |  +--rw step?    string
+     |  |  |     |     |  +--rw count?   string
+     |  |  |     |     +--rw random
+     |  |  |     |     |  +--rw min?    string
+     |  |  |     |     |  +--rw max?    string
+     |  |  |     |     |  +--rw step?   string
+     |  |  |     |     |  +--rw seed?   uint32
+     |  |  |     |     +--rw value-list*       string
+     |  |  |     +--rw ospfv2
+     |  |  |     |  +--rw area-id
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw network-type
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw router-priority
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw interface-cost
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw hello-interval
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw router-dead-interval
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw retransmit-interval
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw authentication!
+     |  |  |     |     +--rw authentication-type
+     |  |  |     |     |  +--ro pattern-format?   string
+     |  |  |     |     |  +--rw pattern-type?     enumeration
+     |  |  |     |     |  +--rw single?           string
+     |  |  |     |     |  +--rw value-list*       string
+     |  |  |     |     +--rw password
+     |  |  |     |        +--ro pattern-format?   string
+     |  |  |     |        +--rw pattern-type?     enumeration
+     |  |  |     |        +--rw single?           string
+     |  |  |     |        +--rw string?           string
+     |  |  |     |        +--rw value-list*       string
+     |  |  |     +--rw ospfv3
+     |  |  |     |  +--rw area-id
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw network-type
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw router-priority
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw interface-cost
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw hello-interval
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw router-dead-interval
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw retransmit-interval
+     |  |  |     |     +--rw pattern-type?     enumeration
+     |  |  |     |     +--ro pattern-format?   string
+     |  |  |     |     +--rw single?           string
+     |  |  |     |     +--rw increment
+     |  |  |     |     |  +--rw start?   string
+     |  |  |     |     |  +--rw step?    string
+     |  |  |     |     |  +--rw count?   string
+     |  |  |     |     +--rw decrement
+     |  |  |     |     |  +--rw start?   string
+     |  |  |     |     |  +--rw step?    string
+     |  |  |     |     |  +--rw count?   string
+     |  |  |     |     +--rw random
+     |  |  |     |     |  +--rw min?    string
+     |  |  |     |     |  +--rw max?    string
+     |  |  |     |     |  +--rw step?   string
+     |  |  |     |     |  +--rw seed?   uint32
+     |  |  |     |     +--rw value-list*       string
+     |  |  |     +--rw isisv4
+     |  |  |     |  +--rw system-id
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw network-type
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw router-priority
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw level
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw hello-interval
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw authentication!
+     |  |  |     |     +--rw authentication-type
+     |  |  |     |     |  +--ro pattern-format?   string
+     |  |  |     |     |  +--rw pattern-type?     enumeration
+     |  |  |     |     |  +--rw single?           string
+     |  |  |     |     |  +--rw value-list*       string
+     |  |  |     |     +--rw password
+     |  |  |     |        +--ro pattern-format?   string
+     |  |  |     |        +--rw pattern-type?     enumeration
+     |  |  |     |        +--rw single?           string
+     |  |  |     |        +--rw string?           string
+     |  |  |     |        +--rw value-list*       string
+     |  |  |     +--rw isisv6
+     |  |  |     |  +--rw system-id
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw network-type
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw router-priority
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw level
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw hello-interval
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw authentication!
+     |  |  |     |     +--rw authentication-type
+     |  |  |     |     |  +--ro pattern-format?   string
+     |  |  |     |     |  +--rw pattern-type?     enumeration
+     |  |  |     |     |  +--rw single?           string
+     |  |  |     |     |  +--rw value-list*       string
+     |  |  |     |     +--rw password
+     |  |  |     |        +--ro pattern-format?   string
+     |  |  |     |        +--rw pattern-type?     enumeration
+     |  |  |     |        +--rw single?           string
+     |  |  |     |        +--rw string?           string
+     |  |  |     |        +--rw value-list*       string
+     |  |  |     +--rw bfdv4
+     |  |  |     |  +--rw transmit-interval
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw receive-interval
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw echo-receive-interval
+     |  |  |     |  |  +--rw pattern-type?     enumeration
+     |  |  |     |  |  +--ro pattern-format?   string
+     |  |  |     |  |  +--rw single?           string
+     |  |  |     |  |  +--rw increment
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw decrement
+     |  |  |     |  |  |  +--rw start?   string
+     |  |  |     |  |  |  +--rw step?    string
+     |  |  |     |  |  |  +--rw count?   string
+     |  |  |     |  |  +--rw random
+     |  |  |     |  |  |  +--rw min?    string
+     |  |  |     |  |  |  +--rw max?    string
+     |  |  |     |  |  |  +--rw step?   string
+     |  |  |     |  |  |  +--rw seed?   uint32
+     |  |  |     |  |  +--rw value-list*       string
+     |  |  |     |  +--rw authentication!
+     |  |  |     |     +--rw authentication-type
+     |  |  |     |     |  +--ro pattern-format?   string
+     |  |  |     |     |  +--rw pattern-type?     enumeration
+     |  |  |     |     |  +--rw single?           string
+     |  |  |     |     |  +--rw value-list*       string
+     |  |  |     |     +--rw password
+     |  |  |     |        +--ro pattern-format?   string
+     |  |  |     |        +--rw pattern-type?     enumeration
+     |  |  |     |        +--rw single?           string
+     |  |  |     |        +--rw string?           string
+     |  |  |     |        +--rw value-list*       string
+     |  |  |     +--rw bfdv6
+     |  |  |        +--rw transmit-interval
+     |  |  |        |  +--rw pattern-type?     enumeration
+     |  |  |        |  +--ro pattern-format?   string
+     |  |  |        |  +--rw single?           string
+     |  |  |        |  +--rw increment
+     |  |  |        |  |  +--rw start?   string
+     |  |  |        |  |  +--rw step?    string
+     |  |  |        |  |  +--rw count?   string
+     |  |  |        |  +--rw decrement
+     |  |  |        |  |  +--rw start?   string
+     |  |  |        |  |  +--rw step?    string
+     |  |  |        |  |  +--rw count?   string
+     |  |  |        |  +--rw random
+     |  |  |        |  |  +--rw min?    string
+     |  |  |        |  |  +--rw max?    string
+     |  |  |        |  |  +--rw step?   string
+     |  |  |        |  |  +--rw seed?   uint32
+     |  |  |        |  +--rw value-list*       string
+     |  |  |        +--rw receive-interval
+     |  |  |        |  +--rw pattern-type?     enumeration
+     |  |  |        |  +--ro pattern-format?   string
+     |  |  |        |  +--rw single?           string
+     |  |  |        |  +--rw increment
+     |  |  |        |  |  +--rw start?   string
+     |  |  |        |  |  +--rw step?    string
+     |  |  |        |  |  +--rw count?   string
+     |  |  |        |  +--rw decrement
+     |  |  |        |  |  +--rw start?   string
+     |  |  |        |  |  +--rw step?    string
+     |  |  |        |  |  +--rw count?   string
+     |  |  |        |  +--rw random
+     |  |  |        |  |  +--rw min?    string
+     |  |  |        |  |  +--rw max?    string
+     |  |  |        |  |  +--rw step?   string
+     |  |  |        |  |  +--rw seed?   uint32
+     |  |  |        |  +--rw value-list*       string
+     |  |  |        +--rw echo-receive-interval
+     |  |  |        |  +--rw pattern-type?     enumeration
+     |  |  |        |  +--ro pattern-format?   string
+     |  |  |        |  +--rw single?           string
+     |  |  |        |  +--rw increment
+     |  |  |        |  |  +--rw start?   string
+     |  |  |        |  |  +--rw step?    string
+     |  |  |        |  |  +--rw count?   string
+     |  |  |        |  +--rw decrement
+     |  |  |        |  |  +--rw start?   string
+     |  |  |        |  |  +--rw step?    string
+     |  |  |        |  |  +--rw count?   string
+     |  |  |        |  +--rw random
+     |  |  |        |  |  +--rw min?    string
+     |  |  |        |  |  +--rw max?    string
+     |  |  |        |  |  +--rw step?   string
+     |  |  |        |  |  +--rw seed?   uint32
+     |  |  |        |  +--rw value-list*       string
+     |  |  |        +--rw authentication!
+     |  |  |           +--rw authentication-type
+     |  |  |           |  +--ro pattern-format?   string
+     |  |  |           |  +--rw pattern-type?     enumeration
+     |  |  |           |  +--rw single?           string
+     |  |  |           |  +--rw value-list*       string
+     |  |  |           +--rw password
+     |  |  |              +--ro pattern-format?   string
+     |  |  |              +--rw pattern-type?     enumeration
+     |  |  |              +--rw single?           string
+     |  |  |              +--rw string?           string
+     |  |  |              +--rw value-list*       string
+     |  |  +--rw simulated-networks* [name]
+     |  |     +--rw name           t:config-list-key
+     |  |     +--rw parent-link    union
+     |  |     +--rw networks* [name]
+     |  |        +--rw name                        t:config-list-key
+     |  |        +--rw network-count-per-device?   uint32
+     |  |        +--rw flow-link                   union
+     |  |        +--rw network-type                enumeration
+     |  |        +--rw bgp4-route-range
+     |  |        |  +--rw active?             boolean
+     |  |        |  +--rw address
+     |  |        |  |  +--rw pattern-type?     enumeration
+     |  |        |  |  +--ro pattern-format?   string
+     |  |        |  |  +--rw single?           string
+     |  |        |  |  +--rw increment
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw decrement
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw random
+     |  |        |  |  |  +--rw min?    string
+     |  |        |  |  |  +--rw max?    string
+     |  |        |  |  |  +--rw step?   string
+     |  |        |  |  |  +--rw seed?   uint32
+     |  |        |  |  +--rw value-list*       string
+     |  |        |  +--rw prefix-length
+     |  |        |  |  +--rw pattern-type?     enumeration
+     |  |        |  |  +--ro pattern-format?   string
+     |  |        |  |  +--rw single?           string
+     |  |        |  |  +--rw increment
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw decrement
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw random
+     |  |        |  |  |  +--rw min?    string
+     |  |        |  |  |  +--rw max?    string
+     |  |        |  |  |  +--rw step?   string
+     |  |        |  |  |  +--rw seed?   uint32
+     |  |        |  |  +--rw value-list*       string
+     |  |        |  +--rw as-path
+     |  |        |  |  +--rw pattern-type?     enumeration
+     |  |        |  |  +--ro pattern-format?   string
+     |  |        |  |  +--rw single?           string
+     |  |        |  |  +--rw increment
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw decrement
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw random
+     |  |        |  |  |  +--rw min?    string
+     |  |        |  |  |  +--rw max?    string
+     |  |        |  |  |  +--rw step?   string
+     |  |        |  |  |  +--rw seed?   uint32
+     |  |        |  |  +--rw value-list*       string
+     |  |        |  +--rw next-hop-address
+     |  |        |  |  +--rw pattern-type?     enumeration
+     |  |        |  |  +--ro pattern-format?   string
+     |  |        |  |  +--rw single?           string
+     |  |        |  |  +--rw increment
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw decrement
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw random
+     |  |        |  |  |  +--rw min?    string
+     |  |        |  |  |  +--rw max?    string
+     |  |        |  |  |  +--rw step?   string
+     |  |        |  |  |  +--rw seed?   uint32
+     |  |        |  |  +--rw value-list*       string
+     |  |        |  +--rw aigp-metric
+     |  |        |  |  +--rw pattern-type?     enumeration
+     |  |        |  |  +--ro pattern-format?   string
+     |  |        |  |  +--rw single?           string
+     |  |        |  |  +--rw increment
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw decrement
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw random
+     |  |        |  |  |  +--rw min?    string
+     |  |        |  |  |  +--rw max?    string
+     |  |        |  |  |  +--rw step?   string
+     |  |        |  |  |  +--rw seed?   uint32
+     |  |        |  |  +--rw value-list*       string
+     |  |        |  +--rw atomic-aggregate!
+     |  |        |     +--rw aggregate-as
+     |  |        |     |  +--rw pattern-type?     enumeration
+     |  |        |     |  +--ro pattern-format?   string
+     |  |        |     |  +--rw single?           string
+     |  |        |     |  +--rw increment
+     |  |        |     |  |  +--rw start?   string
+     |  |        |     |  |  +--rw step?    string
+     |  |        |     |  |  +--rw count?   string
+     |  |        |     |  +--rw decrement
+     |  |        |     |  |  +--rw start?   string
+     |  |        |     |  |  +--rw step?    string
+     |  |        |     |  |  +--rw count?   string
+     |  |        |     |  +--rw random
+     |  |        |     |  |  +--rw min?    string
+     |  |        |     |  |  +--rw max?    string
+     |  |        |     |  |  +--rw step?   string
+     |  |        |     |  |  +--rw seed?   uint32
+     |  |        |     |  +--rw value-list*       string
+     |  |        |     +--rw aggregate-ip
+     |  |        |        +--rw pattern-type?     enumeration
+     |  |        |        +--ro pattern-format?   string
+     |  |        |        +--rw single?           string
+     |  |        |        +--rw increment
+     |  |        |        |  +--rw start?   string
+     |  |        |        |  +--rw step?    string
+     |  |        |        |  +--rw count?   string
+     |  |        |        +--rw decrement
+     |  |        |        |  +--rw start?   string
+     |  |        |        |  +--rw step?    string
+     |  |        |        |  +--rw count?   string
+     |  |        |        +--rw random
+     |  |        |        |  +--rw min?    string
+     |  |        |        |  +--rw max?    string
+     |  |        |        |  +--rw step?   string
+     |  |        |        |  +--rw seed?   uint32
+     |  |        |        +--rw value-list*       string
+     |  |        +--rw bgp6-route-range
+     |  |        |  +--rw active?             boolean
+     |  |        |  +--rw address
+     |  |        |  |  +--rw pattern-type?     enumeration
+     |  |        |  |  +--ro pattern-format?   string
+     |  |        |  |  +--rw single?           string
+     |  |        |  |  +--rw increment
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw decrement
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw random
+     |  |        |  |  |  +--rw min?    string
+     |  |        |  |  |  +--rw max?    string
+     |  |        |  |  |  +--rw step?   string
+     |  |        |  |  |  +--rw seed?   uint32
+     |  |        |  |  +--rw value-list*       string
+     |  |        |  +--rw prefix-length
+     |  |        |  |  +--rw pattern-type?     enumeration
+     |  |        |  |  +--ro pattern-format?   string
+     |  |        |  |  +--rw single?           string
+     |  |        |  |  +--rw increment
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw decrement
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw random
+     |  |        |  |  |  +--rw min?    string
+     |  |        |  |  |  +--rw max?    string
+     |  |        |  |  |  +--rw step?   string
+     |  |        |  |  |  +--rw seed?   uint32
+     |  |        |  |  +--rw value-list*       string
+     |  |        |  +--rw as-path
+     |  |        |  |  +--rw pattern-type?     enumeration
+     |  |        |  |  +--ro pattern-format?   string
+     |  |        |  |  +--rw single?           string
+     |  |        |  |  +--rw increment
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw decrement
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw random
+     |  |        |  |  |  +--rw min?    string
+     |  |        |  |  |  +--rw max?    string
+     |  |        |  |  |  +--rw step?   string
+     |  |        |  |  |  +--rw seed?   uint32
+     |  |        |  |  +--rw value-list*       string
+     |  |        |  +--rw next-hop-address
+     |  |        |     +--rw pattern-type?     enumeration
+     |  |        |     +--ro pattern-format?   string
+     |  |        |     +--rw single?           string
+     |  |        |     +--rw increment
+     |  |        |     |  +--rw start?   string
+     |  |        |     |  +--rw step?    string
+     |  |        |     |  +--rw count?   string
+     |  |        |     +--rw decrement
+     |  |        |     |  +--rw start?   string
+     |  |        |     |  +--rw step?    string
+     |  |        |     |  +--rw count?   string
+     |  |        |     +--rw random
+     |  |        |     |  +--rw min?    string
+     |  |        |     |  +--rw max?    string
+     |  |        |     |  +--rw step?   string
+     |  |        |     |  +--rw seed?   uint32
+     |  |        |     +--rw value-list*       string
+     |  |        +--rw ospfv2-route-range
+     |  |        |  +--rw active?                boolean
+     |  |        |  +--rw advertise-router-id
+     |  |        |  |  +--rw pattern-type?     enumeration
+     |  |        |  |  +--ro pattern-format?   string
+     |  |        |  |  +--rw single?           string
+     |  |        |  |  +--rw increment
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw decrement
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw random
+     |  |        |  |  |  +--rw min?    string
+     |  |        |  |  |  +--rw max?    string
+     |  |        |  |  |  +--rw step?   string
+     |  |        |  |  |  +--rw seed?   uint32
+     |  |        |  |  +--rw value-list*       string
+     |  |        |  +--rw router-type
+     |  |        |  |  +--ro pattern-format?   string
+     |  |        |  |  +--rw pattern-type?     enumeration
+     |  |        |  |  +--rw single?           string
+     |  |        |  |  +--rw value-list*       string
+     |  |        |  +--rw sequence-number
+     |  |        |  |  +--rw pattern-type?     enumeration
+     |  |        |  |  +--ro pattern-format?   string
+     |  |        |  |  +--rw single?           string
+     |  |        |  |  +--rw increment
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw decrement
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw random
+     |  |        |  |  |  +--rw min?    string
+     |  |        |  |  |  +--rw max?    string
+     |  |        |  |  |  +--rw step?   string
+     |  |        |  |  |  +--rw seed?   uint32
+     |  |        |  |  +--rw value-list*       string
+     |  |        |  +--rw age
+     |  |        |  |  +--rw pattern-type?     enumeration
+     |  |        |  |  +--ro pattern-format?   string
+     |  |        |  |  +--rw single?           string
+     |  |        |  |  +--rw increment
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw decrement
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw random
+     |  |        |  |  |  +--rw min?    string
+     |  |        |  |  |  +--rw max?    string
+     |  |        |  |  |  +--rw step?   string
+     |  |        |  |  |  +--rw seed?   uint32
+     |  |        |  |  +--rw value-list*       string
+     |  |        |  +--rw router-link* [name]
+     |  |        |     +--rw name                t:config-list-key
+     |  |        |     +--rw router-link-type
+     |  |        |     |  +--ro pattern-format?   string
+     |  |        |     |  +--rw pattern-type?     enumeration
+     |  |        |     |  +--rw single?           string
+     |  |        |     |  +--rw value-list*       string
+     |  |        |     +--rw router-link-id
+     |  |        |        +--rw pattern-type?     enumeration
+     |  |        |        +--ro pattern-format?   string
+     |  |        |        +--rw single?           string
+     |  |        |        +--rw increment
+     |  |        |        |  +--rw start?   string
+     |  |        |        |  +--rw step?    string
+     |  |        |        |  +--rw count?   string
+     |  |        |        +--rw decrement
+     |  |        |        |  +--rw start?   string
+     |  |        |        |  +--rw step?    string
+     |  |        |        |  +--rw count?   string
+     |  |        |        +--rw random
+     |  |        |        |  +--rw min?    string
+     |  |        |        |  +--rw max?    string
+     |  |        |        |  +--rw step?   string
+     |  |        |        |  +--rw seed?   uint32
+     |  |        |        +--rw value-list*       string
+     |  |        +--rw ospfv3-route-range
+     |  |        |  +--rw active?                boolean
+     |  |        |  +--rw advertise-router-id
+     |  |        |  |  +--rw pattern-type?     enumeration
+     |  |        |  |  +--ro pattern-format?   string
+     |  |        |  |  +--rw single?           string
+     |  |        |  |  +--rw increment
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw decrement
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw random
+     |  |        |  |  |  +--rw min?    string
+     |  |        |  |  |  +--rw max?    string
+     |  |        |  |  |  +--rw step?   string
+     |  |        |  |  |  +--rw seed?   uint32
+     |  |        |  |  +--rw value-list*       string
+     |  |        |  +--rw router-type
+     |  |        |  |  +--ro pattern-format?   string
+     |  |        |  |  +--rw pattern-type?     enumeration
+     |  |        |  |  +--rw single?           string
+     |  |        |  |  +--rw value-list*       string
+     |  |        |  +--rw sequence-number
+     |  |        |  |  +--rw pattern-type?     enumeration
+     |  |        |  |  +--ro pattern-format?   string
+     |  |        |  |  +--rw single?           string
+     |  |        |  |  +--rw increment
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw decrement
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw random
+     |  |        |  |  |  +--rw min?    string
+     |  |        |  |  |  +--rw max?    string
+     |  |        |  |  |  +--rw step?   string
+     |  |        |  |  |  +--rw seed?   uint32
+     |  |        |  |  +--rw value-list*       string
+     |  |        |  +--rw age
+     |  |        |  |  +--rw pattern-type?     enumeration
+     |  |        |  |  +--ro pattern-format?   string
+     |  |        |  |  +--rw single?           string
+     |  |        |  |  +--rw increment
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw decrement
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw random
+     |  |        |  |  |  +--rw min?    string
+     |  |        |  |  |  +--rw max?    string
+     |  |        |  |  |  +--rw step?   string
+     |  |        |  |  |  +--rw seed?   uint32
+     |  |        |  |  +--rw value-list*       string
+     |  |        |  +--rw router-link* [name]
+     |  |        |     +--rw name                t:config-list-key
+     |  |        |     +--rw router-link-type
+     |  |        |     |  +--ro pattern-format?   string
+     |  |        |     |  +--rw pattern-type?     enumeration
+     |  |        |     |  +--rw single?           string
+     |  |        |     |  +--rw value-list*       string
+     |  |        |     +--rw interface-id
+     |  |        |        +--rw pattern-type?     enumeration
+     |  |        |        +--ro pattern-format?   string
+     |  |        |        +--rw single?           string
+     |  |        |        +--rw increment
+     |  |        |        |  +--rw start?   string
+     |  |        |        |  +--rw step?    string
+     |  |        |        |  +--rw count?   string
+     |  |        |        +--rw decrement
+     |  |        |        |  +--rw start?   string
+     |  |        |        |  +--rw step?    string
+     |  |        |        |  +--rw count?   string
+     |  |        |        +--rw random
+     |  |        |        |  +--rw min?    string
+     |  |        |        |  +--rw max?    string
+     |  |        |        |  +--rw step?   string
+     |  |        |        |  +--rw seed?   uint32
+     |  |        |        +--rw value-list*       string
+     |  |        +--rw isisv4-route-range
+     |  |        |  +--rw active?            boolean
+     |  |        |  +--rw address
+     |  |        |  |  +--rw pattern-type?     enumeration
+     |  |        |  |  +--ro pattern-format?   string
+     |  |        |  |  +--rw single?           string
+     |  |        |  |  +--rw increment
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw decrement
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw random
+     |  |        |  |  |  +--rw min?    string
+     |  |        |  |  |  +--rw max?    string
+     |  |        |  |  |  +--rw step?   string
+     |  |        |  |  |  +--rw seed?   uint32
+     |  |        |  |  +--rw value-list*       string
+     |  |        |  +--rw prefix-length
+     |  |        |  |  +--rw pattern-type?     enumeration
+     |  |        |  |  +--ro pattern-format?   string
+     |  |        |  |  +--rw single?           string
+     |  |        |  |  +--rw increment
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw decrement
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw random
+     |  |        |  |  |  +--rw min?    string
+     |  |        |  |  |  +--rw max?    string
+     |  |        |  |  |  +--rw step?   string
+     |  |        |  |  |  +--rw seed?   uint32
+     |  |        |  |  +--rw value-list*       string
+     |  |        |  +--rw system-id
+     |  |        |  |  +--rw pattern-type?     enumeration
+     |  |        |  |  +--ro pattern-format?   string
+     |  |        |  |  +--rw single?           string
+     |  |        |  |  +--rw increment
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw decrement
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw random
+     |  |        |  |  |  +--rw min?    string
+     |  |        |  |  |  +--rw max?    string
+     |  |        |  |  |  +--rw step?   string
+     |  |        |  |  |  +--rw seed?   uint32
+     |  |        |  |  +--rw value-list*       string
+     |  |        |  +--rw sequence-number
+     |  |        |  |  +--rw pattern-type?     enumeration
+     |  |        |  |  +--ro pattern-format?   string
+     |  |        |  |  +--rw single?           string
+     |  |        |  |  +--rw increment
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw decrement
+     |  |        |  |  |  +--rw start?   string
+     |  |        |  |  |  +--rw step?    string
+     |  |        |  |  |  +--rw count?   string
+     |  |        |  |  +--rw random
+     |  |        |  |  |  +--rw min?    string
+     |  |        |  |  |  +--rw max?    string
+     |  |        |  |  |  +--rw step?   string
+     |  |        |  |  |  +--rw seed?   uint32
+     |  |        |  |  +--rw value-list*       string
+     |  |        |  +--rw level
+     |  |        |     +--ro pattern-format?   string
+     |  |        |     +--rw pattern-type?     enumeration
+     |  |        |     +--rw single?           string
+     |  |        |     +--rw value-list*       string
+     |  |        +--rw isisv6-route-range
+     |  |           +--rw active?            boolean
+     |  |           +--rw address
+     |  |           |  +--rw pattern-type?     enumeration
+     |  |           |  +--ro pattern-format?   string
+     |  |           |  +--rw single?           string
+     |  |           |  +--rw increment
+     |  |           |  |  +--rw start?   string
+     |  |           |  |  +--rw step?    string
+     |  |           |  |  +--rw count?   string
+     |  |           |  +--rw decrement
+     |  |           |  |  +--rw start?   string
+     |  |           |  |  +--rw step?    string
+     |  |           |  |  +--rw count?   string
+     |  |           |  +--rw random
+     |  |           |  |  +--rw min?    string
+     |  |           |  |  +--rw max?    string
+     |  |           |  |  +--rw step?   string
+     |  |           |  |  +--rw seed?   uint32
+     |  |           |  +--rw value-list*       string
+     |  |           +--rw prefix-length
+     |  |           |  +--rw pattern-type?     enumeration
+     |  |           |  +--ro pattern-format?   string
+     |  |           |  +--rw single?           string
+     |  |           |  +--rw increment
+     |  |           |  |  +--rw start?   string
+     |  |           |  |  +--rw step?    string
+     |  |           |  |  +--rw count?   string
+     |  |           |  +--rw decrement
+     |  |           |  |  +--rw start?   string
+     |  |           |  |  +--rw step?    string
+     |  |           |  |  +--rw count?   string
+     |  |           |  +--rw random
+     |  |           |  |  +--rw min?    string
+     |  |           |  |  +--rw max?    string
+     |  |           |  |  +--rw step?   string
+     |  |           |  |  +--rw seed?   uint32
+     |  |           |  +--rw value-list*       string
+     |  |           +--rw system-id
+     |  |           |  +--rw pattern-type?     enumeration
+     |  |           |  +--ro pattern-format?   string
+     |  |           |  +--rw single?           string
+     |  |           |  +--rw increment
+     |  |           |  |  +--rw start?   string
+     |  |           |  |  +--rw step?    string
+     |  |           |  |  +--rw count?   string
+     |  |           |  +--rw decrement
+     |  |           |  |  +--rw start?   string
+     |  |           |  |  +--rw step?    string
+     |  |           |  |  +--rw count?   string
+     |  |           |  +--rw random
+     |  |           |  |  +--rw min?    string
+     |  |           |  |  +--rw max?    string
+     |  |           |  |  +--rw step?   string
+     |  |           |  |  +--rw seed?   uint32
+     |  |           |  +--rw value-list*       string
+     |  |           +--rw sequence-number
+     |  |           |  +--rw pattern-type?     enumeration
+     |  |           |  +--ro pattern-format?   string
+     |  |           |  +--rw single?           string
+     |  |           |  +--rw increment
+     |  |           |  |  +--rw start?   string
+     |  |           |  |  +--rw step?    string
+     |  |           |  |  +--rw count?   string
+     |  |           |  +--rw decrement
+     |  |           |  |  +--rw start?   string
+     |  |           |  |  +--rw step?    string
+     |  |           |  |  +--rw count?   string
+     |  |           |  +--rw random
+     |  |           |  |  +--rw min?    string
+     |  |           |  |  +--rw max?    string
+     |  |           |  |  +--rw step?   string
+     |  |           |  |  +--rw seed?   uint32
+     |  |           |  +--rw value-list*       string
+     |  |           +--rw level
+     |  |              +--ro pattern-format?   string
+     |  |              +--rw pattern-type?     enumeration
+     |  |              +--rw single?           string
+     |  |              +--rw value-list*       string
+     |  +---x create-bgp4
+     |  |  +---w input
+     |  |     +---w device-group-name    string
+     |  |     +---w device-name          string
+     |  |     +---w ethernet
+     |  |     |  +---w mac
+     |  |     |  |  +---w pattern-type?     enumeration
+     |  |     |  |  +---w pattern-format?   string
+     |  |     |  |  +---w single?           string
+     |  |     |  |  +---w increment
+     |  |     |  |  |  +---w start?   string
+     |  |     |  |  |  +---w step?    string
+     |  |     |  |  |  +---w count?   string
+     |  |     |  |  +---w decrement
+     |  |     |  |  |  +---w start?   string
+     |  |     |  |  |  +---w step?    string
+     |  |     |  |  |  +---w count?   string
+     |  |     |  |  +---w random
+     |  |     |  |  |  +---w min?    string
+     |  |     |  |  |  +---w max?    string
+     |  |     |  |  |  +---w step?   string
+     |  |     |  |  |  +---w seed?   uint32
+     |  |     |  |  +---w value-list*       string
+     |  |     |  +---w name    string
+     |  |     +---w vlan
+     |  |     |  +---w tpid
+     |  |     |  |  +---w pattern-format?   string
+     |  |     |  |  +---w pattern-type?     enumeration
+     |  |     |  |  +---w single?           string
+     |  |     |  |  +---w value-list*       string
+     |  |     |  +---w priority
+     |  |     |  |  +---w pattern-type?     enumeration
+     |  |     |  |  +---w pattern-format?   string
+     |  |     |  |  +---w single?           string
+     |  |     |  |  +---w increment
+     |  |     |  |  |  +---w start?   string
+     |  |     |  |  |  +---w step?    string
+     |  |     |  |  |  +---w count?   string
+     |  |     |  |  +---w decrement
+     |  |     |  |  |  +---w start?   string
+     |  |     |  |  |  +---w step?    string
+     |  |     |  |  |  +---w count?   string
+     |  |     |  |  +---w random
+     |  |     |  |  |  +---w min?    string
+     |  |     |  |  |  +---w max?    string
+     |  |     |  |  |  +---w step?   string
+     |  |     |  |  |  +---w seed?   uint32
+     |  |     |  |  +---w value-list*       string
+     |  |     |  +---w id
+     |  |     |  |  +---w pattern-type?     enumeration
+     |  |     |  |  +---w pattern-format?   string
+     |  |     |  |  +---w single?           string
+     |  |     |  |  +---w increment
+     |  |     |  |  |  +---w start?   string
+     |  |     |  |  |  +---w step?    string
+     |  |     |  |  |  +---w count?   string
+     |  |     |  |  +---w decrement
+     |  |     |  |  |  +---w start?   string
+     |  |     |  |  |  +---w step?    string
+     |  |     |  |  |  +---w count?   string
+     |  |     |  |  +---w random
+     |  |     |  |  |  +---w min?    string
+     |  |     |  |  |  +---w max?    string
+     |  |     |  |  |  +---w step?   string
+     |  |     |  |  |  +---w seed?   uint32
+     |  |     |  |  +---w value-list*       string
+     |  |     |  +---w name        string
+     |  |     +---w ipv4
+     |  |     |  +---w source-address
+     |  |     |  |  +---w pattern-type?     enumeration
+     |  |     |  |  +---w pattern-format?   string
+     |  |     |  |  +---w single?           string
+     |  |     |  |  +---w increment
+     |  |     |  |  |  +---w start?   string
+     |  |     |  |  |  +---w step?    string
+     |  |     |  |  |  +---w count?   string
+     |  |     |  |  +---w decrement
+     |  |     |  |  |  +---w start?   string
+     |  |     |  |  |  +---w step?    string
+     |  |     |  |  |  +---w count?   string
+     |  |     |  |  +---w random
+     |  |     |  |  |  +---w min?    string
+     |  |     |  |  |  +---w max?    string
+     |  |     |  |  |  +---w step?   string
+     |  |     |  |  |  +---w seed?   uint32
+     |  |     |  |  +---w value-list*       string
+     |  |     |  +---w gateway-address
+     |  |     |  |  +---w pattern-type?     enumeration
+     |  |     |  |  +---w pattern-format?   string
+     |  |     |  |  +---w single?           string
+     |  |     |  |  +---w increment
+     |  |     |  |  |  +---w start?   string
+     |  |     |  |  |  +---w step?    string
+     |  |     |  |  |  +---w count?   string
+     |  |     |  |  +---w decrement
+     |  |     |  |  |  +---w start?   string
+     |  |     |  |  |  +---w step?    string
+     |  |     |  |  |  +---w count?   string
+     |  |     |  |  +---w random
+     |  |     |  |  |  +---w min?    string
+     |  |     |  |  |  +---w max?    string
+     |  |     |  |  |  +---w step?   string
+     |  |     |  |  |  +---w seed?   uint32
+     |  |     |  |  +---w value-list*       string
+     |  |     |  +---w name               string
+     |  |     +---w bgp4
+     |  |        +---w as-number-2-byte!
+     |  |        |  +---w as-number
+     |  |        |  |  +---w pattern-type?     enumeration
+     |  |        |  |  +---w pattern-format?   string
+     |  |        |  |  +---w single?           string
+     |  |        |  |  +---w increment
+     |  |        |  |  |  +---w start?   string
+     |  |        |  |  |  +---w step?    string
+     |  |        |  |  |  +---w count?   string
+     |  |        |  |  +---w decrement
+     |  |        |  |  |  +---w start?   string
+     |  |        |  |  |  +---w step?    string
+     |  |        |  |  |  +---w count?   string
+     |  |        |  |  +---w random
+     |  |        |  |  |  +---w min?    string
+     |  |        |  |  |  +---w max?    string
+     |  |        |  |  |  +---w step?   string
+     |  |        |  |  |  +---w seed?   uint32
+     |  |        |  |  +---w value-list*       string
+     |  |        |  +---w dut-as-number
+     |  |        |     +---w pattern-type?     enumeration
+     |  |        |     +---w pattern-format?   string
+     |  |        |     +---w single?           string
+     |  |        |     +---w increment
+     |  |        |     |  +---w start?   string
+     |  |        |     |  +---w step?    string
+     |  |        |     |  +---w count?   string
+     |  |        |     +---w decrement
+     |  |        |     |  +---w start?   string
+     |  |        |     |  +---w step?    string
+     |  |        |     |  +---w count?   string
+     |  |        |     +---w random
+     |  |        |     |  +---w min?    string
+     |  |        |     |  +---w max?    string
+     |  |        |     |  +---w step?   string
+     |  |        |     |  +---w seed?   uint32
+     |  |        |     +---w value-list*       string
+     |  |        +---w as-number-4-byte!
+     |  |        |  +---w as-number
+     |  |        |  |  +---w pattern-type?     enumeration
+     |  |        |  |  +---w pattern-format?   string
+     |  |        |  |  +---w single?           string
+     |  |        |  |  +---w increment
+     |  |        |  |  |  +---w start?   string
+     |  |        |  |  |  +---w step?    string
+     |  |        |  |  |  +---w count?   string
+     |  |        |  |  +---w decrement
+     |  |        |  |  |  +---w start?   string
+     |  |        |  |  |  +---w step?    string
+     |  |        |  |  |  +---w count?   string
+     |  |        |  |  +---w random
+     |  |        |  |  |  +---w min?    string
+     |  |        |  |  |  +---w max?    string
+     |  |        |  |  |  +---w step?   string
+     |  |        |  |  |  +---w seed?   uint32
+     |  |        |  |  +---w value-list*       string
+     |  |        |  +---w dut-as-number
+     |  |        |     +---w pattern-type?     enumeration
+     |  |        |     +---w pattern-format?   string
+     |  |        |     +---w single?           string
+     |  |        |     +---w increment
+     |  |        |     |  +---w start?   string
+     |  |        |     |  +---w step?    string
+     |  |        |     |  +---w count?   string
+     |  |        |     +---w decrement
+     |  |        |     |  +---w start?   string
+     |  |        |     |  +---w step?    string
+     |  |        |     |  +---w count?   string
+     |  |        |     +---w random
+     |  |        |     |  +---w min?    string
+     |  |        |     |  +---w max?    string
+     |  |        |     |  +---w step?   string
+     |  |        |     |  +---w seed?   uint32
+     |  |        |     +---w value-list*       string
+     |  |        +---w as-number-set-mode
+     |  |        |  +---w pattern-format?   string
+     |  |        |  +---w pattern-type?     enumeration
+     |  |        |  +---w single?           string
+     |  |        |  +---w value-list*       string
+     |  |        +---w bgp-type
+     |  |        |  +---w pattern-format?   string
+     |  |        |  +---w pattern-type?     enumeration
+     |  |        |  +---w single?           string
+     |  |        |  +---w value-list*       string
+     |  |        +---w hold-time-interval
+     |  |        |  +---w pattern-type?     enumeration
+     |  |        |  +---w pattern-format?   string
+     |  |        |  +---w single?           string
+     |  |        |  +---w increment
+     |  |        |  |  +---w start?   string
+     |  |        |  |  +---w step?    string
+     |  |        |  |  +---w count?   string
+     |  |        |  +---w decrement
+     |  |        |  |  +---w start?   string
+     |  |        |  |  +---w step?    string
+     |  |        |  |  +---w count?   string
+     |  |        |  +---w random
+     |  |        |  |  +---w min?    string
+     |  |        |  |  +---w max?    string
+     |  |        |  |  +---w step?   string
+     |  |        |  |  +---w seed?   uint32
+     |  |        |  +---w value-list*       string
+     |  |        +---w keep-alive-interval
+     |  |        |  +---w pattern-type?     enumeration
+     |  |        |  +---w pattern-format?   string
+     |  |        |  +---w single?           string
+     |  |        |  +---w increment
+     |  |        |  |  +---w start?   string
+     |  |        |  |  +---w step?    string
+     |  |        |  |  +---w count?   string
+     |  |        |  +---w decrement
+     |  |        |  |  +---w start?   string
+     |  |        |  |  +---w step?    string
+     |  |        |  |  +---w count?   string
+     |  |        |  +---w random
+     |  |        |  |  +---w min?    string
+     |  |        |  |  +---w max?    string
+     |  |        |  |  +---w step?   string
+     |  |        |  |  +---w seed?   uint32
+     |  |        |  +---w value-list*       string
+     |  |        +---w graceful-restart!
+     |  |        |  +---w restart-time
+     |  |        |  |  +---w pattern-type?     enumeration
+     |  |        |  |  +---w pattern-format?   string
+     |  |        |  |  +---w single?           string
+     |  |        |  |  +---w increment
+     |  |        |  |  |  +---w start?   string
+     |  |        |  |  |  +---w step?    string
+     |  |        |  |  |  +---w count?   string
+     |  |        |  |  +---w decrement
+     |  |        |  |  |  +---w start?   string
+     |  |        |  |  |  +---w step?    string
+     |  |        |  |  |  +---w count?   string
+     |  |        |  |  +---w random
+     |  |        |  |  |  +---w min?    string
+     |  |        |  |  |  +---w max?    string
+     |  |        |  |  |  +---w step?   string
+     |  |        |  |  |  +---w seed?   uint32
+     |  |        |  |  +---w value-list*       string
+     |  |        |  +---w restart-delay
+     |  |        |  |  +---w pattern-type?     enumeration
+     |  |        |  |  +---w pattern-format?   string
+     |  |        |  |  +---w single?           string
+     |  |        |  |  +---w increment
+     |  |        |  |  |  +---w start?   string
+     |  |        |  |  |  +---w step?    string
+     |  |        |  |  |  +---w count?   string
+     |  |        |  |  +---w decrement
+     |  |        |  |  |  +---w start?   string
+     |  |        |  |  |  +---w step?    string
+     |  |        |  |  |  +---w count?   string
+     |  |        |  |  +---w random
+     |  |        |  |  |  +---w min?    string
+     |  |        |  |  |  +---w max?    string
+     |  |        |  |  |  +---w step?   string
+     |  |        |  |  |  +---w seed?   uint32
+     |  |        |  |  +---w value-list*       string
+     |  |        |  +---w advertise-eor
+     |  |        |     +---w pattern-type?     enumeration
+     |  |        |     +---w pattern-format?   string
+     |  |        |     +---w single?           string
+     |  |        |     +---w increment
+     |  |        |     |  +---w start?   string
+     |  |        |     |  +---w step?    string
+     |  |        |     |  +---w count?   string
+     |  |        |     +---w decrement
+     |  |        |     |  +---w start?   string
+     |  |        |     |  +---w step?    string
+     |  |        |     |  +---w count?   string
+     |  |        |     +---w random
+     |  |        |     |  +---w min?    string
+     |  |        |     |  +---w max?    string
+     |  |        |     |  +---w step?   string
+     |  |        |     |  +---w seed?   uint32
+     |  |        |     +---w value-list*       string
+     |  |        +---w authentication!
+     |  |        |  +---w authentication-type
+     |  |        |  |  +---w pattern-format?   string
+     |  |        |  |  +---w pattern-type?     enumeration
+     |  |        |  |  +---w single?           string
+     |  |        |  |  +---w value-list*       string
+     |  |        |  +---w md5-password
+     |  |        |     +---w pattern-format?   string
+     |  |        |     +---w pattern-type?     enumeration
+     |  |        |     +---w single?           string
+     |  |        |     +---w string?           string
+     |  |        |     +---w value-list*       string
+     |  |        +---w ttl
+     |  |        |  +---w pattern-type?     enumeration
+     |  |        |  +---w pattern-format?   string
+     |  |        |  +---w single?           string
+     |  |        |  +---w increment
+     |  |        |  |  +---w start?   string
+     |  |        |  |  +---w step?    string
+     |  |        |  |  +---w count?   string
+     |  |        |  +---w decrement
+     |  |        |  |  +---w start?   string
+     |  |        |  |  +---w step?    string
+     |  |        |  |  +---w count?   string
+     |  |        |  +---w random
+     |  |        |  |  +---w min?    string
+     |  |        |  |  +---w max?    string
+     |  |        |  |  +---w step?   string
+     |  |        |  |  +---w seed?   uint32
+     |  |        |  +---w value-list*       string
+     |  |        +---w dut-ipv4-address
+     |  |        |  +---w pattern-type?     enumeration
+     |  |        |  +---w pattern-format?   string
+     |  |        |  +---w single?           string
+     |  |        |  +---w increment
+     |  |        |  |  +---w start?   string
+     |  |        |  |  +---w step?    string
+     |  |        |  |  +---w count?   string
+     |  |        |  +---w decrement
+     |  |        |  |  +---w start?   string
+     |  |        |  |  +---w step?    string
+     |  |        |  |  +---w count?   string
+     |  |        |  +---w random
+     |  |        |  |  +---w min?    string
+     |  |        |  |  +---w max?    string
+     |  |        |  |  +---w step?   string
+     |  |        |  |  +---w seed?   uint32
+     |  |        |  +---w value-list*       string
+     |  |        +---w name                   string
      |  +---x start-protocols
      |  |  +---w input
-     |  |  |  +---w protocol-group-names*   string
+     |  |  |  +---w protocol-names*   string
      |  |  +--ro output
      |  |     +--ro errata* [name]
-     |  |        +--ro name           string
+     |  |        +--ro name           config-list-key
      |  |        +--ro detail?        string
      |  |        +--ro stack-trace?   string
      |  +---x stop-protocols
      |  |  +---w input
-     |  |  |  +---w protocol-group-names*   string
+     |  |  |  +---w protocol-names*   string
      |  |  +--ro output
      |  |     +--ro errata* [name]
-     |  |        +--ro name           string
+     |  |        +--ro name           config-list-key
+     |  |        +--ro detail?        string
+     |  |        +--ro stack-trace?   string
+     |  +---x bgp4-control
+     |  |  +---w input
+     |  |  |  +---w bgp4-protocol-names*   string
+     |  |  |  +---w mode?                  enumeration
+     |  |  +--ro output
+     |  |     +--ro errata* [name]
+     |  |        +--ro name           config-list-key
+     |  |        +--ro detail?        string
+     |  |        +--ro stack-trace?   string
+     |  +---x bgp6-control
+     |  |  +---w input
+     |  |  |  +---w bgp6-protocol-names*   string
+     |  |  |  +---w mode?                  enumeration
+     |  |  +--ro output
+     |  |     +--ro errata* [name]
+     |  |        +--ro name           config-list-key
+     |  |        +--ro detail?        string
+     |  |        +--ro stack-trace?   string
+     |  +---x ospfv2-control
+     |  |  +---w input
+     |  |  |  +---w ospfv2-protocol-names*   string
+     |  |  |  +---w mode?                    enumeration
+     |  |  +--ro output
+     |  |     +--ro errata* [name]
+     |  |        +--ro name           config-list-key
+     |  |        +--ro detail?        string
+     |  |        +--ro stack-trace?   string
+     |  +---x ospfv3-control
+     |  |  +---w input
+     |  |  |  +---w ospfv3-protocol-names*   string
+     |  |  |  +---w mode?                    enumeration
+     |  |  +--ro output
+     |  |     +--ro errata* [name]
+     |  |        +--ro name           config-list-key
+     |  |        +--ro detail?        string
+     |  |        +--ro stack-trace?   string
+     |  +---x isisv4-control
+     |  |  +---w input
+     |  |  |  +---w isisv4-protocol-names*   string
+     |  |  |  +---w mode?                    enumeration
+     |  |  +--ro output
+     |  |     +--ro errata* [name]
+     |  |        +--ro name           config-list-key
+     |  |        +--ro detail?        string
+     |  |        +--ro stack-trace?   string
+     |  +---x isisv6-control
+     |  |  +---w input
+     |  |  |  +---w isisv6-protocol-names*   string
+     |  |  |  +---w mode?                    enumeration
+     |  |  +--ro output
+     |  |     +--ro errata* [name]
+     |  |        +--ro name           config-list-key
+     |  |        +--ro detail?        string
+     |  |        +--ro stack-trace?   string
+     |  +---x bfdv4-control
+     |  |  +---w input
+     |  |  |  +---w bfdv4-protocol-names*   string
+     |  |  |  +---w mode?                   enumeration
+     |  |  +--ro output
+     |  |     +--ro errata* [name]
+     |  |        +--ro name           config-list-key
+     |  |        +--ro detail?        string
+     |  |        +--ro stack-trace?   string
+     |  +---x bfdv6-control
+     |  |  +---w input
+     |  |  |  +---w bfdv6-protocol-names*   string
+     |  |  |  +---w mode?                   enumeration
+     |  |  +--ro output
+     |  |     +--ro errata* [name]
+     |  |        +--ro name           config-list-key
      |  |        +--ro detail?        string
      |  |        +--ro stack-trace?   string
      |  +--rw traffic-groups* [name]
-     |  |  +--rw name    string
+     |  |  +--rw name                     t:config-list-key
+     |  |  +--rw bidirectional?           boolean
+     |  |  +--rw mesh-type?               enumeration
+     |  |  +--rw encapsulation?           enumeration
+     |  |  +--rw source-endpoints*        union
+     |  |  +--rw destination-endpoints*   union
+     |  |  +--rw frame-length
+     |  |  |  +--rw length-type?   enumeration
+     |  |  |  +--rw fixed?         int32
+     |  |  |  +--rw random
+     |  |  |  |  +--rw max?   int32
+     |  |  |  |  +--rw min?   int32
+     |  |  |  +--rw increment
+     |  |  |  |  +--rw start?   int32
+     |  |  |  |  +--rw end?     int32
+     |  |  |  |  +--rw step?    int32
+     |  |  |  +--rw decrement
+     |  |  |  |  +--rw start?   int32
+     |  |  |  |  +--rw end?     int32
+     |  |  |  |  +--rw step?    int32
+     |  |  |  +--rw imix
+     |  |  |     +--rw imix-type?     enumeration
+     |  |  |     +--rw custom-imix* [name]
+     |  |  |        +--rw name      t:config-list-key
+     |  |  |        +--rw size?     int32
+     |  |  |        +--rw weight?   int32
+     |  |  +--rw frame-rate
+     |  |  |  +--rw mode?             enumeration
+     |  |  |  +--rw fixed-rate
+     |  |  |  |  +--rw rate-type?          enumeration
+     |  |  |  |  +--rw bps?                int32
+     |  |  |  |  +--rw kbps?               int32
+     |  |  |  |  +--rw mbps?               int32
+     |  |  |  |  +--rw fps?                int32
+     |  |  |  |  +--rw inter-packet-gap?   int32
+     |  |  |  |  +--rw percent-value?      int32
+     |  |  |  +--rw decrement-rate
+     |  |  |  |  +--rw rate-type?       enumeration
+     |  |  |  |  +--rw bps?             int32
+     |  |  |  |  +--rw kbps?            int32
+     |  |  |  |  +--rw mbps?            int32
+     |  |  |  |  +--rw fps?             int32
+     |  |  |  |  +--rw percent-value?   int32
+     |  |  |  |  +--rw count?           int32
+     |  |  |  |  +--rw step?            int32
+     |  |  |  +--rw increment-rate
+     |  |  |     +--rw rate-type?       enumeration
+     |  |  |     +--rw bps?             int32
+     |  |  |     +--rw kbps?            int32
+     |  |  |     +--rw mbps?            int32
+     |  |  |     +--rw fps?             int32
+     |  |  |     +--rw percent-value?   int32
+     |  |  |     +--rw count?           int32
+     |  |  |     +--rw step?            int32
+     |  |  +--rw packet-payload
+     |  |  |  +--rw payload-type?   enumeration
+     |  |  |  +--rw payload
+     |  |  |     +--rw data?     iyt:hex-string
+     |  |  |     +--rw repeat?   boolean
+     |  |  |     +--rw length?   int32
+     |  |  +--rw user-frames* [name]
+     |  |     +--rw name        t:config-list-key
+     |  |     +--rw ethernet
+     |  |     |  +--rw destination!
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw random
+     |  |     |  |  |  +--rw min?    string
+     |  |     |  |  |  +--rw max?    string
+     |  |     |  |  |  +--rw step?   string
+     |  |     |  |  |  +--rw seed?   uint32
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  |  +--rw count?            int32
+     |  |     |  +--rw source!
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw random
+     |  |     |  |  |  +--rw min?    string
+     |  |     |  |  |  +--rw max?    string
+     |  |     |  |  |  +--rw step?   string
+     |  |     |  |  |  +--rw seed?   uint32
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  |  +--rw count?            int32
+     |  |     |  +--rw ethernet-type
+     |  |     |     +--ro pattern-format?   string
+     |  |     |     +--rw pattern-type?     enumeration
+     |  |     |     +--rw single?           string
+     |  |     |     +--rw value-list*       string
+     |  |     +--rw vlan
+     |  |     |  +--rw priority {t:unresolved-type}?
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw random
+     |  |     |  |  |  +--rw min?    string
+     |  |     |  |  |  +--rw max?    string
+     |  |     |  |  |  +--rw step?   string
+     |  |     |  |  |  +--rw seed?   uint32
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw id {t:unresolved-type}?
+     |  |     |     +--rw pattern-type?     enumeration
+     |  |     |     +--ro pattern-format?   string
+     |  |     |     +--rw single?           string
+     |  |     |     +--rw increment
+     |  |     |     |  +--rw start?   string
+     |  |     |     |  +--rw step?    string
+     |  |     |     |  +--rw count?   string
+     |  |     |     +--rw decrement
+     |  |     |     |  +--rw start?   string
+     |  |     |     |  +--rw step?    string
+     |  |     |     |  +--rw count?   string
+     |  |     |     +--rw random
+     |  |     |     |  +--rw min?    string
+     |  |     |     |  +--rw max?    string
+     |  |     |     |  +--rw step?   string
+     |  |     |     |  +--rw seed?   uint32
+     |  |     |     +--rw value-list*       string
+     |  |     +--rw ipv4
+     |  |     |  +--rw source-address
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw random
+     |  |     |  |  |  +--rw min?    string
+     |  |     |  |  |  +--rw max?    string
+     |  |     |  |  |  +--rw step?   string
+     |  |     |  |  |  +--rw seed?   uint32
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw destination-address
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw random
+     |  |     |  |  |  +--rw min?    string
+     |  |     |  |  |  +--rw max?    string
+     |  |     |  |  |  +--rw step?   string
+     |  |     |  |  |  +--rw seed?   uint32
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw ttl
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw random
+     |  |     |  |  |  +--rw min?    string
+     |  |     |  |  |  +--rw max?    string
+     |  |     |  |  |  +--rw step?   string
+     |  |     |  |  |  +--rw seed?   uint32
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw header-length
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw random
+     |  |     |  |  |  +--rw min?    string
+     |  |     |  |  |  +--rw max?    string
+     |  |     |  |  |  +--rw step?   string
+     |  |     |  |  |  +--rw seed?   uint32
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw identification
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw random
+     |  |     |  |  |  +--rw min?    string
+     |  |     |  |  |  +--rw max?    string
+     |  |     |  |  |  +--rw step?   string
+     |  |     |  |  |  +--rw seed?   uint32
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw fragment-offset
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw random
+     |  |     |  |  |  +--rw min?    string
+     |  |     |  |  |  +--rw max?    string
+     |  |     |  |  |  +--rw step?   string
+     |  |     |  |  |  +--rw seed?   uint32
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw protocol
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw random
+     |  |     |  |  |  +--rw min?    string
+     |  |     |  |  |  +--rw max?    string
+     |  |     |  |  |  +--rw step?   string
+     |  |     |  |  |  +--rw seed?   uint32
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw checksum
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw reserved-bit
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw random
+     |  |     |  |  |  +--rw min?    string
+     |  |     |  |  |  +--rw max?    string
+     |  |     |  |  |  +--rw step?   string
+     |  |     |  |  |  +--rw seed?   uint32
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw mf-bit
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw random
+     |  |     |  |  |  +--rw min?    string
+     |  |     |  |  |  +--rw max?    string
+     |  |     |  |  |  +--rw step?   string
+     |  |     |  |  |  +--rw seed?   uint32
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw df-bit
+     |  |     |     +--rw pattern-type?     enumeration
+     |  |     |     +--ro pattern-format?   string
+     |  |     |     +--rw single?           string
+     |  |     |     +--rw increment
+     |  |     |     |  +--rw start?   string
+     |  |     |     |  +--rw step?    string
+     |  |     |     |  +--rw count?   string
+     |  |     |     +--rw decrement
+     |  |     |     |  +--rw start?   string
+     |  |     |     |  +--rw step?    string
+     |  |     |     |  +--rw count?   string
+     |  |     |     +--rw random
+     |  |     |     |  +--rw min?    string
+     |  |     |     |  +--rw max?    string
+     |  |     |     |  +--rw step?   string
+     |  |     |     |  +--rw seed?   uint32
+     |  |     |     +--rw value-list*       string
+     |  |     +--rw ipv6
+     |  |     |  +--rw source-address
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw random
+     |  |     |  |  |  +--rw min?    string
+     |  |     |  |  |  +--rw max?    string
+     |  |     |  |  |  +--rw step?   string
+     |  |     |  |  |  +--rw seed?   uint32
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw destination-address
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw random
+     |  |     |  |  |  +--rw min?    string
+     |  |     |  |  |  +--rw max?    string
+     |  |     |  |  |  +--rw step?   string
+     |  |     |  |  |  +--rw seed?   uint32
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw traffic-class
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw random
+     |  |     |  |  |  +--rw min?    string
+     |  |     |  |  |  +--rw max?    string
+     |  |     |  |  |  +--rw step?   string
+     |  |     |  |  |  +--rw seed?   uint32
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw flow-label
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw random
+     |  |     |  |  |  +--rw min?    string
+     |  |     |  |  |  +--rw max?    string
+     |  |     |  |  |  +--rw step?   string
+     |  |     |  |  |  +--rw seed?   uint32
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw payload-length
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw random
+     |  |     |  |  |  +--rw min?    string
+     |  |     |  |  |  +--rw max?    string
+     |  |     |  |  |  +--rw step?   string
+     |  |     |  |  |  +--rw seed?   uint32
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw next-header
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw random
+     |  |     |  |  |  +--rw min?    string
+     |  |     |  |  |  +--rw max?    string
+     |  |     |  |  |  +--rw step?   string
+     |  |     |  |  |  +--rw seed?   uint32
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw hop-limit
+     |  |     |     +--rw pattern-type?     enumeration
+     |  |     |     +--ro pattern-format?   string
+     |  |     |     +--rw single?           string
+     |  |     |     +--rw increment
+     |  |     |     |  +--rw start?   string
+     |  |     |     |  +--rw step?    string
+     |  |     |     |  +--rw count?   string
+     |  |     |     +--rw decrement
+     |  |     |     |  +--rw start?   string
+     |  |     |     |  +--rw step?    string
+     |  |     |     |  +--rw count?   string
+     |  |     |     +--rw random
+     |  |     |     |  +--rw min?    string
+     |  |     |     |  +--rw max?    string
+     |  |     |     |  +--rw step?   string
+     |  |     |     |  +--rw seed?   uint32
+     |  |     |     +--rw value-list*       string
+     |  |     +--rw tcp
+     |  |     |  +--rw source-port
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw random
+     |  |     |  |  |  +--rw min?    string
+     |  |     |  |  |  +--rw max?    string
+     |  |     |  |  |  +--rw step?   string
+     |  |     |  |  |  +--rw seed?   uint32
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw destination-port
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw random
+     |  |     |  |  |  +--rw min?    string
+     |  |     |  |  |  +--rw max?    string
+     |  |     |  |  |  +--rw step?   string
+     |  |     |  |  |  +--rw seed?   uint32
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw acknowledgement-number
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw random
+     |  |     |  |  |  +--rw min?    string
+     |  |     |  |  |  +--rw max?    string
+     |  |     |  |  |  +--rw step?   string
+     |  |     |  |  |  +--rw seed?   uint32
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw header-length
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw random
+     |  |     |  |  |  +--rw min?    string
+     |  |     |  |  |  +--rw max?    string
+     |  |     |  |  |  +--rw step?   string
+     |  |     |  |  |  +--rw seed?   uint32
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw reserved
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw sequence-number
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw random
+     |  |     |  |  |  +--rw min?    string
+     |  |     |  |  |  +--rw max?    string
+     |  |     |  |  |  +--rw step?   string
+     |  |     |  |  |  +--rw seed?   uint32
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw urgent-pointer
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw random
+     |  |     |  |  |  +--rw min?    string
+     |  |     |  |  |  +--rw max?    string
+     |  |     |  |  |  +--rw step?   string
+     |  |     |  |  |  +--rw seed?   uint32
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw window-size
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw increment
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw decrement
+     |  |     |  |  |  +--rw start?   string
+     |  |     |  |  |  +--rw step?    string
+     |  |     |  |  |  +--rw count?   string
+     |  |     |  |  +--rw random
+     |  |     |  |  |  +--rw min?    string
+     |  |     |  |  |  +--rw max?    string
+     |  |     |  |  |  +--rw step?   string
+     |  |     |  |  |  +--rw seed?   uint32
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw acknowledgement-flag
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw fin-flag
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw push-flag
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw reset-flag
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw sync-flag
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw urgent-flag
+     |  |     |  |  +--ro pattern-format?   string
+     |  |     |  |  +--rw pattern-type?     enumeration
+     |  |     |  |  +--rw single?           string
+     |  |     |  |  +--rw value-list*       string
+     |  |     |  +--rw checksum
+     |  |     |     +--rw pattern-type?     enumeration
+     |  |     |     +--ro pattern-format?   string
+     |  |     |     +--rw single?           string
+     |  |     |     +--rw increment
+     |  |     |     |  +--rw start?   string
+     |  |     |     |  +--rw step?    string
+     |  |     |     |  +--rw count?   string
+     |  |     |     +--rw decrement
+     |  |     |     |  +--rw start?   string
+     |  |     |     |  +--rw step?    string
+     |  |     |     |  +--rw count?   string
+     |  |     |     +--rw random
+     |  |     |     |  +--rw min?    string
+     |  |     |     |  +--rw max?    string
+     |  |     |     |  +--rw step?   string
+     |  |     |     |  +--rw seed?   uint32
+     |  |     |     +--rw value-list*       string
+     |  |     +--rw udp
+     |  |        +--rw source-port
+     |  |        |  +--rw pattern-type?     enumeration
+     |  |        |  +--ro pattern-format?   string
+     |  |        |  +--rw single?           string
+     |  |        |  +--rw increment
+     |  |        |  |  +--rw start?   string
+     |  |        |  |  +--rw step?    string
+     |  |        |  |  +--rw count?   string
+     |  |        |  +--rw decrement
+     |  |        |  |  +--rw start?   string
+     |  |        |  |  +--rw step?    string
+     |  |        |  |  +--rw count?   string
+     |  |        |  +--rw random
+     |  |        |  |  +--rw min?    string
+     |  |        |  |  +--rw max?    string
+     |  |        |  |  +--rw step?   string
+     |  |        |  |  +--rw seed?   uint32
+     |  |        |  +--rw value-list*       string
+     |  |        +--rw destination-port
+     |  |        |  +--rw pattern-type?     enumeration
+     |  |        |  +--ro pattern-format?   string
+     |  |        |  +--rw single?           string
+     |  |        |  +--rw increment
+     |  |        |  |  +--rw start?   string
+     |  |        |  |  +--rw step?    string
+     |  |        |  |  +--rw count?   string
+     |  |        |  +--rw decrement
+     |  |        |  |  +--rw start?   string
+     |  |        |  |  +--rw step?    string
+     |  |        |  |  +--rw count?   string
+     |  |        |  +--rw random
+     |  |        |  |  +--rw min?    string
+     |  |        |  |  +--rw max?    string
+     |  |        |  |  +--rw step?   string
+     |  |        |  |  +--rw seed?   uint32
+     |  |        |  +--rw value-list*       string
+     |  |        +--rw checksum
+     |  |           +--rw pattern-type?     enumeration
+     |  |           +--ro pattern-format?   string
+     |  |           +--rw single?           string
+     |  |           +--rw increment
+     |  |           |  +--rw start?   string
+     |  |           |  +--rw step?    string
+     |  |           |  +--rw count?   string
+     |  |           +--rw decrement
+     |  |           |  +--rw start?   string
+     |  |           |  +--rw step?    string
+     |  |           |  +--rw count?   string
+     |  |           +--rw random
+     |  |           |  +--rw min?    string
+     |  |           |  +--rw max?    string
+     |  |           |  +--rw step?   string
+     |  |           |  +--rw seed?   uint32
+     |  |           +--rw value-list*       string
      |  +---x start-traffic
      |  |  +---w input
      |  |  |  +---w traffic-group-names*   string
      |  |  +--ro output
      |  |     +--ro errata* [name]
-     |  |        +--ro name           string
+     |  |        +--ro name           config-list-key
      |  |        +--ro detail?        string
      |  |        +--ro stack-trace?   string
      |  +---x stop-traffic
@@ -59,35 +2833,239 @@ module: openhltest
      |  |  |  +---w traffic-group-names*   string
      |  |  +--ro output
      |  |     +--ro errata* [name]
-     |  |        +--ro name           string
+     |  |        +--ro name           config-list-key
      |  |        +--ro detail?        string
      |  |        +--ro stack-trace?   string
      |  +---x clear
      |  +---x load
+     |  |  +---w input
+     |  |     +---w vendor-config?   binary
+     |  +---x save-config
+     |  |  +---w input
+     |  |     +---w filename?   string
+     |  +---x arp-control
      |     +---w input
-     |        +---w vendor-config?   binary
+     |        +---w targets*   union
      +--rw statistics
      |  +--ro first-activity-timestamp?   yang:date-and-time
      |  +--ro last-activity-timestamp?    yang:date-and-time
-     |  +--ro ports* [name]
-     |  |  +--ro name                               string
+     |  +--ro physical-port* [port-name]
+     |  |  +--ro port-name                          t:config-list-key
      |  |  +--ro connected-test-port-id?            string
      |  |  +--ro connected-test-port-description?   string
      |  |  +--ro connection-state?                  enumeration
      |  |  +--ro connection-state-details?          string
      |  |  +--ro speed?                             string
-     |  |  +--ro tx-frames?                         string
-     |  |  +--ro rx-frames?                         string
+     |  +--ro port* [name]
+     |  |  +--ro name              t:config-list-key
+     |  |  +--ro tx-frames?        uint64
+     |  |  +--ro rx-frames?        uint64
+     |  |  +--ro tx-frame-rate?    uint64
+     |  |  +--ro rx-frame-rate?    uint64
+     |  |  +--ro dropped-frames?   uint64
+     |  |  +--ro tx-bit-count?     uint64
+     |  |  +--ro rx-bit-count?     uint64
+     |  |  +--ro tx-bit-rate?      uint64
+     |  |  +--ro rx-bit-rate?      uint64
+     |  |  +--ro tx-byte-count?    uint64
+     |  |  +--ro rx-byte-count?    uint64
+     |  |  +--ro tx-byte-rate?     uint64
+     |  |  +--ro rx-byte-rate?     uint64
+     |  +--ro traffic-groups* [name]
+     |  |  +--ro name              t:config-list-key
+     |  |  +--ro tx-frames?        uint64
+     |  |  +--ro rx-frames?        uint64
+     |  |  +--ro tx-frame-rate?    uint64
+     |  |  +--ro rx-frame-rate?    uint64
+     |  |  +--ro dropped-frames?   uint64
+     |  |  +--ro tx-bit-count?     uint64
+     |  |  +--ro rx-bit-count?     uint64
+     |  |  +--ro tx-bit-rate?      uint64
+     |  |  +--ro rx-bit-rate?      uint64
+     |  |  +--ro tx-byte-count?    uint64
+     |  |  +--ro rx-byte-count?    uint64
+     |  |  +--ro tx-byte-rate?     uint64
+     |  |  +--ro rx-byte-rate?     uint64
+     |  |  +--ro port* [name]
+     |  |     +--ro name              t:config-list-key
+     |  |     +--ro tx-frames?        uint64
+     |  |     +--ro rx-frames?        uint64
+     |  |     +--ro tx-frame-rate?    uint64
+     |  |     +--ro rx-frame-rate?    uint64
+     |  |     +--ro dropped-frames?   uint64
+     |  |     +--ro tx-bit-count?     uint64
+     |  |     +--ro rx-bit-count?     uint64
+     |  |     +--ro tx-bit-rate?      uint64
+     |  |     +--ro rx-bit-rate?      uint64
+     |  |     +--ro tx-byte-count?    uint64
+     |  |     +--ro rx-byte-count?    uint64
+     |  |     +--ro tx-byte-rate?     uint64
+     |  |     +--ro rx-byte-rate?     uint64
+     |  +--ro bgp4-statistics* [device-name]
+     |  |  +--ro device-name                 string
+     |  |  +--ro port-name?                  string
+     |  |  +--ro router-state?               enumeration
+     |  |  +--ro tx-advertise-route-count?   uint64
+     |  |  +--ro rx-advertise-route-count?   uint64
+     |  |  +--ro tx-withdraw-route-count?    uint64
+     |  |  +--ro rx-withdraw-route-count?    uint64
+     |  +--ro bgp6-statistics* [device-name]
+     |  |  +--ro device-name                 string
+     |  |  +--ro port-name?                  string
+     |  |  +--ro router-state?               enumeration
+     |  |  +--ro tx-advertise-route-count?   uint64
+     |  |  +--ro rx-advertise-route-count?   uint64
+     |  |  +--ro tx-withdraw-route-count?    uint64
+     |  |  +--ro rx-withdraw-route-count?    uint64
+     |  +--ro ospfv2-statistics* [device-name]
+     |  |  +--ro device-name         string
+     |  |  +--ro port-name?          string
+     |  |  +--ro router-state?       enumeration
+     |  |  +--ro adjacency-status?   enumeration
+     |  |  +--ro tx-hello-count?     uint64
+     |  |  +--ro rx-hello-count?     uint64
+     |  +--ro ospfv3-statistics* [device-name]
+     |  |  +--ro device-name         string
+     |  |  +--ro port-name?          string
+     |  |  +--ro router-state?       enumeration
+     |  |  +--ro adjacency-status?   enumeration
+     |  |  +--ro tx-hello-count?     uint64
+     |  |  +--ro rx-hello-count?     uint64
+     |  +--ro isisv4-statistics* [device-name]
+     |  |  +--ro device-name              string
+     |  |  +--ro port-name?               string
+     |  |  +--ro router-state?            enumeration
+     |  |  +--ro tx-l1-lan-hello-count?   uint64
+     |  |  +--ro rx-l1-lan-hello-count?   uint64
+     |  |  +--ro tx-l2-lan-hello-count?   uint64
+     |  |  +--ro rx-l2-lan-hello-count?   uint64
+     |  +--ro isisv6-statistics* [device-name]
+     |  |  +--ro device-name              string
+     |  |  +--ro port-name?               string
+     |  |  +--ro router-state?            enumeration
+     |  |  +--ro tx-l1-lan-hello-count?   uint64
+     |  |  +--ro rx-l1-lan-hello-count?   uint64
+     |  |  +--ro tx-l2-lan-hello-count?   uint64
+     |  |  +--ro rx-l2-lan-hello-count?   uint64
+     |  +--ro bfdv4-statistics* [device-name]
+     |  |  +--ro device-name    string
+     |  |  +--ro port-name?     string
+     |  |  +--ro tx-count?      uint64
+     |  |  +--ro rx-count?      uint64
+     |  +--ro bfdv6-statistics* [device-name]
+     |  |  +--ro device-name    string
+     |  |  +--ro port-name?     string
+     |  |  +--ro tx-count?      uint64
+     |  |  +--ro rx-count?      uint64
      |  +---x clear
      +---n statistic-events
         +--ro first-activity-timestamp?   yang:date-and-time
         +--ro last-activity-timestamp?    yang:date-and-time
-        +--ro ports* [name]
-           +--ro name                               string
-           +--ro connected-test-port-id?            string
-           +--ro connected-test-port-description?   string
-           +--ro connection-state?                  enumeration
-           +--ro connection-state-details?          string
-           +--ro speed?                             string
-           +--ro tx-frames?                         string
-           +--ro rx-frames?                         string
+        +--ro physical-port* [port-name]
+        |  +--ro port-name                          t:config-list-key
+        |  +--ro connected-test-port-id?            string
+        |  +--ro connected-test-port-description?   string
+        |  +--ro connection-state?                  enumeration
+        |  +--ro connection-state-details?          string
+        |  +--ro speed?                             string
+        +--ro port* [name]
+        |  +--ro name              t:config-list-key
+        |  +--ro tx-frames?        uint64
+        |  +--ro rx-frames?        uint64
+        |  +--ro tx-frame-rate?    uint64
+        |  +--ro rx-frame-rate?    uint64
+        |  +--ro dropped-frames?   uint64
+        |  +--ro tx-bit-count?     uint64
+        |  +--ro rx-bit-count?     uint64
+        |  +--ro tx-bit-rate?      uint64
+        |  +--ro rx-bit-rate?      uint64
+        |  +--ro tx-byte-count?    uint64
+        |  +--ro rx-byte-count?    uint64
+        |  +--ro tx-byte-rate?     uint64
+        |  +--ro rx-byte-rate?     uint64
+        +--ro traffic-groups* [name]
+        |  +--ro name              t:config-list-key
+        |  +--ro tx-frames?        uint64
+        |  +--ro rx-frames?        uint64
+        |  +--ro tx-frame-rate?    uint64
+        |  +--ro rx-frame-rate?    uint64
+        |  +--ro dropped-frames?   uint64
+        |  +--ro tx-bit-count?     uint64
+        |  +--ro rx-bit-count?     uint64
+        |  +--ro tx-bit-rate?      uint64
+        |  +--ro rx-bit-rate?      uint64
+        |  +--ro tx-byte-count?    uint64
+        |  +--ro rx-byte-count?    uint64
+        |  +--ro tx-byte-rate?     uint64
+        |  +--ro rx-byte-rate?     uint64
+        |  +--ro port* [name]
+        |     +--ro name              t:config-list-key
+        |     +--ro tx-frames?        uint64
+        |     +--ro rx-frames?        uint64
+        |     +--ro tx-frame-rate?    uint64
+        |     +--ro rx-frame-rate?    uint64
+        |     +--ro dropped-frames?   uint64
+        |     +--ro tx-bit-count?     uint64
+        |     +--ro rx-bit-count?     uint64
+        |     +--ro tx-bit-rate?      uint64
+        |     +--ro rx-bit-rate?      uint64
+        |     +--ro tx-byte-count?    uint64
+        |     +--ro rx-byte-count?    uint64
+        |     +--ro tx-byte-rate?     uint64
+        |     +--ro rx-byte-rate?     uint64
+        +--ro bgp4-statistics* [device-name]
+        |  +--ro device-name                 string
+        |  +--ro port-name?                  string
+        |  +--ro router-state?               enumeration
+        |  +--ro tx-advertise-route-count?   uint64
+        |  +--ro rx-advertise-route-count?   uint64
+        |  +--ro tx-withdraw-route-count?    uint64
+        |  +--ro rx-withdraw-route-count?    uint64
+        +--ro bgp6-statistics* [device-name]
+        |  +--ro device-name                 string
+        |  +--ro port-name?                  string
+        |  +--ro router-state?               enumeration
+        |  +--ro tx-advertise-route-count?   uint64
+        |  +--ro rx-advertise-route-count?   uint64
+        |  +--ro tx-withdraw-route-count?    uint64
+        |  +--ro rx-withdraw-route-count?    uint64
+        +--ro ospfv2-statistics* [device-name]
+        |  +--ro device-name         string
+        |  +--ro port-name?          string
+        |  +--ro router-state?       enumeration
+        |  +--ro adjacency-status?   enumeration
+        |  +--ro tx-hello-count?     uint64
+        |  +--ro rx-hello-count?     uint64
+        +--ro ospfv3-statistics* [device-name]
+        |  +--ro device-name         string
+        |  +--ro port-name?          string
+        |  +--ro router-state?       enumeration
+        |  +--ro adjacency-status?   enumeration
+        |  +--ro tx-hello-count?     uint64
+        |  +--ro rx-hello-count?     uint64
+        +--ro isisv4-statistics* [device-name]
+        |  +--ro device-name              string
+        |  +--ro port-name?               string
+        |  +--ro router-state?            enumeration
+        |  +--ro tx-l1-lan-hello-count?   uint64
+        |  +--ro rx-l1-lan-hello-count?   uint64
+        |  +--ro tx-l2-lan-hello-count?   uint64
+        |  +--ro rx-l2-lan-hello-count?   uint64
+        +--ro isisv6-statistics* [device-name]
+        |  +--ro device-name              string
+        |  +--ro port-name?               string
+        |  +--ro router-state?            enumeration
+        |  +--ro tx-l1-lan-hello-count?   uint64
+        |  +--ro rx-l1-lan-hello-count?   uint64
+        |  +--ro tx-l2-lan-hello-count?   uint64
+        |  +--ro rx-l2-lan-hello-count?   uint64
+        +--ro bfdv4-statistics* [device-name]
+        |  +--ro device-name    string
+        |  +--ro port-name?     string
+        |  +--ro tx-count?      uint64
+        |  +--ro rx-count?      uint64
+        +--ro bfdv6-statistics* [device-name]
+           +--ro device-name    string
+           +--ro port-name?     string
+           +--ro tx-count?      uint64
+           +--ro rx-count?      uint64

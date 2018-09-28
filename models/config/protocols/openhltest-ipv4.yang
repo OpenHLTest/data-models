@@ -26,18 +26,10 @@ submodule openhltest-ipv4 {
 	grouping ipv4-group {
 		container ipv4 {
 			container source-address {
-				uses p:ipv4-pattern-group {
-					refine single {
-						default "0.0.0.1";
-					}
-				}
+				uses p:ipv4-pattern-group;
 			}
 			container gateway-address {
-				uses p:ipv4-pattern-group {
-					refine single {
-						default "0.0.0.1";
-					}
-				}
+				uses p:ipv4-pattern-group;
 			}
 		}
 	}

@@ -8,23 +8,45 @@ module openhltest {
 	include openhltest-config;
 	include openhltest-port;
 	include openhltest-device-groups;
+    
 	include openhltest-ethernet;
 	include openhltest-vlan;
 	include openhltest-ipv4;
-	include openhltest-bgp-common;
+    include openhltest-ipv6;
+    
+    include openhltest-bfd;
+    include openhltest-bgp-common;
 	include openhltest-bgp4;
 	include openhltest-bgp6;
-	include openhltest-traffic-group;
-	include openhltest-traffic-frame-options;
-	include openhltest-traffic-protocols;
+	include openhltest-ospfv2;
+	include openhltest-ospfv3;
+	include openhltest-isisv4;
+	include openhltest-isisv6;
+    
+    include openhltest-traffic-group;
+    include openhltest-traffic-frame-options;
+    include openhltest-traffic-ethernet-group;
+    include openhltest-traffic-vlan-group;
+    include openhltest-traffic-ipv4-group;
+    include openhltest-traffic-ipv6-group;
+    include openhltest-traffic-tcp-group;
+    include openhltest-traffic-udp-group;
 	
     include openhltest-statistics;
 	include openhltest-physical-port-statistics;
     include openhltest-traffic-port-statistics;
     include openhltest-traffic-groups-statistics;
     include openhltest-bgp-statistics;
-    
+    include openhltest-ospf-statistics;
+    include openhltest-isis-statistics;
+    include openhltest-bfd-statistics;
+	
 	include openhltest-bgp4-route-range;
+    include openhltest-bgp6-route-range;
+    include openhltest-ospfv2-route-range;
+    include openhltest-ospfv3-route-range;
+    include openhltest-isisv4-route-range;
+    include openhltest-isisv6-route-range;
 
 	organization
 	"OpenHlTest working group";

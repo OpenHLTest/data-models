@@ -72,20 +72,15 @@ submodule openhltest-bgp-statistics {
         list bgp4-statistics {
 			key "device-name";
 			leaf device-name {
-				description "Abstract emulated BGP4 device name";
+				description "An abstract test port name";
 				type string;
 			}
+			leaf port-name {
+				description "An abstract test port name";
+				type string;
+			}
+			config false;
             
-            /*list port {
-                leaf name {
-                    description "An abstract test port name";
-                    type string;
-                }
-                config false;
-            
-                uses bgp-statistics;
-            }*/
-            config false;
             uses bgp-statistics;
         }
     }
@@ -96,20 +91,15 @@ submodule openhltest-bgp-statistics {
         list bgp6-statistics {
 			key "device-name";
 			leaf device-name {
-				description "Abstract emulated BGP6 device name";
+				description "An abstract test port name";
 				type string;
 			}
+			leaf port-name {
+				description "An abstract test port name";
+				type string;
+			}
+			config false;
             
-            /*list port {
-                leaf name {
-                    description "An abstract test port name";
-                    type string;
-                }
-                config false;
-            
-                uses bgp-statistics;
-            }*/
-            config false;
             uses bgp-statistics;
         }
     }

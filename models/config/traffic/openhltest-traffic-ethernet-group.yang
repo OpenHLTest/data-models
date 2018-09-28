@@ -1,0 +1,62 @@
+submodule openhltest-traffic-ethernet-group {
+
+    yang-version "1.1";
+    belongs-to "openhltest" {
+		prefix "oht";
+	}
+
+    import openhltest-patterns {
+		prefix p;
+	}
+    
+    organization
+      "OpenHlTest working group";
+    contact
+      "OpenHlTest working group";
+    description
+      "This module describes a collection of traffic groups
+	  and associated rpcs.";
+
+    revision 2018-02-09 {
+        description
+          "Initial revision.";
+        reference
+          "0.0.1";
+    }
+
+    grouping traffic-ethernet-group-top {
+        description
+        "A grouping of traffic groups.
+		 A traffic group is a collection of traffic streams and flows.";
+		
+        container ethernet {
+			container destination {
+				presence "Create the destination container to override the automatic destination mac address";
+				uses p:mac-pattern-group;
+				leaf count {
+					type int32;
+				}
+			}
+			container source {
+				presence "Create the source container to override the automatic source mac address";
+				uses p:mac-pattern-group;
+				leaf count {
+					type int32;
+				}
+			}
+            container ethernet-type {
+                description
+                "Ethernet type";
+                uses p:enum-pattern-group {
+                    refine pattern-format {
+                        default "(88B5|86DD|0800)";
+                    }
+                    refine single {
+                        default "88B5";
+                    }
+                }
+            }
+        }
+    }
+
+}

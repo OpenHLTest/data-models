@@ -24,27 +24,31 @@ submodule openhltest-bgp-common {
     }
 
 	grouping bgp-common-group {
+
 		container as-number-2-byte {
-			description
-			"2-Byte Autonomous system number for the emulated BGP router";
-			uses p:base-pattern-group {
-				refine pattern-format {
-					default "0..65535";
-				}
-				refine single {
-					default "1";
+			presence "Enables the use of 2 Byte Autonomous system number";
+			container as-number {
+				description
+				"2-Byte Autonomous system number";            
+				uses p:base-pattern-group {
+					refine pattern-format {
+						default "0..65535";
+					}
+					refine single {
+						default "1";
+					}
 				}
 			}
-		}
-		container dut-as-number-2-byte {
-			description
-			"2-Byte Autonomous system number configured for the DUT.";
-			uses p:base-pattern-group {
-				refine pattern-format {
-					default "0..65535";
-				}
-				refine single {
-					default "1001";
+			container dut-as-number {
+				description
+				"2-Byte Autonomous system number configured for the DUT.";
+				uses p:base-pattern-group {
+					refine pattern-format {
+						default "0..65535";
+					}
+					refine single {
+						default "1001";
+					}
 				}
 			}
 		}
@@ -137,18 +141,6 @@ submodule openhltest-bgp-common {
                        Restart Time must be set.
                 Not Specified: Causes an emulated router's peer to remove the router's advertised
                        routes from its route database when the session is closed ";            
-            container long-lived-graceful-restart {
-                description
-                "BGP long lived graceful restart allows a network operator to choose to maintain stale routing information 
-				from a failed BGP peer much longer than the existing BGP graceful restart facility.
-                    TRUE  : Enable long lived graceful restart
-                    FALSE : Disable long lived graceful restart";
-				uses p:bool-pattern-group {
-					refine single {
-						default "true";
-					}
-				}
-            }
 			container restart-time {
                 description
                 "BGP graceful restart time. The amount of time (in seconds) that the emulated 

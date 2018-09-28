@@ -11,11 +11,22 @@ submodule openhltest-device-groups {
 	include openhltest-ethernet;
 	include openhltest-vlan;
 	include openhltest-ipv4;
+	include openhltest-ipv6;
+    include openhltest-bfd;
 	include openhltest-bgp4;
 	include openhltest-bgp6;
+	include openhltest-ospfv2;
+	include openhltest-ospfv3;
+	include openhltest-isisv4;
+	include openhltest-isisv6;
 	include openhltest-port;
 	include openhltest-bgp4-route-range;
-
+	include openhltest-bgp6-route-range;
+    include openhltest-ospfv2-route-range;
+    include openhltest-ospfv3-route-range;
+    include openhltest-isisv4-route-range;
+    include openhltest-isisv6-route-range;
+    
 	organization
 	"OpenHlTest working group";
 	contact
@@ -69,7 +80,9 @@ submodule openhltest-device-groups {
 				leaf device-count-per-port {
 					description "The number of devices that will be created on each
 					abstract test port specified in the port-names list.";
-					type uint32;
+					type uint32 {
+						range 1..200000;
+					}
 					default "1";
 				}
 				leaf parent-link {
@@ -134,8 +147,15 @@ submodule openhltest-device-groups {
 							enum ETHERNET;
 							enum VLAN;
 							enum IPV4;
+                            enum IPV6;
 							enum BGP4;
-							enum BGP6;
+                            enum BGP6;
+                            enum OSPFV2;
+                            enum OSPFV3;
+                            enum ISISV4;
+                            enum ISISV6;
+                            enum BFDV4;
+                            enum BFDV6;
 						}
 					}
 					uses ethernet-group {
@@ -150,6 +170,10 @@ submodule openhltest-device-groups {
 						description "The conditional container for detailed ipv4 information"; 
 						when "../protocol-type = IPV4";
 					}
+					uses ipv6-group {
+						description "The conditional container for detailed ipv6 information"; 
+						when "../protocol-type = IPV6";
+					}
 					uses bgp4-group {
 						description "The conditional container for detailed bgp4 information"; 
 						when "../protocol-type = BGP4";
@@ -157,6 +181,30 @@ submodule openhltest-device-groups {
 					uses bgp6-group {
 						description "The conditional container for detailed bgp6 information"; 
 						when "../protocol-type = BGP6";
+					}
+					uses ospfv2-group {
+						description "The conditional container for detailed ospfv2 information"; 
+						when "../protocol-type = OSPFV2";
+					}
+					uses ospfv3-group {
+						description "The conditional container for detailed ospfv3 information"; 
+						when "../protocol-type = OSPFV3";
+					}
+					uses isisv4-group {
+						description "The conditional container for detailed isis v4 information"; 
+						when "../protocol-type = ISISV4";
+					}
+					uses isisv6-group {
+						description "The conditional container for detailed isis v6 information"; 
+						when "../protocol-type = ISISV6";
+					}
+					uses bfdv4-group {
+						description "The conditional container for detailed bfd v4 information"; 
+						when "../protocol-type = BFDV4";
+					}
+					uses bfdv6-group {
+						description "The conditional container for detailed bfd v6 information"; 
+						when "../protocol-type = BFDV6";
 					}
 				}
 			}
@@ -171,22 +219,12 @@ submodule openhltest-device-groups {
 					description
 					"The unique name of the simulated-networks object.";
 				}
-				leaf network-count-per-port {
-					description 
-					"The number of devices that will be created on each
-					abstract test port specified in the port-names list.";
-					type uint32;
-					default "1";
-				}
 				leaf parent-link {
 					description 
 					"Identifies which devices object or simulated-networks object is connected to this object.
 					This is used to create a simulated netwworks container behind a devices or simulated networks container.";
 					mandatory true;
 					type union {
-						type leafref {
-							path "../name";
-						}
 						type leafref {
 							path "../../device-groups/devices/name";
 						}
@@ -203,25 +241,63 @@ submodule openhltest-device-groups {
 						description
 						"The unique name of the networks object.";
 					}
+                    leaf network-count-per-device {
+                        description 
+                        "The number of devices that will be created on each
+                        abstract test port specified in the port-names list.";
+                        type uint32 {
+                            range 1..200000;
+                        }
+                        default "1";
+                    }
 					leaf flow-link {
 						description
-						"Identifies which object in another container is the next hop from this networks object.
+						"Identifies which object in another container is the next hop from this container.
 						The name cannot be one of the names in this networks container.
 						An empty link indicates no flow link";
 						mandatory true;
 						type union {
-							type leafref {
-								path "../name";
-							}
 							type leafref {
 								path "../../device-groups/devices/protocols/name";
 							}
 							type empty;
 						}
 					}
+					leaf network-type {
+						description "Determines which detailed network container is active.";
+						mandatory true;
+						type enumeration {
+							enum "BGP4_ROUTE_RANGE";
+							enum "BGP6_ROUTE_RANGE";
+                            enum "OSPFV2_ROUTE_RANGE";
+                            enum "OSPFV3_ROUTE_RANGE";
+                            enum "ISISV4_ROUTE_RANGE";
+                            enum "ISISV6_ROUTE_RANGE";
+						}
+					}
 					uses bgp4-route-range-group {
 						description "The conditional container for detailed bgp4 route range information"; 
-						when "../../device-groups/devices/protocols/protocol-type == BGP4";
+						when "../network-type = BGPV4_ROUTE_RANGE";
+					}
+					uses bgp6-route-range-group {
+						description "The conditional container for detailed bgp4 route range information"; 
+						when "../network-type = BGPV6_ROUTE_RANGE";
+					}
+					uses ospfv2-route-range-group {
+						description "The conditional container for detailed ospfv2 router LSA range information"; 
+						when "../network-type = OSPFV2_ROUTE_RANGE";
+					}
+					uses ospfv3-route-range-group {
+						description "The conditional container for detailed ospfv3 router LSA range information"; 
+						when "../network-type = OSPFV3_ROUTE_RANGE";
+					}
+					uses isisv4-route-range-group {
+						description "The conditional container for detailed isis v4 routes information"; 
+						when "../network-type = ISISV4_ROUTE_RANGE";
+					}
+					uses isisv6-route-range-group {
+						description "The conditional container for detailed isis v6 routes information"; 
+						when "../network-type = ISISV6_ROUTE_RANGE";
 					}
 				}
 			}
@@ -277,7 +353,7 @@ submodule openhltest-device-groups {
 			An empty list signifies that all protocol groups will be started.";
 
 			input {
-				leaf-list protocol-group-names {
+				leaf-list protocol-names {
 					description "A list of protocol group names";
 					type string;
 				}
@@ -295,7 +371,7 @@ submodule openhltest-device-groups {
 			An empty list signifiels that all protocol groups will be stopped.";
 
 			input {
-				leaf-list protocol-group-names {
+				leaf-list protocol-names {
 					description "A list of protocol group names";
 					type string;
 				}
@@ -307,5 +383,241 @@ submodule openhltest-device-groups {
 				}
 			}
 		}
+		action bgp4-control {
+			description
+			"Start one or more emulated BGP4 protocol groups.
+			An empty list signifies that all BGP4 protocol groups will be started.";
+
+			input {
+				leaf-list bgp4-protocol-names {
+					description "A list of BGP4 protocol device names";
+					type string;
+				}
+				leaf mode {
+					description "Specifies the action to be taken.";
+					type enumeration {
+                        enum START;
+                        enum STOP;
+                        enum LINK_FLAP;
+                        enum RESTART;
+                        enum ADVERTISE;
+                        enum WITHDRAW;
+                    }
+                    default "START";
+				}
+			}
+			output {
+				uses t:errata-group {
+					description "A list of protocol group resources that failed to start.
+					An empty list signifies that all protocol groups successfully started.";
+				}
+			}
+		}
+        
+		action bgp6-control {
+			description
+			"Start one or more emulated BGP6 protocol groups.
+			An empty list signifies that all BGP6 protocol groups will be started.";
+
+			input {
+				leaf-list bgp6-protocol-names {
+					description "A list of BGP6 protocol device names";
+					type string;
+				}
+				leaf mode {
+					description "Specifies the action to be taken.";
+					type enumeration {
+                        enum START;
+                        enum STOP;
+                        enum LINK_FLAP;
+                        enum RESTART;
+                        enum ADVERTISE;
+                        enum WITHDRAW;
+                    }
+                    default "START";
+				}
+			}
+			output {
+				uses t:errata-group {
+					description "A list of protocol group resources that failed to start.
+					An empty list signifies that all protocol groups successfully started.";
+				}
+			}
+		}
+        
+		action ospfv2-control {
+			description
+			"Start one or more emulated OSPFV2 protocol groups.
+			An empty list signifies that all OSPFV2 protocol groups will be started.";
+
+			input {
+				leaf-list ospfv2-protocol-names {
+					description "A list of OSPFV2 protocol device names";
+					type string;
+				}
+				leaf mode {
+					description "Specifies the action to be taken.";
+					type enumeration {
+                        enum START;
+                        enum STOP;
+                        enum LINK_FLAP;
+                        enum RESTART;
+                        enum ADVERTISE;
+                        enum WITHDRAW;
+                    }
+                    default "START";
+				}
+			}
+			output {
+				uses t:errata-group {
+					description "A list of protocol group resources that failed to start.
+					An empty list signifies that all protocol groups successfully started.";
+				}
+			}
+		}
+        
+		action ospfv3-control {
+			description
+			"Start one or more emulated OSPFV3 protocol groups.
+			An empty list signifies that all OSPFV3 protocol groups will be started.";
+
+			input {
+				leaf-list ospfv3-protocol-names {
+					description "A list of OSPFV3 protocol device names";
+					type string;
+				}
+				leaf mode {
+					description "Specifies the action to be taken.";
+					type enumeration {
+                        enum START;
+                        enum STOP;
+                        enum LINK_FLAP;
+                        enum RESTART;
+                        enum ADVERTISE;
+                        enum WITHDRAW;
+                    }
+                    default "START";
+				}
+			}
+			output {
+				uses t:errata-group {
+					description "A list of protocol group resources that failed to start.
+					An empty list signifies that all protocol groups successfully started.";
+				}
+			}
+		}
+        
+		action isisv4-control {
+			description
+			"Start one or more emulated ISIS v4 protocol groups.
+			An empty list signifies that all ISIS v4 protocol groups will be started.";
+
+			input {
+				leaf-list isisv4-protocol-names {
+					description "A list of ISIS v4 protocol device names";
+					type string;
+				}
+				leaf mode {
+					description "Specifies the action to be taken.";
+					type enumeration {
+                        enum START;
+                        enum STOP;
+                        enum LINK_FLAP;
+                        enum RESTART;
+                    }
+                    default "START";
+				}
+			}
+			output {
+				uses t:errata-group {
+					description "A list of protocol group resources that failed to start.
+					An empty list signifies that all protocol groups successfully started.";
+				}
+			}
+		}
+
+		action isisv6-control {
+			description
+			"Start one or more emulated ISIS v6 protocol groups.
+			An empty list signifies that all ISIS v6 protocol groups will be started.";
+
+			input {
+				leaf-list isisv6-protocol-names {
+					description "A list of ISIS v6 protocol device names";
+					type string;
+				}
+				leaf mode {
+					description "Specifies the action to be taken.";
+					type enumeration {
+                        enum START;
+                        enum STOP;
+                        enum LINK_FLAP;
+                        enum RESTART;
+                    }
+                    default "START";
+				}
+			}
+			output {
+				uses t:errata-group {
+					description "A list of protocol group resources that failed to start.
+					An empty list signifies that all protocol groups successfully started.";
+				}
+			}
+		}
+
+		action bfdv4-control {
+			description
+			"Start one or more emulated BFD v4 protocol groups.
+			An empty list signifies that all BFD v4 protocol groups will be started.";
+
+			input {
+				leaf-list bfdv4-protocol-names {
+					description "A list of ISIS v4 protocol device names";
+					type string;
+				}
+				leaf mode {
+					description "Specifies the action to be taken.";
+					type enumeration {
+                        enum START;
+                        enum STOP;
+                    }
+                    default "START";
+				}
+			}
+			output {
+				uses t:errata-group {
+					description "A list of protocol group resources that failed to start.
+					An empty list signifies that all protocol groups successfully started.";
+				}
+			}
+		}
+        
+		action bfdv6-control {
+			description
+			"Start one or more emulated BFD v6 protocol groups.
+			An empty list signifies that all BFD v6 protocol groups will be started.";
+
+			input {
+				leaf-list bfdv6-protocol-names {
+					description "A list of ISIS v6 protocol device names";
+					type string;
+				}
+				leaf mode {
+					description "Specifies the action to be taken.";
+					type enumeration {
+                        enum START;
+                        enum STOP;
+                    }
+                    default "START";
+				}
+			}
+			output {
+				uses t:errata-group {
+					description "A list of protocol group resources that failed to start.
+					An empty list signifies that all protocol groups successfully started.";
+				}
+			}
+		}
+        
 	}
 }

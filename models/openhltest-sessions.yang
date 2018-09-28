@@ -5,12 +5,13 @@ submodule openhltest-sessions {
 		prefix "oht";
 	}
 
-	import openhltest-types {
-		prefix t;
-	}
+    import openhltest-types {
+        prefix t;
+    }
+
 	include openhltest-config;
 	include openhltest-statistics;
-
+		
     organization
       "OpenHlTest working group";
     contact
