@@ -10,8 +10,7 @@ submodule openhltest-sessions {
 	}
 	include openhltest-config;
 	include openhltest-statistics;
-	include openhltest-port-statistics;
-		
+
     organization
       "OpenHlTest working group";
     contact

@@ -21,8 +21,13 @@ module openhltest {
 	include openhltest-traffic-groups;
 	include openhltest-traffic-frame-options;
 	include openhltest-traffic-protocols;
-	include openhltest-statistics;
-	include openhltest-port-statistics;
+	
+    include openhltest-statistics;
+	include openhltest-physical-port-statistics;
+    include openhltest-traffic-port-statistics;
+    include openhltest-traffic-groups-statistics;
+    include openhltest-bgp-statistics;
+    
 	include openhltest-bgp4-route-range;
 
 	organization
