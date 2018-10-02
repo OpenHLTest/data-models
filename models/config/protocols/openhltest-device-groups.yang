@@ -8,12 +8,12 @@ submodule openhltest-device-groups {
 	import openhltest-types {
 		prefix t;
 	}
+	include openhltest-ports;
 	include openhltest-ethernet;
 	include openhltest-vlan;
 	include openhltest-ipv4;
 	include openhltest-bgp4;
 	include openhltest-bgp6;
-	include openhltest-port;
 	include openhltest-bgp4-route-range;
 
 	organization
@@ -30,7 +30,7 @@ submodule openhltest-device-groups {
 		  "0.0.1";
 	}
 
-	grouping device-groups-top {
+	grouping device-group-top {
 		description
 		"A grouping of device-groups, devices and protocols.";
 

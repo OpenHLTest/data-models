@@ -1,34 +1,36 @@
 submodule openhltest-config {
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
+	yang-version "1.1";
+	belongs-to "openhltest" {
 		prefix "oht";
 	}
 
-  include openhltest-port;
+  	include openhltest-ports;
+	include openhltest-layer1-groups;
 	include openhltest-device-groups;
-	include openhltest-traffic-group;
+	include openhltest-traffic-groups;
 	
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
-    description
-      "This sub-module aggregates all top level sub-modules that are configuration related.";
+	organization
+	  "OpenHlTest working group";
+	contact
+	  "OpenHlTest working group";
+	description
+	  "This sub-module aggregates all top level sub-modules that are configuration related.";
 
-    revision 2017-11-02 {
-        description
-          "Initial revision.";
-        reference
-          "0.0.1";
-    }
+	revision 2017-11-02 {
+		description
+		  "Initial revision.";
+		reference
+		  "0.0.1";
+	}
 
 	grouping config-top {
 		container config {
 			description 
 			"This container aggregates all other top level configuration submodules.";
 			uses port-top;
-			uses device-groups-top;
+			uses layer1-top;
+			uses device-group-top;
 			uses traffic-group-top;
 
 			action clear {

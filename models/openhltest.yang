@@ -6,7 +6,11 @@ module openhltest {
 
 	include openhltest-sessions;
 	include openhltest-config;
-	include openhltest-port;
+	include openhltest-ports;
+	include openhltest-layer1-groups;
+	include openhltest-layer1-ethernet;
+	include openhltest-layer1-ten-gig;
+	include openhltest-layer1-twenty-five-gig;
 	include openhltest-device-groups;
 	include openhltest-ethernet;
 	include openhltest-vlan;
@@ -14,7 +18,7 @@ module openhltest {
 	include openhltest-bgp-common;
 	include openhltest-bgp4;
 	include openhltest-bgp6;
-	include openhltest-traffic-group;
+	include openhltest-traffic-groups;
 	include openhltest-traffic-frame-options;
 	include openhltest-traffic-protocols;
 	include openhltest-statistics;
@@ -33,6 +37,28 @@ module openhltest {
 		"Initial revision.";
 		reference
 		"0.0.1";
+	}
+
+	rpc authenticate {
+		description "Authenticate a user to the system and return an api-key that can be used to authenticate the user for subsequent requests.
+		The api-key can be submitted to the system based on the transport.
+		When using the RESTCONF transport the api key is submitted to the system using an http header called X-Api-Key.";
+		input {
+			leaf username {
+				mandatory true;
+				type string;
+			}
+			leaf password {
+				mandatory true;
+				type string;
+			}
+		}
+		output {
+			leaf api-key {
+				mandatory true;
+				type string;
+			}
+		}
 	}
 
 	uses session-top;

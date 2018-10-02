@@ -29,30 +29,15 @@ submodule openhltest-sessions {
 	grouping session-top {
 		list sessions {
 			description
-			"A list of test tool sessions.";
+			"A list of test tool sessions.
+			Sessions can onl be accessed based on the api-key submitted as part of the request.
+			To get an api-key use the authenticate rpc.";
 			key "name";
 
 			leaf name {
-				description
-				"The unique name of the test tool session.
+				description	"The unique name of the test tool session.
 				Once the session has been created the name cannot be modified.";
 				type t:config-list-key;
-			}
-			leaf session-type {
-				description
-				"The type of test tool session.
-				Once the session has been created the session-type cannot be modified.";
-				mandatory true;
-				type enumeration {
-					enum L2L3 {
-						description
-						"A layer 23 test tool session";
-					}
-					enum L4L7 {
-						description
-						"A layer 47 test tool session. This is currently not supported and is a feature placeholder";
-					}
-				}
 			}
 
 			uses config-top;

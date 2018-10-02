@@ -1,4 +1,4 @@
-submodule openhltest-port {
+submodule openhltest-ports {
 
     yang-version "1.1";
     belongs-to "openhltest" {
@@ -39,9 +39,20 @@ submodule openhltest-port {
 				description
 				"The unique name of an abstract test port";
 			}	
+
+			leaf location {
+				description
+				"The location of the physical or virtual port that will be connected to this abstract port.
+				The value pattern must be chassis/card/port where chassis is an ipv4/ipv6 address and card/port are unsigned byte 1-255.
+				The separator between the chassis/card/port values must be a forward slash.";
+				default '';
+				type string {
+					pattern '';
+				}
+			}
 		}				
 
-		action connect-ports {
+		action connect {
 			description
 			"Connect abstract test ports to physical hardware test ports and/or 
 			virtual machine test ports";
@@ -52,14 +63,13 @@ submodule openhltest-port {
 						description "The name of an abstract test port";
 						type t:config-list-key;
 					}
-					uses t:chassis-card-port-group;
 				}
 			}
 			output {
 				uses t:errata-group;
 			}
 		}
-		action disconnect-ports {
+		action disconnect {
 			description
 			"Disconnect abstract test ports from any connected
 			physical hardware test ports and/or virtual machine test ports";
