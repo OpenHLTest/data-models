@@ -20,7 +20,7 @@ submodule openhltest-layer1-ten-gig {
     }
     
     grouping layer1-ten-gig-copper-group {
-		container ten_gig_copper {
+		container ten-gig-copper {
 			leaf advertise-ieee {
 				description "";
 				type boolean;
@@ -29,7 +29,7 @@ submodule openhltest-layer1-ten-gig {
 		}
     }
     grouping layer1-ten-gig-fiber-group {
-		container ten_gig_fiber {
+		container ten-gig-fiber {
 			leaf advertise-ieee {
 				description "";
 				type boolean;
