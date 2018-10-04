@@ -12,7 +12,12 @@ submodule openhltest-traffic-groups {
 		prefix e;
 	}
 	include openhltest-traffic-frame-options;
-	include openhltest-traffic-protocols;
+    include openhltest-traffic-ethernet-group;
+    include openhltest-traffic-vlan-group;
+    include openhltest-traffic-ipv4-group;
+    include openhltest-traffic-ipv6-group;
+    include openhltest-traffic-tcp-group;
+    include openhltest-traffic-udp-group;
 	include openhltest-ports;
 	include openhltest-device-groups;
 
@@ -63,7 +68,8 @@ submodule openhltest-traffic-groups {
 				description
 				"The unique name of a traffic group";
 			}
-			leaf bi-directional {
+
+			leaf bidirectional {
 				type boolean;
 				default false;
 				description
@@ -117,8 +123,11 @@ submodule openhltest-traffic-groups {
 				default RAW;
 			}
 			leaf-list source-endpoints {
-				description "List of 1..n device-groups, devices, protocols references.";
+				description "List of 1..n abstract ports, device-groups, devices, protocols references.";
 				type union {
+					type leafref {
+						path "../../../ports/name";
+					}
 					type leafref {
 						path "../../../device-groups/name";
 					}
@@ -153,8 +162,13 @@ submodule openhltest-traffic-groups {
 				leaf name {
 					type t:config-list-key;
 				}
-				uses traffic-protocols-group;
-			} 
+                uses traffic-ethernet-group-top;
+                uses traffic-vlan-group-top;
+                uses traffic-ipv4-group-top;
+                uses traffic-ipv6-group-top;
+                uses traffic-tcp-group-top;
+		        uses traffic-udp-group-top;
+            }
 			uses traffic-frame-options-group {
 				description "Allows a user to set traffic options that will be used as a template during generation of flows.";
 			}
@@ -177,7 +191,12 @@ submodule openhltest-traffic-groups {
 						e:server-generated;
 						type t:config-list-key;
 					}
-					uses traffic-protocols-group;
+	                uses traffic-ethernet-group-top;
+	                uses traffic-vlan-group-top;
+	                uses traffic-ipv4-group-top;
+	                uses traffic-ipv6-group-top;
+	                uses traffic-tcp-group-top;
+			        uses traffic-udp-group-top;
 				}
 				list user-frames {
 					key "name";
@@ -186,7 +205,12 @@ submodule openhltest-traffic-groups {
 					leaf name {
 						type t:config-list-key;
 					}
-					uses traffic-protocols-group;
+	                uses traffic-ethernet-group-top;
+	                uses traffic-vlan-group-top;
+	                uses traffic-ipv4-group-top;
+	                uses traffic-ipv6-group-top;
+	                uses traffic-tcp-group-top;
+			        uses traffic-udp-group-top;
 				}  			
 			}
 		}

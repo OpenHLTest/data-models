@@ -48,6 +48,40 @@ submodule openhltest-config {
 					}
 				}
 			}
+			action save-config {
+				description
+				"Save configuration in vendor specific format";
+				input {
+					leaf filename {
+						description
+						"Name of configuration file to be saved";
+						type string;
+					}
+				}
+			}
+			action arp-control {
+				description
+				"ARP control command";
+				input {
+                    leaf-list targets {
+                        description "List of 1..n abstract ports, device-groups, devices, traffic group references.";
+                        type union {
+                            type leafref {
+                                path "ports/name";
+                            }
+                            type leafref {
+                                path "device-groups/name";
+                            }
+                            type leafref {
+                                path "device-groups/devices/name";
+                            }
+                            type leafref {
+                                path "traffic-groups/name";
+                            }
+                        }
+                    }
+				}
+			}
 		}
 	}
 }
