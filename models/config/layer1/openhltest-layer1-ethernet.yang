@@ -24,18 +24,6 @@ submodule openhltest-layer1-ethernet {
     }
 
 	grouping  layer1-ethernet-common-group {
-		leaf advertise-ieee {
-			e:ixia-not-supported;
-			description "";
-			type boolean;
-			default true;
-		}
-		leaf advertise-nbase-t {
-			e:ixia-not-supported;
-			description "";
-			type boolean;
-			default true;
-		}	
 		leaf auto-mdix {
 			e:ixia-not-supported;
 			description "";
@@ -74,11 +62,6 @@ submodule openhltest-layer1-ethernet {
 				}
 			}
 			default NORMAL;
-		}
-		leaf downshift-enable {
-			e:ixia-not-supported;
-			type boolean;
-			default false;
 		}
 		container priority-based-flow-control {
 			description "Priority-based Flow Control provides a link level flow control mechanism that can be controlled independently for each frame priority. The goal of this mechanism is to ensure zero loss under congestion in DCB networks";
@@ -148,18 +131,6 @@ submodule openhltest-layer1-ethernet {
 				enum PACKET_IMPAIRMENT;
 			}
 			default MEASURE;
-		}
-		leaf test-mode {
-			e:ixia-not-supported;
-			description "";
-			type enumeration {
-				enum NORMAL_OPERATION;
-				enum TRANSMIT_DROOP;
-				enum MASTER_TRANSMIT_JITTER;
-				enum TRANSMITTER_DISTORTION;
-				enum NORMAL_OPERATION_FULL_POWER;
-			}
-			default NORMAL_OPERATION;
 		}
 		leaf transmit-clock-source {
 			description "";
