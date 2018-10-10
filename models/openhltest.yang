@@ -19,8 +19,8 @@ module openhltest {
     
     include openhltest-bfd;
     include openhltest-bgp-common;
-	include openhltest-bgp4;
-	include openhltest-bgp6;
+	include openhltest-bgpv4;
+	include openhltest-bgpv6;
 	include openhltest-ospfv2;
 	include openhltest-ospfv3;
 	include openhltest-isisv4;
@@ -44,8 +44,8 @@ module openhltest {
     include openhltest-isis-statistics;
     include openhltest-bfd-statistics;
 	
-	include openhltest-bgp4-route-range;
-    include openhltest-bgp6-route-range;
+	include openhltest-bgpv4-route-range;
+    include openhltest-bgpv6-route-range;
     include openhltest-ospfv2-route-range;
     include openhltest-ospfv3-route-range;
     include openhltest-isisv4-route-range;

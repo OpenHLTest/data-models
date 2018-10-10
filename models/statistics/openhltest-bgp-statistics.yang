@@ -66,10 +66,10 @@ submodule openhltest-bgp-statistics {
         }
     }
     
-    grouping bgp4-statistics {
+    grouping bgpv4-statistics {
         description
-        "A grouping of bgp4 statistics";
-        list bgp4-statistics {
+        "A grouping of bgpv4 statistics";
+        list bgpv4-statistics {
 			key "device-name";
 			leaf device-name {
 				description "Abstract emulated BGP4 device name";
@@ -90,10 +90,10 @@ submodule openhltest-bgp-statistics {
         }
     }
     
-    grouping bgp6-statistics {
+    grouping bgpv6-statistics {
         description
-        "A grouping of bgp6 statistics";
-        list bgp6-statistics {
+        "A grouping of bgpv6 statistics";
+        list bgpv6-statistics {
 			key "device-name";
 			leaf device-name {
 				description "Abstract emulated BGP6 device name";

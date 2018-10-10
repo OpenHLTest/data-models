@@ -14,15 +14,15 @@ submodule openhltest-device-groups {
 	include openhltest-ipv4;
 	include openhltest-ipv6;
     include openhltest-bfd;
-	include openhltest-bgp4;
-	include openhltest-bgp6;
+	include openhltest-bgpv4;
+	include openhltest-bgpv6;
 	include openhltest-ospfv2;
 	include openhltest-ospfv3;
 	include openhltest-isisv4;
 	include openhltest-isisv6;
 
-	include openhltest-bgp4-route-range;
-	include openhltest-bgp6-route-range;
+	include openhltest-bgpv4-route-range;
+	include openhltest-bgpv6-route-range;
     include openhltest-ospfv2-route-range;
     include openhltest-ospfv3-route-range;
     include openhltest-isisv4-route-range;
@@ -147,8 +147,8 @@ submodule openhltest-device-groups {
 							enum VLAN;
 							enum IPV4;
                             enum IPV6;
-							enum BGP4;
-                            enum BGP6;
+							enum BGPV4;
+                            enum BGPV6;
                             enum OSPFV2;
                             enum OSPFV3;
                             enum ISISV4;
@@ -173,13 +173,13 @@ submodule openhltest-device-groups {
 						description "The conditional container for detailed ipv6 information"; 
 						when "../protocol-type = IPV6";
 					}
-					uses bgp4-group {
-						description "The conditional container for detailed bgp4 information"; 
-						when "../protocol-type = BGP4";
+					uses bgpv4-group {
+						description "The conditional container for detailed bgpv4 information"; 
+						when "../protocol-type = BGPV4";
 					}
-					uses bgp6-group {
-						description "The conditional container for detailed bgp6 information"; 
-						when "../protocol-type = BGP6";
+					uses bgpv6-group {
+						description "The conditional container for detailed bgpv6 information"; 
+						when "../protocol-type = BGPV6";
 					}
 					uses ospfv2-group {
 						description "The conditional container for detailed ospfv2 information"; 
@@ -266,13 +266,13 @@ submodule openhltest-device-groups {
 							type empty;
 						}
 					}
-					uses bgp4-route-range-group {
-						description "The conditional container for detailed bgp4 route range information"; 
-						when "../../device-groups/devices/protocols/protocol-type == BGP4";
+					uses bgpv4-route-range-group {
+						description "The conditional container for detailed bgpv4 route range information"; 
+						when "../../device-groups/devices/protocols/protocol-type == BGPV4";
 					}
-					uses bgp6-route-range-group {
-						description "The conditional container for detailed bgp6 route range information"; 
-						when "../../device-groups/devices/protocols/protocol-type == BGP6";
+					uses bgpv6-route-range-group {
+						description "The conditional container for detailed bgpv6 route range information"; 
+						when "../../device-groups/devices/protocols/protocol-type == BGPV6";
 					}
 					uses ospfv2-route-range-group {
 						description "The conditional container for detailed ospfv2 router LSA range information"; 
@@ -294,7 +294,7 @@ submodule openhltest-device-groups {
 			}
 		}
 
-		action create-bgp4 {
+		action create-bgpv4 {
 			input {
 				leaf device-group-name {
 					mandatory true;
@@ -328,8 +328,8 @@ submodule openhltest-device-groups {
 						}
 					}
 				}
-				uses bgp4-group {
-					augment bgp4 {
+				uses bgpv4-group {
+					augment bgpv4 {
 						leaf name {
 							mandatory true;
 							type string;
@@ -374,14 +374,14 @@ submodule openhltest-device-groups {
 				}
 			}
 		}
-		action bgp4-control {
+		action bgpv4-control {
 			description
-			"Start one or more emulated BGP4 protocol groups.
-			An empty list signifies that all BGP4 protocol groups will be started.";
+			"Start one or more emulated BGPV4 protocol groups.
+			An empty list signifies that all BGPV4 protocol groups will be started.";
 
 			input {
-				leaf-list bgp4-protocol-names {
-					description "A list of BGP4 protocol device names";
+				leaf-list bgpv4-protocol-names {
+					description "A list of BGPV4 protocol device names";
 					type string;
 				}
 				leaf mode {
@@ -405,14 +405,14 @@ submodule openhltest-device-groups {
 			}
 		}
         
-		action bgp6-control {
+		action bgpv6-control {
 			description
-			"Start one or more emulated BGP6 protocol groups.
-			An empty list signifies that all BGP6 protocol groups will be started.";
+			"Start one or more emulated BGPV6 protocol groups.
+			An empty list signifies that all BGPV6 protocol groups will be started.";
 
 			input {
-				leaf-list bgp6-protocol-names {
-					description "A list of BGP6 protocol device names";
+				leaf-list bgpv6-protocol-names {
+					description "A list of BGPV6 protocol device names";
 					type string;
 				}
 				leaf mode {

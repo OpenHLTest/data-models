@@ -1,4 +1,4 @@
-submodule openhltest-bgp6-route-range {
+submodule openhltest-bgpv6-route-range {
 
     yang-version "1.1";
     belongs-to "openhltest" {
@@ -24,8 +24,8 @@ submodule openhltest-bgp6-route-range {
           "0.0.1";
     }
 	
-	grouping bgp6-route-range-group {
-		container bgp6-route-range {
+	grouping bgpv6-route-range-group {
+		container bgpv6-route-range {
             
             leaf active {
                 type boolean;

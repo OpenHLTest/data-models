@@ -48,8 +48,8 @@ submodule openhltest-statistics {
 		uses physical-port-statistics-top;
         uses traffic-port-statistics-top;
         uses traffic-groups-statistics-top;
-        uses bgp4-statistics;
-        uses bgp6-statistics;
+        uses bgpv4-statistics;
+        uses bgpv6-statistics;
         uses ospfv2-statistics;
         uses ospfv3-statistics;
         uses isisv4-statistics;
