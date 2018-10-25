@@ -26,8 +26,7 @@ submodule openhltest-traffic-ethernet-group {
 
     grouping traffic-ethernet-group-top {
         description
-        "A grouping of traffic groups.
-		 A traffic group is a collection of traffic streams and flows.";
+        "The ethernet traffic group.";
 		
         container ethernet {
 			container destination {

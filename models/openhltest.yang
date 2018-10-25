@@ -12,6 +12,7 @@ module openhltest {
 	include openhltest-layer1-ten-gig;
 	include openhltest-layer1-twenty-five-gig;
 	include openhltest-device-groups;
+	include openhltest-network-groups;
 	include openhltest-ethernet;
 	include openhltest-vlan;
 	include openhltest-ipv4;
@@ -28,6 +29,8 @@ module openhltest {
     
     include openhltest-traffic-groups;
     include openhltest-traffic-frame-options;
+	include openhltest-traffic-frame-group;
+	include openhltest-traffic-custom-frame-group;
     include openhltest-traffic-ethernet-group;
     include openhltest-traffic-vlan-group;
     include openhltest-traffic-ipv4-group;

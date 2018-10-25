@@ -51,37 +51,5 @@ submodule openhltest-ports {
 				}
 			}
 		}				
-
-		action connect {
-			description
-			"Connect abstract test ports to physical hardware test ports and/or 
-			virtual machine test ports";
-			input {
-				list port-map {
-					key "port-name";
-					leaf port-name {
-						description "The name of an abstract test port";
-						type t:config-list-key;
-					}
-				}
-			}
-			output {
-				uses t:errata-group;
-			}
-		}
-		action disconnect {
-			description
-			"Disconnect abstract test ports from any connected
-			physical hardware test ports and/or virtual machine test ports";
-			input {
-				leaf-list port-names {
-					description "A list of abstract test port names. Names can also be regex";
-					type t:config-list-key;
-				}
-			}
-			output {
-				uses t:errata-group;
-			}
-		}
 	}
 }

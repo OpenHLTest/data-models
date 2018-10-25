@@ -20,7 +20,7 @@ submodule openhltest-device-groups {
 	include openhltest-ospfv3;
 	include openhltest-isisv4;
 	include openhltest-isisv6;
-
+	include openhltest-network-groups;
 	include openhltest-bgpv4-route-range;
 	include openhltest-bgpv6-route-range;
     include openhltest-ospfv2-route-range;
@@ -208,136 +208,9 @@ submodule openhltest-device-groups {
 				}
 			}
 
-			list simulated-networks {
-				description 
-				"A list of simulated networks. 
-				Each simulated networks object can contain 0..n networks objects";
-				key "name";
-				leaf name {
-					type t:config-list-key;
-					description
-					"The unique name of the simulated-networks object.";
-				}
-				leaf network-count-per-port {
-					description 
-					"The number of devices that will be created on each
-					abstract test port specified in the port-names list.";
-					type uint32;
-					default "1";
-				}
-				leaf parent-link {
-					description 
-					"Identifies which devices object or simulated-networks object is connected to this object.
-					This is used to create a simulated netwworks container behind a devices or simulated networks container.";
-					mandatory true;
-					type union {
-						type leafref {
-							path "../name";
-						}
-						type leafref {
-							path "../../device-groups/devices/name";
-						}
-					}
-				}
-				list networks {
-					description "A list of emulated networks.
-					Each emulated networks object is a container for one and only one of the emulated network types.
-					The network-type is used to specify what type of network is contained in a networks object.";
-					
-					key "name";
-					leaf name {
-						type t:config-list-key;
-						description
-						"The unique name of the networks object.";
-					}
-					leaf flow-link {
-						description
-						"Identifies which object in another container is the next hop from this networks object.
-						The name cannot be one of the names in this networks container.
-						An empty link indicates no flow link";
-						mandatory true;
-						type union {
-							type leafref {
-								path "../name";
-							}
-							type leafref {
-								path "../../device-groups/devices/protocols/name";
-							}
-							type empty;
-						}
-					}
-					uses bgpv4-route-range-group {
-						description "The conditional container for detailed bgpv4 route range information"; 
-						when "../../device-groups/devices/protocols/protocol-type == BGPV4";
-					}
-					uses bgpv6-route-range-group {
-						description "The conditional container for detailed bgpv6 route range information"; 
-						when "../../device-groups/devices/protocols/protocol-type == BGPV6";
-					}
-					uses ospfv2-route-range-group {
-						description "The conditional container for detailed ospfv2 router LSA range information"; 
-						when "../../device-groups/devices/protocols/protocol-type == OSPFV2";
-					}
-					uses ospfv3-route-range-group {
-						description "The conditional container for detailed ospfv3 router LSA range information"; 
-						when "../../device-groups/devices/protocols/protocol-type == OSPFV3";
-					}
-					uses isisv4-route-range-group {
-						description "The conditional container for detailed isis v4 routes information"; 
-						when "../../device-groups/devices/protocols/protocol-type == ISISV4";
-					}
-					uses isisv6-route-range-group {
-						description "The conditional container for detailed isis v6 routes information"; 
-						when "../../device-groups/devices/protocols/protocol-type == ISISV6";
-					}
-				}
-			}
+			uses network-group-top;
 		}
 
-		action create-bgpv4 {
-			input {
-				leaf device-group-name {
-					mandatory true;
-					type string;
-				}
-				leaf device-name {
-					mandatory true;
-					type string;
-				}
-				uses ethernet-group {
-					augment ethernet {
-						leaf name {
-							mandatory true;
-							type string;
-						}
-					}
-				}
-				uses vlan-group {
-					augment vlan {
-						leaf name {
-							mandatory true;
-							type string;
-						}
-					}					
-				}
-				uses ipv4-group {
-					augment ipv4 {
-						leaf name {
-							mandatory true;
-							type string;
-						}
-					}
-				}
-				uses bgpv4-group {
-					augment bgpv4 {
-						leaf name {
-							mandatory true;
-							type string;
-						}
-					}
-				}
-			}
-		}
 		action start-protocols {
 			description
 			"Start one or more emulated protocol groups.

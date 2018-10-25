@@ -1,0 +1,78 @@
+submodule openhltest-traffic-frame-group {
+
+	yang-version "1.1";
+	belongs-to "openhltest" {
+		prefix "oht";
+	}
+
+	import openhltest-types {
+		prefix t;
+	}
+	import openhltest-patterns {
+		prefix p;
+	}
+	include openhltest-traffic-custom-frame-group;
+	include openhltest-traffic-ethernet-group;
+	include openhltest-traffic-vlan-group;
+	include openhltest-traffic-ipv4-group;
+	include openhltest-traffic-ipv6-group;
+	include openhltest-traffic-tcp-group;
+	include openhltest-traffic-udp-group;
+
+	organization
+	"OpenHlTest working group";
+	contact
+	"OpenHlTest working group";
+	description
+	"This module describes a collection of traffic protocols.";
+
+	revision 2018-02-09 {
+		description
+		  "Initial revision.";
+		reference
+		  "0.0.1";
+	}
+
+	grouping traffic-frame-group-top {
+		description "A grouping of all possible traffic frames.";
+
+		leaf frame-type {
+			type enumeration {
+				enum ETHERNET;
+				enum VLAN;
+				enum IPV4;
+				enum IPV6;
+				enum TCP;
+				enum UDP;
+			}
+		}
+		uses traffic-ethernet-group-top {
+			description "The conditional container for detailed ethernet information";
+			when "../frame-type = ETHERNET";
+		}
+		uses traffic-vlan-group-top {
+			description "The conditional container for detailed vlan information"; 
+			when "../frame-type = VLAN";
+		}
+		uses traffic-ipv4-group-top {
+			description "The conditional container for detailed ipv4 information"; 
+			when "../frame-type = IPV4";
+		}
+		uses traffic-ipv6-group-top {
+			description "The conditional container for detailed ipv6 information"; 
+			when "../frame-type = IPV6";
+		}
+		uses traffic-tcp-group-top {
+			description "The conditional container for detailed tcp information"; 
+			when "../frame-type = TCP";
+		}
+		uses traffic-udp-group-top {
+			description "The conditional container for detailed udp information"; 
+			when "../frame-type = UDP";
+		}
+		uses traffic-custom-frame-group-top {
+			description "The conditional container for custom frame information";
+			when "../frame-type = CUSTOM";
+		}
+	}
+}

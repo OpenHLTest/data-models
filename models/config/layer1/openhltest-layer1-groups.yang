@@ -38,6 +38,7 @@ submodule openhltest-layer1-groups {
 			key "name";
 			description
 			"A group of layer1 settings that will be applied to each port's location.
+			The vendor implementation should apply layer 1 settings when starting protocols.
 			If the port's location is empty then nothing will be applied to that port.";
 
 			leaf name {
@@ -92,27 +93,6 @@ submodule openhltest-layer1-groups {
 				description "The conditional container for detailed 25 gigabit layer1 settings";
 				when "../layer1-type = TWENTY_FIVE_GIG";			
 			}
-		}
-
-		action apply-layer1 {
-			description
-			"Apply layer1 settings to abstract ports that are part of supplied layer1 groups.
-			";
-
-			input {
-				leaf-list layer1-groups {
-					description "A list of layer1 group names";
-					type leafref {
-						path "../../layer1-groups/name";
-					}
-				}
-			}
-			output {
-				uses t:errata-group {
-					description "A list of ports that failed to have layer1 group settings applied to their location.
-					An empty list signifies that all layers groups were successfully applied.";
-				}
-			}
-		}						
+		}			
 	}
 }

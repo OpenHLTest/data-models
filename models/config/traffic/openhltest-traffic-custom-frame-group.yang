@@ -1,0 +1,62 @@
+submodule openhltest-traffic-custom-frame-group {
+
+    yang-version "1.1";
+    belongs-to "openhltest" {
+		prefix "oht";
+	}
+
+	import ietf-yang-types {
+		prefix iyt;
+	}
+    import openhltest-patterns {
+		prefix p;
+	}
+    
+    organization
+      "OpenHlTest working group";
+    contact
+      "OpenHlTest working group";
+    description
+      "This module describes a collection of traffic groups
+	  and associated rpcs.";
+
+    revision 2018-02-09 {
+        description
+          "Initial revision.";
+        reference
+          "0.0.1";
+    }
+
+    grouping traffic-custom-frame-group-top {
+		container custom {
+			leaf payload-type {
+				type enumeration {
+					enum INCREMENT_BYTE;
+					enum DECREMENT_BYTE;
+					enum INCREMENT_WORD;
+					enum DECREMENT_WORD;
+					enum CRPAT;
+					enum CJPAT;
+					enum RANDOM;
+					enum CUSTOM;
+				}
+			}
+			container payload {
+				leaf data {
+					when "../payload-type = CUSTOM";
+					type iyt:hex-string;
+					default "00";
+				}
+				leaf repeat {
+					description "Repeat the payload data to fill the length specified";
+					type boolean;
+					default "false";
+				}
+				leaf length {
+					type int32;
+					default 0;
+				}
+			}
+		} 
+    }
+}
