@@ -95,7 +95,7 @@ submodule openhltest-device-groups {
 							path "../name";
 						}
 						type leafref {
-							path "../../simulated-networks/name";
+							path "../../network-groups/name";
 						}
 						type empty;
 					}
@@ -134,7 +134,7 @@ submodule openhltest-device-groups {
 								path "../name";
 							}
 							type leafref {
-								path "../../simulated-networks/name";
+								path "../../network-groups/name";
 							}
 							type empty;
 						}
@@ -211,39 +211,31 @@ submodule openhltest-device-groups {
 			uses network-group-top;
 		}
 
-		action start-protocols {
+		action device-groups-control {
 			description
-			"Start one or more emulated protocol groups.
-			An empty list signifies that all protocol groups will be started.";
+			"Control one or more device-groups.
+			An empty list signifies that all device-groups will be subject to the mode specified.";
 
 			input {
-				leaf-list protocol-names {
+				leaf-list device-groups-names {
 					description "A list of protocol group names";
-					type string;
+					type leafref {
+						path "../../device-groups/name";
+					}
+				}
+				leaf mode {
+					description "Specifies the action to be taken.";
+					type enumeration {
+                        enum START;
+                        enum STOP;
+                    }
+                    default "START";
 				}
 			}
 			output {
 				uses t:errata-group {
-					description "A list of protocol group resources that failed to start.
+					description "A list of device-groups resources that failed to start.
 					An empty list signifies that all protocol groups successfully started.";
-				}
-			}
-		}
-		action stop-protocols {
-			description
-			"Stop one or more protocol groups. 
-			An empty list signifiels that all protocol groups will be stopped.";
-
-			input {
-				leaf-list protocol-names {
-					description "A list of protocol group names";
-					type string;
-				}
-			}
-			output {
-				uses t:errata-group {
-					description "A list of protocol group resources that failed to stop.
-					An empty list signifies that all protocol groups successfully stopped.";
 				}
 			}
 		}
