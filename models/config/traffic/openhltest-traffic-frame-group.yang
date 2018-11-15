@@ -38,6 +38,7 @@ submodule openhltest-traffic-frame-group {
 
 		leaf frame-type {
 			type enumeration {
+				enum CUSTOM;
 				enum ETHERNET;
 				enum VLAN;
 				enum IPV4;
