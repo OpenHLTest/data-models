@@ -2,25 +2,21 @@ submodule openhltest-traffic-groups {
 
     yang-version "1.1";
     belongs-to "openhltest" {
-		prefix "oht";
-	}
+        prefix "oht";
+    }
 
     import openhltest-types {
         prefix t;
     }
-	import openhltest-extensions {
-		prefix e;
-	}
-	include openhltest-traffic-frame-options;
+    import openhltest-extensions {
+        prefix e;
+    }
+    include openhltest-traffic-endpoints;
+    include openhltest-traffic-frame-options;
     include openhltest-traffic-ethernet-group;
-	include openhltest-traffic-frame-group;
-    // include openhltest-traffic-vlan-group;
-    // include openhltest-traffic-ipv4-group;
-    // include openhltest-traffic-ipv6-group;
-    // include openhltest-traffic-tcp-group;
-    // include openhltest-traffic-udp-group;
-	include openhltest-ports;
-	include openhltest-device-groups;
+    include openhltest-traffic-frame-group;
+    include openhltest-ports;
+    include openhltest-device-groups;
 
     organization
       "OpenHlTest working group";
@@ -28,7 +24,7 @@ submodule openhltest-traffic-groups {
       "OpenHlTest working group";
     description
       "This module describes a collection of traffic groups
-	  and associated rpcs.";
+      and associated rpcs.";
 
     revision 2018-02-09 {
         description
@@ -39,208 +35,172 @@ submodule openhltest-traffic-groups {
 
     grouping traffic-group-top {
         description "A grouping of traffic groups.";
-		
-		list traffic-groups {
-			description 
-			"A traffic group is a wizard in that given a set of criteria it will generate a list of port-streams.
+        
+        list traffic-groups {
+            description "A traffic-groups object acts as a wizard in that the object generates one or more traffic-streams objects.
 
-			The following wizard criteria acts as a template for the generated port-streams:
-				mesh-type
-				bi-directional
-				encapsulation
-				source-endpoints
-				destination-endpoints
-				frame-size
-				frame-length
-				frame-load
-				user-frames
+            The following traffic-groups criteria acts as a template for the generated traffic-streams:
+                mesh-type
+                bi-directional
+                endpoint-type
+                source-endpoints
+                destination-endpoints
+                frame-size
+                frame-length
+                frame-load
+                frames
+            ";
 
-			The traffic-groups generation will default port-streams with the following
-			Each port-streams instance will be defaulted with the following traffic-groups frame-size, frame-length, frame-load instances.
-			The user can then change the individual port-streams child instances.
-			Any change to a traffic-groups immediate children will result in the port-streams being regenerated.			
-			The following will determine what the port-streams and port-streams/encapsulation-frames lists will contain:
-			encapsulation, along with source-endpoints and destination-endpoints will determine 
-			what the port-streams and port-streams/encapsulation-frames lists will contain.";
-
-			key "name";
-			leaf name {
-				type t:config-list-key;
-				description
-				"The unique name of a traffic group";
-			}
-
-			leaf bi-directional {
-				type boolean;
-				default false;
-				description
-				"Direction of traffic flow between two end points";
-			}
-			leaf mesh-type {
-				description
-				"The type of mapping between sources and destinations endpoints.";
-				default "ONE_TO_ONE";
-				type enumeration {
-					enum ONE_TO_ONE;
-					enum FULL_MESHED;
-				}
-			}
-			leaf encapsulation {
-				description "The following will determine what the port-streams and port-streams/encapsulation-frames lists will contain:
-					mesh-type
-					bi-directional
-					encapsulation
-					source-endpoints
-					destination-endpints
-				encapsulation, along with source-endpoints and destination-endpoints will determine 
-				what the port-streams and port-streams/encapsulation-frames lists will contain.";
-				type enumeration {
-					enum RAW {
-						description "Every port-streams/encapsulation-frames list will be empty.
-						Every port-streams/user-frames list will be populated with the entries from the traffic-groups/user-frames list.
-						The destination-endpoints does not need to be populated.";
-					}
-					enum ETHERNET {
-						description "The port-streams/encapsulation-frames list will contain an ethernet frame.
-						Any source/destination endpoint that does not have an ethernet protocol will be discarded.
-						The port-streams/encapsulation-frames list will contain an ethernet frame.";
-					}
-					enum VLAN {
-						description "The port-streams/encapsulation-frames list will contain all frames up and including all vlan protocols.
-						Any source/destination endpoint that does not have a vlan protocol will be discarded.
-						The port-streams/encapsulation-frames list will contain an ethernet frame.";
-					}
-					enum IPV4 {
-						description "encapsulation-frames will contain the ethernet frame
-						Any source/destination endpoint that does not have an ipv4 protocol will be discarded.
-						The port-streams/encapsulation-frames list will contain an ethernet frame.";
-					}
-					enum IPV6 {
-						description "encapsulation-frames will contain the ethernet frame
-						Any source/destination endpoint that does not have an ipv6 protocol will be discarded.
-						The port-streams/encapsulation-frames list will contain an ethernet frame.";
-					}
-				}
-				default RAW;
-			}
-			leaf-list source-endpoints {
-				description "List of 1..n abstract ports, device-groups, devices, protocols references.";
-				type union {
-					type leafref {
-						path "../../../ports/name";
-					}
-					type leafref {
-						path "../../../device-groups/name";
-					}
-					type leafref {
-						path "../../../device-groups/devices/name";
-					}
-					type leafref {
-						path "../../../device-groups/devices/protocols/name";
-					}
-				}
-			}
-			leaf-list destination-endpoints {
-				when "../encapsulation != RAW";
-				description "List of 0..n device-groups, devices, protocols references.
-				If the mesh-type is FULLY_MESHED then sources and destinations should be merged and any duplicates will be ignored.";
-				type union {
-					type leafref {
-						path "../../../device-groups/name";
-					}
-					type leafref {
-						path "../../../device-groups/devices/name";
-					}
-					type leafref {
-						path "../../../device-groups/devices/protocols/name";
-					}
-				}
-			}
-			list user-frames {
-				key "name";
-				description "List of user defined frames. 
-				Changing the encapsulation will clear the list of custom frames.";
-				leaf name {
-					type t:config-list-key;
-				}
-				uses traffic-frame-group-top;
+            key "name";
+            leaf name {
+                type t:config-list-key;
+                description "The unique name of a traffic group";
             }
-			uses traffic-frame-options-group {
-				description "Allows a user to set traffic options that will be used as a template during generation of flows.";
-			}
-			list port-streams {
-				e:server-generated;
-				key "name";
-				leaf name {
-					e:server-generated;
-					type t:config-list-key;
-					description "Server should generate names that are consistent. 
-					The pattern should be TrafficGroupName-PortName-1..n";
-				}
-				uses traffic-frame-options-group {
-					description "Allows a user to set traffic options that will be used as a template during generation of flows.";
-				}
-				list encapsulation-frames {
-					e:server-generated;
-					key "name";
-					description "List of generated frames driven by the encapsulation.
-					Changing the encapsulation will create a new list of frames as dictated by the type of encapsulation.";
-					leaf name {
-						e:server-generated;
-						type t:config-list-key;
-					}
-	                uses traffic-frame-group-top;
-				}
-				list user-frames {
-					key "name";
-					description "List of user defined frames. 
-					Changing the encapsulation will clear the list of custom frames.";
-					leaf name {
-						type t:config-list-key;
-					}
-	                uses traffic-frame-group-top;
-				}  			
-			}
-		}
-		action start-traffic {
-			description
-			"Start one or more traffic groups.
-			An empty list signifies that all traffic groups will be started.";
+            leaf endpoint-type {
+                description "The endpoints that this traffic group will use to generate traffic-stream objects.
+                If endpoint-type is PORTS then the following applies:
+                    Frames specified at the traffic-groups level will be carried forward over to every traffic-streams object that is generated.
+               
+                If endpoint-type is DEVICES-xxx then the following applies:
+                    The server will first generate a list of frames based on the encapsulation selected.
+                    Frames specified at the traffic-groups level will be carried forward over to every traffic-streams object that is generated.
+                ";
+                mandatory true;
+                type enumeration {
+                    enum PORTS;
+                    enum DEVICES-ETHERNET;
+                    enum DEVICES-VLAN;
+                    enum DEVICES-IPV4;
+                    enum DEVICES-IPV6;
+                }
+            }
+            leaf bi-directional {
+                type boolean;
+                default false;
+                description "If true then traffic-streams objects will be generated from destination DEVICES to source DEVICES.";
+                when "../endpoint-type != PORTS";
+            }
+            leaf mesh-type {
+                description "If true then traffic-streams objects will be generated from every destination DEVICES to every source DEVICES.";
+                default "ONE_TO_ONE";
+                type enumeration {
+                    enum ONE_TO_ONE;
+                    enum FULL_MESHED;
+                }
+                when "../endpoint-type != PORTS";
+            }
+            leaf-list source-ports {
+                when "../endpoint-type = PORTS";
+                type leafref {
+                    path "../../ports/name";
+                }
+            }
+            leaf-list destination-ports {
+                when "../endpoint-type = PORTS";
+                type leafref {
+                    path "../../ports/name";
+                }
+            }
+            leaf-list source-devices {
+                when "../endpoint-type != PORTS";
+                type union {
+                    type leafref {
+                        path "../../../device-groups/name";
+                    }
+                    type leafref {
+                        path "../../../device-groups/devices/name";
+                    }
+                    type leafref {
+                        path "../../../device-groups/devices/protocols/name";
+                    }
+                }
+            }
+            leaf-list destination-devices {
+                when "../endpoint-type != PORTS";
+                type union {
+                    type leafref {
+                        path "../../../device-groups/name";
+                    }
+                    type leafref {
+                        path "../../../device-groups/devices/name";
+                    }
+                    type leafref {
+                        path "../../../device-groups/devices/protocols/name";
+                    }
+                }
+            }
+            list frames {
+                key "name";
+                description "List of user defined frames. 
+				Frames that are generated as part of the traffic-streams will overwrite any user defined frame leafs 
+				that are part of the learned info due to the endpoint-type.";
+                leaf name {
+                    type t:config-list-key;
+                }
+                uses traffic-frame-group-top;
+            }
+            uses traffic-frame-options-group {
+                description "Allows a user to set traffic options that will be used as a template during generation of traffic-streams.";
+            }
 
-			input {
-				leaf-list traffic-groups {
-					type leafref {
-						path "../../traffic-groups/name";
-					}
-					description "A list of traffic group names";
+            list traffic-streams {
+                e:server-generated {
+					description "The first attempt to access traffic-streams will cause the server to populate the list.";
 				}
-			}
-			output {
-				uses t:errata-group {
-					description "A list of traffic group resources that failed to start.
-					An empty list signifies that all traffic groups successfully started.";
-				}
-			}
-		}
-		action stop-traffic {
-			description
-			"Stop one or more traffic groups. 
-			An empty list signifies that all traffic groups will be stopped.";
+                key "name";
+                leaf name {
+                    e:server-generated;
+                    type t:config-list-key;
+                    description "Server should generate names using the following pattern: TrafficGroupName-SourceDevicesName-TransmitPortName";
+                }
+                leaf transmit-port {
+                    config false;
+                    description "The transmit port that this traffic stream object will be hosted on.";
+                    type leafref {
+                        path "../../../ports/name";
+                    }
+                }
+                list frames {
+                    key "name";
+                    description "List of generated frames as defined by the endpoint-type.";
+                    leaf name {
+                        e:server-generated;
+                        type t:config-list-key;
+                    }
+                    uses traffic-frame-group-top;
+                }	
+                uses traffic-frame-options-group {
+                    description "Allows a user to customize traffic options on a per transmit port basis.";
+                }		
+            }
+        }
+        action traffic-groups-control {
+            description
+            "Control one or more traffic groups.
+            An empty list signifies that all traffic groups will be started.";
 
-			input {
-				leaf-list traffic-groups {
-					type leafref {
-						path "../../traffic-groups/name";
-					}
-					description "A list of traffic group names";
-				}
-			}
-			output {
-				uses t:errata-group {
-					description "A list of traffic group resources that failed to start.
-					An empty list signifies that all traffic groups successfully stopped.";
-				}
-			}
-		}
+            input {
+                leaf-list traffic-groups {
+                    type leafref {
+                        path "../../traffic-groups/name";
+                    }
+                    description "A list of traffic group names";
+                }
+                leaf mode {
+                    description "Specifies the action to be taken.";
+                    type enumeration {
+                        enum START;
+                        enum STOP;
+                    }
+                    default "START";
+                }
+            }
+            output {
+                uses t:errata-group {
+                    description "A list of traffic group resources that failed to start.
+                    An empty list signifies that all traffic groups successfully started.";
+                }
+            }
+        }
     }
 }
