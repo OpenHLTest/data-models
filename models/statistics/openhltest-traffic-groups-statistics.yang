@@ -28,12 +28,12 @@ submodule openhltest-traffic-groups-statistics {
         description
           "A grouping of Traffic Group statistics";
 
-		list traffic-groups {
+		list device-traffic {
 			config false;
 			key "name";
 
             leaf name {
-                description "Traffic Group name";
+                description "Device Traffic name";
                 type t:config-list-key;
             }
             leaf tx-frames {

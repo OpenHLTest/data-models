@@ -9,7 +9,7 @@ Content-Type: application/json
 			"location": "10.36.74.53/1/1"
 		}
 	],
-	"openhltest-traffic-ports:traffic-port-streams": [
+	"openhltest-traffic-ports:port-traffic": [
 		{
 			"name": "Port Stream 1",
 			"source": "../ports/name=PE-2/7",
@@ -28,7 +28,7 @@ Content-Type: application/json
 							"start": "00:00:01:00:00:01",
 							"step": "00:00:00:00:00:01",
 							"count": 10,
-							"track-statistics": true
+							"use-stream": true
 						},
 						"ethernet-type": {
 							"pattern-type": "SINGLE",

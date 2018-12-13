@@ -33,7 +33,7 @@ submodule openhltest-traffic-devices {
 	grouping traffic-devices-top {
 		description "A grouping of traffic groups.";
 		
-		list traffic-device-groups {
+		list device-traffic {
 			description "This is a collection of nodes that the server uses to generate 1..n traffic-streams.
 			The source and destinations of the device traffic group can only come from the device-groups list or its children.
 			";
@@ -112,50 +112,50 @@ submodule openhltest-traffic-devices {
 				description "Allows a user to set traffic options that will be used as a template during generation of traffic-streams.";
 			}
 
-			list generated-streams {
-				e:server-generated {
-					description "The first attempt to access traffic-streams will cause the server to generate and populate the list.";
-				}
-				key "name";
-				leaf name {
-					e:server-generated;
-					type t:config-list-key;
-					description "The name indicates the nodes of the model that contribute to the traffic-streams.
-					Server should generate names using the following pattern: 
-						../traffic-group/name+../device-groups/devices/name+../ports/name 
-					";
-				}
-				list frames {
-					key "name";
-					description "List of generated frames as defined by the endpoint-type.";
-					leaf name {
-						e:server-generated;
-						type t:config-list-key;
-					}
-					uses traffic-frame-group-top;
-				}	
-				uses traffic-frame-options-group {
-					description "Allows a user to customize traffic options on a per transmit port basis.";
-				}		
-			}
+			// list generated-streams {
+			// 	e:server-generated {
+			// 		description "The first attempt to access traffic-streams will cause the server to generate and populate the list.";
+			// 	}
+			// 	key "name";
+			// 	leaf name {
+			// 		e:server-generated;
+			// 		type t:config-list-key;
+			// 		description "The name indicates the nodes of the model that contribute to the traffic-streams.
+			// 		Server should generate names using the following pattern: 
+			// 			../traffic-group/name+../device-groups/devices/name+../ports/name 
+			// 		";
+			// 	}
+			// 	list frames {
+			// 		key "name";
+			// 		description "List of generated frames as defined by the endpoint-type.";
+			// 		leaf name {
+			// 			e:server-generated;
+			// 			type t:config-list-key;
+			// 		}
+			// 		uses traffic-frame-group-top;
+			// 	}	
+			// 	uses traffic-frame-options-group {
+			// 		description "Allows a user to customize traffic options on a per transmit port basis.";
+			// 	}		
+			// }
 		}
 
-		action traffic-groups-control {
+		action traffic-control {
 			description
 			"Control one or more traffic groups.
-			An empty list signifies that all traffic groups will be started.";
+			An empty list signifies that all traffic will be started.";
 
 			input {
-				leaf-list traffic-groups {
+				leaf-list traffic {
 					type union {
 						type leafref {
-							path "../../bound-traffic-groups/name";
+							path "../../port-traffic/name";
 						}
 						type leafref {
-							path "../../raw-traffic-streams/name";
+							path "../../device-traffic/name";
 						}
 					}
-					description "A list of traffic group names";
+					description "A list of traffic names";
 				}
 				leaf mode {
 					description "Specifies the action to be taken.";

@@ -35,6 +35,10 @@ submodule openhltest-traffic-ethernet-group {
 				leaf count {
 					type int32;
 				}
+				leaf use-streams {
+					type boolean;
+					default false;
+				}
 			}
 			container source {
 				presence "Create the source container to override the automatic source mac address";

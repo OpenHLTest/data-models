@@ -111,8 +111,8 @@ Content-Type: application/json
 							"pattern-type": "INCREMENT",
 							"start": "00:00:01:00:00:01",
 							"step": "00:00:00:00:00:01",
-							"count": 10,
-							"track-statistics": true
+							"count": 2,
+							"use-stream": true
 						},
 						"ethernet-type": {
 							"pattern-type": "SINGLE",
@@ -128,15 +128,7 @@ Content-Type: application/json
 			"frame-rate": {
 				"rate-type": "PERCENT_LINE_RATE",
 				"percent-line-rate": "20"
-			},
-			"generated-streams": [
-				{
-					"name": "Traffic Group 1+Ipv4 1+Port 1"
-				},
-				{
-					"name": "Traffic Group 1+Ipv4 1+Port 2"
-				}
-			]
+			}
 		}
 	]
 }

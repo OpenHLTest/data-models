@@ -28,7 +28,7 @@ submodule openhltest-traffic-port-statistics {
         description
           "A grouping of port statistics";
 
-		list port {
+		list port-traffic {
 			config false;
 			key "name";
 			leaf name {

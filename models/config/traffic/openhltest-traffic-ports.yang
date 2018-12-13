@@ -31,9 +31,9 @@ submodule openhltest-traffic-ports {
 	}
 
 	grouping traffic-ports-top {
-		description "A reuseable group of raw traffic streams";
+		description "A reuseable group of port based traffic streams";
 		
-		list traffic-port-streams {
+		list port-traffic {
 			description "A list of traffic streams where each traffic stream 
 			has a single transmit port as its source and a list of user defined frames.";
 			
@@ -69,4 +69,12 @@ submodule openhltest-traffic-ports {
 			uses traffic-frame-options-group;
 		}
 	}
+
+	// action port-frame-rate {
+	// 	description "Port based frame rate, overrides individual rates set in the port-traffic model, changes the model.";
+	// 	input {
+	// 		leaf-list ports;
+	// 		uses traffic-frame-rate;
+	// 	}
+	// }
 }
