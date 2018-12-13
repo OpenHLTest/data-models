@@ -1,0 +1,142 @@
+### create a traffic port stream
+POST {{host}}/restconf/data/oht:session=regression-1/config
+Content-Type: application/json
+
+{
+	"openhltest-ports:ports": [
+		{
+			"name": "Port 1",
+			"location": "10.36.74.53/1/1"
+		},
+		{
+			"name": "Port 2",
+			"location": "10.36.74.53/1/2"
+		},
+		{
+			"name": "Port 3",
+			"location": "10.36.74.53/1/3"
+		},
+		{
+			"name": "Port 4",
+			"location": "10.36.74.53/1/4"
+		}
+	],
+	"openhltest-device-groups:device-groups": [
+		{
+			"name": "Device Group 1",
+			"ports": [
+				"../ports/name=Port 1",
+				"../ports/name=Port 2"
+			],
+			"devices": [
+				{
+					"name": "Devices 1",
+					"device-count-per-port": 10,
+					"protocols": [
+						{
+							"name": "Ethernet",
+							"protocol-type": "ETHERNET",
+							"ethernet": {
+								"mac": {
+									"single": "00:00:00:00:00:01"
+								}
+							}
+						},
+						{
+							"name": "Ipv4",
+							"protocol-type": "IPV4",
+							"ipv4": {
+								"source-address": {
+									"single": "1.1.1.1"
+								}
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Device Group 2",
+			"ports": [
+				"../ports/name=Port 3",
+				"../ports/name=Port 4"
+			],
+			"devices": [
+				{
+					"name": "Devices 1",
+					"device-count-per-port": 10,
+					"protocols": [
+						{
+							"name": "Ethernet",
+							"protocol-type": "ETHERNET",
+							"ethernet": {
+								"mac": {
+									"single": "00:00:00:00:00:01"
+								}
+							}
+						},
+						{
+							"name": "Ipv4",
+							"protocol-type": "IPV4",
+							"ipv4": {
+								"source-address": {
+									"single": "1.1.2.1"
+								}
+							}
+						}
+					]
+				}
+			]
+		}
+	],
+	"openhltest-traffic-devices:traffic-device-groups": [
+		{
+			"name": "Traffic Group 1",
+			"sources": [
+				"../device-groups/name=Device Group 1/devices/name=Devices 1/protocols/name=Ipv4 1"
+			],
+			"destinations": [
+				"../device-groups/name=Device Group 2/devices/name=Devices 1/protocols/name=Ipv4 1"
+			],
+			"frames": [
+				{
+					"name": "Ethernet 1",
+					"frame-type": "ETHERNET",
+					"ethernet": {
+						"destination": {
+							"pattern-type": "SINGLE",
+							"single": "00:00:00:00:00:01"
+						},
+						"source": {
+							"pattern-type": "INCREMENT",
+							"start": "00:00:01:00:00:01",
+							"step": "00:00:00:00:00:01",
+							"count": 10,
+							"track-statistics": true
+						},
+						"ethernet-type": {
+							"pattern-type": "SINGLE",
+							"single": "88B5"
+						}
+					}
+				}
+			],
+			"frame-length": {
+				"length-type": "FIXED",
+				"fixed": 128
+			},
+			"frame-rate": {
+				"rate-type": "PERCENT_LINE_RATE",
+				"percent-line-rate": "20"
+			},
+			"generated-streams": [
+				{
+					"name": "Traffic Group 1+Ipv4 1+Port 1"
+				},
+				{
+					"name": "Traffic Group 1+Ipv4 1+Port 2"
+				}
+			]
+		}
+	]
+}

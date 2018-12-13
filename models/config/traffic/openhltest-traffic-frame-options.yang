@@ -107,8 +107,7 @@ submodule openhltest-traffic-frame-options {
 		}
 		container frame-rate {
 			leaf rate-type {
-				description
-				"Load unit applied to the stream block.";
+				description	"Type of rate unit to be applied to the stream.";
 				type enumeration {
 					enum BPS;
 					enum KBPS;
@@ -120,10 +119,15 @@ submodule openhltest-traffic-frame-options {
 			}
 			leaf bps {
 				when "../rate-type = BPS";
-				default "1024000";
+				default 1024000;
 				type int32;
-				description
-				"Load value set on the streamblock/traffic-item in bits per second.";
+				description	"Bits per second set on the stream.";
+			}
+			leaf percent-line-rate {
+				when "../rate-type = PERCENT_LINE_RATE";
+				default 10;
+				type int32;
+				description "Percentage of line rate set on the stream";
 			}
 		}
 	}

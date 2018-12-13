@@ -44,12 +44,10 @@ submodule openhltest-traffic-ethernet-group {
 				}
 			}
             container ethernet-type {
-                description
-                "Ethernet type";
-                uses p:enum-pattern-group {
-                    refine pattern-format {
-                        default "(88B5|86DD|0800)";
-                    }
+				presence "Create the ethernet-type container to override the automatic default type value.";
+                description "Ethernet type.
+				Common values are 88B5 86DD 0800";
+                uses p:hex-pattern-group {
                     refine single {
                         default "88B5";
                     }

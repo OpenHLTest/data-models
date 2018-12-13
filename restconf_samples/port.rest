@@ -12,7 +12,7 @@ POST {{host}}/restconf/data/oht:session=regression-1/config
 Content-Type: application/json
 
 {
-	"openhltest-port:ports": [
+	"openhltest-ports:ports": [
 		{
 			"name": "PE-2/7"
 		}
