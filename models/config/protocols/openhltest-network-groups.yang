@@ -18,15 +18,13 @@ submodule openhltest-network-groups {
     include openhltest-bgpv6;
     include openhltest-ospfv2;
     include openhltest-ospfv3;
-    include openhltest-isisv4;
-    include openhltest-isisv6;
+    include openhltest-isis;
 
     include openhltest-bgpv4-route-range;
     include openhltest-bgpv6-route-range;
     include openhltest-ospfv2-route-range;
     include openhltest-ospfv3-route-range;
-    include openhltest-isisv4-route-range;
-    include openhltest-isisv6-route-range;
+    include openhltest-isis-route-range;
     
     organization
     "OpenHlTest working group";
@@ -120,13 +118,9 @@ submodule openhltest-network-groups {
                     description "The conditional container for detailed ospfv3 router LSA range information"; 
                     when "../../device-groups/devices/protocols/protocol-type == OSPFV3";
                 }
-                uses isisv4-route-range-group {
-                    description "The conditional container for detailed isis v4 routes information"; 
-                    when "../../device-groups/devices/protocols/protocol-type == ISISV4";
-                }
-                uses isisv6-route-range-group {
-                    description "The conditional container for detailed isis v6 routes information"; 
-                    when "../../device-groups/devices/protocols/protocol-type == ISISV6";
+                uses isis-route-range-group {
+                    description "The conditional container for detailed isis routes information"; 
+                    when "../../device-groups/devices/protocols/protocol-type == ISIS";
                 }
             }
         }

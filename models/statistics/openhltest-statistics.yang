@@ -52,8 +52,7 @@ submodule openhltest-statistics {
         uses bgpv6-statistics;
         uses ospfv2-statistics;
         uses ospfv3-statistics;
-        uses isisv4-statistics;
-        uses isisv6-statistics;
+        uses isis-statistics;
         uses bfdv4-statistics;
         uses bfdv6-statistics;
 	}

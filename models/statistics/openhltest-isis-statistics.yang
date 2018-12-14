@@ -24,49 +24,7 @@ submodule openhltest-isis-statistics {
     grouping isis-statistics {
         description
           "A grouping of common ospf statistics";
-          
-        leaf router-state {
-            config false;
-            type enumeration {
-                enum IDLE;
-                enum INIT;
-                enum UP;
-                enum GR;
-                enum GRHELPER;
-            }
-            description
-              "State of adjacency with the SUT";
-        }
-        leaf tx-l1-lan-hello-count {
-            config false;
-            type uint64;
-            description
-              "Number of L1 LAN Hello packets transmitted by the emulated router.";
-        }
-        leaf rx-l1-lan-hello-count {
-            config false;
-            type uint64;
-            description
-              "Number of L1 LAN Hello packets received by the emulated router.";
-        }
-        leaf tx-l2-lan-hello-count {
-            config false;
-            type uint64;
-            description
-              "Number of L2 LAN Hello packets transmitted by the emulated router.";
-        }
-        leaf rx-l2-lan-hello-count {
-            config false;
-            type uint64;
-            description
-              "Number of L2 LAN Hello packets received by the emulated router.";
-        }
-    }
-    
-    grouping isisv4-statistics {
-        description
-        "A grouping of ISIS V4 statistics";
-        list isisv4-statistics {
+        list isis-statistics {
 			key "device-name";
 			leaf device-name {
 				description "Device Name";
@@ -76,29 +34,184 @@ submodule openhltest-isis-statistics {
 				description "An abstract test port name";
 				type string;
 			}
+            leaf rx-l1-lan-hello-count {
+                config false;
+                type uint64;
+                description
+                "Number of LAN Hello packets received by the emulated router.";
+            }
+            leaf tx-l1-lan-hello-count {
+                config false;
+                type uint64;
+                description
+                "Number of LAN Hello packets transmitted by the emulated router.";
+            }
+            leaf rx-l2-lan-hello-count {
+                config false;
+                type uint64;
+                description
+                "Number of LAN Hello packets received by the emulated router.";
+            }
+            leaf tx-l2-lan-hello-count {
+                config false;
+                type uint64;
+                description
+                "Number of LAN Hello packets transmitted by the emulated router.";
+            }
+            leaf tx-l1-csnp-count {
+                config false;
+                type uint64;
+                description
+                "Number of Tx CSNPs sent to the SUT.";
+            }
+            leaf tx-l1-lsp-count {
+                config false;
+                type uint64;
+                description
+                "Number of Tx LSPs sent to the SUT.";
+            }
+            leaf tx-l1-psnp-count {
+                config false;
+                type uint64;
+                description
+                "Number of Tx PSNPs sent to the SUT.";
+            }
+            leaf rx-l1-csnp-count {
+                config false;
+                type uint64;
+                description
+                "Number of Rx CSNPs received from the SUT.";
+            }
+            leaf rx-l1-lsp-count {
+                config false;
+                type uint64;
+                description
+                "Number of Rx LSPs received from the SUT.";
+            }
+            leaf rx-l1-psnp-count {
+                config false;
+                type uint64;
+                description
+                "Number of Rx PSNPs received from the SUT.";
+            }
+
+            leaf tx-l2-csnp-count {
+                config false;
+                type uint64;
+                description
+                "Number of Tx CSNPs sent to the SUT.";
+            }
+            leaf tx-l2-lsp-count {
+                config false;
+                type uint64;
+                description
+                "Number of Tx LSPs sent to the SUT.";
+            }
+            leaf tx-l2-psnp-count {
+                config false;
+                type uint64;
+                description
+                "Number of Tx PSNPs sent to the SUT.";
+            }
+            leaf rx-l2-csnp-count {
+                config false;
+                type uint64;
+                description
+                "Number of Rx CSNPs received from the SUT.";
+            }
+            leaf rx-l2-lsp-count {
+                config false;
+                type uint64;
+                description
+                "Number of Rx LSPs received from the SUT.";
+            }
+            leaf rx-l2-psnp-count {
+                config false;
+                type uint64;
+                description
+                "Number of Rx PSNPs received from the SUT.";
+            }
 			config false;
-            
-            uses isis-statistics;
+            leaf router-state {
+                config false;
+                type enumeration {
+                    enum IDLE;
+                    enum INIT;
+                    enum UP;
+                    enum GR;
+                    enum GRHELPER;
+                }
+                description
+                "State of adjacency with the SUT";
+            }
+            leaf neighbor-extended-circuit-id {
+                config false;
+                type string;
+                description
+                "Learned the extended circuit ID of the adjacent neighbor after a three-way Hello exchange.";
+            }
+            leaf rx-ptp-hello-count {
+                config false;
+                type uint64;
+                description
+                "Number of Rx point-to-point hellos received from the SUT.";
+            }
+            leaf tx-ptp-hello-count {
+                config false;
+                type uint64;
+                description
+                "Number of Tx point-to-point hellos sent to the SUT.";
+            }
+            leaf neighbor-system-id {
+                config false;
+                type string;
+                description
+                "Learned System ID of the adjacent neighbor after three-way Helloexchange.";
+            }
+            leaf three-way-p2p-adjacency-state {
+                config false;
+                type enumeration {
+                    enum UP;
+                    enum INIT;
+                    enum DOWN;
+                    enum NOT_STARTED;
+                    enum NA;
+                }
+                description
+                "Adjacency state of three-way Hello in point-to-pointnetwork.";
+            }
+            leaf l1-broadcast-adjacency-state {
+                config false;
+                type enumeration {
+                    enum NOT_STARTED;
+                    enum IDLE;
+                    enum INIT;
+                    enum DIS_OTHER;
+                    enum DIS;
+                    enum GR;
+                    enum GRHELPER;
+                    enum NA;
+                }
+                description
+                "Adjacency state of broadcast router.";
+            }
+            leaf l2-broadcast-adjacency-state {
+                config false;
+                type enumeration {
+                    enum NOT_STARTED;
+                    enum IDLE;
+                    enum INIT;
+                    enum DIS_OTHER;
+                    enum DIS;
+                    enum GR;
+                    enum GRHELPER;
+                    enum NA;
+                }
+                description
+                "Adjacency state of broadcast router.";
+            }
         }
     }
     
-    grouping isisv6-statistics {
-        description
-        "A grouping of ISIS v6 statistics";
-        list isisv6-statistics {
-			key "device-name";
-			leaf device-name {
-				description "Device name";
-				type string;
-			}
-			leaf port-name {
-				description "An abstract test port name";
-				type string;
-			}
-			config false;
-            
-            uses isis-statistics;
-        }
-    }
     
 }

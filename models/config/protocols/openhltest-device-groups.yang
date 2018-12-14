@@ -18,15 +18,13 @@ submodule openhltest-device-groups {
 	include openhltest-bgpv6;
 	include openhltest-ospfv2;
 	include openhltest-ospfv3;
-	include openhltest-isisv4;
-	include openhltest-isisv6;
+	include openhltest-isis;
 	include openhltest-network-groups;
 	include openhltest-bgpv4-route-range;
 	include openhltest-bgpv6-route-range;
     include openhltest-ospfv2-route-range;
     include openhltest-ospfv3-route-range;
-    include openhltest-isisv4-route-range;
-    include openhltest-isisv6-route-range;
+	include openhltest-isis-route-range;
     
 	organization
 	"OpenHlTest working group";
@@ -151,8 +149,7 @@ submodule openhltest-device-groups {
                             enum BGPV6;
                             enum OSPFV2;
                             enum OSPFV3;
-                            enum ISISV4;
-                            enum ISISV6;
+                            enum ISIS;
                             enum BFDV4;
                             enum BFDV6;
 						}
@@ -189,13 +186,9 @@ submodule openhltest-device-groups {
 						description "The conditional container for detailed ospfv3 information"; 
 						when "../protocol-type = OSPFV3";
 					}
-					uses isisv4-group {
+					uses isis-group {
 						description "The conditional container for detailed isis v4 information"; 
-						when "../protocol-type = ISISV4";
-					}
-					uses isisv6-group {
-						description "The conditional container for detailed isis v6 information"; 
-						when "../protocol-type = ISISV6";
+						when "../protocol-type = ISIS";
 					}
 					uses bfdv4-group {
 						description "The conditional container for detailed bfd v4 information"; 
@@ -363,43 +356,14 @@ submodule openhltest-device-groups {
 			}
 		}
         
-		action isisv4-control {
+		action isis-control {
 			description
-			"Start one or more emulated ISIS v4 protocol groups.
-			An empty list signifies that all ISIS v4 protocol groups will be started.";
+			"Start one or more emulated ISIS protocol groups.
+			An empty list signifies that all ISIS protocol groups will be started.";
 
 			input {
-				leaf-list isisv4-protocol-names {
-					description "A list of ISIS v4 protocol device names";
-					type string;
-				}
-				leaf mode {
-					description "Specifies the action to be taken.";
-					type enumeration {
-                        enum START;
-                        enum STOP;
-                        enum LINK_FLAP;
-                        enum RESTART;
-                    }
-                    default "START";
-				}
-			}
-			output {
-				uses t:errata-group {
-					description "A list of protocol group resources that failed to start.
-					An empty list signifies that all protocol groups successfully started.";
-				}
-			}
-		}
-
-		action isisv6-control {
-			description
-			"Start one or more emulated ISIS v6 protocol groups.
-			An empty list signifies that all ISIS v6 protocol groups will be started.";
-
-			input {
-				leaf-list isisv6-protocol-names {
-					description "A list of ISIS v6 protocol device names";
+				leaf-list isis-protocol-names {
+					description "A list of ISIS protocol device names";
 					type string;
 				}
 				leaf mode {

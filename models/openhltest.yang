@@ -24,8 +24,7 @@ module openhltest {
 	include openhltest-bgpv6;
 	include openhltest-ospfv2;
 	include openhltest-ospfv3;
-	include openhltest-isisv4;
-	include openhltest-isisv6;
+	include openhltest-isis;
     
     include openhltest-traffic-ports;
 	include openhltest-traffic-devices;
@@ -52,8 +51,7 @@ module openhltest {
     include openhltest-bgpv6-route-range;
     include openhltest-ospfv2-route-range;
     include openhltest-ospfv3-route-range;
-    include openhltest-isisv4-route-range;
-    include openhltest-isisv6-route-range;
+	include openhltest-isis-route-range;
 
 	organization
 	"OpenHlTest working group";
