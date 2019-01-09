@@ -130,6 +130,20 @@ module openhltest-patterns {
 			}
 		}
 	}
+	grouping binary-pattern-group {
+		uses base-pattern-group {
+			refine pattern-format {
+				default '(1|0)';
+			}
+		}
+	}
+	grouping ethertype-pattern-group {
+		uses base-pattern-group {
+			refine pattern-format {
+				default '(0x0800|0x0806|0x86DD)';
+			}
+		}
+	}
 	grouping mac-pattern-group {
 		uses base-pattern-group {
 			refine pattern-format {

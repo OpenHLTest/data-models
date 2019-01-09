@@ -28,6 +28,11 @@ submodule openhltest-ospfv3 {
 	grouping ospfv3-group {
 		container ospfv3 {
         
+            container router-id {
+                description
+                "Router ID.";
+                uses p:ipv4-pattern-group;
+            }
             container area-id {
                 description
                 "IP address indicating the area to which the emulated router belongs.";

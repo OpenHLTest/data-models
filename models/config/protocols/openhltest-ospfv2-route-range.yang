@@ -58,6 +58,24 @@ submodule openhltest-ospfv2-route-range {
                 }
             }
             
+            container options {
+                description
+                "Summary LSA Options.
+                    TBIT     TOS: Type of Service (T,0).
+                    EBIT     External Routing: Specifies the way AS-external-LSAs are flooded (E,1).
+                    MCBIT    Multicast: Specifies whether IP multicast datagrams are forwarded (MC,2).
+                    NPBIT    NSSA: Specifies the handling of Type-7 LSAs (N/P,3).
+                    EABIT    External Attribute: Specifies the router's willingness to receive and forward External-Attributes-LSAs (EA,4).
+                    DCBIT    Demand Circuit: Specifies the router's handling of demand circuits (DC,5).
+                    OBIT     Opaque: Specifies the router's willingness to receive and forward Opaque LSAs as specified in RFC 2370 (O,6).
+                    UNUSED7  Unused: This bit is not used";
+                uses p:base-pattern-group {
+                    refine single {
+                        default "EBIT";
+                    }
+                }
+            }
+
             container sequence-number {
                 description
                 "Sequence Number. Used to detect old and duplicate LSAs.";
@@ -80,7 +98,7 @@ submodule openhltest-ospfv2-route-range {
 				}
             }
             
-            list router-link {
+            list ospfv2-router-link {
                 key "name";
                 leaf name {
                     type t:config-list-key;
@@ -90,15 +108,15 @@ submodule openhltest-ospfv2-route-range {
                 container router-link-type {
                     description
                     "Type of link
-                    VIRTUAL   : Virtual Link
-                    P2P       : P2P (point-to-point) network
-                    STUB      : STUB Network";
+                    VL             : Virtual Link
+                    POINT_TO_POINT : P2P (point-to-point) network
+                    STUB_NETWORK   : STUB Network";
                     uses p:enum-pattern-group {
                         refine pattern-format {
-                            default "(P2P|VIRTUAL|STUB)";
+                            default "(POINT_TO_POINT|VL|STUB_NETWORK)";
                         }
                         refine single {
-                            default "P2P";
+                            default "POINT_TO_POINT";
                         }
                     }
                 }

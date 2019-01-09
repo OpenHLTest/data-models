@@ -1,0 +1,367 @@
+submodule openhltest-detailed-traffic-statistics {
+
+    yang-version "1.1";
+    belongs-to "openhltest" {
+		prefix "oht";
+	}
+
+    import openhltest-types {
+        prefix t;
+    }
+
+    organization
+      "OpenHlTest working group";
+    contact
+      "OpenHlTest working group";
+    description
+      "This module describes a YANG model for 
+       abstract test port statistics.";
+
+    revision 2017-11-02 {
+        description
+          "Initial revision.";
+        reference
+          "0.0.1";
+    }
+
+
+    grouping detailed-traffic-statistics-top {
+        description
+          "A grouping of detailed Traffic statistics";
+
+		list detailed-traffic {
+			config false;
+			key "name";
+
+            leaf name {
+                description "Device Traffic or Port traffic name";
+                type t:config-list-key;
+            }
+			list port {
+				leaf name {
+					description "Test Port name";
+					type t:config-list-key;
+				}
+				list stream {
+					config false;
+					key "id";
+
+					leaf id {
+						description "Stream/Flow Index";
+						type uint64;
+					}
+
+					leaf rx-port-name {
+						description "Rx port name.";
+						type string;
+					}
+					leaf avg-latency {
+						config false;
+						type decimal64 {
+							fraction-digits 10;
+						}
+						description
+							"Average transfer delay measured in 1 microsecond units.";
+					}
+					leaf min-latency {
+						config false;
+						type decimal64 {
+							fraction-digits 10;
+						}
+						description
+							"Minimum transfer delay measured in 1 microsecond units.";
+					}
+					leaf max-latency {
+						config false;
+						type decimal64 {
+							fraction-digits 10;
+						}
+						description
+							"Maximum transfer delay measured in 1 microsecond units.";
+					}
+					leaf total-latency {
+						config false;
+						type decimal64 {
+							fraction-digits 10;
+						}
+						description
+							"Total transfer delay measured in 1 microsecond units.";
+					}
+					leaf short-term-latency {
+						config false;
+						type decimal64 {
+							fraction-digits 10;
+						}
+						description
+							"Short term average latency of the transmission.";
+					}
+					leaf avg-jitter {
+						config false;
+						type decimal64 {
+							fraction-digits 10;
+						}
+						description
+							"Average jitter measured in 1 microsecond units. Although jitter value could be negative,
+							 only absolute value will be measured.";
+					}
+					leaf min-jitter {
+						config false;
+						type decimal64 {
+							fraction-digits 10;
+						}
+						description
+							"Minimum jitter measured in 1 microsecond units. Although jitter value could be negative,
+							 only absolute value will be measured.";
+					}
+					leaf max-jitter {
+						config false;
+						type decimal64 {
+							fraction-digits 10;
+						}
+						description
+							"Maximum jitter measured in 1 microsecond units. Although jitter value could be negative,
+							 only absolute value will be measured.";
+					}
+					leaf total-jitter {
+						config false;
+						type decimal64 {
+							fraction-digits 10;
+						}
+						description
+							"Total jitter measured in 1 microsecond units. Although jitter value could be negative,
+							 only absolute value will be measured.";
+					}
+					leaf short-term-jitter {
+						config false;
+						type decimal64 {
+							fraction-digits 10;
+						}
+						description
+							"Short term average jitter.";
+					}
+					leaf avg-inter-arrival-time {
+						config false;
+						type decimal64 {
+							fraction-digits 10;
+						}
+						description
+							"Average inter-arrival time measured in 1 microsecond units.";
+					}
+					leaf min-inter-arrival-time {
+						config false;
+						type decimal64 {
+							fraction-digits 10;
+						}
+						description
+							"Minimum inter-arrival time measured in 1 microsecond units.";
+					}
+					leaf max-inter-arrival-time {
+						config false;
+						type decimal64 {
+							fraction-digits 10;
+						}
+						description
+							"Maximum inter-arrival time measured in 1 microsecond units.";
+					}
+					leaf total-inter-arrival-time {
+						config false;
+						type decimal64 {
+							fraction-digits 10;
+						}
+						description
+							"Total inter-arrival time measured in 1 microsecond units.";
+					}
+					leaf short-term-inter-arrival-time {
+						config false;
+						type decimal64 {
+							fraction-digits 10;
+						}
+						description
+							"Short term average inter-arrival time measured in 1 microsecond units.";
+					}
+
+
+					leaf tx-frames {
+						config false;
+						type uint64;
+						description
+							"The total number of frames transmitted on the port.
+							Empty if the abstract port is not connected to a test port.";
+					}
+					leaf rx-frames {
+						config false;
+						type uint64;
+						description
+							"The total number of frames received on the the port.
+							Empty if the abstract port is not connected to a test port.";
+					}
+					leaf tx-frame-rate {
+						config false;
+						type uint64;
+						description
+							"Total number of frames transmitted over the last 1-second interval.
+							Empty if the abstract port is not connected to a test port.";
+					}
+					leaf rx-frame-rate {
+						config false;
+						type uint64;
+						description
+							"Total number of frames received over the last 1-second interval.
+							Empty if the abstract port is not connected to a test port.";
+					}
+					leaf dropped-frames {
+						config false;
+						type uint64;
+						description
+							"Total Number of dropped frames during transit.
+							Empty if the abstract port is not connected to a test port.";
+					}
+					leaf dropped-frame-percent {
+						config false;
+						type decimal64 {
+							fraction-digits 10;
+						}
+						description
+							"Percentage of dropped frames.";
+					}
+					leaf dropped-frame-percent-rate {
+						config false;
+						type decimal64 {
+							fraction-digits 10;
+						}
+						description
+							"Percentage rate of the dropped frame.";
+					}
+					leaf dropped-frame-rate {
+						config false;
+						type uint64;
+						description
+							"Number of frames dropped over the last 1-second interval.";
+					}
+					leaf duplicate-frames {
+						config false;
+						type uint64;
+						description
+							"Number of duplicate frames received.";
+					}
+					leaf duplicate-frame-rate {
+						config false;
+						type uint64;
+						description
+							"Number of duplicate frames received over the last 1-second interval.";
+					}
+					leaf first-arrival-time {
+						config false;
+						type decimal64 {
+							fraction-digits 10;
+						}
+						description
+							"Backplane first arrival timestamp in 1 microsecond units. 48-bit: groups 6-8, 14-16; 32-bit: other groups.";
+					}
+					leaf last-arrival-time {
+						config false;
+						type decimal64 {
+							fraction-digits 10;
+						}
+						description
+							"Backplane last arrival timestamp in 1 microsecond units. 48-bit: groups 6-8, 14-16; 32-bit: other groups.";
+					}
+					leaf tx-bit-count {
+						config false;
+						type uint64;
+						description
+							"The total number of bits transmitted on the port.
+							Empty if the abstract port is not connected to a test port.";
+					}
+					leaf rx-bit-count {
+						config false;
+						type uint64;
+						description
+							"The total number of bits received on the the port.
+							Empty if the abstract port is not connected to a test port.";
+					}
+					
+					leaf tx-bit-rate {
+						config false;
+						type uint64;
+						description
+							"Total number of bits transmitted over the last 1-second interval.
+							Empty if the abstract port is not connected to a test port.";
+					}
+					leaf rx-bit-rate {
+						config false;
+						type uint64;
+						description
+							"Total number of bits received over the last 1-second interval.
+							Empty if the abstract port is not connected to a test port.";
+					}
+					leaf tx-byte-count {
+						config false;
+						type uint64;
+						description
+							"The total number of bytes transmitted on the port.
+							Empty if the abstract port is not connected to a test port.";
+					}
+					leaf rx-byte-count {
+						config false;
+						type uint64;
+						description
+							"The total number of bytes received on the the port.
+							Empty if the abstract port is not connected to a test port.";
+					}
+					
+					leaf tx-byte-rate {
+						config false;
+						type uint64;
+						description
+							"Total number of bytes transmitted over the last 1-second interval.
+							Empty if the abstract port is not connected to a test port.";
+					}
+					leaf rx-byte-rate {
+						config false;
+						type uint64;
+						description
+							"Total number of bytes received over the last 1-second interval.
+							Empty if the abstract port is not connected to a test port.";
+					}
+					leaf max-frame-length {
+						config false;
+						type uint64;
+						description
+							"Maximum frame length received (in bytes).";
+					}
+					leaf min-frame-length {
+						config false;
+						type uint64;
+						description
+							"Minimum frame length received (in bytes).";
+					}
+					leaf out-of-seq-frames {
+						config false;
+						type uint64;
+						description
+							"Number of frames received out of sequence order.";
+					}
+					leaf out-of-seq-frame-rate {
+						config false;
+						type uint64;
+						description
+							"Number of frames received out of sequence order over the last 1-second interval.";
+					}
+					leaf reordered-frames {
+						config false;
+						type uint64;
+						description
+							"Number of frames reordered.";
+					}
+					leaf reordered-frame-rate {
+						config false;
+						type uint64;
+						description
+							"Number of frames reordered over the last 1-second interval.";
+					}
+				}
+			}
+        }
+    }
+}

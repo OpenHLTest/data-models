@@ -23,7 +23,13 @@ submodule openhltest-network-groups {
     include openhltest-bgpv4-route-range;
     include openhltest-bgpv6-route-range;
     include openhltest-ospfv2-route-range;
+    include openhltest-ospfv2-summary-range;
+    include openhltest-ospfv2-external-range;
+    include openhltest-ospfv2-nssa-range;
     include openhltest-ospfv3-route-range;
+	include openhltest-ospfv3-inter-area-prefix-range;
+	include openhltest-ospfv3-intra-area-prefix-range;
+	include openhltest-ospfv3-as-external-prefix-range;
     include openhltest-isis-route-range;
     
     organization
@@ -102,26 +108,67 @@ submodule openhltest-network-groups {
                         type empty;
                     }
                 }
-                uses bgpv4-route-range-group {
-                    description "The conditional container for detailed bgpv4 route range information"; 
-                    when "../../device-groups/devices/protocols/protocol-type == BGPV4";
-                }
-                uses bgpv6-route-range-group {
-                    description "The conditional container for detailed bgpv6 route range information"; 
-                    when "../../device-groups/devices/protocols/protocol-type == BGPV6";
-                }
-                uses ospfv2-route-range-group {
-                    description "The conditional container for detailed ospfv2 router LSA range information"; 
-                    when "../../device-groups/devices/protocols/protocol-type == OSPFV2";
-                }
-                uses ospfv3-route-range-group {
-                    description "The conditional container for detailed ospfv3 router LSA range information"; 
-                    when "../../device-groups/devices/protocols/protocol-type == OSPFV3";
-                }
-                uses isis-route-range-group {
-                    description "The conditional container for detailed isis routes information"; 
-                    when "../../device-groups/devices/protocols/protocol-type == ISIS";
-                }
+				leaf network-type {
+					description "Determines which detailed network container is active.";
+					mandatory true;
+					type enumeration {
+						enum "BGPV4_ROUTE_RANGE";
+						enum "BGPV6_ROUTE_RANGE";
+						enum "OSPFV2_ROUTE_RANGE";
+						enum "OSPFV2_SUMMARY_RANGE";
+						enum "OSPFV2_EXTERNAL_RANGE";
+						enum "OSPFV2_NSSA_RANGE";
+						enum "OSPFV3_ROUTE_RANGE";
+						enum "OSPFV3_INTER_AREA_PREFIX_RANGE";
+						enum "OSPFV3_INTRA_AREA_PREFIX_RANGE";
+						enum "OSPFV3_AS_EXTERNAL_PREFIX_RANGE";
+						enum "ISIS_ROUTE_RANGE";
+					}
+				}
+				uses bgpv4-route-range-group {
+					description "The conditional container for detailed bgpv4 route range information"; 
+					when "../network-type = BGPV4_ROUTE_RANGE";
+				}
+				uses bgpv6-route-range-group {
+					description "The conditional container for detailed bgpv6 route range information"; 
+					when "../network-type = BGPV6_ROUTE_RANGE";
+				}
+				uses ospfv2-route-range-group {
+					description "The conditional container for detailed ospfv2 router LSA range information"; 
+					when "../network-type = OSPFV2_ROUTE_RANGE";
+				}
+				uses ospfv2-summary-range-group {
+					description "The conditional container for detailed ospfv2 summary LSA range information"; 
+					when "../network-type = OSPFV2_SUMMARY_RANGE";
+				}
+				uses ospfv2-external-range-group {
+					description "The conditional container for detailed ospfv2 external LSA range information"; 
+					when "../network-type = OSPFV2_EXTERNAL_RANGE";
+				}
+				uses ospfv2-nssa-range-group {
+					description "The conditional container for detailed ospfv2 NSSA LSA range information"; 
+					when "../network-type = OSPFV2_NSSA_RANGE";
+				}
+				uses ospfv3-route-range-group {
+					description "The conditional container for detailed ospfv3 router LSA range information"; 
+					when "../network-type = OSPFV3_ROUTE_RANGE";
+				}
+				uses ospfv3-inter-area-prefix-range-group {
+					description "The conditional container for detailed ospfv3 inter area prefix LSA range information"; 
+					when "../network-type = OSPFV3_INTER_AREA_PREFIX_RANGE";
+				}
+				uses ospfv3-intra-area-prefix-range-group {
+					description "The conditional container for detailed ospfv3 intra area prefix LSA range information"; 
+					when "../network-type = OSPFV3_INTRA_AREA_PREFIX_RANGE";
+				}
+				uses ospfv3-as-external-prefix-range-group {
+					description "The conditional container for detailed ospfv3 intra area prefix LSA range information"; 
+					when "../network-type = OSPFV3_AS_EXTERNAL_PREFIX_RANGE";
+				}
+				uses isis-route-range-group {
+					description "The conditional container for detailed isis routes information"; 
+					when "../network-type = ISIS_ROUTE_RANGE";
+				}
             }
         }
     }

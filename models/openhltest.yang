@@ -37,11 +37,17 @@ module openhltest {
     include openhltest-traffic-ipv6-group;
     include openhltest-traffic-tcp-group;
     include openhltest-traffic-udp-group;
+    include openhltest-traffic-gre-group;
+    include openhltest-traffic-icmp-group;
+	include openhltest-traffic-icmpv6-group;
+	include openhltest-traffic-igmp-group;
+	include openhltest-traffic-ospfv2-group;
 	
     include openhltest-statistics;
 	include openhltest-physical-port-statistics;
     include openhltest-traffic-port-statistics;
-    include openhltest-traffic-groups-statistics;
+	include openhltest-device-traffic-statistics;
+	include openhltest-detailed-traffic-statistics;
     include openhltest-bgp-statistics;
     include openhltest-ospf-statistics;
     include openhltest-isis-statistics;
@@ -50,7 +56,15 @@ module openhltest {
 	include openhltest-bgpv4-route-range;
     include openhltest-bgpv6-route-range;
     include openhltest-ospfv2-route-range;
+    include openhltest-ospfv2-summary-range;
+    include openhltest-ospfv2-external-range;
+    include openhltest-ospfv2-nssa-range;
+
     include openhltest-ospfv3-route-range;
+	include openhltest-ospfv3-inter-area-prefix-range;
+	include openhltest-ospfv3-intra-area-prefix-range;
+	include openhltest-ospfv3-as-external-prefix-range;
+
 	include openhltest-isis-route-range;
 
 	organization

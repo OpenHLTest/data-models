@@ -10,7 +10,8 @@ submodule openhltest-statistics {
 	}
 	include openhltest-physical-port-statistics;
     include openhltest-traffic-port-statistics;
-    include openhltest-traffic-groups-statistics;
+    include openhltest-device-traffic-statistics;
+	include openhltest-detailed-traffic-statistics;
     include openhltest-bgp-statistics;
     include openhltest-ospf-statistics;
     include openhltest-isis-statistics;
@@ -46,14 +47,15 @@ submodule openhltest-statistics {
 		}		
 		
 		uses physical-port-statistics-top;
-        uses traffic-port-statistics-top;
-        uses traffic-groups-statistics-top;
-        uses bgpv4-statistics;
-        uses bgpv6-statistics;
-        uses ospfv2-statistics;
-        uses ospfv3-statistics;
-        uses isis-statistics;
-        uses bfdv4-statistics;
-        uses bfdv6-statistics;
+		uses port-traffic-statistics-top;
+		uses device-traffic-statistics-top;
+		uses detailed-traffic-statistics-top;
+		uses bgpv4-statistics;
+		uses bgpv6-statistics;
+		uses ospfv2-statistics;
+		uses ospfv3-statistics;
+		uses isis-statistics;
+		uses bfdv4-statistics;
+		uses bfdv6-statistics;
 	}
 }
