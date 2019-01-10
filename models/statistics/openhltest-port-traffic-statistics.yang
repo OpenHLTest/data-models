@@ -1,4 +1,4 @@
-submodule openhltest-device-traffic-statistics {
+submodule openhltest-port-traffic-statistics {
 
     yang-version "1.1";
     belongs-to "openhltest" {
@@ -25,16 +25,16 @@ submodule openhltest-device-traffic-statistics {
     }
 
 
-    grouping device-traffic-statistics-top {
+    grouping port-traffic-statistics-top {
         description
-          "A grouping of Device Traffic statistics";
+          "A grouping of port Traffic statistics";
 
-		list device-traffic {
+		list port-traffic {
 			config false;
 			key "name";
 
             leaf name {
-                description "Device Traffic name";
+                description "Port Traffic name";
                 type t:config-list-key;
             }
             leaf tx-frames {

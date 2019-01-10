@@ -45,9 +45,9 @@ module openhltest {
 	
     include openhltest-statistics;
 	include openhltest-physical-port-statistics;
-    include openhltest-traffic-port-statistics;
+	include openhltest-port-statistics;
+    include openhltest-port-traffic-statistics;
 	include openhltest-device-traffic-statistics;
-	include openhltest-detailed-traffic-statistics;
     include openhltest-bgp-statistics;
     include openhltest-ospf-statistics;
     include openhltest-isis-statistics;
