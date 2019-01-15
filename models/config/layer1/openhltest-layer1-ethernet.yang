@@ -1,0 +1,258 @@
+submodule openhltest-layer1-ethernet {
+
+    yang-version "1.1";
+    belongs-to "openhltest" {
+		prefix "oht";
+	}
+
+	import openhltest-extensions {
+		prefix e;
+	}
+
+    organization
+      "OpenHlTest working group";
+    contact
+      "OpenHlTest working group";
+    description
+      "This submodule describes the ethernet physical layer1 settings.";
+
+    revision 2017-11-02 {
+        description
+          "Initial revision.";
+        reference
+          "0.0.1";
+    }
+
+	grouping  layer1-ethernet-common-group {
+		leaf auto-mdix {
+			e:ixia-not-supported;
+			description "";
+			type boolean;
+		}	
+		leaf auto-instrumentation {
+			e:spirent-not-supported;
+			description "";
+			type enumeration {
+				enum END_OF_FRAME;
+				enum FLOATING;
+			}
+			default FLOATING;
+		}
+		leaf collision-exponent {
+			e:ixia-not-supported;
+			type uint8 {
+				range "1..10";
+			}
+			default 10;
+		}
+		leaf custom-fec-mode {
+			e:ixia-not-supported;
+			type enumeration {
+				enum NONE;
+				enum KR_FEC;
+				enum RS_FEC;
+			}
+		}
+		leaf data-path-mode {
+			type enumeration {
+				enum NORMAL;
+				enum LOOPBACK;
+				enum LINE_MONITOR {
+					e:ixia-not-supported;
+				}
+			}
+			default NORMAL;
+		}
+		container priority-based-flow-control {
+			description "Priority-based Flow Control provides a link level flow control mechanism that can be controlled independently for each frame priority. The goal of this mechanism is to ensure zero loss under congestion in DCB networks";
+		}
+		container data-center-bridging-exchange {
+			presence "Data Center Bridging Exchange protocol is a discovery and capability exchange protocol that is used for conveying capabilities and configuration between neighbors to ensure consistent configuration across the network. This protocol leverages functionality provided by LLDP";
+		}
+		leaf flow-control {
+			description "Enables the port's MAC flow control mechanisms to listen for a directed address pause message";
+			type boolean;
+			default true;
+		}
+		leaf flow-control-directed-address {
+			e:spirent-not-supported;
+			description "The 48-bit MAC address that the port listens on for a directed pause.";
+			type string;
+			default "01 80 C2 00 00 01";
+		}
+		leaf forward-error-correction {
+			description "";
+			type boolean;
+			default true;
+		}
+		leaf ignore-link-status {
+			type boolean;
+			default false;
+		}
+		leaf internal-ppm-adjust {
+			description "";
+			type int8 {
+				range "-105..105";
+			}
+			default "0";
+		}
+		leaf mtu {
+			e:ixia-not-supported;
+			description "";
+			type uint16 {
+				range "0..16383";
+			}
+			default 1500;
+		}
+		leaf optimized-xon {
+			e:ixia-not-supported;
+			description "";
+			type enumeration {
+				enum "DISABLE";
+				enum "ENABLE";
+			}
+			default "DISABLE";
+		}
+		leaf port-setup-mode {
+			e:ixia-not-supported;
+			description "";
+			type enumeration {
+				enum PORTCONFIG_ONLY;
+				enum REGISTERS_ONLY;
+			}
+			default "PORTCONFIG_ONLY";
+		}
+		leaf rx-mode {
+			e:spirent-not-supported;
+			type enumeration {
+				enum CAPTURE;
+				enum CAPTURE_AND_MEASURE;
+				enum MEASURE;
+				enum PACKET_IMPAIRMENT;
+			}
+			default MEASURE;
+		}
+		leaf transmit-clock-source {
+			description "";
+			type enumeration {
+				enum INTERNAL;
+				enum INTERNAL_PPM_ADJ;
+				enum BITS;
+				enum LOOP;
+				enum EXTERNAL;
+			}
+			default INTERNAL;
+		}
+		leaf tx-gap-control {
+			e:spirent-not-supported;
+			type enumeration {
+				enum AVERAGE_MODE;
+				enum FIXED_MODE;
+			}
+			default AVERAGE_MODE;
+		}
+		leaf tx-mode {
+			e:spirent-not-supported;
+			type enumeration {
+				enum INTERLEAVED;
+				enum INTERLEAVED_COARSE;
+				enum PACKET_IMPAIRMENT;
+				enum SEQUENTIAL;
+				enum SEQUENTIAL_COARSE;
+			}
+			default INTERLEAVED;
+		}
+	}
+    grouping layer1-ethernet-copper-group {
+		container ethernet-copper {
+			uses layer1-ethernet-common-group;
+			leaf auto-negotiation-enabled {
+				description "If enabled allows for auto negotiation between ports for speed and duplex operation.";
+				type boolean;
+				default true;
+			}
+			leaf speed-duplex-type {
+				when "../auto-negotiation-enabled == false";
+				description "When auto negotiation is disabled a single speed and duplex type can be selected";
+				type enumeration {
+					enum 1000G;
+					enum 100M_FD;
+					enum 100M_HD;
+					enum 10M_FD;
+					enum 10M_HD;
+				}
+				default 1000G;
+			}
+			container auto-negotiation-capabilities {
+				e:spirent-not-supported;
+				description "When auto negotiation is enabled the following speeds and duplex can be advertised";
+				when "../auto-negotiation-enabled == true";
+				leaf advertise-1000g {
+					type boolean;
+					default true;
+				}
+				leaf advertise-100m-fd {
+					type boolean;
+					default true;
+				}
+				leaf advertise-100m-hd {
+					type boolean;
+					default true;
+				}
+				leaf advertise-10m-fd {
+					type boolean;
+					default true;
+				}
+				leaf advertise-10m-hd {
+					type boolean;
+					default true;
+				}
+			}
+			leaf master-slave-type {
+				when "../auto-negotiation-enabled == true";
+				description "When auto negotiation is enabled one of the master slave types can be specified";
+				type enumeration {
+					enum MASTER;
+					enum SLAVE;
+					enum FAULT {
+						e:ixia-not-supported;
+					}
+				}
+				default MASTER;
+			}
+		}
+    }
+	grouping layer1-ethernet-fiber-group {
+		container ethernet-fiber {
+			uses layer1-ethernet-common-group;
+			leaf cable-type-length {
+				e:ixia-not-supported;
+				type enumeration {
+					enum OPTICAL;
+					enum COPPER_OM_2M;
+					enum COPPER_3M;
+					enum COPPER_5M;
+					enum COPPER_7M;
+					enum COPPER_OM_1M;
+					enum COPPER_2M;
+					enum COPPER_5M_ACTIVE;
+					enum COPPER_7M_ACTIVE;
+				}
+			}
+			leaf cfp-interface {
+				e:ixia-not-supported;
+				type enumeration {
+					enum OPTICAL;
+					enum COPPER_OM_2M;
+					enum COPPER_3M;
+					enum COPPER_5M;
+					enum COPPER_7M;
+					enum COPPER_OM_1M;
+					enum COPPER_2M;
+					enum COPPER_5M_ACTIVE;
+					enum COPPER_7M_ACTIVE;
+				}					
+			}
+		}
+	}
+}

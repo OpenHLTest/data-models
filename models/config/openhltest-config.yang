@@ -1,35 +1,39 @@
 submodule openhltest-config {
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
+	yang-version "1.1";
+	belongs-to "openhltest" {
 		prefix "oht";
 	}
 
-    include openhltest-port;
-	include openhltest-protocol-group;
-	include openhltest-traffic-group;
-	
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
-    description
-      "This sub-module aggregates all top level sub-modules that are configuration related.";
+  	include openhltest-ports;
+	include openhltest-layer1-groups;
+	include openhltest-device-groups;
+	include openhltest-traffic-ports;
+	include openhltest-traffic-devices;
 
-    revision 2017-11-02 {
-        description
-          "Initial revision.";
-        reference
-          "0.0.1";
-    }
+	organization
+	  "OpenHlTest working group";
+	contact
+	  "OpenHlTest working group";
+	description
+	  "This sub-module aggregates all top level sub-modules that are configuration related.";
+
+	revision 2017-11-02 {
+		description
+		  "Initial revision.";
+		reference
+		  "0.0.1";
+	}
 
 	grouping config-top {
 		container config {
 			description 
 			"This container aggregates all other top level configuration submodules.";
 			uses port-top;
-			uses protocol-group-top;
-			uses traffic-group-top;
+			uses layer1-top;
+			uses device-group-top;
+			uses traffic-ports-top;
+			uses traffic-devices-top;
 
 			action clear {
 				description
@@ -44,6 +48,40 @@ submodule openhltest-config {
 						"Configuration data encoded as base64";
 						type binary;
 					}
+				}
+			}
+			action save-config {
+				description
+				"Save configuration in vendor specific format";
+				input {
+					leaf filename {
+						description
+						"Name of configuration file to be saved";
+						type string;
+					}
+				}
+			}
+			action arp-control {
+				description
+				"ARP control command";
+				input {
+                    leaf-list targets {
+                        description "List of 1..n abstract ports, device-groups, devices, traffic group references.";
+                        type union {
+                            type leafref {
+                                path "ports/name";
+                            }
+                            type leafref {
+                                path "device-groups/name";
+                            }
+                            type leafref {
+                                path "device-groups/devices/name";
+                            }
+                            type leafref {
+                                path "traffic-groups/name";
+                            }
+                        }
+                    }
 				}
 			}
 		}

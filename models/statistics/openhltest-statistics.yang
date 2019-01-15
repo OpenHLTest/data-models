@@ -8,7 +8,14 @@ submodule openhltest-statistics {
 	import ietf-yang-types {
 		prefix yang;
 	}
+	include openhltest-physical-port-statistics;
 	include openhltest-port-statistics;
+    include openhltest-port-traffic-statistics;
+    include openhltest-device-traffic-statistics;
+    include openhltest-bgp-statistics;
+    include openhltest-ospf-statistics;
+    include openhltest-isis-statistics;
+    include openhltest-bfd-statistics;
 
     organization
       "OpenHlTest working group";
@@ -39,14 +46,16 @@ submodule openhltest-statistics {
 			type yang:date-and-time;
 		}		
 		
-		list ports {
-			config false;
-			key "name";
-			leaf name {
-				description "An abstract test port name";
-				type string;
-			}
-			uses port-statistics-top;
-		}
+		uses physical-port-statistics-top;
+		uses port-statistics-top;
+		uses port-traffic-statistics-top;
+		uses device-traffic-statistics-top;
+		uses bgpv4-statistics;
+		uses bgpv6-statistics;
+		uses ospfv2-statistics;
+		uses ospfv3-statistics;
+		uses isis-statistics;
+		uses bfdv4-statistics;
+		uses bfdv6-statistics;
 	}
 }

@@ -18,6 +18,22 @@ module openhltest-types {
           "0.0.1";
     }
 
+	feature unresolved-type {
+		description "The type in the leaf needs to be reviewed and approved by model principals.";
+	}
+
+	typedef config-list-key {
+		description "A type that contains only alpha numeric characters suitable 
+		for use in a list leaf node designated as the key.
+		";
+		type string {
+			description "The pattern is a regex that defines a name to be used in all OpenHLTest keyed lists.
+			Use the pattern to determine if the supplied value is valid alpha numeric.
+			If the input is valid the regex should return no matches";
+			pattern "(?![a-zA-Z0-9 ])";
+		}
+	}
+
 	grouping chassis-card-port-group {
 		description
 		"Reuseable unambiguous group definition for chassis, card and port"; 

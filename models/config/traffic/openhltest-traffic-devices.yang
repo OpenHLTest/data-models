@@ -1,0 +1,177 @@
+submodule openhltest-traffic-devices {
+
+	yang-version "1.1";
+	belongs-to "openhltest" {
+		prefix "oht";
+	}
+
+	import openhltest-types {
+		prefix t;
+	}
+	import openhltest-extensions {
+		prefix e;
+	}
+
+	include openhltest-traffic-frame-options;
+	include openhltest-traffic-frame-group;
+	include openhltest-device-groups;
+
+	organization
+	  "OpenHlTest working group";
+	contact
+	  "OpenHlTest working group";
+	description
+	  "This module describes a collection of bound traffic groups and associated rpcs.";
+
+	revision 2018-02-09 {
+		description
+		  "Initial revision.";
+		reference
+		  "0.0.1";
+	}
+
+	grouping traffic-devices-top {
+		description "A grouping of traffic groups.";
+		
+		list device-traffic {
+			description "This is a collection of nodes that the server uses to generate 1..n traffic-streams.
+			The source and destinations of the device traffic group can only come from the device-groups list or its children.
+			";
+
+			key "name";
+			leaf name {
+				type t:config-list-key;
+				description "The unique name of a traffic group";
+			}
+			leaf encapsulation {
+				description "The encapsulation determines the following:
+					What frames will be generated.
+					What the traffic-streams name will be.
+				";
+				mandatory true;
+				type enumeration {
+					enum ETHERNET;
+					enum VLAN;
+					enum IPV4;
+					enum IPV6;
+				}
+			}
+			leaf-list sources {
+				description "A list of device source endpoint references.";
+				type union {
+					type leafref {
+						path "../../device-groups/name";
+					}
+					type leafref {
+						path "../../device-groups/devices/name";
+					}
+					type leafref {
+						path "../../device-groups/devices/protocols/name";
+					}
+				}
+			}
+			leaf-list destinations {
+				description "A list of device destination endpoint references.";
+				type union {
+					type leafref {
+						path "../../device-groups/name";
+					}
+					type leafref {
+						path "../../device-groups/devices/name";
+					}
+					type leafref {
+						path "../../device-groups/devices/protocols/name";
+					}
+				}
+			}
+			leaf bi-directional {
+				description "If true then traffic-streams objects will be generated from destination DEVICES to source DEVICES.";
+				type boolean;
+				default false;
+			}
+			leaf mesh-type {
+				description "If true then generated-traffic-streams objects will be generated from every destination DEVICES to every source DEVICES.";
+				type enumeration {
+					enum ONE_TO_ONE;
+					enum FULL_MESHED;
+				}
+				default "ONE_TO_ONE";
+			}
+
+			list frames {
+				key "name";
+				description "List of user defined frames. 
+				Frames that are generated as part of the traffic-streams will overwrite any user defined frame leafs 
+				that are part of the learned info due to the endpoint-type.";
+				leaf name {
+					type t:config-list-key;
+				}
+				uses traffic-frame-group-top;
+			}
+			uses traffic-frame-options-group {
+				description "Allows a user to set traffic options that will be used as a template during generation of traffic-streams.";
+			}
+
+			// list generated-streams {
+			// 	e:server-generated {
+			// 		description "The first attempt to access traffic-streams will cause the server to generate and populate the list.";
+			// 	}
+			// 	key "name";
+			// 	leaf name {
+			// 		e:server-generated;
+			// 		type t:config-list-key;
+			// 		description "The name indicates the nodes of the model that contribute to the traffic-streams.
+			// 		Server should generate names using the following pattern: 
+			// 			../traffic-group/name+../device-groups/devices/name+../ports/name 
+			// 		";
+			// 	}
+			// 	list frames {
+			// 		key "name";
+			// 		description "List of generated frames as defined by the endpoint-type.";
+			// 		leaf name {
+			// 			e:server-generated;
+			// 			type t:config-list-key;
+			// 		}
+			// 		uses traffic-frame-group-top;
+			// 	}	
+			// 	uses traffic-frame-options-group {
+			// 		description "Allows a user to customize traffic options on a per transmit port basis.";
+			// 	}		
+			// }
+		}
+
+		action traffic-control {
+			description
+			"Control one or more traffic groups.
+			An empty list signifies that all traffic will be started.";
+
+			input {
+				leaf-list traffic {
+					type union {
+						type leafref {
+							path "../../port-traffic/name";
+						}
+						type leafref {
+							path "../../device-traffic/name";
+						}
+					}
+					description "A list of traffic names";
+				}
+				leaf mode {
+					description "Specifies the action to be taken.";
+					type enumeration {
+						enum START;
+						enum STOP;
+					}
+					default "START";
+				}
+			}
+			output {
+				uses t:errata-group {
+					description "A list of traffic references that failed to start.
+					An empty list signifies that all traffic references specified in the input successfully started.";
+				}
+			}
+		}
+	}
+}
