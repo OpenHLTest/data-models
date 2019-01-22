@@ -24,18 +24,22 @@ submodule openhltest-isisv6-route-range {
     }
 	
 	grouping isisv6-route-range-group {
+		description "";
 		container isisv6-route-range {
-
+			description "";
             leaf active {
                 type boolean;
                 default "true";
+				description "":
             }
             
             container address {
+				description "";
                 uses p:ipv6-pattern-group;
             }
 
             container prefix-length {
+				description "";
 				uses p:base-pattern-group {
 					refine pattern-format {
 						default "0..32";

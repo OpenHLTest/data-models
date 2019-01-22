@@ -20,20 +20,24 @@ submodule openhltest-layer1-ten-gig {
     }
     
     grouping layer1-ten-gig-copper-group {
+		description "";
 		container ten-gig-copper {
+			description "";
 			leaf advertise-ieee {
-				description "";
 				type boolean;
 				default true;
+				description "";
 			}
 		}
     }
     grouping layer1-ten-gig-fiber-group {
+		description "";
 		container ten-gig-fiber {
+			description "";
 			leaf advertise-ieee {
-				description "";
 				type boolean;
 				default true;
+				description "";
 			}
 		}
     }

@@ -26,8 +26,9 @@ submodule openhltest-isisv4 {
     }
 
 	grouping isisv4-group {
+		description "";
 		container isisv4 {
-        
+			description "";
             container system-id {
                 description
                 "The System ID is used to identify an emulated router.";
@@ -96,6 +97,7 @@ submodule openhltest-isisv4 {
                             if the calculated checksum matches. This method provides a stronger
                             assurance that routing data originated from a router with a valid 
                             authentication key.";
+				description "";
                 container authentication-type {
                     description
                     "Type of authentication to be used";

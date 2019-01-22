@@ -25,7 +25,9 @@ submodule openhltest-bgpv4 {
     }
 
 	grouping bgpv4-group {
+		description "";
 		container bgpv4 {
+			description "";
 			uses bgp-common-group;
 
            	container dut-ipv4-address {

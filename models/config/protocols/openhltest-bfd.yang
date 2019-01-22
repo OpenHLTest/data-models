@@ -23,9 +23,9 @@ submodule openhltest-bfd {
     }
 
 	grouping bfd-common-group {
+		description "";
         container transmit-interval {
-            description
-            "Minimum interval, in milliseconds, that the emulated router desires between 
+            description "Minimum interval, in milliseconds, that the emulated router desires between 
             transmitted BFD Control packets.";
             uses p:base-pattern-group {
                 refine pattern-format {
@@ -38,8 +38,7 @@ submodule openhltest-bfd {
         }
         
         container receive-interval {
-            description
-            "Minimum interval, in milliseconds, that the emulated router desires between 
+            description "Minimum interval, in milliseconds, that the emulated router desires between 
             received BFD Control packets.";
             uses p:base-pattern-group {
                 refine pattern-format {
@@ -52,8 +51,7 @@ submodule openhltest-bfd {
         }
         
         container echo-receive-interval {
-            description
-            "Minimum interval, in milliseconds, that the emulated router desires between
+            description "Minimum interval, in milliseconds, that the emulated router desires between
             received BFD Echo packets.";
             uses p:base-pattern-group {
                 refine pattern-format {
@@ -65,8 +63,8 @@ submodule openhltest-bfd {
             }
         }
         container authentication {
-            presence
-                "Type of authentication to be used
+			presence "";
+            description "Type of authentication to be used
                 NONE   : no authentication
                 SIMPLE : The packet is authenticated by the receiving router if the password 
                          matches the authentication key that is included in the packet. 
@@ -99,15 +97,18 @@ submodule openhltest-bfd {
 	}
     
 	grouping bfdv4-group {
+		description "";
 		container bfdv4 {
+			description "";
 			uses bfd-common-group;
 		}
 	}
     
 	grouping bfdv6-group {
+		description "";
 		container bfdv6 {
+			description "";
 			uses bfd-common-group;
 		}
 	}
-    
 }

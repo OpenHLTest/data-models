@@ -5,9 +5,6 @@ submodule openhltest-layer1-groups {
 		prefix "oht";
 	}
 
-	import openhltest-extensions {
-		prefix e;
-	}
     import openhltest-types {
         prefix t;
     }
@@ -48,50 +45,70 @@ submodule openhltest-layer1-groups {
 			}	
 
 			leaf-list ports {
+				type leafref {
+					path "../../ports/name";
+				}
 				description 
 				"A list of abstract test port names. 
 				Every object in the devices and protocols lists will share the ports assigned to a device-groups object.
 				An abstract test port name cannot be assigned to more than one device-groups object.";
-				type leafref {
-					path "../../ports/name";
-				}
 			}
 
 			leaf layer1-type {
-				description "";
 				type enumeration {
-					enum ETHERNET_COPPER;
-					enum ETHERNET_FIBER;
-					enum TEN_GIG_COPPER;
-					enum TEN_GIG_FIBER;
-					enum TWENTY_FIVE_GIG;
-					enum FORTY_GIG;
-					enum FIFTY_GIG;
-					enum ONE_HUNDRED_GIG;
-					enum TWO_HUNDRED_GIG;
-					enum FOUR_HUNDRED_GIG;
+					enum ETHERNET_COPPER {
+						description "";
+					}
+					enum ETHERNET_FIBER {
+						description "";
+					}
+					enum TEN_GIG_COPPER {
+						description "";
+					}
+					enum TEN_GIG_FIBER {
+						description "";
+					}
+					enum TWENTY_FIVE_GIG {
+						description "";
+					}
+					enum FORTY_GIG {
+						description "";
+					}
+					enum FIFTY_GIG {
+						description "";
+					}
+					enum ONE_HUNDRED_GIG {
+						description "";
+					}
+					enum TWO_HUNDRED_GIG {
+						description "";
+					}
+					enum FOUR_HUNDRED_GIG {
+						description "";
+					}
 				}
 				default ETHERNET_COPPER;
+				description "";
 			}
 			uses layer1-ethernet-copper-group {
-				description "The conditional container for detailed ethernet copper layer1 settings";
 				when "../layer1-type = ETHERNET_COPPER";			
+				description "The conditional container for detailed ethernet copper layer1 settings";
 			}
 			uses layer1-ethernet-fiber-group {
-				description "The conditional container for detailed ethernet fiber layer1 settings";
 				when "../layer1-type = ETHERNET_FIBER";			
+				description "The conditional container for detailed ethernet fiber layer1 settings";
 			}
 			uses layer1-ten-gig-copper-group {
-				description "The conditional container for detailed ethernet copper layer1 settings";
 				when "../layer1-type = TEN_GIG_COPPER";			
+				description "The conditional container for detailed ethernet copper layer1 settings";
 			}
 			uses layer1-ten-gig-fiber-group {
-				description "The conditional container for detailed ethernet fiber layer1 settings";
 				when "../layer1-type = TEN_GIG_FIBER";			
+				description "The conditional container for detailed ethernet fiber layer1 settings";
 			}
 			uses layer1-twenty-five-gig-group {
-				description "The conditional container for detailed 25 gigabit layer1 settings";
 				when "../layer1-type = TWENTY_FIVE_GIG";			
+				description "The conditional container for detailed 25 gigabit layer1 settings";
 			}
 		}			
 	}

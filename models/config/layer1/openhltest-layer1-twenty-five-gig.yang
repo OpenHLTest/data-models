@@ -20,11 +20,13 @@ submodule openhltest-layer1-twenty-five-gig {
     }
     
     grouping layer1-twenty-five-gig-group {
+		description "";
 		container twenty-five-gig {
+			description "";
 			leaf advertise-ieee {
-				description "";
 				type boolean;
 				default true;
+				description "";
 			}
 		}
     }

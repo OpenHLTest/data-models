@@ -24,10 +24,11 @@ submodule openhltest-ethernet {
   	}
 
 	grouping ethernet-group {
+		description "";
 		container ethernet {
+			description "";
 			container mac {
-				description 
-				"The mac address";
+				description "The mac address";
 				uses p:mac-pattern-group;
 			}
 		}

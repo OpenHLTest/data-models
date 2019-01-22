@@ -26,9 +26,9 @@ submodule openhltest-config {
 	}
 
 	grouping config-top {
+		description "";
 		container config {
-			description 
-			"This container aggregates all other top level configuration submodules.";
+			description "This container aggregates all other top level configuration submodules.";
 			uses port-top;
 			uses layer1-top;
 			uses device-group-top;
@@ -36,51 +36,48 @@ submodule openhltest-config {
 			uses traffic-devices-top;
 
 			action clear {
-				description
-				"Clear the current configuration";
+				description	"Clear the current configuration";
 			}
 			action load {
-				description
-				"Load a vendor specific configuration";
+				description "Load a vendor specific configuration";
 				input {
 					leaf vendor-config {
-						description
-						"Configuration data encoded as base64";
 						type binary;
+						description	"Configuration data encoded as base64";
 					}
 				}
 			}
 			action save-config {
-				description
-				"Save configuration in vendor specific format";
+				description	"Save configuration in vendor specific format";
 				input {
 					leaf filename {
-						description
-						"Name of configuration file to be saved";
 						type string;
+						description	"Name of configuration file to be saved";
 					}
 				}
 			}
 			action arp-control {
-				description
-				"ARP control command";
+				description "ARP control command";
 				input {
                     leaf-list targets {
-                        description "List of 1..n abstract ports, device-groups, devices, traffic group references.";
                         type union {
                             type leafref {
-                                path "ports/name";
+                                path "../ports/name";
                             }
                             type leafref {
-                                path "device-groups/name";
+                                path "../device-groups/name";
                             }
                             type leafref {
-                                path "device-groups/devices/name";
+                                path "../device-groups/devices/name";
                             }
                             type leafref {
-                                path "traffic-groups/name";
+                                path "../port-traffic/name";
+                            }
+                            type leafref {
+                                path "../device-traffic/name";
                             }
                         }
+                        description "List of 1..n abstract ports, device-groups, devices, traffic group references.";
                     }
 				}
 			}

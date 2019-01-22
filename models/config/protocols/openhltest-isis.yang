@@ -26,11 +26,11 @@ submodule openhltest-isis {
     }
 
 	grouping isis-group {
+		description "";
 		container isis {
-        
+			description "";
             container system-id {
-                description
-                "The System ID is used to identify an emulated router.";
+                description "The System ID is used to identify an emulated router.";
                 uses p:base-pattern-group;
             }
             
@@ -99,8 +99,8 @@ submodule openhltest-isis {
                 }
 			}
             container authentication {
-                presence
-                    "Type of authentication to be used
+                presence "";
+				description "Type of authentication to be used
                     NONE   : no authentication
                     SIMPLE : The packet is authenticated by the receiving router if the password 
                              matches the authentication key that is included in the packet. 

@@ -26,29 +26,25 @@ submodule openhltest-ports {
     }
 
     grouping port-top {
-        description
-          "A grouping of abstract test ports";
+        description "A grouping of abstract test ports";
 
 		list ports {
 			key "name";
-			description
-			"A list of abstract test ports";
+			description	"A list of abstract test ports";
 
 			leaf name {
 				type t:config-list-key;
-				description
-				"The unique name of an abstract test port";
+				description	"The unique name of an abstract test port";
 			}	
 
 			leaf location {
-				description
-				"The location of the physical or virtual port that will be connected to this abstract port.
-				The value pattern must be chassis/card/port where chassis is an ipv4/ipv6 address and card/port are unsigned byte 1-255.
-				The separator between the chassis/card/port values must be a forward slash.";
-				default '';
 				type string {
 					pattern '';
 				}
+				default '';
+				description	"The location of the physical or virtual port that will be connected to this abstract port.
+				The value pattern must be chassis/card/port where chassis is an ipv4/ipv6 address and card/port are unsigned byte 1-255.
+				The separator between the chassis/card/port values must be a forward slash.";
 			}
 		}				
 	}

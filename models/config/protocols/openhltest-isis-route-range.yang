@@ -27,8 +27,9 @@ submodule openhltest-isis-route-range {
     }
 	
 	grouping isis-route-range-group {
+		description "";
 		container isis-route-range {
-
+			description "";
             container system-id {
                 description
                 "System ID.";
@@ -62,6 +63,8 @@ submodule openhltest-isis-route-range {
 			}
             list ipv4-routes {
                 key "name";
+				description "";
+
                 leaf name {
                     type t:config-list-key;
                     description
@@ -69,6 +72,7 @@ submodule openhltest-isis-route-range {
                 }
                 
                 container address {
+					description "";
                     uses p:ipv4-pattern-group {
                         refine single {
                             default "0.0.0.1";
@@ -77,6 +81,7 @@ submodule openhltest-isis-route-range {
                 }
 
                 container prefix-length {
+					description "";
                     uses p:base-pattern-group {
                         refine pattern-format {
                             default "0..32";
@@ -88,8 +93,9 @@ submodule openhltest-isis-route-range {
                 }
             }
             list ipv6-routes {
-
                 key "name";
+				description "";
+
                 leaf name {
                     type t:config-list-key;
                     description
@@ -97,10 +103,12 @@ submodule openhltest-isis-route-range {
                 }
                 
                 container address {
+					description "";
                     uses p:ipv6-pattern-group;
                 }
 
                 container prefix-length {
+					description "";
                     uses p:base-pattern-group {
                         refine pattern-format {
                             default "0..32";

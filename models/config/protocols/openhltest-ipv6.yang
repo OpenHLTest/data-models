@@ -24,14 +24,19 @@ submodule openhltest-ipv6 {
 	}
 	
 	grouping ipv6-group {
+		description "";
 		container ipv6 {
+			description "";
 			container source-address {
+				description "";
 				uses p:ipv6-pattern-group;
 			}
 			container gateway-address {
+				description "";
 				uses p:ipv6-pattern-group ;
 			}
 			container link-local-address {
+				description "";
 				uses p:ipv6-pattern-group ;
 			}
 		}

@@ -24,14 +24,18 @@ submodule openhltest-isisv4-route-range {
     }
 	
 	grouping isisv4-route-range-group {
+		description "";
 		container isisv4-route-range {
+			description "";
 
             leaf active {
                 type boolean;
                 default "true";
+				description "";
             }
             
             container address {
+				description "";
                 uses p:ipv4-pattern-group {
                     refine single {
                         default "0.0.0.1";
@@ -40,6 +44,7 @@ submodule openhltest-isisv4-route-range {
             }
 
             container prefix-length {
+				description "";
 				uses p:base-pattern-group {
 					refine pattern-format {
 						default "0..32";

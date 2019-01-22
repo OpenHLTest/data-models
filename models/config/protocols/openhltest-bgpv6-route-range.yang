@@ -25,15 +25,20 @@ submodule openhltest-bgpv6-route-range {
     }
 	
 	grouping bgpv6-route-range-group {
+		description "";
+
 		container bgpv6-route-range {
+			description "";
             
             leaf active {
                 type boolean;
                 default "true";
+				description "";
             }
             
             container address {
                 uses p:ipv6-pattern-group;
+				description "";
             }
             
             container prefix-length {
@@ -45,11 +50,10 @@ submodule openhltest-bgpv6-route-range {
 						default "64";
 					}
 				}
+				description "";
             }
         
             container as-path {
-                description
-                "Used in the AS_PATH attribute in BGP UPDATE messages.";
 				uses p:base-pattern-group {
 					refine pattern-format {
 						default "0..2147483647";
@@ -58,14 +62,14 @@ submodule openhltest-bgpv6-route-range {
 						default "1";
 					}
 				}
+                description "Used in the AS_PATH attribute in BGP UPDATE messages.";
             }
 			container next-hop-address {
-				description
-				"The next hop is the node to which packets should be sent to get them closer 
+                uses p:ipv4-pattern-group;
+				description	"The next hop is the node to which packets should be sent to get them closer 
                 to the destination. Specify the IP address of the border router that should be 
                 used as the next hop to the destinations listed in the UPDATE message. 
                 This is the mandatory NEXT_HOP path attribute in UPDATE messages.";
-                uses p:ipv4-pattern-group;
 			}
 		}
 	}

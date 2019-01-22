@@ -25,7 +25,9 @@ submodule openhltest-bgpv6 {
     }
 
 	grouping bgpv6-group {
+		description "";
 		container bgpv6 {
+			description "";
 			uses bgp-common-group;
 
             container dut-ipv6-address {

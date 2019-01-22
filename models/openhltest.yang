@@ -74,7 +74,7 @@ module openhltest {
 	description
 	"This module is the top level of the test hierarchy.";
 
-	revision 2018-01-01 {
+	revision 2019-01-19 {
 		description
 		"Initial revision.";
 		reference
@@ -87,18 +87,21 @@ module openhltest {
 		When using the RESTCONF transport the api key is submitted to the system using an http header called X-Api-Key.";
 		input {
 			leaf username {
-				mandatory true;
 				type string;
+				mandatory true;
+				description "";
 			}
 			leaf password {
-				mandatory true;
 				type string;
+				mandatory true;
+				description "";
 			}
 		}
 		output {
 			leaf api-key {
-				mandatory true;
 				type string;
+				mandatory true;
+				description "";
 			}
 		}
 	}

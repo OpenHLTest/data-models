@@ -51,20 +51,17 @@ submodule openhltest-network-groups {
         "A grouping of networks.";
 
         list network-groups {
+            key "name";
             description 
             "A list of network groups. 
             Each network group object can contain 0..n networks objects";
-            key "name";
+
             leaf name {
                 type t:config-list-key;
                 description
                 "The unique name of the network groups object.";
             }
             leaf parent-link {
-                description 
-                "Identifies which devices object or networks object is connected to this object.
-                This is used to create a netwwork groups container behind a devices or networks container.";
-                mandatory true;
                 type union {
                     type leafref {
                         path "../name";
@@ -73,31 +70,30 @@ submodule openhltest-network-groups {
                         path "../../device-groups/devices/name";
                     }
                 }
+                mandatory true;
+                description 
+                "Identifies which devices object or networks object is connected to this object.
+                This is used to create a netwwork groups container behind a devices or networks container.";
             }
 
             list networks {
+                key "name";
                 description "A list of networks.
                 Each networks object is a container for one and only one of the network types.";
                 
-                key "name";
                 leaf name {
                     type t:config-list-key;
                     description
                     "The unique name of the networks object.";
                 }
                 leaf network-count-per-port {
+                    type uint32;
+                    default "1";
                     description 
                     "The number of network devices that will be created on each
                     abstract test port specified in the port-names list.";
-                    type uint32;
-                    default "1";
                 }
                 leaf flow-link {
-                    description
-                    "Identifies which object in another container is the next hop from this networks object.
-                    The name cannot be one of the names in this networks container.
-                    An empty link indicates no flow link";
-                    mandatory true;
                     type union {
                         type leafref {
                             path "../name";
@@ -107,67 +103,94 @@ submodule openhltest-network-groups {
                         }
                         type empty;
                     }
+                    mandatory true;
+                    description
+                    "Identifies which object in another container is the next hop from this networks object.
+                    The name cannot be one of the names in this networks container.
+                    An empty link indicates no flow link";
                 }
 				leaf network-type {
-					description "Determines which detailed network container is active.";
-					mandatory true;
 					type enumeration {
-						enum "BGPV4_ROUTE_RANGE";
-						enum "BGPV6_ROUTE_RANGE";
-						enum "OSPFV2_ROUTE_RANGE";
-						enum "OSPFV2_SUMMARY_RANGE";
-						enum "OSPFV2_EXTERNAL_RANGE";
-						enum "OSPFV2_NSSA_RANGE";
-						enum "OSPFV3_ROUTE_RANGE";
-						enum "OSPFV3_INTER_AREA_PREFIX_RANGE";
-						enum "OSPFV3_INTRA_AREA_PREFIX_RANGE";
-						enum "OSPFV3_AS_EXTERNAL_PREFIX_RANGE";
-						enum "ISIS_ROUTE_RANGE";
+						enum "BGPV4_ROUTE_RANGE" {
+							description "";
+						}
+						enum "BGPV6_ROUTE_RANGE" {
+							description "";
+						}
+						enum "OSPFV2_ROUTE_RANGE" {
+							description "";
+						}
+						enum "OSPFV2_SUMMARY_RANGE" {
+							description "";
+						}
+						enum "OSPFV2_EXTERNAL_RANGE" {
+							description "";
+						}
+						enum "OSPFV2_NSSA_RANGE" {
+							description "";
+						}
+						enum "OSPFV3_ROUTE_RANGE" {
+							description "";
+						}
+						enum "OSPFV3_INTER_AREA_PREFIX_RANGE" {
+							description "";
+						}
+						enum "OSPFV3_INTRA_AREA_PREFIX_RANGE" {
+							description "";
+						}
+						enum "OSPFV3_AS_EXTERNAL_PREFIX_RANGE" {
+							description "";
+						}
+						enum "ISIS_ROUTE_RANGE" {
+							description "";
+						}
 					}
+					mandatory true;
+					description "Determines which detailed network container is active.";
 				}
 				uses bgpv4-route-range-group {
-					description "The conditional container for detailed bgpv4 route range information"; 
 					when "../network-type = BGPV4_ROUTE_RANGE";
+					description "The conditional container for detailed bgpv4 route range information"; 
 				}
 				uses bgpv6-route-range-group {
-					description "The conditional container for detailed bgpv6 route range information"; 
 					when "../network-type = BGPV6_ROUTE_RANGE";
+					description "The conditional container for detailed bgpv6 route range information"; 
 				}
 				uses ospfv2-route-range-group {
-					description "The conditional container for detailed ospfv2 router LSA range information"; 
 					when "../network-type = OSPFV2_ROUTE_RANGE";
+					description "The conditional container for detailed ospfv2 router LSA range information"; 
 				}
 				uses ospfv2-summary-range-group {
-					description "The conditional container for detailed ospfv2 summary LSA range information"; 
 					when "../network-type = OSPFV2_SUMMARY_RANGE";
+					description "The conditional container for detailed ospfv2 summary LSA range information"; 
 				}
 				uses ospfv2-external-range-group {
-					description "The conditional container for detailed ospfv2 external LSA range information"; 
 					when "../network-type = OSPFV2_EXTERNAL_RANGE";
+					description "The conditional container for detailed ospfv2 external LSA range information"; 
 				}
 				uses ospfv2-nssa-range-group {
-					description "The conditional container for detailed ospfv2 NSSA LSA range information"; 
 					when "../network-type = OSPFV2_NSSA_RANGE";
+					description "The conditional container for detailed ospfv2 NSSA LSA range information"; 
 				}
 				uses ospfv3-route-range-group {
-					description "The conditional container for detailed ospfv3 router LSA range information"; 
 					when "../network-type = OSPFV3_ROUTE_RANGE";
+					description "The conditional container for detailed ospfv3 router LSA range information"; 
 				}
 				uses ospfv3-inter-area-prefix-range-group {
-					description "The conditional container for detailed ospfv3 inter area prefix LSA range information"; 
 					when "../network-type = OSPFV3_INTER_AREA_PREFIX_RANGE";
+					description "The conditional container for detailed ospfv3 inter area prefix LSA range information"; 
 				}
 				uses ospfv3-intra-area-prefix-range-group {
-					description "The conditional container for detailed ospfv3 intra area prefix LSA range information"; 
 					when "../network-type = OSPFV3_INTRA_AREA_PREFIX_RANGE";
+					description "The conditional container for detailed ospfv3 intra area prefix LSA range information"; 
 				}
 				uses ospfv3-as-external-prefix-range-group {
-					description "The conditional container for detailed ospfv3 intra area prefix LSA range information"; 
 					when "../network-type = OSPFV3_AS_EXTERNAL_PREFIX_RANGE";
+					description "The conditional container for detailed ospfv3 intra area prefix LSA range information"; 
 				}
 				uses isis-route-range-group {
-					description "The conditional container for detailed isis routes information"; 
 					when "../network-type = ISIS_ROUTE_RANGE";
+					description "The conditional container for detailed isis routes information"; 
 				}
             }
         }
