@@ -133,10 +133,11 @@ module openhltest-patterns {
 		leaf statistic-tracking {
 			type boolean;
 			default false;
-			description "Enables statistic tracking";
+			description "Flag to identify the parent pattern container as a candidate for statistic tracking";
 		}
 	}
 	grouping hex-pattern-group {
+		description "";
 		uses base-pattern-group {
 			refine pattern-format {
 				default "[0-9a-f]+";
@@ -145,6 +146,7 @@ module openhltest-patterns {
 	}
 
 	grouping bool-pattern-group {
+		description "";
 		uses base-pattern-group {
 			refine pattern-format {
 				default '(true|false)';
@@ -152,6 +154,7 @@ module openhltest-patterns {
 		}
 	}
 	grouping int-32-pattern-group {
+		description "";
 		uses base-pattern-group {
 			refine pattern-format {
 				default '(-?(1\d{0,9}|2(0\d{8}|1[0-3]\d{7}|14[0-6]\d{6}|147[0-3]\d{5}|1474[0-7]\d{4}|14748[0-2]\d{3}|147483[0-5]\d{2}|1474836[0-3]\d|14748364[0-7])|[1-9]\d{0,8})|0|-2147483648)';
@@ -159,6 +162,7 @@ module openhltest-patterns {
 		}
 	}
 	grouping int-64-pattern-group {
+		description "";
 		uses base-pattern-group {
 			refine pattern-format {
 				default '^\d+\.?\d{0,2}$';
@@ -166,6 +170,7 @@ module openhltest-patterns {
 		}
 	}
 	grouping decimal-pattern-group {
+		description "";
 		uses base-pattern-group {
 			refine pattern-format {
 				default '^\d+\.?\d{0,2}$';
@@ -173,6 +178,7 @@ module openhltest-patterns {
 		}
 	}
 	grouping binary-pattern-group {
+		description "";
 		uses base-pattern-group {
 			refine pattern-format {
 				default '(1|0)';
@@ -180,6 +186,7 @@ module openhltest-patterns {
 		}
 	}
 	grouping ethertype-pattern-group {
+		description "";
 		uses base-pattern-group {
 			refine pattern-format {
 				default '(0x0800|0x0806|0x86DD)';
@@ -187,6 +194,7 @@ module openhltest-patterns {
 		}
 	}
 	grouping mac-pattern-group {
+		description "";
 		uses base-pattern-group {
 			refine pattern-format {
 				default '^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$';
@@ -194,6 +202,7 @@ module openhltest-patterns {
 		}
 	}
 	grouping ipv4-pattern-group {
+		description "";
 		uses base-pattern-group {
 			refine pattern-format {
 				default '^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$';
@@ -201,6 +210,7 @@ module openhltest-patterns {
 		}
 	}
 	grouping ipv6-pattern-group {
+		description "";
 		uses base-pattern-group {
 			refine pattern-format {
 				default '^(?=\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$)(?:(?:25[0-5]|[12][0-4][0-9]|1[5-9][0-9]|[1-9]?[0-9])\.?){4}$|(?=^(?:[0-9a-f]{0,4}:){2,7}[0-9a-f]{0,4}$)(?![^:]*::.+::[^:]*$)(?:(?=.*::.*)|(?=\w+:\w+:\w+:\w+:\w+:\w+:\w+:\w+))(?:(?:^|:)(?:[0-9a-f]{4}|[1-9a-f][0-9a-f]{0,3})){0,8}(?:::(?:[0-9a-f]{1,4}(?:$|:)){0,6})?$';
@@ -208,36 +218,40 @@ module openhltest-patterns {
 		}
 	}
 	grouping enum-pattern-group {
-		description
-		"An extended pattern-group that limits the number of patterns for enums.
+		description	"An extended pattern-group that limits the number of patterns for enums.
 		Modelers must refine the pattern-format default with a regex of valid enum choices.
 		e.g., 
 		refine pattern-format {
 			default '(8100|88a8|9100|9200|9300)'
-		}
-		";
+		}";
 		leaf pattern-format {
-			config false;
-			description
-			"Refine this leaf value with a regex of valid enum choices";
 			type string;
+			config false;
+			description	"Refine this leaf value with a regex of valid enum choices";
 		}
 		leaf pattern-type {
 			type enumeration {
-				enum SINGLE;
-				enum VALUE_LIST;
+				enum SINGLE {
+					description "";
+				}
+				enum VALUE_LIST {
+					description "";
+				}
 			}
-			default "SINGLE";
+			default SINGLE;
+			description "";
 		}
 		leaf single {
 			when "../pattern-type == SINGLE";
 			type string;
 			must "re-match(single, ../pattern-format)";
+			description "";
 		}		
 		leaf-list value-list {
 			when "../pattern-type == VALUE_LIST";
 			type string;
 			must "re-match(value-list, ../pattern-format)";
+			description "";
 		}
 	}
 	grouping string-pattern-group {
@@ -245,34 +259,42 @@ module openhltest-patterns {
 		"Supports the ability to specify a string pattern in addition to single values.
 		";
 		leaf pattern-format {
+			type string;
 			config false;
 			description
 			"Refine this leaf value with a regex";
-			type string;
 		}
 		leaf pattern-type {
 			type enumeration {
-				enum SINGLE;
-				enum STRING;
-				enum VALUE_LIST;
+				enum SINGLE {
+					description "";
+				}
+				enum STRING {
+					description "";
+				}
+				enum VALUE_LIST {
+					description "";
+				}
 			}
 			default "SINGLE";
+			description "";
 		}
 		leaf single {
 			when "../pattern-type == SINGLE";
 			type string;
 			must "re-match(single, ../pattern-format)";
+			description "";
 		}		
 		leaf string {
-			description
-			"Vendor specific string patterns";
 			when "../pattern-type == STRING";
 			type string;
+			description	"Vendor specific string patterns";
 		}
 		leaf-list value-list {
 			when "../pattern-type == VALUE_LIST";
 			type string;
 			must "re-match(value-list, ../pattern-format)";
+			description "";
 		}
 	}
 }
