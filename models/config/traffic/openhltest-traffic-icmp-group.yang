@@ -168,6 +168,7 @@ submodule openhltest-traffic-icmp-group {
         "A grouping of ICMP Destination unreachable group.";
 		
         container icmp-destination-unreachable {
+			description "";
             container code {
                 description
                 "ICMP Destination Unreachable code.";
@@ -199,6 +200,7 @@ submodule openhltest-traffic-icmp-group {
         "A grouping of ICMP Echo Reply group.";
 		
         container icmp-echo-reply {
+			description "";
             container code {
                 description
                 "ICMP Echo reply code.";
@@ -248,6 +250,7 @@ submodule openhltest-traffic-icmp-group {
         "A grouping of ICMP Echo Request group.";
 		
         container icmp-echo-request {
+			description "";
             container code {
                 description
                 "ICMP Echo request code.";
@@ -297,6 +300,7 @@ submodule openhltest-traffic-icmp-group {
         "A grouping of ICMP information Reply group.";
 		
         container icmp-information-reply {
+			description "";
             container code {
                 description
                 "ICMP information reply code.";
@@ -337,6 +341,7 @@ submodule openhltest-traffic-icmp-group {
         "A grouping of ICMP information request group.";
 		
         container icmp-information-request {
+			description "";
             container code {
                 description
                 "ICMP information request code.";
@@ -377,6 +382,7 @@ submodule openhltest-traffic-icmp-group {
         "A grouping of ICMP address mask reply group.";
 		
         container icmp-address-mask-reply {
+			description "";
             container code {
                 description
                 "ICMP address mask reply code.";
@@ -426,6 +432,7 @@ submodule openhltest-traffic-icmp-group {
         "A grouping of ICMP address mask request group.";
 		
         container icmp-address-mask-request {
+			description "";
             container code {
                 description
                 "ICMP address mask request code.";
@@ -475,6 +482,7 @@ submodule openhltest-traffic-icmp-group {
         "A grouping of ICMP Parameter problem group.";
 		
         container icmp-parameter-problem {
+			description "";
             container code {
                 description
                 "ICMP Destination Parameter problem code.";
@@ -511,6 +519,7 @@ submodule openhltest-traffic-icmp-group {
         "A grouping of ICMP Redirect group.";
 		
         container icmp-redirect {
+			description "";
             container code {
                 description
                 "ICMP Redirect code.";
@@ -542,6 +551,7 @@ submodule openhltest-traffic-icmp-group {
         "A grouping of ICMP Router Advertisement group.";
 		
         container icmp-router-advertisement {
+			description "";
             container code {
                 description
                 "ICMP Router Advertisement code.";
@@ -585,9 +595,10 @@ submodule openhltest-traffic-icmp-group {
             }
             list icmp-router-address {
                 key "name";
+				description "";
                 leaf name {
-                    description "Name";
                     type string;
+                    description "Name";
                 }
                 container router-address {
                     description "Router Address";
@@ -610,6 +621,7 @@ submodule openhltest-traffic-icmp-group {
         "A grouping of ICMP Router Solicitation group.";
 		
         container icmp-router-solicitation {
+			description "";
             container code {
                 description
                 "ICMP Router Solicitation code.";
@@ -641,6 +653,7 @@ submodule openhltest-traffic-icmp-group {
         "A grouping of ICMP Source Quench group.";
 		
         container icmp-source-quench {
+			description "";
             container code {
                 description
                 "ICMP Source Quench code.";
@@ -673,6 +686,7 @@ submodule openhltest-traffic-icmp-group {
         "A grouping of ICMP Time exceeded group.";
 		
         container icmp-time-exceeded {
+			description "";
             container code {
                 description
                 "ICMP Time exceeded code.";
@@ -708,6 +722,7 @@ submodule openhltest-traffic-icmp-group {
         "A grouping of ICMP Timestamp reply group.";
 		
         container icmp-timestamp-reply {
+			description "";
             container code {
                 description
                 "ICMP Timestamp reply code.";
@@ -775,6 +790,7 @@ submodule openhltest-traffic-icmp-group {
         "A grouping of ICMP Timestamp request group.";
 		
         container icmp-timestamp-request {
+			description "";
             container code {
                 description
                 "ICMP Timestamp request code.";

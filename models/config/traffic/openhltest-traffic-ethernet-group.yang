@@ -29,23 +29,18 @@ submodule openhltest-traffic-ethernet-group {
         "The ethernet traffic group.";
 		
         container ethernet {
+			description "";
 			container destination {
 				presence "Create the destination container to override the automatic destination mac address";
+				description "Destination mac address";
 				uses p:mac-pattern-group;
-				leaf count {
-					type int32;
-				}
-				leaf use-streams {
-					type boolean;
-					default false;
-				}
+				uses p:traffic-pattern-extension;
 			}
 			container source {
 				presence "Create the source container to override the automatic source mac address";
+				description "Source mac address";
 				uses p:mac-pattern-group;
-				leaf count {
-					type int32;
-				}
+				uses p:traffic-pattern-extension;
 			}
             container ethernet-type {
 				presence "Create the ethernet-type container to override the automatic default type value.";
@@ -56,8 +51,8 @@ submodule openhltest-traffic-ethernet-group {
                         default "88B5";
                     }
                 }
+				uses p:traffic-pattern-extension;
             }
         }
     }
-
 }

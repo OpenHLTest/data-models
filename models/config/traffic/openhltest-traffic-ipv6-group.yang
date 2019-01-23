@@ -31,6 +31,7 @@ submodule openhltest-traffic-ipv6-group {
 		 A traffic group is a collection of traffic streams and flows.";
 		
         container ipv6 {
+			description "";
             container source-address {
                 description
                 "Specifies the source IPv6 address of the first generated packet.";

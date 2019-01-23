@@ -27,11 +27,13 @@ submodule openhltest-ospfv3-route-range {
     }
 	
 	grouping ospfv3-route-range-group {
+		description "";
 		container ospfv3-route-range {
-
+			description "";
             leaf active {
                 type boolean;
                 default "true";
+				description "";
             }
             
             container advertise-router-id {
@@ -80,6 +82,8 @@ submodule openhltest-ospfv3-route-range {
             
             list ospfv3-router-link {
                 key "name";
+				description "";
+				
                 leaf name {
                     type t:config-list-key;
                     description

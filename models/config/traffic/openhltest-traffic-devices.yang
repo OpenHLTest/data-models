@@ -8,9 +8,6 @@ submodule openhltest-traffic-devices {
 	import openhltest-types {
 		prefix t;
 	}
-	import openhltest-extensions {
-		prefix e;
-	}
 
 	include openhltest-traffic-frame-options;
 	include openhltest-traffic-frame-group;
@@ -34,30 +31,37 @@ submodule openhltest-traffic-devices {
 		description "A grouping of traffic groups.";
 		
 		list device-traffic {
+			key "name";
 			description "This is a collection of nodes that the server uses to generate 1..n traffic-streams.
 			The source and destinations of the device traffic group can only come from the device-groups list or its children.
 			";
 
-			key "name";
 			leaf name {
 				type t:config-list-key;
 				description "The unique name of a traffic group";
 			}
 			leaf encapsulation {
+				type enumeration {
+					enum ETHERNET {
+						description "";
+					}
+					enum VLAN {
+						description "";
+					}
+					enum IPV4 {
+						description "";
+					}
+					enum IPV6 {
+						description "";
+					}
+				}
+				mandatory true;
 				description "The encapsulation determines the following:
 					What frames will be generated.
 					What the traffic-streams name will be.
 				";
-				mandatory true;
-				type enumeration {
-					enum ETHERNET;
-					enum VLAN;
-					enum IPV4;
-					enum IPV6;
-				}
 			}
 			leaf-list sources {
-				description "A list of device source endpoint references.";
 				type union {
 					type leafref {
 						path "../../device-groups/name";
@@ -69,9 +73,9 @@ submodule openhltest-traffic-devices {
 						path "../../device-groups/devices/protocols/name";
 					}
 				}
+				description "A list of device source endpoint references.";
 			}
 			leaf-list destinations {
-				description "A list of device destination endpoint references.";
 				type union {
 					type leafref {
 						path "../../device-groups/name";
@@ -83,19 +87,24 @@ submodule openhltest-traffic-devices {
 						path "../../device-groups/devices/protocols/name";
 					}
 				}
+				description "A list of device destination endpoint references.";
 			}
 			leaf bi-directional {
-				description "If true then traffic-streams objects will be generated from destination DEVICES to source DEVICES.";
 				type boolean;
 				default false;
+				description "If true then traffic-streams objects will be generated from destination DEVICES to source DEVICES.";
 			}
 			leaf mesh-type {
-				description "If true then generated-traffic-streams objects will be generated from every destination DEVICES to every source DEVICES.";
 				type enumeration {
-					enum ONE_TO_ONE;
-					enum FULL_MESHED;
+					enum ONE_TO_ONE {
+						description "";
+					}
+					enum FULL_MESHED {
+						description "";
+					}
 				}
 				default "ONE_TO_ONE";
+				description "If true then generated-traffic-streams objects will be generated from every destination DEVICES to every source DEVICES.";
 			}
 
 			list frames {
@@ -105,39 +114,13 @@ submodule openhltest-traffic-devices {
 				that are part of the learned info due to the endpoint-type.";
 				leaf name {
 					type t:config-list-key;
+					description "";
 				}
 				uses traffic-frame-group-top;
 			}
 			uses traffic-frame-options-group {
 				description "Allows a user to set traffic options that will be used as a template during generation of traffic-streams.";
 			}
-
-			// list generated-streams {
-			// 	e:server-generated {
-			// 		description "The first attempt to access traffic-streams will cause the server to generate and populate the list.";
-			// 	}
-			// 	key "name";
-			// 	leaf name {
-			// 		e:server-generated;
-			// 		type t:config-list-key;
-			// 		description "The name indicates the nodes of the model that contribute to the traffic-streams.
-			// 		Server should generate names using the following pattern: 
-			// 			../traffic-group/name+../device-groups/devices/name+../ports/name 
-			// 		";
-			// 	}
-			// 	list frames {
-			// 		key "name";
-			// 		description "List of generated frames as defined by the endpoint-type.";
-			// 		leaf name {
-			// 			e:server-generated;
-			// 			type t:config-list-key;
-			// 		}
-			// 		uses traffic-frame-group-top;
-			// 	}	
-			// 	uses traffic-frame-options-group {
-			// 		description "Allows a user to customize traffic options on a per transmit port basis.";
-			// 	}		
-			// }
 		}
 
 		action traffic-control {
@@ -158,12 +141,16 @@ submodule openhltest-traffic-devices {
 					description "A list of traffic names";
 				}
 				leaf mode {
-					description "Specifies the action to be taken.";
 					type enumeration {
-						enum START;
-						enum STOP;
+						enum START {
+							description "";
+						}
+						enum STOP {
+							description "";
+						}
 					}
 					default "START";
+					description "Specifies the action to be taken.";
 				}
 			}
 			output {

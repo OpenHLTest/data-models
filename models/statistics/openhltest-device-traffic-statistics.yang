@@ -30,57 +30,50 @@ submodule openhltest-device-traffic-statistics {
           "A grouping of Device Traffic statistics";
 
 		list device-traffic {
-			config false;
 			key "name";
+			description "";
 
             leaf name {
-                description "Device Traffic name";
                 type t:config-list-key;
+                description "Device Traffic name";
             }
             leaf tx-frames {
-                config false;
                 type uint64;
                 description
                     "The total number of frames transmitted on the port.
                     Empty if the abstract port is not connected to a test port.";
             }
             leaf rx-frames {
-                config false;
                 type uint64;
                 description
                     "The total number of frames received on the the port.
                     Empty if the abstract port is not connected to a test port.";
             }
             leaf tx-frame-rate {
-                config false;
                 type uint64;
                 description
                     "Total number of frames transmitted over the last 1-second interval.
                     Empty if the abstract port is not connected to a test port.";
             }
             leaf rx-frame-rate {
-                config false;
                 type uint64;
                 description
                     "Total number of frames received over the last 1-second interval.
                     Empty if the abstract port is not connected to a test port.";
             }
             leaf dropped-frames {
-                config false;
                 type uint64;
                 description
                     "Total Number of dropped frames during transit.
                     Empty if the abstract port is not connected to a test port.";
             }
             leaf tx-bit-count {
-                config false;
                 type uint64;
                 description
                     "The total number of bits transmitted on the port.
                     Empty if the abstract port is not connected to a test port.";
             }
             leaf rx-bit-count {
-                config false;
                 type uint64;
                 description
                     "The total number of bits received on the the port.
@@ -88,43 +81,36 @@ submodule openhltest-device-traffic-statistics {
             }
             
             leaf tx-bit-rate {
-                config false;
                 type uint64;
                 description
                     "Total number of bits transmitted over the last 1-second interval.
                     Empty if the abstract port is not connected to a test port.";
             }
             leaf rx-bit-rate {
-                config false;
                 type uint64;
                 description
                     "Total number of bits received over the last 1-second interval.
                     Empty if the abstract port is not connected to a test port.";
             }
             leaf tx-byte-count {
-                config false;
                 type uint64;
                 description
                     "The total number of bytes transmitted on the port.
                     Empty if the abstract port is not connected to a test port.";
             }
             leaf rx-byte-count {
-                config false;
                 type uint64;
                 description
                     "The total number of bytes received on the the port.
                     Empty if the abstract port is not connected to a test port.";
-            }
-            
+            }           
             leaf tx-byte-rate {
-                config false;
                 type uint64;
                 description
                     "Total number of bytes transmitted over the last 1-second interval.
                     Empty if the abstract port is not connected to a test port.";
             }
             leaf rx-byte-rate {
-                config false;
                 type uint64;
                 description
                     "Total number of bytes received over the last 1-second interval.
@@ -132,54 +118,49 @@ submodule openhltest-device-traffic-statistics {
             }
             list ports {
                 key "name";
+				description "";
+				
                 leaf name {
-                    description "Port Streams name";
                     type t:config-list-key;
+                    description "Port Streams name";
                 }
                 leaf tx-frames {
-                    config false;
                     type uint64;
                     description
                         "The total number of frames transmitted on the port.
                         Empty if the abstract port is not connected to a test port.";
                 }
                 leaf rx-frames {
-                    config false;
                     type uint64;
                     description
                         "The total number of frames received on the the port.
                         Empty if the abstract port is not connected to a test port.";
                 }
                 leaf tx-frame-rate {
-                    config false;
                     type uint64;
                     description
                         "Total number of frames transmitted over the last 1-second interval.
                         Empty if the abstract port is not connected to a test port.";
                 }
                 leaf rx-frame-rate {
-                    config false;
                     type uint64;
                     description
                         "Total number of frames received over the last 1-second interval.
                         Empty if the abstract port is not connected to a test port.";
                 }
                 leaf dropped-frames {
-                    config false;
                     type uint64;
                     description
                         "Total Number of dropped frames during transit.
                         Empty if the abstract port is not connected to a test port.";
                 }
                 leaf tx-bit-count {
-                    config false;
                     type uint64;
                     description
                         "The total number of bits transmitted on the port.
                         Empty if the abstract port is not connected to a test port.";
                 }
                 leaf rx-bit-count {
-                    config false;
                     type uint64;
                     description
                         "The total number of bits received on the the port.
@@ -187,28 +168,24 @@ submodule openhltest-device-traffic-statistics {
                 }
                 
                 leaf tx-bit-rate {
-                    config false;
                     type uint64;
                     description
                         "Total number of bits transmitted over the last 1-second interval.
                         Empty if the abstract port is not connected to a test port.";
                 }
                 leaf rx-bit-rate {
-                    config false;
                     type uint64;
                     description
                         "Total number of bits received over the last 1-second interval.
                         Empty if the abstract port is not connected to a test port.";
                 }
                 leaf tx-byte-count {
-                    config false;
                     type uint64;
                     description
                         "The total number of bytes transmitted on the port.
                         Empty if the abstract port is not connected to a test port.";
                 }
                 leaf rx-byte-count {
-                    config false;
                     type uint64;
                     description
                         "The total number of bytes received on the the port.
@@ -216,14 +193,12 @@ submodule openhltest-device-traffic-statistics {
                 }
                 
                 leaf tx-byte-rate {
-                    config false;
                     type uint64;
                     description
                         "Total number of bytes transmitted over the last 1-second interval.
                         Empty if the abstract port is not connected to a test port.";
                 }
                 leaf rx-byte-rate {
-                    config false;
                     type uint64;
                     description
                         "Total number of bytes received over the last 1-second interval.

@@ -24,8 +24,9 @@ submodule openhltest-ospfv3-as-external-prefix-range {
     }
 	
 	grouping ospfv3-as-external-prefix-range-group {
+		description "";
 		container ospfv3-as-external-prefix-range {
-
+			description "";
             container address {
                 description
                 "IPv6 address";
@@ -163,6 +164,7 @@ submodule openhltest-ospfv3-as-external-prefix-range {
 				}
             }
             container extended-lsa {
+				description "";
                 container extended-lsa-tlvs {
                     description
                     "Include extended LSA tlvs.
@@ -203,6 +205,7 @@ submodule openhltest-ospfv3-as-external-prefix-range {
                 }
             }
             container referenced-lsa {
+				description "";
                 container type {
                     description
                     "Type of the referenced LSA.";

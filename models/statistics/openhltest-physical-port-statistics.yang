@@ -5,10 +5,6 @@ submodule openhltest-physical-port-statistics {
 		prefix "oht";
 	}
 
-    import openhltest-types {
-        prefix t;
-    }
-
     organization
       "OpenHlTest working group";
     contact
@@ -29,22 +25,21 @@ submodule openhltest-physical-port-statistics {
           "A grouping of port statistics";
 
 		list physical-port {
-			config false;
 			key "port-name";
+			description "";
+
 			leaf port-name {
+				type string;
 				description "An abstract test port name";
-				type t:config-list-key;
 			}
           
             leaf connected-test-port-id {
-                config false;
                 type string;
                 description
                 "The id of the connected test port. 
                 Empty if the abstract port is not connected to a test port.";
             }
             leaf connected-test-port-description {
-                config false;
                 type string;
                 description
                   "Free form vendor specific description of the connected test port.
@@ -52,20 +47,28 @@ submodule openhltest-physical-port-statistics {
                   Empty if the abstract port is not connected to a test port.";
             }
             leaf connection-state {
-                config false;
                 type enumeration {
-                    enum CONNECTING;
-                    enum CONNECTED_LINK_UP;
-                    enum CONNECTED_LINK_DOWN;
-                    enum DISCONNECTING;
-                    enum DISCONNECTED;
+                    enum CONNECTING {
+						description "";
+					}
+                    enum CONNECTED_LINK_UP {
+						description "";
+					}
+                    enum CONNECTED_LINK_DOWN {
+						description "";
+					}
+                    enum DISCONNECTING {
+						description "";
+					}
+                    enum DISCONNECTED {
+						description "";
+					}
                 }
                 description
                   "The state of the connection to the physical hardware 
                    test port or virtual machine test port";
             }
             leaf connection-state-details {
-                config false;
                 type string;
                 description
                   "Free form vendor specific information about the state of the connection to
@@ -73,7 +76,6 @@ submodule openhltest-physical-port-statistics {
                    Empty if the abstract port is not connected to a test port.";
             }
             leaf speed {
-                config false;
                 type string;
                 description
                   "The actual speed of the test port.

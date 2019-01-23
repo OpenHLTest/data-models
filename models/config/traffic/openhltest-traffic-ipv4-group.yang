@@ -30,6 +30,7 @@ submodule openhltest-traffic-ipv4-group {
 		 A traffic group is a collection of traffic streams and flows.";
 		
         container ipv4 {
+			description "";
             container source-address {
                 description
                 "Source IPv4 Address";

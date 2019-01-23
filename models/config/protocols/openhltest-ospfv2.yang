@@ -26,8 +26,9 @@ submodule openhltest-ospfv2 {
     }
 
 	grouping ospfv2-group {
+		description "";
 		container ospfv2 {
-        
+			description "";
             container router-id {
                 description
                 "Router ID.";
@@ -106,6 +107,7 @@ submodule openhltest-ospfv2 {
                             if the calculated checksum matches. This method provides a stronger
                             assurance that routing data originated from a router with a valid 
                             authentication key.";
+				description "";
                 container authentication-type {
                     description
                     "Type of authentication to be used";

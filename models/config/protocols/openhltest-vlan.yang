@@ -24,7 +24,11 @@ submodule openhltest-vlan {
     }
 	
 	grouping vlan-group {
+		description "";
+		
 		container vlan {
+			description "";
+
 			container tpid {
 				description "Tag Protocol Identifier";
 				uses p:enum-pattern-group {

@@ -24,8 +24,9 @@ submodule openhltest-ospfv3-inter-area-prefix-range {
     }
 	
 	grouping ospfv3-inter-area-prefix-range-group {
+		description "";
 		container ospfv3-inter-area-prefix-range {
-
+			description "";
             container address {
                 description
                 "IPv6 address";

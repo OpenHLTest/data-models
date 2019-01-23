@@ -5,9 +5,6 @@ submodule openhltest-traffic-vlan-group {
 		prefix "oht";
 	}
 
-    import openhltest-types {
-        prefix t;
-    }
     import openhltest-patterns {
 		prefix p;
 	}
@@ -28,13 +25,12 @@ submodule openhltest-traffic-vlan-group {
     }
 
     grouping traffic-vlan-group-top {
-        description
-        "A grouping of traffic groups.
-		 A traffic group is a collection of traffic streams and flows.";
+        description "The traffic vlan frame group";
 		
         container vlan {
+			description "";
 			container priority {
-				if-feature t:unresolved-type;
+				description "";
 				uses p:base-pattern-group {
 					refine pattern-format {
 						default "0..7";
@@ -45,9 +41,7 @@ submodule openhltest-traffic-vlan-group {
 				}
 			}
 			container id {
-				if-feature t:unresolved-type;
-				description
-					"A single-tagged VLAN id";  		
+				description	"A single-tagged VLAN id";  		
                 uses p:base-pattern-group {
                     refine pattern-format {
                         default "1..4095";

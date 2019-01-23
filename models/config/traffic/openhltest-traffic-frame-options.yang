@@ -8,41 +8,71 @@ submodule openhltest-traffic-frame-options {
 	import openhltest-types {
 		prefix t;
 	}
-	import openhltest-patterns {
-		prefix p;
-	}
+
+    organization
+      "OpenHlTest working group";
+    contact
+      "OpenHlTest working group";
+    description "";
+
+    revision 2018-02-09 {
+        description
+          "Initial revision.";
+        reference
+          "0.0.1";
+    }
 
 	grouping traffic-frame-options-group {
+		description "";
 		container frame-length {
+			description "";
 			leaf length-type {
 				type enumeration {
-					enum FIXED;
-					enum INCREMENTAL;
-					enum RANDOM;
-					enum AUTO;
-					enum IMIX;
-					enum CUSTOM_IMIX;
-					enum QUAD_GAUSSIAN;
+					enum FIXED {
+						description "";
+					}
+					enum INCREMENTAL {
+						description "";
+					}
+					enum RANDOM {
+						description "";
+					}
+					enum AUTO {
+						description "";
+					}
+					enum IMIX {
+						description "";
+					}
+					enum CUSTOM_IMIX {
+						description "";
+					}
+					enum QUAD_GAUSSIAN {
+						description "";
+					}
 				}
+				description "";
 			}
 			leaf fixed {
 				when "../length-type = FIXED";
-				description	"Fixed value for frame length";
 				type int32;
 				default "64";
+				description	"Fixed value for frame length";
 			}
 			container random {
 				when "../length-type = RANDOM";
 				description "Random frame size options";
 				leaf max {
 					type int32;
+					description "";
 				}
 				leaf min {
 					type int32;
+					description "";
 				}
 			}
 			container increment {
 				when "../length-type = INCREMENT";
+				description "";
 				leaf from {
 					type int32;
 					default 64;
@@ -63,45 +93,73 @@ submodule openhltest-traffic-frame-options {
 			leaf imix {
 				when "../length-type = IMIX";
 				type enumeration {
-					enum CISCO;
-					enum IMIX;
-					enum IPSEC_IMIX;
-					enum IPV6_IMIX;
-					enum RPR_QUAR;
-					enum RPR_TRI;
-					enum STANDARD_IMIX;
-					enum TCP_IMIX;
-					enum TOLLY;
+					enum CISCO {
+						description "";
+					}
+					enum IMIX {
+						description "";
+					}
+					enum IPSEC_IMIX {
+						description "";
+					}
+					enum IPV6_IMIX {
+						description "";
+					}
+					enum RPR_QUAR {
+						description "";
+					}
+					enum RPR_TRI {
+						description "";
+					}
+					enum STANDARD_IMIX {
+						description "";
+					}
+					enum TCP_IMIX {
+						description "";
+					}
+					enum TOLLY {
+						description "";
+					}
 				}
 				default "CISCO";
+				description "";
 			}
 			list custom-imix {
 				when "../length-type = CUSTOM_IMIX";
 				key "name";
+				description "";
 				leaf "name" {
 					type t:config-list-key;
+					description "";
 				} 
 				leaf size {
 					type int32;
+					description "";
 				}
 				leaf weight {
 					type int32;
+					description "";
 				}
 			}
 			list quad-gaussian {
 				when "../length-type = QUAD_GAUSSIAN";
 				key "name";
+				description "";
 				leaf name {
 					type t:config-list-key;
+					description "";
 				}
 				leaf center {
 					type int32;
+					description "";
 				}
 				leaf width-at-half {
 					type int32;
+					description "";
 				}
 				leaf weight {
 					type int32;
+					description "";
 				}
 			}
 		}
@@ -111,35 +169,47 @@ submodule openhltest-traffic-frame-options {
 			i.e., 100% line rate / 10 vendor generated streams = 10% line rate per stream";
 
 			leaf rate-type {
-				description	"Type of rate unit.";
 				type enumeration {
-					enum BPS;
-					enum KBPS;
-					enum MPBS;
-					enum FRAMES_PER_SECOND;
-					enum INTER_PACKET_GAP;
-					enum PERCENT_LINE_RATE;
+					enum BPS {
+						description "";
+					}
+					enum KBPS {
+						description "";
+					}
+					enum MPBS {
+						description "";
+					}
+					enum FRAMES_PER_SECOND {
+						description "";
+					}
+					enum INTER_PACKET_GAP {
+						description "";
+					}
+					enum PERCENT_LINE_RATE {
+						description "";
+					}
 				}
+				description	"Type of rate unit.";
 			}
 			leaf bps {
 				when "../rate-type = BPS";
-				default 1024000;
 				type uint64;
+				default 1024000;
 				description	"Bits per second.";
 			}
 			leaf frames-per-second {
 				when "../rate-type = FRAMES_PER_SECOND";
-				default 10;
 				type uint32;
+				default 10;
 				description "Number of frames per second";
 			}
 			leaf percent-line-rate {
 				when "../rate-type = PERCENT_LINE_RATE";
-				default 10;
 				type decimal64 {
 					fraction-digits 2;
 					range "0..100";
 				}
+				default 10;
 				description "Percentage of line rate";
 			}
 		}

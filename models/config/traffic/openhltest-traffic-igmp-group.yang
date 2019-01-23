@@ -266,9 +266,11 @@ submodule openhltest-traffic-igmp-group {
                 }
             }
             list source-address-list {
-                key "name";
+                key "name"; 
+				description "";
                 leaf name {
                     type t:config-list-key;
+					description "";
                 }
                 container address {
                     description

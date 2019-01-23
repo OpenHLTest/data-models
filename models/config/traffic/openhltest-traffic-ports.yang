@@ -8,9 +8,6 @@ submodule openhltest-traffic-ports {
 	import openhltest-types {
 		prefix t;
 	}
-	import openhltest-extensions {
-		prefix e;
-	}
 
 	include openhltest-traffic-frame-options;
 	include openhltest-traffic-frame-group;
@@ -34,47 +31,40 @@ submodule openhltest-traffic-ports {
 		description "A reuseable group of port based traffic streams";
 		
 		list port-traffic {
+			key "name";
 			description "A list of traffic streams where each traffic stream 
 			has a single transmit port as its source and a list of user defined frames.";
 			
-			key "name";
 			leaf name {
-				description "The unique name of this traffic stream";
 				type t:config-list-key;
+				description "The unique name of this traffic stream";
 			}
 			leaf source {
-				description "The transmit port of this traffic stream";
-				mandatory true;
 				type leafref {
 					path "../../ports/name";
 				}
+				mandatory true;
+				description "The transmit port of this traffic stream";
 			}
 			leaf-list destinations {
+				type leafref {
+					path "../../ports/name";
+				}
 				description "The intended receive ports for this traffic stream.
 				Any empty list means that any port can receive these frames.
 				For a non-empty list, any frame received by a port that is not in the list will be counted as stray.";
-				type leafref {
-					path "../../ports/name";
-				}
 			}	
 			list frames {
+				key "name";
 				description "List of user defined frames.
 				The order of frames in the list will be the order of frames on the wire";
-				key "name";
 				leaf name {
 					type t:config-list-key;
+					description "";
 				}
 				uses traffic-frame-group-top;
 			}
 			uses traffic-frame-options-group;
 		}
 	}
-
-	// action port-frame-rate {
-	// 	description "Port based frame rate, overrides individual rates set in the port-traffic model, changes the model.";
-	// 	input {
-	// 		leaf-list ports;
-	// 		uses traffic-frame-rate;
-	// 	}
-	// }
 }

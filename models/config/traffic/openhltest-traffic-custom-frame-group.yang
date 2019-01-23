@@ -8,9 +8,6 @@ submodule openhltest-traffic-custom-frame-group {
 	import ietf-yang-types {
 		prefix iyt;
 	}
-    import openhltest-patterns {
-		prefix p;
-	}
     
     organization
       "OpenHlTest working group";
@@ -28,33 +25,55 @@ submodule openhltest-traffic-custom-frame-group {
     }
 
     grouping traffic-custom-frame-group-top {
+		description "";
 		container custom {
+			description "";
 			leaf payload-type {
 				type enumeration {
-					enum INCREMENT_BYTE;
-					enum DECREMENT_BYTE;
-					enum INCREMENT_WORD;
-					enum DECREMENT_WORD;
-					enum CRPAT;
-					enum CJPAT;
-					enum RANDOM;
-					enum CUSTOM;
+					enum INCREMENT_BYTE {
+						description "";
+					}
+					enum DECREMENT_BYTE {
+						description "";
+					}
+					enum INCREMENT_WORD {
+						description "";
+					}
+					enum DECREMENT_WORD {
+						description "";
+					}
+					enum CRPAT {
+						description "";
+					}
+					enum CJPAT {
+						description "";
+					}
+					enum RANDOM {
+						description "";
+					}
+					enum CUSTOM {
+						description "";
+					}
 				}
+				description "";
 			}
 			container payload {
+				description "";
 				leaf data {
 					when "../payload-type = CUSTOM";
 					type iyt:hex-string;
 					default "00";
+					description "";
 				}
 				leaf repeat {
-					description "Repeat the payload data to fill the length specified";
 					type boolean;
 					default "false";
+					description "Repeat the payload data to fill the length specified";
 				}
 				leaf length {
 					type int32;
 					default 0;
+					description "";
 				}
 			}
 		} 

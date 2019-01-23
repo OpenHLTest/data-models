@@ -26,14 +26,14 @@ submodule openhltest-bfd-statistics {
           "A grouping of common BFD statistics";
           
         leaf tx-count {
-            config false;
             type uint64;
+            config false;
             description
               "Number of BFD packets sent on this router.";
         }
         leaf rx-count {
-            config false;
             type uint64;
+            config false;
             description
               "Number of BFD packets received on this router.";
         }
@@ -42,17 +42,20 @@ submodule openhltest-bfd-statistics {
     grouping bfdv4-statistics {
         description
         "A grouping of bfd V4 statistics";
+
         list bfdv4-statistics {
 			key "device-name";
+			config false;
+			description "";
+
 			leaf device-name {
-				description "Device Name";
 				type string;
+				description "Device Name";
 			}
 			leaf port-name {
-				description "An abstract test port name";
 				type string;
+				description "An abstract test port name";
 			}
-			config false;
             
             uses bfd-statistics;
         }
@@ -61,20 +64,22 @@ submodule openhltest-bfd-statistics {
     grouping bfdv6-statistics {
         description
         "A grouping of bfd v6 statistics";
+
         list bfdv6-statistics {
 			key "device-name";
+			config false;
+			description "";
+
 			leaf device-name {
-				description "Device name";
 				type string;
+				description "Device name";
 			}
 			leaf port-name {
-				description "An abstract test port name";
 				type string;
+				description "An abstract test port name";
 			}
-			config false;
             
             uses bfd-statistics;
         }
     }
-    
 }

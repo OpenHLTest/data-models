@@ -24,8 +24,9 @@ submodule openhltest-ospfv3-intra-area-prefix-range {
     }
 	
 	grouping ospfv3-intra-area-prefix-range-group {
+		description "";
 		container ospfv3-intra-area-prefix-range {
-
+			description "";
             container address {
                 description
                 "IPv6 address";
@@ -151,6 +152,7 @@ submodule openhltest-ospfv3-intra-area-prefix-range {
             }
 
             container referenced-lsa {
+				description "";
                 container type {
                     description
                     "Type of the referenced LSA.";

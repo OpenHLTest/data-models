@@ -123,6 +123,7 @@ submodule openhltest-traffic-icmpv6-group {
         "A grouping of ICMPv6 Destination unreachable group.";
 		
         container icmpv6-destination-unreachable {
+			description "";
             container code {
                 description
                 "ICMPv6 Destination Unreachable code.
@@ -160,6 +161,7 @@ submodule openhltest-traffic-icmpv6-group {
         "A grouping of ICMPv6 Echo Reply group.";
 		
         container icmpv6-echo-reply {
+			description "";
             container code {
                 description
                 "ICMPv6 Echo reply code.";
@@ -211,6 +213,7 @@ submodule openhltest-traffic-icmpv6-group {
         "A grouping of ICMPv6 Echo Request group.";
 		
         container icmpv6-echo-request {
+			description "";
             container code {
                 description
                 "ICMPv6 Echo request code.";
@@ -262,6 +265,7 @@ submodule openhltest-traffic-icmpv6-group {
         "A grouping of ICMPv6 Parameter problem group.";
 		
         container icmpv6-parameter-problem {
+			description "";
             container code {
                 description
                 "ICMPv6 Destination Parameter problem code.
@@ -298,6 +302,7 @@ submodule openhltest-traffic-icmpv6-group {
         "A grouping of ICMPv6 Time exceeded group.";
 		
         container icmpv6-time-exceeded {
+			description "";
             container code {
                 description
                 "ICMPv6 Time exceeded code.
@@ -337,6 +342,7 @@ submodule openhltest-traffic-icmpv6-group {
         "A grouping of ICMPv6 Packet Too Big message.";
 		
         container icmpv6-packet-too-big {
+			description "";
             container code {
                 description
                 "ICMPv6 Packet too big.";

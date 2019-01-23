@@ -5,9 +5,6 @@ submodule openhltest-statistics {
 		prefix "oht";
 	}
 
-	import ietf-yang-types {
-		prefix yang;
-	}
 	include openhltest-physical-port-statistics;
 	include openhltest-port-statistics;
     include openhltest-port-traffic-statistics;
@@ -35,15 +32,15 @@ submodule openhltest-statistics {
     }
 
 	grouping statistics-top {
+		description "";
+
 		leaf first-activity-timestamp {
-			config false;
+			type string;
 			description "Timestamp of the first request to this session.";
-			type yang:date-and-time;
 		}
 		leaf last-activity-timestamp {
-			config false;
+			type string;
 			description "Timestamp of the last request to this session";
-			type yang:date-and-time;
 		}		
 		
 		uses physical-port-statistics-top;

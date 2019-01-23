@@ -26,8 +26,10 @@ submodule openhltest-ospfv3 {
     }
 
 	grouping ospfv3-group {
+		description "";
 		container ospfv3 {
-        
+			description "";
+			
             container router-id {
                 description
                 "Router ID.";

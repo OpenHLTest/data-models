@@ -31,6 +31,7 @@ submodule openhltest-traffic-ospfv2-group {
         "This module describes a collection OSPFv2 message type formats.";
         
         container ospfv2-hello {
+			description "";
             container designated-router-address {
                 description
                 "Designated Router Address";
@@ -229,8 +230,10 @@ submodule openhltest-traffic-ospfv2-group {
             }
             list neighbors {
                 key "name";
+				description "";
                 leaf name {
                     type t:config-list-key;
+					description "";
                 }
                 container neighbors-id {
                     description

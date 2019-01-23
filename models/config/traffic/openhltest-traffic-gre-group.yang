@@ -29,6 +29,7 @@ submodule openhltest-traffic-gre-group {
         "Generic Routing Encapsulation(GRE) header";
 
         container gre {
+			description "";
             container checksum-bit {
                 description
                 "Checksum bit.";
