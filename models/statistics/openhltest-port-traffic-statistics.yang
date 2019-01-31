@@ -25,13 +25,17 @@ submodule openhltest-port-traffic-statistics {
           "A grouping of port Traffic statistics";
 
 		list port-traffic {
-			key "name";
+			key "name tracking";
 			description "";
 
             leaf name {
 				type string;
                 description "Port Traffic name";
             }
+			leaf-list tracking {
+				type string;
+				description "Traffic Statistic-tracking leaf containers - mac.destination, mac.source";
+			}
             leaf tx-frames {
                 type uint64;
                 description
