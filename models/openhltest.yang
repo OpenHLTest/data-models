@@ -7,12 +7,17 @@ module openhltest {
 	include openhltest-sessions;
 	include openhltest-config;
 	include openhltest-ports;
+
+	include openhltest-global-protocol-config;
+	include openhltest-global-config-dhcpv4;
+
+
 	include openhltest-layer1-groups;
 	include openhltest-layer1-ethernet;
 	include openhltest-layer1-ten-gig;
 	include openhltest-layer1-twenty-five-gig;
 	include openhltest-device-groups;
-	include openhltest-network-groups;
+	include openhltest-simulated-networks;
 	include openhltest-ethernet;
 	include openhltest-vlan;
 	include openhltest-ipv4;

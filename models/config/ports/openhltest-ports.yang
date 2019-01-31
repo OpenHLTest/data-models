@@ -47,5 +47,46 @@ submodule openhltest-ports {
 				The separator between the chassis/card/port values must be a forward slash.";
 			}
 		}				
+
+		action port-control {
+			description
+			"Connect and release physical hardware test ports and/or 
+			virtual machine test ports";
+
+			input {
+				list port-map {
+					key "port-name";
+					description "Note, valid for CONNECT mode";
+					leaf port-name {
+						type t:config-list-key;
+						description "The name of an abstract test port";
+					}
+				}
+				leaf-list port-names {
+					type t:config-list-key;
+					description "A list of abstract test port names. Names can also be regex. 
+											Note, valid for DISCONNECT mode";
+				}
+				leaf mode {
+					type enumeration {
+            enum CONNECT {
+							description "Connect abstract test ports to physical hardware test ports and/or 
+													virtual machine test ports";
+						}
+            enum DISCONNECT {
+							description "Disconnect abstract test ports from any connected
+													physical hardware test ports and/or virtual machine test ports";
+						}
+          }
+          default "CONNECT";
+					description "Specifies the action to be taken.";
+				}
+			}
+			output {
+				uses t:errata-group {
+					description "A list of ports that failed to connect/disconnect.";
+				}
+			}
+		}
 	}
 }

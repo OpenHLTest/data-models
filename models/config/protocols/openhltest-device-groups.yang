@@ -19,12 +19,7 @@ submodule openhltest-device-groups {
 	include openhltest-ospfv2;
 	include openhltest-ospfv3;
 	include openhltest-isis;
-	include openhltest-network-groups;
-	include openhltest-bgpv4-route-range;
-	include openhltest-bgpv6-route-range;
-    include openhltest-ospfv2-route-range;
-    include openhltest-ospfv3-route-range;
-	include openhltest-isis-route-range;
+	include openhltest-simulated-networks;
     
 	organization
 	"OpenHlTest working group";
@@ -88,7 +83,7 @@ submodule openhltest-device-groups {
 							path "../name";
 						}
 						type leafref {
-							path "../../network-groups/name";
+							path "../../simulated-networks/name";
 						}
 						type empty;
 					}
@@ -127,7 +122,7 @@ submodule openhltest-device-groups {
 								path "../name";
 							}
 							type leafref {
-								path "../../network-groups/name";
+								path "../../simulated-networks/name";
 							}
 							type empty;
 						}
@@ -223,7 +218,7 @@ submodule openhltest-device-groups {
 				}
 			}
 
-			uses network-group-top;
+			uses simulated-networks-top;
 		}
 
 		action device-groups-control {
