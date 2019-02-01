@@ -32,7 +32,7 @@ submodule openhltest-port-traffic-statistics {
 				type string;
                 description "Port Traffic name";
             }
-			leaf-list tracking {
+			leaf tracking {
 				type string;
 				description "Traffic Statistic-tracking leaf containers - mac.destination, mac.source";
 			}
