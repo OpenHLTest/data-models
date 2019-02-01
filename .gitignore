@@ -3,3 +3,4 @@
 build
 dist
 openhltest.egg-info
+data-models/doc-browser/node_modules

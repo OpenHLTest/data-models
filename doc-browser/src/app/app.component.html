@@ -1,0 +1,47 @@
+<div class="app">
+	<div class='title-bar'>
+		<div class="app-name">OpenHLTest</div>
+		<div class="library-name">Documentation</div>
+	</div>
+	<div class='tab-control'>
+		<span class='tab-content' [ngClass]="{ selected: CurrentTab == TabTypes.overview }" (click)='CurrentTab = TabTypes.overview'>Overview</span>
+		<span class='tab-separator'>|</span>
+		<span class='tab-content' [ngClass]="{ selected: CurrentTab == TabTypes.license }" (click)='CurrentTab = TabTypes.license'>License</span>
+		<span class='tab-separator'>|</span>
+		<span class='tab-content' [ngClass]="{ selected: CurrentTab == TabTypes.apireference }" (click)='CurrentTab = TabTypes.apireference'>Model
+			Reference</span> </div>
+	<div class="content" id='content'>
+		<div *ngIf='CurrentTab == TabTypes.overview'>
+			<div class="title">OpenHLTest Overview</div>
+			<div class="summary">Content should come from the github README?</div>
+			<div class="summary">This will be generated everytime there is a checkin to the master branch.</div>
+			<div class="summary">This app will be hosted on the github openhltest site?</div>
+			<div class="summary">Should contain a link to pypi site to get python client?</div>
+		</div>
+		<reference-component *ngIf='CurrentTab == TabTypes.apireference'></reference-component>
+		<div *ngIf='CurrentTab == TabTypes.license'>
+			<div class="title">MIT LICENSE</div>
+			<pre class="summary">
+Copyright (c) 2017 OpenHLTest
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+			</pre>
+		</div>
+	</div>
+</div>

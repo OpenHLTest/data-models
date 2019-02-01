@@ -1,0 +1,144 @@
+@import '../../styles.scss';
+
+.header {
+	font: $medium-font;
+	padding-bottom: 20px;
+}
+.modules {
+	width:100%; 
+}
+.hierarchy-item {
+	float: left;
+	margin-top: 5px;
+	font: $tiny-font;
+}
+.hierarchy-item-link {
+	float: left;
+	margin-top: 5px;
+	cursor: pointer;
+	font: $tiny-font;
+	color: $link-color;
+}
+.hierarchy-item-separator {
+	float: left;
+	margin: 5px 5px 0px 5px;
+	cursor: pointer;
+	font: $tiny-font;
+	color: rgb(127,127,127);
+}
+.documentation {
+	width: 100%;
+	overflow-y: auto;
+	height: calc(100% - 60px);
+}
+.property-table {
+	border-collapse: collapse;
+	margin-top: 20px;
+	font: $tiny-font;
+	min-width: 50%;
+	max-width: 90%;
+}
+.details_lable_column {
+	border: 1px solid #ddd;
+	padding: 8px;
+	background-color: rgb(240,240,240);
+	font-weight: bold;
+}
+.details_value_column {
+	border: 1px solid #ddd;
+	padding: 8px;
+}
+.prefix {
+	float: left;
+	font: $property-font;
+	color: rgb(127,127,127);
+}
+.signature {
+	font: $property-font;
+	font-weight: bold;
+}
+.summary {
+	max-width: 1000px;
+	font: $tiny-font;
+}
+.code {
+	padding: 20px;
+	margin: 10px 100px 0px 0px;
+	background-color: #e9e9e9;
+	border: 1pt solid #dbdbdb;
+	border-radius: 4px;
+	font-family: monospace;
+	white-space: pre-line;
+}
+.property {
+	font: $tiny-font;
+	color: rgb(127,127,127);
+}
+.sub-header {
+	margin-top: 10px;
+	padding-left: 50px;
+	font: $tiny-font-bold;
+}
+.arg-item {
+	font: $tiny-font;
+}
+.return {
+	background-color: antiquewhite;
+}
+.return-header {
+	padding-top: 20px;
+	padding-left: 50px;
+	font: $tiny-font-bold;
+}
+.return-item {
+	font: $tiny-font;
+}
+.return-link {
+	cursor: pointer;
+	font: $tiny-font;
+	color: $link-color;
+}
+.search-results-window {
+	width: 90%;
+	height: 90%;
+	position: absolute;
+	top: 50;
+	left: 0;
+	z-index: 9999;
+	background-color: lightgrey;
+	overflow: auto;
+}
+.search-result {
+	font: $tiny-font;
+}
+.close-search {
+	float: right;
+	font: $small-font;
+	color: $link-color;
+	cursor: pointer;
+}
+.item-link {
+	color: #1e73be;
+	font: $smaller-font;
+    cursor: pointer;
+}
+
+.item-prefix {
+	font: $smaller-font;
+	color: rgb(127,127,127);
+}
+
+.reference-table {
+	width: calc(100% - 100px);
+	height: 100%;
+	padding-top: 30px;
+}
+
+.placeholder-text {
+	font: $smaller-font;
+	color: rgb(127,127,127);
+}
+
+
+
+

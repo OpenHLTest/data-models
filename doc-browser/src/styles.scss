@@ -1,0 +1,87 @@
+@import '~angular-tree-component/dist/angular-tree-component.css';
+
+/* You can add global styles to this file, and also import other style files */
+$app-background-color: white;
+$app-background-color1: white;
+// $app-header-background: white;
+$app-header-background: rgb(43,43,43);
+// $app-header-background: #919191;
+
+$app-header-color: whitesmoke;
+
+$widget-container-background: white;
+$widget-border-color: lightgray;
+$flyout-panel-color: rgb(245,248,248);
+
+$ok-bk-color: green;
+$error-bk-color: red;
+$warning-bk-color: yellow;
+
+$document-bk-color: white;
+$secondary-bk-color: black;
+$secondary-color: gray;
+$secondary-highlight-color: darkgray;
+
+$app-text-color: rgb(74,74,74);
+$darker-app-text-color: lightgray;
+$large-font: bold 35px consolas;
+$medium-font: normal 28px arial;
+$property-font: normal 20px arial;
+$small-font: normal 18px arial;
+$small-font-bold: bold 18px consolas;
+$smaller-font: normal 16px arial;
+$tiny-font: normal 14px arial;
+$tiny-font-italic: italic 14px consolas;
+$tiny-font-bold: bold 14px consolas;
+$very-tiny-font: normal 12px consolas;
+$header-font: 24px consolas;
+
+$small-font-fixed: normal 16px 'Courier New' monospace;
+$font-title: normal 1.5em "open_sansregular";	
+
+
+$darker-background-color: rgb(27,27,27);;
+$darker-highlight-background-color: rgb(42, 41, 41);
+$darker-text-color: rgb(85, 85, 85);
+$link-color: rgb(0, 90, 230);
+$attribute-name: black;
+
+html, body {
+	height: 100%;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+.fixed-table {
+
+	.column {
+		height: 100%; 
+		vertical-align: top;
+	}
+	.scrolling-outer-container {
+		display: inline-block;
+		width:100%;
+		height:100%;
+		position:relative;
+	}
+	.scrolling-inner-container {
+		position:absolute; 
+		width: 100%; 
+		height: 100%;
+		overflow-y: auto;
+	}
+	.slim {
+		width: 30%;
+	}
+	.slimmer {
+		width: 20%;
+	}
+	.border-right {
+		border-right: 1px solid lightgray;
+	}
+	.padding-left {
+		padding-left: 20px;
+	}
+}
+

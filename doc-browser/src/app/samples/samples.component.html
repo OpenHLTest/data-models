@@ -1,0 +1,25 @@
+<table class="fixed-table samples-table">
+    <tr>
+        <td class="column" width="320px">
+            <div class="scrolling-outer-container">
+                <div class="scrolling-inner-container">
+                    <div class="title">Samples</div>
+                    <li class="summary" *ngFor='let sample of Samples' (click)='onSampleSelect($event, sample)'>{{sample.file}}</li>
+                </div>
+            </div>
+        </td>
+        <td class="column">
+            <div class="scrolling-outer-container">
+                <div class="scrolling-inner-container">
+                    <br/>
+                    <div class="sample-title">{{SelectedSample}}</div>
+                    <br/>
+                    <div class="sample-container">
+                        <app-codeviewer [text]="SelectedContent"></app-codeviewer>
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+

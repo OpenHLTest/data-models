@@ -1,0 +1,76 @@
+@import '../styles.scss';
+
+.title-bar
+{
+	font: normal 24px arial;
+	padding: 10px 0px 10px 100px;
+
+	.app-name {
+		color: rgb(127,127,127);
+		width: 300px;
+		float: left;
+	}
+	.library-name {
+		color: black;
+		display: inline-block;
+	}
+}
+
+.app {
+	height: 100%;
+	width: 100%;
+}
+
+.content {
+	padding: 30px 0px 0px 100px;
+	height: calc(100% - 130px);
+	overflow: auto;
+
+	.title {
+		font: normal 24px arial;
+		padding: 20px 0px 10px 0px;
+	}
+
+	.summary {
+		font: normal 14px arial;
+		padding: 5px 0px 0px 0px;
+	}
+
+	.details {
+		font: normal 12px arial;
+		padding-bottom: 10px;
+	}
+
+	.sample-title {
+		font: normal 14px arial;
+		padding: 5px 0px 0px 0px;
+	}
+
+	.sample-container {
+		margin-top: 10px;
+		height: 230px;
+		width: calc(100% - 50px);
+		border:1px solid lightgray;
+	}
+}
+
+.tab-control {
+	font: normal 14px arial;
+	background-color: rgb(69, 88, 196);
+	color: white;
+	padding: 15px 0px 15px 80px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+	.tab-content {
+		cursor: pointer;
+		padding: 0px 20px 0px 20px;	
+		&.selected {
+			color: black;
+		}
+	}
+	.tab-separator {
+	}
+	.tab-select {
+		border-bottom: 2px solid white;
+	}
+}

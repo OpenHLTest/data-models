@@ -1,0 +1,84 @@
+<table style="width: 100%">
+	<tr>
+		<td>
+			<div class="modules">
+				<div class="hierarchy-item">Model Hierarchy</div>
+			</div>
+		</td>
+		<td width="250">
+			<!-- <div>
+				<input type="text" class="form-control" [(ngModel)]="searchValue">
+				<button type="submit" class="btn btn-success" (click)='onSearch($event)'>Search</button>
+				<div class='search-results-window' *ngIf='showResults'>
+					<div>
+						<span class='close-search' (click)='onCloseSearchResults($event)'>Close</span>
+					</div>
+					<br>
+					<div class='search-result' *ngFor='let result of results'>
+						<div class='return-item' (click)="onClick($event, result.Key)">{{result.Class}}</div>
+						<div class='summary'>{{result.Summary}}</div>
+					</div>
+				</div>
+			</div> -->
+		</td>
+	</tr>
+</table>
+<br>
+<div class="documentation">
+	<table class='fixed-table reference-table'>
+		<tr>
+			<td class="column border-right slim">
+				<div class="scrolling-outer-container">
+					<div class="scrolling-inner-container">
+						<tree-root #tree [focused]="true" [nodes]="nodes" [options]="options" (activate)="onActivate($event)"></tree-root>
+					</div>
+				</div>
+			</td>
+			<td class="column padding-left">
+				<div class="scrolling-outer-container">
+					<div class="scrolling-inner-container">
+						<div class='signature'>{{yangName}}</div>
+						<table class="property-table">
+							<tr>
+								<td class="details_lable_column" width="100">Yang Path</td>
+								<td class="details_value_column">{{yangPath}}</td>
+							</tr>
+							<tr>
+								<td class="details_lable_column" width="100">Yang Keyword</td>
+								<td class="details_value_column">{{yangKeyword}}</td>
+							</tr>
+							<tr *ngIf="yangKeyword == 'list'">
+								<td class="details_lable_column" width="100">Yang List Key</td>
+								<td class="details_value_column">{{yangListKey}}</td>
+							</tr>
+							<tr *ngIf="yangType">
+								<td class="details_lable_column" width="100">Type</td>
+								<td class="details_value_column">{{yangType}}</td>
+							</tr>
+							<tr>
+								<td class="details_lable_column" width="100">Description</td>
+								<td class="details_value_column">{{yangDescription}}</td>
+							</tr>
+							<tr>
+								<td class="details_lable_column" width="100">GET</td>
+								<td class="details_value_column">{{restGet}}</td>
+							</tr>
+							<tr *ngIf="yangWriteable">
+								<td class="details_lable_column" width="100">PATCH</td>
+								<td class="details_value_column">{{restPatch}}</td>
+							</tr>
+							<tr *ngIf="yangKeyword == 'list'">
+								<td class="details_lable_column" width="100">POST</td>
+								<td class="details_value_column">{{restPost}}</td>
+							</tr>
+							<tr *ngIf="yangKeyword == 'list'">
+								<td class="details_lable_column" width="100">DELETE</td>
+								<td class="details_value_column">{{restDelete}}</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
