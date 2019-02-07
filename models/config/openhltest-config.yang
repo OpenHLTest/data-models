@@ -5,10 +5,20 @@ submodule openhltest-config {
 		prefix "oht";
 	}
 
+	import openhltest-types {
+		prefix t;
+	}
+
   	include openhltest-ports;
 	include openhltest-global-protocol-config;
 	include openhltest-layer1-groups;
 	include openhltest-device-groups;
+	include openhltest-bgpv4;
+	include openhltest-bgpv6;
+	include openhltest-ospfv2;
+	include openhltest-ospfv3;
+	include openhltest-isis;
+    include openhltest-bfd;
 	include openhltest-traffic-ports;
 	include openhltest-traffic-devices;
 
@@ -37,6 +47,39 @@ submodule openhltest-config {
 			uses traffic-ports-top;
 			uses traffic-devices-top;
 
+			action port-control {
+				description
+				"Control one or more physical hardware test ports and/or 
+				virtual machine test ports";
+
+				input {
+					leaf-list targets {
+						type leafref {
+							path "../../ports/name";
+						}
+						description "A list of abstract test port references";
+					}
+					leaf mode {
+						type enumeration {
+							enum CONNECT {
+								description "Connect abstract test ports to physical hardware test ports and/or 
+								virtual machine test ports";
+							}
+							enum DISCONNECT {
+								description "Disconnect abstract test ports from any connected
+								physical hardware test ports and/or virtual machine test ports";
+							}
+						}
+						default "CONNECT";
+						description "Specifies the port control action to be taken.";
+					}
+				}
+				output {
+					uses t:errata-group {
+						description "A list of abstract test ports that failed the supplied input mode.";
+					}
+				}
+			}
 			action clear {
 				description	"Clear the current configuration";
 			}
@@ -64,23 +107,369 @@ submodule openhltest-config {
                     leaf-list targets {
                         type union {
                             type leafref {
-                                path "../ports/name";
+                                path "../../ports/name";
                             }
                             type leafref {
-                                path "../device-groups/name";
+                                path "../../device-groups/name";
                             }
                             type leafref {
-                                path "../device-groups/devices/name";
+                                path "../../device-groups/devices/name";
                             }
                             type leafref {
-                                path "../port-traffic/name";
+                                path "../../port-traffic/name";
                             }
                             type leafref {
-                                path "../device-traffic/name";
+                                path "../../device-traffic/name";
                             }
                         }
                         description "List of 1..n abstract ports, device-groups, devices, traffic group references.";
                     }
+				}
+			}
+			action traffic-control {
+				description
+				"Control one or more traffic groups.
+				An empty list signifies that all traffic will be started.";
+
+				input {
+					leaf-list targets {
+						type union {
+							type leafref {
+								path "../../port-traffic/name";
+							}
+							type leafref {
+								path "../../device-traffic/name";
+							}
+						}
+						description "A list of traffic names";
+					}
+					leaf mode {
+						type enumeration {
+							enum START {
+								description "";
+							}
+							enum STOP {
+								description "";
+							}
+						}
+						default "START";
+						description "Specifies the action to be taken.";
+					}
+				}
+				output {
+					uses t:errata-group {
+						description "A list of traffic references that failed to start.
+						An empty list signifies that all traffic references specified in the input successfully started.";
+					}
+				}
+			}
+			action device-groups-control {
+				description
+				"Control one or more device-groups.
+				An empty list signifies that all device-groups will be subject to the mode specified.";
+
+				input {
+					leaf-list targets {
+						type leafref {
+							path "../../device-groups/name";
+						}
+						description "A list of protocol group names";
+					}
+					leaf mode {
+						type t:start-stop-enum;
+						default "START";
+						description "Specifies the action to be taken.";
+					}
+				}
+				output {
+					uses t:errata-group {
+						description "A list of device-groups resources that failed to start.
+						An empty list signifies that all protocol groups successfully started.";
+					}
+				}
+			}
+			action bgpv4-control {
+				description
+				"Start one or more emulated BGPV4 protocol groups.
+				An empty list signifies that all BGPV4 protocol groups will be started.";
+
+				input {
+					leaf-list targets {
+						type leafref {
+							path "../../device-groups/devices/protocols/name";
+						}
+						must "../../device-groups/devices/protocols/protocol-type = BGPV4";
+						description "A list of BGPV4 protocol references";
+					}
+					leaf mode {
+						type enumeration {
+							enum START {
+								description "";
+							}
+							enum STOP {
+								description "";
+							}
+							enum LINK_FLAP {
+								description "";
+							}
+							enum RESTART {
+								description "";
+							}
+							enum ADVERTISE {
+								description "";
+							}
+							enum WITHDRAW {
+								description "";
+							}
+						}
+						default "START";
+						description "Specifies the action to be taken.";
+					}
+				}
+				output {
+					uses t:errata-group {
+						description "A list of bgpv4 resources that failed the requested mode.";
+					}
+				}
+			}
+			action bgpv6-control {
+				description
+				"Start one or more emulated BGPV6 protocol groups.
+				An empty list signifies that all BGPV6 protocol groups will be started.";
+
+				input {
+					leaf-list targets {
+						type leafref {
+							path "../../device-groups/devices/protocols/name";
+						}
+						must "../../device-groups/devices/protocols/protocol-type = BGPV6";
+						description "A list of BGPV6 protocol references";
+					}
+					leaf mode {
+						type enumeration {
+							enum START {
+								description "";
+							}
+							enum STOP {
+								description "";
+							}
+							enum LINK_FLAP {
+								description "";
+							}
+							enum RESTART {
+								description "";
+							}
+							enum ADVERTISE {
+								description "";
+							}
+							enum WITHDRAW {
+								description "";
+							}
+						}
+						default "START";
+						description "Specifies the action to be taken.";
+					}
+				}
+				output {
+					uses t:errata-group {
+						description "A list of protocol group resources that failed to start.
+						An empty list signifies that all protocol groups successfully started.";
+					}
+				}
+			}
+			action ospfv2-control {
+				description
+				"Start one or more emulated OSPFV2 protocol groups.
+				An empty list signifies that all OSPFV2 protocol groups will be started.";
+
+				input {
+					leaf-list targets {
+						type leafref {
+							path "../../device-groups/devices/protocols/name";
+						}
+						must "../../device-groups/devices/protocols/protocol-type = OSPFV2";
+						description "A list of OSPFV2 protocol references";
+					}
+					leaf mode {
+						type enumeration {
+							enum START {
+								description "";
+							}
+							enum STOP {
+								description "";
+							}
+							enum LINK_FLAP {
+								description "";
+							}
+							enum RESTART {
+								description "";
+							}
+							enum ADVERTISE {
+								description "";
+							}
+							enum WITHDRAW {
+								description "";
+							}
+						}
+						default "START";
+						description "Specifies the action to be taken.";
+					}
+				}
+				output {
+					uses t:errata-group {
+						description "A list of protocol group resources that failed to start.
+						An empty list signifies that all protocol groups successfully started.";
+					}
+				}
+			}
+			action ospfv3-control {
+				description
+				"Start one or more emulated OSPFV3 protocol groups.
+				An empty list signifies that all OSPFV3 protocol groups will be started.";
+
+				input {
+					leaf-list targets {
+						type leafref {
+							path "../../device-groups/devices/protocols/name";
+						}
+						must "../../device-groups/devices/protocols/protocol-type = OSPFV3";
+						description "A list of OSPFV3 protocol references";
+					}
+					leaf mode {
+						type enumeration {
+							enum START {
+								description "";
+							}
+							enum STOP {
+								description "";
+							}
+							enum LINK_FLAP {
+								description "";
+							}
+							enum RESTART {
+								description "";
+							}
+							enum ADVERTISE {
+								description "";
+							}
+							enum WITHDRAW {
+								description "";
+							}
+						}
+						default "START";
+						description "Specifies the action to be taken.";
+					}
+				}
+				output {
+					uses t:errata-group {
+						description "A list of protocol group resources that failed to start.
+						An empty list signifies that all protocol groups successfully started.";
+					}
+				}
+			}
+			action isis-control {
+				description
+				"Start one or more emulated ISIS protocol groups.
+				An empty list signifies that all ISIS protocol groups will be started.";
+
+				input {
+					leaf-list targets {
+						type leafref {
+							path "../../device-groups/devices/protocols/name";
+						}
+						must "../../device-groups/devices/protocols/protocol-type = ISIS";
+						description "A list of ISIS protocol references";
+					}
+					leaf mode {
+						type enumeration {
+							enum START {
+								description "";
+							}
+							enum STOP {
+								description "";
+							}
+							enum LINK_FLAP {
+								description "";
+							}
+							enum RESTART {
+								description "";
+							}
+						}
+						default "START";
+						description "Specifies the action to be taken.";
+					}
+				}
+				output {
+					uses t:errata-group {
+						description "A list of protocol group resources that failed to start.
+						An empty list signifies that all protocol groups successfully started.";
+					}
+				}
+			}
+			action bfdv4-control {
+				description
+				"Start one or more emulated BFD v4 protocol groups.
+				An empty list signifies that all BFD v4 protocol groups will be started.";
+
+				input {
+					leaf-list targets {
+						type leafref {
+							path "../../device-groups/devices/protocols/name";
+						}
+						must "../../device-groups/devices/protocols/protocol-type = BFDV4";
+						description "A list of BFDV4 protocol references";
+					}
+					leaf mode {
+						type enumeration {
+							enum START {
+								description "";
+							}
+							enum STOP {
+								description "";
+							}
+						}
+						default "START";
+						description "Specifies the action to be taken.";
+					}
+				}
+				output {
+					uses t:errata-group {
+						description "A list of protocol group resources that failed to start.
+						An empty list signifies that all protocol groups successfully started.";
+					}
+				}
+			}
+			action bfdv6-control {
+				description
+				"Start one or more emulated BFD v6 protocol groups.
+				An empty list signifies that all BFD v6 protocol groups will be started.";
+
+				input {
+					leaf-list targets {
+						type leafref {
+							path "../../device-groups/devices/protocols/name";
+						}
+						must "../../device-groups/devices/protocols/protocol-type = BFDV6";
+						description "A list of BFDV6 protocol references";
+					}
+					leaf mode {
+						type enumeration {
+							enum START {
+								description "";
+							}
+							enum STOP {
+								description "";
+							}
+						}
+						default "START";
+						description "Specifies the action to be taken.";
+					}
+				}
+				output {
+					uses t:errata-group {
+						description "A list of protocol group resources that failed to start.
+						An empty list signifies that all protocol groups successfully started.";
+					}
 				}
 			}
 		}

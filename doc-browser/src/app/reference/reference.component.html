@@ -2,7 +2,7 @@
 	<tr>
 		<td>
 			<div class="modules">
-				<div class="hierarchy-item">Model Hierarchy</div>
+				<div class="signature">Model Hierarchy</div>
 			</div>
 		</td>
 		<td width="250">
@@ -37,45 +37,110 @@
 			<td class="column padding-left">
 				<div class="scrolling-outer-container">
 					<div class="scrolling-inner-container">
-						<div class='signature'>{{yangName}}</div>
+						<div class='signature'>{{YangName}} {{YangKeyword}}</div>
 						<table class="property-table">
 							<tr>
-								<td class="details_lable_column" width="100">Yang Path</td>
-								<td class="details_value_column">{{yangPath}}</td>
-							</tr>
-							<tr>
-								<td class="details_lable_column" width="100">Yang Keyword</td>
-								<td class="details_value_column">{{yangKeyword}}</td>
-							</tr>
-							<tr *ngIf="yangKeyword == 'list'">
-								<td class="details_lable_column" width="100">Yang List Key</td>
-								<td class="details_value_column">{{yangListKey}}</td>
-							</tr>
-							<tr *ngIf="yangType">
-								<td class="details_lable_column" width="100">Type</td>
-								<td class="details_value_column">{{yangType}}</td>
-							</tr>
-							<tr>
 								<td class="details_lable_column" width="100">Description</td>
-								<td class="details_value_column">{{yangDescription}}</td>
+								<td class="details_value_column">{{YangDescription}}</td>
 							</tr>
 							<tr>
-								<td class="details_lable_column" width="100">GET</td>
-								<td class="details_value_column">{{restGet}}</td>
+								<td class="details_lable_column" width="100">Path</td>
+								<td class="details_value_column">{{YangPath}}</td>
 							</tr>
-							<tr *ngIf="yangWriteable">
-								<td class="details_lable_column" width="100">PATCH</td>
-								<td class="details_value_column">{{restPatch}}</td>
+							<tr *ngIf="YangConstraint">
+								<td class="details_lable_column" width="100">Constraint</td>
+								<td class="details_value_column">{{YangConstraint}}</td>
 							</tr>
-							<tr *ngIf="yangKeyword == 'list'">
-								<td class="details_lable_column" width="100">POST</td>
-								<td class="details_value_column">{{restPost}}</td>
+							<tr *ngIf="YangListKey">
+								<td class="details_lable_column" width="100">List Key</td>
+								<td class="details_value_column">{{YangListKey}}</td>
 							</tr>
-							<tr *ngIf="yangKeyword == 'list'">
-								<td class="details_lable_column" width="100">DELETE</td>
-								<td class="details_value_column">{{restDelete}}</td>
+							<tr *ngIf="YangType">
+								<td class="details_lable_column" width="100">Type</td>
+								<td class="details_value_column">
+									{{YangType}}
+									<div *ngIf="YangEnums">
+										<br>
+										<ul>
+											<li *ngFor="let yangEnum of YangEnums">
+												{{yangEnum.name}} - {{yangEnum.description}}
+											</li>
+										</ul>
+									</div>
+									<div *ngIf="YangLeafRefPaths">
+										<br>
+										<ul>
+											<li *ngFor="let leafRefPath of YangLeafRefPaths">
+												{{leafRefPath}}
+											</li>
+										</ul>
+									</div>
+								</td>
+							</tr>
+							<tr *ngIf="YangStatus">
+								<td class="details_lable_column" width="100">Status</td>
+								<td class="details_value_column">{{YangStatus}}</td>
+							</tr>
+							<tr *ngIf="YangPresence">
+								<td class="details_lable_column" width="100">Presence</td>
+								<td class="details_value_column">{{YangPresence}}</td>
+							</tr>
+							<tr *ngIf="YangWriteable">
+								<td class="details_lable_column" width="100">Read/Write</td>
+								<td class="details_value_column">{{YangWriteable}}</td>
+							</tr>
+							<tr *ngIf="YangUnsupportedFeatures">
+								<td class="details_lable_column" width="100">Unsupported Feature</td>
+								<td class="details_value_column">The following vendors do not support this feature
+									<br>
+									<ul>
+										<li *ngFor="let unsupportedFeature of YangUnsupportedFeatures">
+											{{unsupportedFeature}}
+										</li>
+									</ul>
+								</td>
 							</tr>
 						</table>
+						<div *ngIf='restGet || restPatch || restPost || restDelete || restOperation' class='signature'><br><br>restconf requests</div>
+						<table class="property-table">
+							<tr *ngIf="restGet">
+								<td class="details_lable_column" width="100">GET</td>
+								<td class="details_value_column">
+									<pre>{{restGet}}</pre>
+								</td>
+							</tr>
+							<tr *ngIf="restPatch">
+								<td class="details_lable_column" width="100">PATCH</td>
+								<td class="details_value_column">
+									<pre>{{restPatch}}</pre>
+								</td>
+							</tr>
+							<tr *ngIf="restPost">
+								<td class="details_lable_column" width="100">POST</td>
+								<td class="details_value_column">
+									<pre>{{restPost}}</pre>
+								</td>
+							</tr>
+							<tr *ngIf="restDelete">
+								<td class="details_lable_column" width="100">DELETE</td>
+								<td class="details_value_column">
+									<pre>{{restDelete}}</pre>
+								</td>
+							</tr>
+							<tr *ngIf="restOperation">
+									<td class="details_lable_column" width="100">OPERATION</td>
+									<td class="details_value_column">
+										<pre>{{restOperation}}</pre>
+									</td>
+								</tr>
+							</table>
+						<br>
+						<br>
+						<div class='signature'>python class</div>
+						<pre>
+						{{pythonClass}}
+							{{pythonInit}}
+						</pre>
 					</div>
 				</div>
 			</td>

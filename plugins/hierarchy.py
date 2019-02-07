@@ -1,6 +1,4 @@
-"""OpenHLtest DotNet interface generation plugin
-
-    - uses c# yang interfaces and custom attributes
+"""OpenHLtest JSON documentation generator
 """
 
 import optparse
@@ -12,13 +10,15 @@ import logging
 import time
 import json
 from pyang import plugin
+from pyang import types
 from pyang import statements
+
 
 def pyang_plugin_init():
     plugin.register_plugin(HierarchyPlugin())
 
 class HierarchyPlugin(plugin.PyangPlugin):
-    """Generates json hierarchy:
+    """Generates a json hierarchy that is used for documentation and python client generation
     """
     _plugin_name = 'hierarchy'
 
@@ -50,6 +50,7 @@ class HierarchyPlugin(plugin.PyangPlugin):
     def setup_ctx(self, ctx):
         """Called by pyang"""
         try:
+            self._ctx = ctx
             os.remove(ctx.opts.outfile)
         except Exception as e:
             self._logger.info(e)
@@ -59,8 +60,8 @@ class HierarchyPlugin(plugin.PyangPlugin):
         ctx.implicit_errors = False
 
     def emit(self, ctx, modules, fd):
-        """Called by pyang.s
-        This starts the process of creating skeleton classes.
+        """Called by pyang
+        This starts the process of creating the hierarhcy.
 
         Args:
             ctx: The context
@@ -68,11 +69,16 @@ class HierarchyPlugin(plugin.PyangPlugin):
             fd: A file descriptor setup by pyang specified in the command line
         """
         # start at the top level and iterate down, lets build our own hierarchy, basis for docs
+        self._logger.info('hierarchy build start')
         hierarchy = []
         self._module = modules[0]
         self._nextId = 0
         self._build_hierarchy(self._module, hierarchy)
+        self._logger.info('hierarchy build complete')
+        self._logger.info('write json file start')
         json.dump(hierarchy, fd, indent=4)
+        fd.close()
+        self._logger.info('write json file complete')
 
     def _build_hierarchy(self, stmt, hierarchy):
         """Build up a hierarchical dictionary of the yang model.
@@ -91,6 +97,26 @@ class HierarchyPlugin(plugin.PyangPlugin):
                     self._build_hierarchy(child_stmt, entry['children'])
 
     def _build_hierarchy_entry(self, stmt):
+        """Create a hierarchy entry
+        
+        Required keys:
+            id: a unique numeric id
+            name: keyword argument
+            _keyword: the yang keyword
+            _path: the full yang path
+            _status: the status of the yang statement
+            _description: the description of the yang statement
+            _writeable: the configurability of the yang statement
+
+        Optional keys (depending on keyword):
+            _unsupported_feature: can exist on any keyword
+            _key: substmt of list
+            _presence: substmt of container
+            _type: substmt of leaf, leaf-list
+            _enums: substmt of enumeration
+            _leafref_paths: substmt of leafref
+            _constraint: substmt must
+        """
         entry = {
             'id': self._nextId,
             'name': stmt.arg,
@@ -101,14 +127,29 @@ class HierarchyPlugin(plugin.PyangPlugin):
             '_writeable': self._get_yang_writeable(stmt)
         }
         self._add_yang_key(stmt, entry)	
+        self._add_yang_constraint(stmt, entry)
         self._add_yang_type(stmt, entry)
         self._add_yang_presence(stmt, entry)
+        self._add_unsupported_feature(stmt, entry)
         return entry
+
+    def _add_unsupported_feature(self, stmt, entry):
+        unsupported_feature = []
+        for substmt in stmt.substmts:
+            if hasattr(substmt, 'i_extension') is True:
+                unsupported_feature.append(substmt.i_extension.arg)
+        if len(unsupported_feature) > 0:
+            entry['_unsupported_feature'] = unsupported_feature
+
+    def _add_yang_constraint(self, stmt, entry):
+        yang_must = stmt.search_one('must')
+        if yang_must is not None:
+            entry['_constraint'] = statements.mk_path_str(yang_must)
 
     def _add_yang_presence(self, stmt, entry):
         yang_presence = stmt.search_one('presence')
         if yang_presence is not None:
-            entry['_container_presence'] = yang_presence.arg
+            entry['_presence'] = yang_presence.arg
 
     def _add_yang_type(self, stmt, entry):
         yang_type = stmt.search_one('type')
@@ -116,19 +157,38 @@ class HierarchyPlugin(plugin.PyangPlugin):
             return
         else:
             entry['_type'] = yang_type.arg
-        if yang_type.arg == 'enumeration':
-            enums = []
-            for enum in yang_type.search('enum'):
-                enums.append( {
-                    'name': enum.arg,
-                    'description': self._get_yang_description(enum)
-                })
-            entry['_type_enums'] = enums
-        if yang_type.arg == 'leafref':
-            paths = []
-            for path in yang_type.search('path'):
-                paths.append(path.arg)
-            entry['_type_paths'] = paths
+            if yang_type.arg == 'enumeration':
+                enums = []
+                for enum in yang_type.search('enum'):
+                    enums.append(
+                        {
+                            'name': enum.arg,
+                            'description': self._get_yang_description(enum)
+                        }
+                    )
+                entry['_enums'] = enums
+            if yang_type.arg == 'leafref':
+                paths = []
+                self._validate_leaf_ref(stmt, yang_type, paths)
+                entry['_leafref_paths'] = paths
+            if yang_type.arg == 'union':
+                paths = []
+                for leafref in yang_type.i_type_spec.types:
+                    self._validate_leaf_ref(stmt, leafref, paths)
+                entry['_type'] = 'union[leafref]'
+                entry['_leafref_paths'] = paths
+
+    def _validate_leaf_ref(self, stmt, leafref, paths):
+        if isinstance(leafref.i_type_spec, types.EmptyTypeSpec) is True:
+            paths.append('null')
+        else:
+            validation = statements.validate_leafref_path(self._ctx, stmt, leafref.i_type_spec.path_spec, leafref.i_type_spec.path_)
+            if validation is None:
+                failed_validation = '%s leafref path %s is bad' % (statements.mk_path_str(stmt), leafref.i_type_spec.path_.arg)
+                self._logger.error(failed_validation)
+                paths.append('Failed validation: ' + leafref.i_type_spec.path_.arg)
+            else:
+                paths.append(statements.mk_path_str(validation[0]))
 
     def _add_yang_key(self, stmt, entry):
         yang_key = stmt.search_one('key')
@@ -165,44 +225,4 @@ class HierarchyPlugin(plugin.PyangPlugin):
         else:
             return status.arg
 
-    def _get_yang_leafref_path(self, s):
-        t = s.search_one('type')
-        if t is not None:
-            if t.arg == 'leafref':
-                return t.search_one('path')
-        else:
-            return None
-
-    def _get_typename(self, s):
-        t = s.search_one('type')
-        if t is not None:
-            if t.arg == 'leafref':
-                p = t.search_one('path')
-                if p is not None:
-                    # Try to make the path as compact as possible.
-                    # Remove local prefixes, and only use prefix when
-                    # there is a module change in the path.
-                    target = []
-                    curprefix = s.i_module.i_prefix
-                    for name in p.arg.split('/'):
-                        if name.find(":") == -1:
-                            prefix = curprefix
-                        else:
-                            [prefix, name] = name.split(':', 1)
-                        if prefix == curprefix:
-                            target.append(name)
-                        else:
-                            target.append(prefix + ':' + name)
-                            curprefix = prefix
-                    return "-> %s" % "/".join(target)
-                else:
-                    return t.arg
-            else:
-                return t.arg
-        elif s.keyword == 'anydata':
-            return '<anydata>'
-        elif s.keyword == 'anyxml':
-            return '<anyxml>'
-        else:
-            return ''
 

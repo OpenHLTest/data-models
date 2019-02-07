@@ -122,43 +122,5 @@ submodule openhltest-traffic-devices {
 				description "Allows a user to set traffic options that will be used as a template during generation of traffic-streams.";
 			}
 		}
-
-		action traffic-control {
-			description
-			"Control one or more traffic groups.
-			An empty list signifies that all traffic will be started.";
-
-			input {
-				leaf-list traffic {
-					type union {
-						type leafref {
-							path "../../port-traffic/name";
-						}
-						type leafref {
-							path "../../device-traffic/name";
-						}
-					}
-					description "A list of traffic names";
-				}
-				leaf mode {
-					type enumeration {
-						enum START {
-							description "";
-						}
-						enum STOP {
-							description "";
-						}
-					}
-					default "START";
-					description "Specifies the action to be taken.";
-				}
-			}
-			output {
-				uses t:errata-group {
-					description "A list of traffic references that failed to start.
-					An empty list signifies that all traffic references specified in the input successfully started.";
-				}
-			}
-		}
 	}
 }

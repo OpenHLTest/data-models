@@ -17,7 +17,6 @@ module openhltest {
 	include openhltest-layer1-ten-gig;
 	include openhltest-layer1-twenty-five-gig;
 	include openhltest-device-groups;
-	include openhltest-simulated-networks;
 	include openhltest-ethernet;
 	include openhltest-vlan;
 	include openhltest-ipv4;

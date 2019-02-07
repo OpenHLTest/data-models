@@ -54,11 +54,6 @@ submodule openhltest-sessions {
 					description	"Clear all statistic counters.";
 				}
 			}
-			notification statistic-events {
-				description	"The statistics push model";
-
-				uses statistics-top;
-			}		
 		}
 	}
 }
