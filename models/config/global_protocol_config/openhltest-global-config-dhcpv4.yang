@@ -8,6 +8,12 @@ submodule openhltest-global-config-dhcpv4 {
     import openhltest-patterns {
         prefix p;
     }
+    import openhltest-types {
+        prefix t;
+    }
+
+	  include openhltest-ports;
+
     organization
       "OpenHlTest working group";
     contact
@@ -24,9 +30,20 @@ submodule openhltest-global-config-dhcpv4 {
     
     grouping global-config-dhcpv4 {
       description "";
-      container dhcpv4 {
-        presence "";
-        description "";
+      list dhcpv4 {
+        key "name";
+        description "This list allows for configuring global DHCPv4 options.";
+        leaf name {
+          type t:config-list-key;
+          description	"The unique name for a global protocols list item";
+        }	
+        leaf-list ports {
+          type leafref {
+            path "../../../ports/name";
+          }
+          description 
+          "A list of abstract port references"; 
+        }
         container request-rate {
           uses p:base-pattern-group {
             refine pattern-format {

@@ -5,11 +5,6 @@ submodule openhltest-global-protocol-config {
 		prefix "oht";
 	}
 
-    import openhltest-types {
-        prefix t;
-    }
-	
-	include openhltest-ports;
 	include openhltest-global-config-dhcpv4;
 
 	organization
@@ -28,22 +23,8 @@ submodule openhltest-global-protocol-config {
 
 	grouping global-protocol-config-top {
 		description "";
-		list global-protocols {
-			key "name";
-			description 
-			"This list allows for configuring global protocols options.";
-			leaf name {
-				type t:config-list-key;
-				description	"The unique name for a global protocols list item";
-			}	
-
-			leaf-list ports {
-				type leafref {
-					path "../../ports/name";
-				}
-				description 
-				"A list of abstract port references"; 
-			}
+		container global-protocols {
+			description "This list allows for configuring global protocols options.";
 			uses global-config-dhcpv4;
 		}
 	}
