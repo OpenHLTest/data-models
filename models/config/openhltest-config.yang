@@ -50,14 +50,16 @@ submodule openhltest-config {
 			action port-control {
 				description
 				"Control one or more physical hardware test ports and/or 
-				virtual machine test ports";
+				virtual machine test ports.
+				An empty targets list signifies that all ports will be subject to the mode specified.";
 
 				input {
 					leaf-list targets {
 						type leafref {
 							path "../../ports/name";
 						}
-						description "A list of abstract test port references";
+						description "A list of abstract test port references.
+						An empty list signifies that all ports will be subject to the mode specified.";
 					}
 					leaf mode {
 						type enumeration {
@@ -102,7 +104,8 @@ submodule openhltest-config {
 				}
 			}
 			action arp-control {
-				description "ARP control command";
+				description "ARP control command.
+				An empty targets list signifies that ARP will be performed globally";
 				input {
                     leaf-list targets {
                         type union {
@@ -122,14 +125,15 @@ submodule openhltest-config {
                                 path "../../device-traffic/name";
                             }
                         }
-                        description "List of 1..n abstract ports, device-groups, devices, traffic group references.";
+                        description "List of 1..n abstract ports, device-groups, devices, traffic group references.
+						An empty list signifies that ARP will be performed globally.";
                     }
 				}
 			}
 			action traffic-control {
 				description
 				"Control one or more traffic groups.
-				An empty list signifies that all traffic will be started.";
+				An empty list signifies that all traffic will be subject to the mode specified.";
 
 				input {
 					leaf-list targets {
@@ -141,7 +145,8 @@ submodule openhltest-config {
 								path "../../device-traffic/name";
 							}
 						}
-						description "A list of traffic names";
+						description "A list of traffic names.
+						An empty list signifies that all traffic will be subject to the mode specified.";
 					}
 					leaf mode {
 						type enumeration {
@@ -191,7 +196,7 @@ submodule openhltest-config {
 			action bgpv4-control {
 				description
 				"Start one or more emulated BGPV4 protocol groups.
-				An empty list signifies that all BGPV4 protocol groups will be started.";
+				An empty targets list signifies that all BGPV4 protocol groups will be subject to the mode specified.";
 
 				input {
 					leaf-list targets {
@@ -199,7 +204,8 @@ submodule openhltest-config {
 							path "../../device-groups/devices/protocols/name";
 						}
 						must "../../device-groups/devices/protocols/protocol-type = BGPV4";
-						description "A list of BGPV4 protocol references";
+						description "A list of BGPV4 protocol references.
+						An empty list signifies that all BGPV4 protocol groups will be subject to the mode specified.";
 					}
 					leaf mode {
 						type enumeration {
@@ -235,7 +241,7 @@ submodule openhltest-config {
 			action bgpv6-control {
 				description
 				"Start one or more emulated BGPV6 protocol groups.
-				An empty list signifies that all BGPV6 protocol groups will be started.";
+				An empty targets list signifies that all BGPV6 protocol groups will be subject to the mode specified.";
 
 				input {
 					leaf-list targets {
@@ -243,7 +249,8 @@ submodule openhltest-config {
 							path "../../device-groups/devices/protocols/name";
 						}
 						must "../../device-groups/devices/protocols/protocol-type = BGPV6";
-						description "A list of BGPV6 protocol references";
+						description "A list of BGPV6 protocol references.
+						An empty list signifies that all BGPV6 protocol groups will be subject to the mode specified.";
 					}
 					leaf mode {
 						type enumeration {
@@ -280,7 +287,7 @@ submodule openhltest-config {
 			action ospfv2-control {
 				description
 				"Start one or more emulated OSPFV2 protocol groups.
-				An empty list signifies that all OSPFV2 protocol groups will be started.";
+				An empty targets list signifies that all OSPFV2 protocol groups will be subject to the mode specified.";
 
 				input {
 					leaf-list targets {
@@ -288,7 +295,8 @@ submodule openhltest-config {
 							path "../../device-groups/devices/protocols/name";
 						}
 						must "../../device-groups/devices/protocols/protocol-type = OSPFV2";
-						description "A list of OSPFV2 protocol references";
+						description "A list of OSPFV2 protocol references.
+						An empty list signifies that all OSPFV2 protocol groups will be subject to the mode specified.";
 					}
 					leaf mode {
 						type enumeration {
@@ -325,7 +333,7 @@ submodule openhltest-config {
 			action ospfv3-control {
 				description
 				"Start one or more emulated OSPFV3 protocol groups.
-				An empty list signifies that all OSPFV3 protocol groups will be started.";
+				An empty targets list signifies that all OSPFV3 protocol groups will be subject to the mode specified.";
 
 				input {
 					leaf-list targets {
@@ -333,7 +341,8 @@ submodule openhltest-config {
 							path "../../device-groups/devices/protocols/name";
 						}
 						must "../../device-groups/devices/protocols/protocol-type = OSPFV3";
-						description "A list of OSPFV3 protocol references";
+						description "A list of OSPFV3 protocol references.
+						An empty list signifies that all OSPFV3 protocol groups will be subject to the mode specified.";
 					}
 					leaf mode {
 						type enumeration {
@@ -370,7 +379,7 @@ submodule openhltest-config {
 			action isis-control {
 				description
 				"Start one or more emulated ISIS protocol groups.
-				An empty list signifies that all ISIS protocol groups will be started.";
+				An empty targets list signifies that all ISIS protocol groups will be subject to the mode specified.";
 
 				input {
 					leaf-list targets {
@@ -378,7 +387,8 @@ submodule openhltest-config {
 							path "../../device-groups/devices/protocols/name";
 						}
 						must "../../device-groups/devices/protocols/protocol-type = ISIS";
-						description "A list of ISIS protocol references";
+						description "A list of ISIS protocol references.
+						An empty list signifies that all ISIS protocol groups will be subject to the mode specified.";
 					}
 					leaf mode {
 						type enumeration {
@@ -409,7 +419,7 @@ submodule openhltest-config {
 			action bfdv4-control {
 				description
 				"Start one or more emulated BFD v4 protocol groups.
-				An empty list signifies that all BFD v4 protocol groups will be started.";
+				An empty targets list signifies that all BFD v4 protocol groups will be subject to the mode specified.";
 
 				input {
 					leaf-list targets {
@@ -417,7 +427,8 @@ submodule openhltest-config {
 							path "../../device-groups/devices/protocols/name";
 						}
 						must "../../device-groups/devices/protocols/protocol-type = BFDV4";
-						description "A list of BFDV4 protocol references";
+						description "A list of BFDV4 protocol references.
+						An empty list signifies that all BFD v4 protocol groups will be subject to the mode specified.";
 					}
 					leaf mode {
 						type enumeration {
@@ -442,7 +453,7 @@ submodule openhltest-config {
 			action bfdv6-control {
 				description
 				"Start one or more emulated BFD v6 protocol groups.
-				An empty list signifies that all BFD v6 protocol groups will be started.";
+				An empty targets list signifies that all BFD v6 protocol groups will be subject to the mode specified.";
 
 				input {
 					leaf-list targets {
@@ -450,7 +461,8 @@ submodule openhltest-config {
 							path "../../device-groups/devices/protocols/name";
 						}
 						must "../../device-groups/devices/protocols/protocol-type = BFDV6";
-						description "A list of BFDV6 protocol references";
+						description "A list of BFDV6 protocol references.
+						An empty list signifies that all BFD v6 protocol groups will be subject to the mode specified.";
 					}
 					leaf mode {
 						type enumeration {
