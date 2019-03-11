@@ -17,6 +17,7 @@ from pyang import statements
 def pyang_plugin_init():
     plugin.register_plugin(HierarchyPlugin())
 
+
 class HierarchyPlugin(plugin.PyangPlugin):
     """Generates a json hierarchy that is used for documentation and python client generation
     """
@@ -27,7 +28,8 @@ class HierarchyPlugin(plugin.PyangPlugin):
         self._logger = logging.getLogger(__name__)
         self._logger.setLevel(logging.DEBUG)
         handlers = [logging.StreamHandler(sys.stdout)]
-        formatter = logging.Formatter(fmt='%(asctime)s [%(name)s] [%(levelname)s] %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+        formatter = logging.Formatter(
+            fmt='%(asctime)s [%(name)s] [%(levelname)s] %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
         formatter.converter = time.gmtime
         for handler in handlers:
             handler.setFormatter(formatter)
@@ -35,9 +37,10 @@ class HierarchyPlugin(plugin.PyangPlugin):
         self._logger.info('current working directory: %s' % os.getcwd())
         plugin.PyangPlugin.__init__(self, HierarchyPlugin._plugin_name)
         self._classes = {}
-        self._base_output_dir = os.path.normpath(os.path.join(os.path.dirname(__file__), '../doc-browser/src/assets'))
+        self._base_output_dir = os.path.normpath(os.path.join(
+            os.path.dirname(__file__), '../doc-browser/src/assets'))
         self._logger.info('hierarchy output: %s' % self._base_output_dir)
-        
+
     def add_output_format(self, fmts):
         """Called by pyang"""
         self.multiple_modules = True
@@ -98,7 +101,7 @@ class HierarchyPlugin(plugin.PyangPlugin):
 
     def _build_hierarchy_entry(self, stmt):
         """Create a hierarchy entry
-        
+
         Required keys:
             id: a unique numeric id
             name: keyword argument
@@ -113,6 +116,7 @@ class HierarchyPlugin(plugin.PyangPlugin):
             _key: substmt of list
             _presence: substmt of container
             _type: substmt of leaf, leaf-list
+            _type_pattern: substmt of type
             _enums: substmt of enumeration
             _leafref_paths: substmt of leafref
             _constraint: substmt must
@@ -126,7 +130,7 @@ class HierarchyPlugin(plugin.PyangPlugin):
             '_description': self._get_yang_description(stmt),
             '_writeable': self._get_yang_writeable(stmt)
         }
-        self._add_yang_key(stmt, entry)	
+        self._add_yang_key(stmt, entry)
         self._add_yang_constraint(stmt, entry)
         self._add_yang_type(stmt, entry)
         self._add_yang_presence(stmt, entry)
@@ -152,41 +156,52 @@ class HierarchyPlugin(plugin.PyangPlugin):
             entry['_presence'] = yang_presence.arg
 
     def _add_yang_type(self, stmt, entry):
+        if stmt is None:
+            return
         yang_type = stmt.search_one('type')
         if yang_type is None:
             return
-        else:
-            entry['_type'] = yang_type.arg
-            if yang_type.arg == 'enumeration':
-                enums = []
-                for enum in yang_type.search('enum'):
-                    enums.append(
-                        {
-                            'name': enum.arg,
-                            'description': self._get_yang_description(enum)
-                        }
-                    )
-                entry['_enums'] = enums
-            if yang_type.arg == 'leafref':
-                paths = []
-                self._validate_leaf_ref(stmt, yang_type, paths)
-                entry['_leafref_paths'] = paths
-            if yang_type.arg == 'union':
-                paths = []
-                for leafref in yang_type.i_type_spec.types:
-                    self._validate_leaf_ref(stmt, leafref, paths)
-                entry['_type'] = 'union[leafref]'
-                entry['_leafref_paths'] = paths
+        entry['_type'] = yang_type.arg
+        if hasattr(stmt, 'i_default_str') and stmt.i_default_str is not None:
+            entry['_type_pattern'] = stmt.i_default_str
+        if yang_type.arg == 'enumeration':
+            enums = []
+            for enum in yang_type.search('enum'):
+                enums.append(
+                    {
+                        'name': enum.arg,
+                        'description': self._get_yang_description(enum)
+                    }
+                )
+            entry['_enums'] = enums
+        if yang_type.arg == 'leafref':
+            paths = []
+            self._validate_leaf_ref(stmt, yang_type, paths)
+            entry['_leafref_paths'] = paths
+        if yang_type.arg == 'union':
+            paths = []
+            for leafref in yang_type.i_type_spec.types:
+                self._validate_leaf_ref(stmt, leafref, paths)
+            entry['_type'] = 'union[leafref]'
+            entry['_leafref_paths'] = paths
+        pattern = yang_type.search_one('pattern')
+        if pattern is not None:
+            entry['_type_pattern'] = pattern.arg
+        if hasattr(yang_type, 'i_typedef') and yang_type.i_typedef is not None:
+            self._add_yang_type(yang_type.i_typedef, entry)
 
     def _validate_leaf_ref(self, stmt, leafref, paths):
         if isinstance(leafref.i_type_spec, types.EmptyTypeSpec) is True:
             paths.append('null')
         else:
-            validation = statements.validate_leafref_path(self._ctx, stmt, leafref.i_type_spec.path_spec, leafref.i_type_spec.path_)
+            validation = statements.validate_leafref_path(
+                self._ctx, stmt, leafref.i_type_spec.path_spec, leafref.i_type_spec.path_)
             if validation is None:
-                failed_validation = '%s leafref path %s is bad' % (statements.mk_path_str(stmt), leafref.i_type_spec.path_.arg)
+                failed_validation = '%s leafref path %s is bad' % (
+                    statements.mk_path_str(stmt), leafref.i_type_spec.path_.arg)
                 self._logger.error(failed_validation)
-                paths.append('Failed validation: ' + leafref.i_type_spec.path_.arg)
+                paths.append('Failed validation: ' +
+                             leafref.i_type_spec.path_.arg)
             else:
                 paths.append(statements.mk_path_str(validation[0]))
 
@@ -224,5 +239,3 @@ class HierarchyPlugin(plugin.PyangPlugin):
             return 'current'
         else:
             return status.arg
-
-

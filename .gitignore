@@ -2,5 +2,9 @@
 *.pyc
 build
 dist
-openhltest.egg-info
-data-models/doc-browser/node_modules
+openhltest_client.egg-info
+/doc-browser/node_modules
+/doc-browser/src/assets/documentation.json
+/openhltest_client/openhltest/*
+!/openhltest_client/*.py
+

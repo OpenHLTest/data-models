@@ -4,8 +4,9 @@
 	font: $medium-font;
 	padding-bottom: 20px;
 }
-.modules {
-	width:100%; 
+.api {
+	width: 100%; 
+	height: 100%;
 }
 .hierarchy-item {
 	float: left;
@@ -29,7 +30,7 @@
 .documentation {
 	width: 100%;
 	overflow-y: auto;
-	height: calc(100% - 60px);
+	height: calc(100% - 75px);
 }
 .property-table {
 	border-collapse: collapse;
@@ -38,15 +39,15 @@
 	min-width: 50%;
 	max-width: 90%;
 }
-.details_lable_column {
+.details_label_column {
 	border: 1px solid #ddd;
-	padding: 8px;
+	padding: 3px;
 	background-color: rgb(240,240,240);
 	font-weight: bold;
 }
 .details_value_column {
 	border: 1px solid #ddd;
-	padding: 8px;
+	padding: 3px;
 }
 .prefix {
 	float: left;
@@ -54,8 +55,8 @@
 	color: rgb(127,127,127);
 }
 .signature {
-	font: $property-font;
-	font-weight: bold;
+	font: $small-font;
+	padding: 5px;
 }
 .summary {
 	max-width: 1000px;
@@ -69,6 +70,7 @@
 	border-radius: 4px;
 	font-family: monospace;
 	white-space: pre-line;
+	tab-size: 4;
 }
 .property {
 	font: $tiny-font;
@@ -123,15 +125,25 @@
     cursor: pointer;
 }
 
+.split-container {
+	padding: 5px;
+}
+
+.code {
+	white-space: pre-wrap;
+	font-family: monospace;
+	font-size: 14px;
+	background-color: white;
+	border: none;
+}
 .item-prefix {
 	font: $smaller-font;
 	color: rgb(127,127,127);
 }
 
 .reference-table {
-	width: calc(100% - 100px);
+	width: calc(100% - 30px);
 	height: 100%;
-	padding-top: 30px;
 }
 
 .placeholder-text {

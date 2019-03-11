@@ -1,149 +1,218 @@
-<table style="width: 100%">
-	<tr>
-		<td>
-			<div class="modules">
-				<div class="signature">Model Hierarchy</div>
-			</div>
-		</td>
-		<td width="250">
-			<!-- <div>
-				<input type="text" class="form-control" [(ngModel)]="searchValue">
-				<button type="submit" class="btn btn-success" (click)='onSearch($event)'>Search</button>
-				<div class='search-results-window' *ngIf='showResults'>
-					<div>
-						<span class='close-search' (click)='onCloseSearchResults($event)'>Close</span>
+<div class='api'>
+	<div class="modal-dialog" *ngIf="NodeLens">
+		<span class="signature">{{NodeLens.name}}</span><span style="float:right;"><button (click)='closeNodeLens($event)'>X</button></span>
+		<table class="property-table">
+			<tr>
+				<td class="details_label_column" width="100">{{NodeLens._keyword}}</td>
+				<td class="details_value_column">{{NodeLens.name}}</td>
+			</tr>
+			<tr>
+				<td class="details_label_column" width="100">Description</td>
+				<td class="details_value_column">{{NodeLens._description}}</td>
+			</tr>
+			<tr>
+				<td class="details_label_column" width="100">Configurable</td>
+				<td class="details_value_column">{{NodeLens._writeable ? "readWrite" :
+					"readOnly"}}</td>
+			</tr>
+			<tr *ngIf="NodeLens._constraint">
+				<td class="details_label_column" width="100">Constraint</td>
+				<td class="details_value_column">{{NodeLens._constraint}}</td>
+			</tr>
+			<tr *ngIf="NodeLens._key">
+				<td class="details_label_column" width="100">List Key</td>
+				<td class="details_value_column">{{NodeLens._key}}</td>
+			</tr>
+			<tr *ngIf="NodeLens._type">
+				<td class="details_label_column" width="100">Type</td>
+				<td class="details_value_column">
+					{{NodeLens._type}}<span *ngIf="NodeLens._type_pattern">
+						Default:<b>{{NodeLens._type_pattern}}</b></span>
+					<div *ngIf="NodeLens._enums">
+						<br>
+						<ul>
+							<li *ngFor="let yangEnum of NodeLens._enums">
+								{{yangEnum.name}} - {{yangEnum.description}}
+							</li>
+						</ul>
 					</div>
+					<div *ngIf="NodeLens._leafref_paths">
+						<br>
+						<ul>
+							<li *ngFor="let leafRefPath of NodeLens._leafref_paths">
+								{{leafRefPath}}
+							</li>
+						</ul>
+					</div>
+				</td>
+			</tr>
+			<tr *ngIf="NodeLens._status">
+				<td class="details_label_column" width="100">Status</td>
+				<td class="details_value_column">{{NodeLens._status}}</td>
+			</tr>
+			<tr *ngIf="NodeLens._presence">
+				<td class="details_label_column" width="100">Presence</td>
+				<td class="details_value_column">{{NodeLens._presence}}</td>
+			</tr>
+			<tr *ngIf="NodeLens._unsupported_features">
+				<td class="details_label_column" width="100">Unsupported Feature</td>
+				<td class="details_value_column">The following vendors do not support
+					this feature
 					<br>
-					<div class='search-result' *ngFor='let result of results'>
-						<div class='return-item' (click)="onClick($event, result.Key)">{{result.Class}}</div>
-						<div class='summary'>{{result.Summary}}</div>
-					</div>
+					<ul>
+						<li *ngFor="let unsupportedFeature of NodeLens._unsupported_features">
+							{{unsupportedFeature}}
+						</li>
+					</ul>
+				</td>
+			</tr>
+		</table>
+		<br>
+	</div>
+	<as-split #splitter>
+		<as-split-area size="20">
+			<div class='split-container'>
+				<div class="signature">Yang Node Hierarchy</div>
+				<div class="scrolling-inner-container">
+					<tree-root #tree [focused]="true" [nodes]="nodes" [options]="options"
+						(activate)="onActivate($event)"></tree-root>
 				</div>
-			</div> -->
-		</td>
-	</tr>
-</table>
-<br>
-<div class="documentation">
-	<table class='fixed-table reference-table'>
-		<tr>
-			<td class="column border-right slim">
-				<div class="scrolling-outer-container">
-					<div class="scrolling-inner-container">
-						<tree-root #tree [focused]="true" [nodes]="nodes" [options]="options" (activate)="onActivate($event)"></tree-root>
-					</div>
+			</div>
+		</as-split-area>
+		<as-split-area size="80">
+			<div class='split-container'>
+				<div class='signature'>Yang Node {{header}}</div>
+				<div class='tab-control'>
+					<span class='tab-content' [ngClass]="{ selected: CurrentTab ==
+						TabTypes.node }"
+						(click)='CurrentTab= TabTypes.node'>Node Details</span>
+					<span class='tab-separator'>|</span>
+					<span class='tab-content' [ngClass]="{ selected: CurrentTab ==
+						TabTypes.sample }"
+						(click)='CurrentTab= TabTypes.sample'>Python Sample</span>
+					<span class='tab-separator'>|</span>
+					<span class='tab-content' [ngClass]="{ selected: CurrentTab ==
+						TabTypes.class }"
+						(click)='CurrentTab= TabTypes.class'>Python Class</span>
+					<span class='tab-separator'>|</span>
+					<span class='tab-content' [ngClass]="{ selected: CurrentTab ==
+						TabTypes.restconf }"
+						(click)='CurrentTab= TabTypes.restconf'>RestConf Requests</span>
 				</div>
-			</td>
-			<td class="column padding-left">
-				<div class="scrolling-outer-container">
-					<div class="scrolling-inner-container">
-						<div class='signature'>{{YangName}} {{YangKeyword}}</div>
-						<table class="property-table">
-							<tr>
-								<td class="details_lable_column" width="100">Description</td>
-								<td class="details_value_column">{{YangDescription}}</td>
-							</tr>
-							<tr>
-								<td class="details_lable_column" width="100">Path</td>
-								<td class="details_value_column">{{YangPath}}</td>
-							</tr>
-							<tr *ngIf="YangConstraint">
-								<td class="details_lable_column" width="100">Constraint</td>
-								<td class="details_value_column">{{YangConstraint}}</td>
-							</tr>
-							<tr *ngIf="YangListKey">
-								<td class="details_lable_column" width="100">List Key</td>
-								<td class="details_value_column">{{YangListKey}}</td>
-							</tr>
-							<tr *ngIf="YangType">
-								<td class="details_lable_column" width="100">Type</td>
-								<td class="details_value_column">
-									{{YangType}}
-									<div *ngIf="YangEnums">
-										<br>
-										<ul>
-											<li *ngFor="let yangEnum of YangEnums">
-												{{yangEnum.name}} - {{yangEnum.description}}
-											</li>
-										</ul>
-									</div>
-									<div *ngIf="YangLeafRefPaths">
-										<br>
-										<ul>
-											<li *ngFor="let leafRefPath of YangLeafRefPaths">
-												{{leafRefPath}}
-											</li>
-										</ul>
-									</div>
-								</td>
-							</tr>
-							<tr *ngIf="YangStatus">
-								<td class="details_lable_column" width="100">Status</td>
-								<td class="details_value_column">{{YangStatus}}</td>
-							</tr>
-							<tr *ngIf="YangPresence">
-								<td class="details_lable_column" width="100">Presence</td>
-								<td class="details_value_column">{{YangPresence}}</td>
-							</tr>
-							<tr *ngIf="YangWriteable">
-								<td class="details_lable_column" width="100">Read/Write</td>
-								<td class="details_value_column">{{YangWriteable}}</td>
-							</tr>
-							<tr *ngIf="YangUnsupportedFeatures">
-								<td class="details_lable_column" width="100">Unsupported Feature</td>
-								<td class="details_value_column">The following vendors do not support this feature
-									<br>
-									<ul>
-										<li *ngFor="let unsupportedFeature of YangUnsupportedFeatures">
-											{{unsupportedFeature}}
-										</li>
-									</ul>
-								</td>
-							</tr>
-						</table>
-						<div *ngIf='restGet || restPatch || restPost || restDelete || restOperation' class='signature'><br><br>restconf requests</div>
-						<table class="property-table">
-							<tr *ngIf="restGet">
-								<td class="details_lable_column" width="100">GET</td>
-								<td class="details_value_column">
-									<pre>{{restGet}}</pre>
-								</td>
-							</tr>
-							<tr *ngIf="restPatch">
-								<td class="details_lable_column" width="100">PATCH</td>
-								<td class="details_value_column">
-									<pre>{{restPatch}}</pre>
-								</td>
-							</tr>
-							<tr *ngIf="restPost">
-								<td class="details_lable_column" width="100">POST</td>
-								<td class="details_value_column">
-									<pre>{{restPost}}</pre>
-								</td>
-							</tr>
-							<tr *ngIf="restDelete">
-								<td class="details_lable_column" width="100">DELETE</td>
-								<td class="details_value_column">
-									<pre>{{restDelete}}</pre>
-								</td>
-							</tr>
-							<tr *ngIf="restOperation">
-									<td class="details_lable_column" width="100">OPERATION</td>
+				<div class="scrolling-inner-container">
+					<div [hidden]='CurrentTab != TabTypes.node'>
+						<div *ngFor="let yangNode of YangDisplayNodes">
+							<table class="property-table">
+								<tr>
+									<td class="details_label_column" width="100">{{yangNode._keyword}}</td>
+									<td class="details_value_column">{{yangNode.name}}</td>
+								</tr>
+								<tr>
+									<td class="details_label_column" width="100">Description</td>
+									<td class="details_value_column">{{yangNode._description}}</td>
+								</tr>
+								<tr>
+									<td class="details_label_column" width="100">Configurable</td>
+									<td class="details_value_column">{{yangNode._writeable ? "readWrite" :
+										"readOnly"}}</td>
+								</tr>
+								<tr *ngIf="yangNode._constraint">
+									<td class="details_label_column" width="100">Constraint</td>
+									<td class="details_value_column">{{yangNode._constraint}}</td>
+								</tr>
+								<tr *ngIf="yangNode._key">
+									<td class="details_label_column" width="100">List Key</td>
+									<td class="details_value_column">{{yangNode._key}}</td>
+								</tr>
+								<tr *ngIf="yangNode._type">
+									<td class="details_label_column" width="100">Type</td>
 									<td class="details_value_column">
-										<pre>{{restOperation}}</pre>
+										{{yangNode._type}}<span *ngIf="yangNode._type_pattern">
+											Default:<b>{{yangNode._type_pattern}}</b></span>
+										<div *ngIf="yangNode._enums">
+											<br>
+											<ul>
+												<li *ngFor="let yangEnum of yangNode._enums">
+													{{yangEnum.name}} - {{yangEnum.description}}
+												</li>
+											</ul>
+										</div>
+										<div *ngIf="yangNode._leafref_paths">
+											<br>
+											<ul>
+												<li *ngFor="let leafRefPath of yangNode._leafref_paths">
+													{{leafRefPath}}
+												</li>
+											</ul>
+										</div>
+									</td>
+								</tr>
+								<tr *ngIf="yangNode._status">
+									<td class="details_label_column" width="100">Status</td>
+									<td class="details_value_column">{{yangNode._status}}</td>
+								</tr>
+								<tr *ngIf="yangNode._presence">
+									<td class="details_label_column" width="100">Presence</td>
+									<td class="details_value_column">{{yangNode._presence}}</td>
+								</tr>
+								<tr *ngIf="yangNode._unsupported_features">
+									<td class="details_label_column" width="100">Unsupported Feature</td>
+									<td class="details_value_column">The following vendors do not support
+										this feature
+										<br>
+										<ul>
+											<li *ngFor="let unsupportedFeature of
+												yangNode._unsupported_features">
+												{{unsupportedFeature}}
+											</li>
+										</ul>
 									</td>
 								</tr>
 							</table>
-						<br>
-						<br>
-						<div class='signature'>python class</div>
-						<pre>
-						{{pythonClass}}
-							{{pythonInit}}
-						</pre>
+						</div>
+					</div>
+					<div [hidden]='CurrentTab != TabTypes.sample'>
+						<div #sampleCode class="code"></div>
+					</div>
+					<div [hidden]='CurrentTab != TabTypes.class'>
+						<div #pythonClass class="code"></div>
+					</div>
+					<div [hidden]='CurrentTab != TabTypes.restconf'>
+						<table class="property-table">
+							<tr [hidden]="!hasPost">
+								<td class="details_label_column" width="100">create</td>
+								<td class="details_value_column">
+									<div #postCode class="code"></div>
+								</td>
+							</tr>
+							<tr [hidden]="!hasGet">
+								<td class="details_label_column" width="100">read</td>
+								<td class="details_value_column">
+									<div #getCode class="code"></div>
+								</td>
+							</tr>
+							<tr [hidden]="!hasPatch">
+								<td class="details_label_column" width="100">update</td>
+								<td class="details_value_column">
+									<div #patchCode class="code"></div>
+								</td>
+							</tr>
+							<tr [hidden]="!hasDelete">
+								<td class="details_label_column" width="100">delete</td>
+								<td class="details_value_column">
+									<div #deleteCode class="code"></div>
+								</td>
+							</tr>
+							<tr [hidden]="!hasOperation">
+								<td class="details_label_column" width="100">execute</td>
+								<td class="details_value_column">
+									<div #operationCode class="code"></div>
+								</td>
+							</tr>
+						</table>
 					</div>
 				</div>
-			</td>
-		</tr>
-	</table>
+			</div>
+		</as-split-area>
+	</as-split>
 </div>
