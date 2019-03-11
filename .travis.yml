@@ -12,7 +12,6 @@ install:
 - nvm install 0.10
 - npm install
 script:
-- npm test
 - python build.py
 env:
   global:
