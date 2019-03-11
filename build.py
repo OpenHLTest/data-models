@@ -35,6 +35,7 @@ class CiBuild(object):
         print('building client version %s' % self._build_number)
         if os.name == 'nt':
             self._pyang = os.path.normpath('%s/scripts/pyang' % self._python_dir)
+            self._pip = os.path.normpath('%s/Scripts/pip' % self._python_dir)
         else:
             self._pyang = self._find('pyang', os.path.normpath('%s/..' % self._python_dir))
         self._pluginsdir = os.path.normpath('%s/plugins' % self._root_dir)
