@@ -10,7 +10,6 @@ install:
 - pip install pydoc-markdown
 - pip install twine
 - nvm install 0.10
-- npm install
 script:
 - python build.py
 env:
