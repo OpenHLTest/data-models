@@ -89,12 +89,12 @@ class CiBuild(object):
             'twine'
         ]
         self._run_process(process_args, self._root_dir)
-        # process_args = [
-        #     'git',
-        #     'checkout',
-        #     self._branch
-        # ]
-        # self._run_process(process_args, self._root_dir)
+        process_args = [
+            'git',
+            'clone',
+            os.environ['OPENHLTEST.GITHUB.IO']
+        ]
+        self._run_process(process_args, self._root_dir)
         # process_args = [
         #     'git',
         #     'remote'
@@ -531,15 +531,15 @@ class CiBuild(object):
             'twine',
             'upload',
             '-u',
-            'abalogh',
+            os.environ['PYPI_USERNAME'],
             '-p',
-            os.environ['PYPI_TOKEN'],
+            os.environ['PYPI_PASSWORD'],
             self._wheel
         ]
         if self._run_process(process_args, self._dist_dir) > 0:
             print('openhltest client package deployment to pypi failed')
 
-    def update_repository(self):
+    def update_openhltest_github_io(self):
         self._openhltest_github_io_dir = os.path.normpath('%s/../OpenHLTest.github.io' % self._root_dir)
         print('openhltest doc dir location %s' % self._openhltest_github_io_dir)
         os.chdir(self._openhltest_github_io_dir)
@@ -561,5 +561,5 @@ cibuild.generate_python_package()
 cibuild.generate_angular_doc_app() 
 cibuild.build_python_package()
 cibuild.deploy_python_package()
-cibuild.update_repository()
+cibuild.update_openhltest_github_io()
 
