@@ -154,14 +154,12 @@ class CiBuild(object):
         process_args = [
             'git',
             'commit',
-            '-m "upload auto generated model views, python client documentation [skip ci]"'
+            '-m "upload python client documentation"'
         ]
         self._run_process(process_args, self._root_dir)
         process_args = [
             'git',
-            'push',
-            'https://%s@github.com/OpenHLTest/data-models.git' %(os.environ['GH_TOKEN']),
-            self._branch
+            'push'
         ]
         self._run_process(process_args, self._root_dir)
 
@@ -543,25 +541,14 @@ class CiBuild(object):
 
     def update_repository(self):
         self._openhltest_github_io_dir = os.path.normpath('%s/../OpenHLTest.github.io' % self._root_dir)
-        print('openhltest.github.io location %s' % self._openhltest_github_io_dir)
+        print('openhltest doc dir location %s' % self._openhltest_github_io_dir)
+        os.chdir(self._openhltest_github_io_dir)
         process_args = [
             'git',
-            'checkout',
-            self._branch
+            'add',
+            '-u'
         ]
         self._run_process(process_args, self._root_dir)
-        process_args = [
-            'git',
-            'remote'
-        ]
-        self._run_process(process_args, self._root_dir)
-        process_args = [
-            'git',
-            'config',
-            '--list'
-        ]
-        self._run_process(process_args, self._root_dir)	        
-        self._git_add()
         print('commit and push of updated files')
         self._git_commit_push()
 
@@ -573,6 +560,6 @@ cibuild.generate_hierarchy()
 cibuild.generate_python_package()
 cibuild.generate_angular_doc_app() 
 cibuild.build_python_package()
-# cibuild.deploy_python_package()
-# cibuild.update_repository()
+cibuild.deploy_python_package()
+cibuild.update_repository()
 
