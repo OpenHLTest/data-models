@@ -56,6 +56,7 @@ class CiBuild(object):
             '--upgrade',
             'pyang'
         ]
+        self._run_process(process_args, self._root_dir)
         print('install setuptools package...')
         process_args = [
             self._pip,
