@@ -48,6 +48,38 @@ class CiBuild(object):
         print('pyang location %s' % self._pyang)
         self._data_models_dir = os.path.normpath('%s/models' % self._root_dir)
         print('data models location %s' % self._data_models_dir)
+        print('install setuptools package...')
+        process_args = [
+            self._pip,
+            'install',
+            '--upgrade',
+            'setuptools'
+        ]
+        self._run_process(process_args, self._root_dir)
+        print('install wheel package...')
+        process_args = [
+            self._pip,
+            'install',
+            '--upgrade',
+            'wheel'
+        ]
+        self._run_process(process_args, self._root_dir)
+        print('install requests package...')
+        process_args = [
+            self._pip,
+            'install',
+            '--upgrade',
+            'requests'
+        ]
+        self._run_process(process_args, self._root_dir)
+        print('install twine package...')
+        process_args = [
+            self._pip,
+            'install',
+            '--upgrade',
+            'twine'
+        ]
+        self._run_process(process_args, self._root_dir)
         # process_args = [
         #     'git',
         #     'checkout',
