@@ -49,6 +49,13 @@ class CiBuild(object):
         print('pyang location %s' % self._pyang)
         self._data_models_dir = os.path.normpath('%s/models' % self._root_dir)
         print('data models location %s' % self._data_models_dir)
+        print('install pyang package...')
+        process_args = [
+            self._pip,
+            'install',
+            '--upgrade',
+            'pyang'
+        ]
         print('install setuptools package...')
         process_args = [
             self._pip,
