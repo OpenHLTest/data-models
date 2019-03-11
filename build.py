@@ -22,6 +22,7 @@ class CiBuild(object):
     """
 
     def __init__(self):
+        print('starting openhltest build script __init__')
         self._root_model = 'openhltest.yang'
         self._root_dir = os.getcwd()
         self._python = os.path.normpath(sys.executable)
@@ -29,8 +30,10 @@ class CiBuild(object):
         self._view_models_dir = os.path.normpath('%s/views' % self._root_dir)
         self._doc_file = os.path.normpath('%s/doc-browser/src/assets/documentation.json' % self._root_dir)
         self._python_client_dir = os.path.normpath('%s/openhltest_client' % self._root_dir)
+        print('reading version...')
         with open(os.path.normpath(os.path.join(self._python_client_dir, 'version.txt'))) as fid:
             self._build_number = fid.read()
+        print('building client version %s' % self._build_number)
         if os.name == 'nt':
             self._pyang = os.path.normpath('%s/scripts/pyang' % self._python_dir)
         else:
@@ -46,23 +49,23 @@ class CiBuild(object):
         print('pyang location %s' % self._pyang)
         self._data_models_dir = os.path.normpath('%s/models' % self._root_dir)
         print('data models location %s' % self._data_models_dir)
-        process_args = [
-            'git',
-            'checkout',
-            self._branch
-        ]
-        self._run_process(process_args, self._root_dir)
-        process_args = [
-            'git',
-            'remote'
-        ]
-        self._run_process(process_args, self._root_dir)
-        process_args = [
-            'git',
-            'config',
-            '--list'
-        ]
-        self._run_process(process_args, self._root_dir)		
+        # process_args = [
+        #     'git',
+        #     'checkout',
+        #     self._branch
+        # ]
+        # self._run_process(process_args, self._root_dir)
+        # process_args = [
+        #     'git',
+        #     'remote'
+        # ]
+        # self._run_process(process_args, self._root_dir)
+        # process_args = [
+        #     'git',
+        #     'config',
+        #     '--list'
+        # ]
+        # self._run_process(process_args, self._root_dir)		
 
     def _find(self, name, path):
         for root, dirs, files in os.walk(path):
