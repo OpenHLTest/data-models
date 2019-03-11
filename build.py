@@ -21,14 +21,14 @@ class CiBuild(object):
     """
 
     def __init__(self):
-        print('starting openhltest build script __init__')
         self._root_model = 'openhltest.yang'
-        self._root_dir = os.getcwd()
+        self._root_dir = os.path.normpath(os.path.abspath(__file__))
         self._python = os.path.normpath(sys.executable)
         self._python_dir = os.path.dirname(self._python)
         self._view_models_dir = os.path.normpath('%s/views' % self._root_dir)
         self._doc_file = os.path.normpath('%s/doc-browser/src/assets/documentation.json' % self._root_dir)
         self._python_client_dir = os.path.normpath('%s/openhltest_client' % self._root_dir)
+        print('starting openhltest build script in %s' % self._root_dir)
         print('reading version...')
         with open(os.path.normpath(os.path.join(self._python_client_dir, 'version.txt'))) as fid:
             self._build_number = fid.read()
