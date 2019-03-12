@@ -160,19 +160,6 @@ class CiBuild(object):
         ]
         self._run_process(process_args, self._root_dir)
 
-    def _git_commit_push(self):
-        process_args = [
-            'git',
-            'commit',
-            '-m "upload python client documentation"'
-        ]
-        self._run_process(process_args, self._root_dir)
-        process_args = [
-            'git',
-            'push'
-        ]
-        self._run_process(process_args, self._root_dir)
-
     def check_changed_files(self):
         print('checking for changed files...')
         process_args = [
@@ -573,15 +560,32 @@ class CiBuild(object):
             print('openhltest client package deployment to pypi failed')
 
     def update_openhltest_github_io(self):
-        os.chdir(self._openhltest_github_io_dir)
+        print('git add...')
         process_args = [
             'git',
             'add',
             '-u'
         ]
-        self._run_process(process_args, self._root_dir)
-        print('commit and push of updated files')
-        self._git_commit_push()
+        if self._run_process(process_args, self._openhltest_github_io_dir) > 0:
+            sys.exit(-1)
+
+        print('git commit...')
+        process_args = [
+            'git',
+            'commit',
+            '-m "upload python client documentation"',
+            '-a'
+        ]
+        if self._run_process(process_args, self._openhltest_github_io_dir) > 0:
+            sys.exit(-1)
+
+        print('git push...')
+        process_args = [
+            'git',
+            'push'
+        ]
+        if self._run_process(process_args, self._openhltest_github_io_dir) > 0:
+            sys.exit(-1)
 
 
 
@@ -592,5 +596,5 @@ cibuild.generate_python_package()
 cibuild.generate_angular_doc_app() 
 cibuild.build_python_package()
 cibuild.deploy_python_package()
-#cibuild.update_openhltest_github_io()
+cibuild.update_openhltest_github_io()
 
