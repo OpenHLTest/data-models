@@ -96,7 +96,7 @@ class CiBuild(object):
             'clone',
             os.environ['OPENHLTEST_GITHUB_IO']
         ]
-        if self._run_process(process_args, self._root_dir) > 0:
+        if self._run_process(process_args, os.path.normpath(os.path.join(self._root_dir, '../'))) > 0:
             print('git clone of openltest.github.io failed')
             sys.exit(-1)	
 
