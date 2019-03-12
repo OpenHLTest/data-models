@@ -501,7 +501,7 @@ class CiBuild(object):
             python_requires='>=2.7, <4',
             install_requires=['requests'],
             script_name='setup.py',
-            script_args=['bdist_wheel', '--universal'])
+            script_args=['-q', 'bdist_wheel', '--universal'])
 
         self._dist_dir = os.path.join(self._root_dir, result.command_obj['bdist_wheel'].dist_dir)
         self._wheel = os.path.basename(result.command_obj['bdist_wheel'].distribution.dist_files[0][2])
