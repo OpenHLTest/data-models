@@ -61,11 +61,9 @@ class CiBuild(object):
 
         process_args = [
             'git',
-            'remote',
-            'set-url',
-            '--add',
-            'origin',
-            'https://%s@github.com/OpenHLTest/OpenHLTest.github.io.git' % os.environ['GH_TOKEN']
+            'config',
+            'credential.helper',
+            'store'
         ]
         if self._run_process(process_args, os.environ['TRAVIS_BUILD_DIR']) > 0:
             print('failed to set-url on OpenHLTest.github.io')
@@ -74,7 +72,7 @@ class CiBuild(object):
         process_args = [
             'git',
             'clone',
-            'https://github.com/OpenHLTest/OpenHLTest.github.io.git'
+            'https://%sgithub.com/OpenHLTest/OpenHLTest.github.io.git' % os.environ['GH_TOKEN']
         ]
         if self._run_process(process_args, os.environ['TRAVIS_BUILD_DIR']) > 0:
             print('failed to clone OpenHLTest.github.io')
@@ -568,7 +566,8 @@ class CiBuild(object):
         process_args = [
             'git',
             'add',
-            '-u'
+            '-u',
+            '-v'
         ]
         if self._run_process(process_args, self._openhltest_github_io_dir) > 0:
             sys.exit(-1)
@@ -580,7 +579,8 @@ class CiBuild(object):
             'git',
             'commit',
             '-m "update python client documentation"',
-            '-a'
+            '-a',
+            '-v'
         ]
         if self._run_process(process_args, self._openhltest_github_io_dir) > 0:
             sys.exit(-1)
@@ -590,7 +590,9 @@ class CiBuild(object):
         print('git push...')
         process_args = [
             'git',
-            'push'
+            'push',
+            'docs',
+            'master'
         ]
         if self._run_process(process_args, self._openhltest_github_io_dir) > 0:
             sys.exit(-1)
