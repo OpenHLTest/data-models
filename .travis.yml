@@ -1,15 +1,14 @@
 language:
-- node_js
-node_js:
-- "0.10"
+- python
 python:
-- "2.7.14"
+- '2.7.14'
 install:
 - pip install requests
 - pip install pyang
 - pip install setuptools
 - pip install twine
 before_script:
+- npm install
 # - git clone https://github.com/OpenHLTest/OpenHLTest.github.io.git
 # - cd 
 script:
