@@ -40,7 +40,7 @@ class CiBuild(object):
             self._pip = os.path.normpath('%s/Scripts/pip' % self._python_dir)
         else:
             self._pyang = self._find('pyang', os.path.normpath('%s/..' % self._python_dir))
-            self._pip = self._find('pip', os.path.normpath('%s/..' % self._python_dir))
+            self._pip = 'pip'
         self._pluginsdir = os.path.normpath('%s/plugins' % self._root_dir)
         if 'TRAVIS_BRANCH' in os.environ.keys():
             self._branch = os.environ['TRAVIS_BRANCH']
