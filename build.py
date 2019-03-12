@@ -34,7 +34,7 @@ class CiBuild(object):
         self._python_client_dir = os.path.normpath('%s/openhltest_client' % self._root_dir)
         self._openhltest_dir =  os.path.normpath(os.path.join(os.environ['TRAVIS_BUILD_DIR'], '../'))
         print('openhltest dir location %s' % self._openhltest_dir)
-        self._openhltest_github_io_dir = os.path.normpath(os.path.join(self._openhltest_dir, '../OpenHLTest.github.io'))
+        self._openhltest_github_io_dir = os.path.normpath(os.path.join(self._openhltest_dir, 'OpenHLTest.github.io'))
         print('openhltest doc dir location %s' % self._openhltest_github_io_dir)
         print('reading version...')
         with open(os.path.normpath(os.path.join(self._python_client_dir, 'version.txt'))) as fid:
