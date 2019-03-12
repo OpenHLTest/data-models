@@ -179,7 +179,8 @@ class CiBuild(object):
         if self._run_process(process_args, self._root_dir) == 0:
             continue_build = False
             for changed_file in self._process_output.split('\n'):
-                if changed_file.startswith('model/') or changed_file.startswith('openhltest_client/') or changed_file.startswith('plugins/'):
+                if changed_file.startswith(('model/', 'openhltest_client/', 'plugins/', 'doc-browser/'):
+                    print('changed file %s' % changed_file)
                     continue_build = True
             if continue_build is False:
                 print('stopping build, no model or client generation updates')
@@ -568,7 +569,6 @@ class CiBuild(object):
 
     def update_openhltest_github_io(self):
         os.chdir(self._openhltest_github_io_dir)
-        self._walk_and_print(self._openhltest_github_io_dir)
 
         print('git add...')
         process_args = [
@@ -608,7 +608,7 @@ class CiBuild(object):
 
 
 cibuild = CiBuild()
-# cibuild.check_changed_files()
+cibuild.check_changed_files()
 cibuild.generate_hierarchy()
 cibuild.generate_python_package()
 cibuild.generate_angular_doc_app() 
