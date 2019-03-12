@@ -549,16 +549,14 @@ class CiBuild(object):
             sys.exit(-1)
 
     def deploy_python_package(self):
-        username = os.environ['PYPI_USERNAME']
-        password = os.environ['PYPI_PASSWORD']
         print('uploading to pypi with -u %s -p %s' % (username, password))
         process_args = [
             'twine',
             'upload',
             '-u',
-            username,
+            'abalogh',
             '-p',
-            password,
+            os.environ['PYPI_TOKEN'],
             self._wheel
         ]
         if self._run_process(process_args, self._dist_dir) > 0:
