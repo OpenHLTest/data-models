@@ -40,6 +40,7 @@ class CiBuild(object):
             self._pip = os.path.normpath('%s/Scripts/pip' % self._python_dir)
         else:
             self._pyang = self._find('pyang', os.path.normpath('%s/..' % self._python_dir))
+            self._pip = self._find('pip', os.path.normpath('%s/..' % self._python_dir))
         self._pluginsdir = os.path.normpath('%s/plugins' % self._root_dir)
         if 'TRAVIS_BRANCH' in os.environ.keys():
             self._branch = os.environ['TRAVIS_BRANCH']
@@ -49,48 +50,49 @@ class CiBuild(object):
         if 'TRAVIS_COMMIT_RANGE' in os.environ.keys():
             self._commit_range = os.environ['TRAVIS_COMMIT_RANGE']
         print('pyang location %s' % self._pyang)
+        print('pip location %s' % self._pip)
         self._data_models_dir = os.path.normpath('%s/models' % self._root_dir)
         print('data models location %s' % self._data_models_dir)
         print('install pyang package...')
-        process_args = [
-            self._pip,
-            'install',
-            '--upgrade',
-            'pyang'
-        ]
-        self._run_process(process_args, self._root_dir)
-        print('install setuptools package...')
-        process_args = [
-            self._pip,
-            'install',
-            '--upgrade',
-            'setuptools'
-        ]
-        self._run_process(process_args, self._root_dir)
-        print('install wheel package...')
-        process_args = [
-            self._pip,
-            'install',
-            '--upgrade',
-            'wheel'
-        ]
-        self._run_process(process_args, self._root_dir)
-        print('install requests package...')
-        process_args = [
-            self._pip,
-            'install',
-            '--upgrade',
-            'requests'
-        ]
-        self._run_process(process_args, self._root_dir)
-        print('install twine package...')
-        process_args = [
-            self._pip,
-            'install',
-            '--upgrade',
-            'twine'
-        ]
-        self._run_process(process_args, self._root_dir)	
+        # process_args = [
+        #     self._pip,
+        #     'install',
+        #     '--upgrade',
+        #     'pyang'
+        # ]
+        # self._run_process(process_args, self._root_dir)
+        # print('install setuptools package...')
+        # process_args = [
+        #     self._pip,
+        #     'install',
+        #     '--upgrade',
+        #     'setuptools'
+        # ]
+        # self._run_process(process_args, self._root_dir)
+        # print('install wheel package...')
+        # process_args = [
+        #     self._pip,
+        #     'install',
+        #     '--upgrade',
+        #     'wheel'
+        # ]
+        # self._run_process(process_args, self._root_dir)
+        # print('install requests package...')
+        # process_args = [
+        #     self._pip,
+        #     'install',
+        #     '--upgrade',
+        #     'requests'
+        # ]
+        # self._run_process(process_args, self._root_dir)
+        # print('install twine package...')
+        # process_args = [
+        #     self._pip,
+        #     'install',
+        #     '--upgrade',
+        #     'twine'
+        # ]
+        # self._run_process(process_args, self._root_dir)	
 
     def _find(self, name, path):
         for root, dirs, files in os.walk(path):
