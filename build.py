@@ -67,6 +67,16 @@ class CiBuild(object):
         if self._run_process(process_args, os.environ['TRAVIS_BUILD_DIR']) > 0:
             print('failed to clone OpenHLTest.github.io')
             sys.exit(-1)
+        process_args = [
+            'git',
+            'remote',
+            'set-url',
+            'master',
+            'https://%s@github.com/OpenHLTest/OpenHLTest.github.io.git' % os.environ['GH_TOKEN']
+        ]
+        if self._run_process(process_args, os.environ['TRAVIS_BUILD_DIR']) > 0:
+            print('failed to clone OpenHLTest.github.io')
+            sys.exit(-1)
 
         if os.name == 'nt':
             print('install pyang package...')
@@ -149,16 +159,6 @@ class CiBuild(object):
                 else:
                     # print(stdout_data)
                     self._process_output += stdout_data
-
-    def _git_add(self, filename):
-        print('git add of %s' % filename)
-        process_args = [
-            'git',
-            'add',
-            '--all',
-            filename
-        ]
-        self._run_process(process_args, self._root_dir)
 
     def check_changed_files(self):
         print('checking for changed files...')
