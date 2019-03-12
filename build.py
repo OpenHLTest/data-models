@@ -53,46 +53,48 @@ class CiBuild(object):
         print('pip location %s' % self._pip)
         self._data_models_dir = os.path.normpath('%s/models' % self._root_dir)
         print('data models location %s' % self._data_models_dir)
-        print('install pyang package...')
-        # process_args = [
-        #     self._pip,
-        #     'install',
-        #     '--upgrade',
-        #     'pyang'
-        # ]
-        # self._run_process(process_args, self._root_dir)
-        # print('install setuptools package...')
-        # process_args = [
-        #     self._pip,
-        #     'install',
-        #     '--upgrade',
-        #     'setuptools'
-        # ]
-        # self._run_process(process_args, self._root_dir)
-        # print('install wheel package...')
-        # process_args = [
-        #     self._pip,
-        #     'install',
-        #     '--upgrade',
-        #     'wheel'
-        # ]
-        # self._run_process(process_args, self._root_dir)
-        # print('install requests package...')
-        # process_args = [
-        #     self._pip,
-        #     'install',
-        #     '--upgrade',
-        #     'requests'
-        # ]
-        # self._run_process(process_args, self._root_dir)
-        # print('install twine package...')
-        # process_args = [
-        #     self._pip,
-        #     'install',
-        #     '--upgrade',
-        #     'twine'
-        # ]
-        # self._run_process(process_args, self._root_dir)	
+        if os.name == 'nt':
+            print('install pyang package...')
+            process_args = [
+                self._pip,
+                'install',
+                '--upgrade',
+                'pyang'
+            ]
+            self._run_process(process_args, self._root_dir)
+            print('install setuptools package...')
+            process_args = [
+                self._pip,
+                'install',
+                '--upgrade',
+                'setuptools'
+            ]
+            self._run_process(process_args, self._root_dir)
+            print('install wheel package...')
+            process_args = [
+                self._pip,
+                'install',
+                '--upgrade',
+                'wheel'
+            ]
+            self._run_process(process_args, self._root_dir)
+            print('install requests package...')
+            process_args = [
+                self._pip,
+                'install',
+                '--upgrade',
+                'requests'
+            ]
+            self._run_process(process_args, self._root_dir)
+            print('install twine package...')
+            process_args = [
+                self._pip,
+                'install',
+                '--upgrade',
+                'twine'
+            ]
+            self._run_process(process_args, self._root_dir)
+        print('init complete')
 
     def _find(self, name, path):
         for root, dirs, files in os.walk(path):
@@ -104,7 +106,11 @@ class CiBuild(object):
         fid = None
         if redirect_stdout_to is not None:
             fid = open(os.path.join(default_dir, redirect_stdout_to), 'w')
-        process = subprocess.Popen(process_args, bufsize=1, cwd=default_dir, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if os.name == 'nt':
+            shell=True
+        else:
+            shell=False
+        process = subprocess.Popen(process_args, bufsize=1, cwd=default_dir, shell=shell, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         while process.returncode is None:
             stdout_data, stderr_data = process.communicate()
             stdout_data = stdout_data.decode('utf-8')
