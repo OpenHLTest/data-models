@@ -489,7 +489,7 @@ class CiBuild(object):
             long_description_content_type='text/markdown',
             url='https://openhltest.github.io/docs',
             author='OpenHLTest Working Group',
-            author_email='https://github.com/OpenHLTest/data-models/issues',
+            author_email='andy.balogh@keysight.com',
             license='MIT',
             classifiers=['Development Status :: 3 - Alpha', 'Intended Audience :: Developers', 'Topic :: Software Development',
                 'License :: OSI Approved :: MIT License',
@@ -505,7 +505,7 @@ class CiBuild(object):
 
         self._dist_dir = os.path.join(self._root_dir, result.command_obj['bdist_wheel'].dist_dir)
         self._wheel = os.path.basename(result.command_obj['bdist_wheel'].distribution.dist_files[0][2])
-        print('%s is ready for distribution' % self._wheel)
+        print('%s is ready for posting to pypi' % self._wheel)
 
     def generate_angular_doc_app(self): 
         self._angular_app_dir = os.path.join(self._root_dir, 'doc-browser')
