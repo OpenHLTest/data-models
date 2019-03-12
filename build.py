@@ -66,13 +66,13 @@ class CiBuild(object):
             'store'
         ]
         if self._run_process(process_args, os.environ['TRAVIS_BUILD_DIR']) > 0:
-            print('failed to set-url on OpenHLTest.github.io')
+            print('failed to config credential store')
             sys.exit(-1)
         print('cloning OpenHLTest.github.io...')
         process_args = [
             'git',
             'clone',
-            'https://%sgithub.com/OpenHLTest/OpenHLTest.github.io.git' % os.environ['GH_TOKEN']
+            'https://%s@github.com/OpenHLTest/OpenHLTest.github.io.git' % os.environ['GH_TOKEN']
         ]
         if self._run_process(process_args, os.environ['TRAVIS_BUILD_DIR']) > 0:
             print('failed to clone OpenHLTest.github.io')
