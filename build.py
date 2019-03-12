@@ -130,7 +130,7 @@ class CiBuild(object):
     def _walk_and_print(self, path):
         for root, dirs, files in os.walk(path):
             for name in files:
-                print(os.path.join(root, name)):
+                print(os.path.join(root, name))
 
     def _run_process(self, process_args, default_dir, redirect_stdout_to=None):
         self._process_output = ''
