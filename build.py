@@ -42,7 +42,7 @@ class CiBuild(object):
             self._pyang = os.path.normpath('%s/scripts/pyang' % self._python_dir)
             self._pip = os.path.normpath('%s/Scripts/pip' % self._python_dir)
         else:
-            self._pyang = self._find('pyang', os.path.normpath('%s/..' % self._python_dir))
+            self._pyang = os.path.normpath('/home/travis/virtualenv/python2.7.14/lib/python2.7/site-packages', os.path.normpath('%s/..' % self._python_dir))
             self._pip = 'pip'
         self._pluginsdir = os.path.normpath('%s/plugins' % self._root_dir)
         if 'TRAVIS_BRANCH' in os.environ.keys():
@@ -54,6 +54,7 @@ class CiBuild(object):
             self._commit_range = os.environ['TRAVIS_COMMIT_RANGE']
         print('pyang location %s' % self._pyang)
         print('pip location %s' % self._pip)
+        print('doc file location %s' % self._doc_file)
         self._data_models_dir = os.path.normpath('%s/models' % self._root_dir)
         print('data models location %s' % self._data_models_dir)
         if os.name == 'nt':

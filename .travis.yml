@@ -5,7 +5,6 @@ python:
 install:
 - pip install requests
 - pip install pyang
-- pip install lxml
 - pip install setuptools
 - pip install twine
 - nvm install 0.10
