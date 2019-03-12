@@ -520,13 +520,22 @@ class CiBuild(object):
         if self._run_process(process_args, self._angular_app_dir) > 0:
             sys.exit(-1)
 
-        print('get npm packages...')
-        self._angular_app_dir = os.path.join(self._root_dir, 'doc-browser')
+        print('update node...')
+        process_args = [
+            'npm',
+            'install',
+            '-g',
+            'n'
+        ]
+        if self._run_process(process_args, self._angular_app_dir) > 0:
+            sys.exit(-1)
+
+        print('get packages...')
         process_args = [
             'npm',
             'install'
         ]
-        self._run_process(process_args, self._angular_app_dir) > 0:
+        if self._run_process(process_args, self._angular_app_dir) > 0:
             sys.exit(-1)
 
         print('build angular app...')
@@ -536,7 +545,7 @@ class CiBuild(object):
             'ng',
             'build'
         ]
-        self._run_process(process_args, self._angular_app_dir) > 0:
+        if self._run_process(process_args, self._angular_app_dir) > 0:
             sys.exit(-1)
 
     def deploy_python_package(self):
