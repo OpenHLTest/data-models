@@ -577,10 +577,7 @@ class CiBuild(object):
             '-u',
             '-v'
         ]
-        if self._run_process(process_args, self._openhltest_github_io_dir) > 0:
-            sys.exit(-1)
-        else:
-            print(self._process_output)
+        self._run_process(process_args, self._openhltest_github_io_dir)
 
         print('git commit...')
         process_args = [
@@ -590,20 +587,15 @@ class CiBuild(object):
             '-a',
             '-v'
         ]
-        if self._run_process(process_args, self._openhltest_github_io_dir) > 0:
-            sys.exit(-1)
-        else:
-            print(self._process_output)
+        self._run_process(process_args, self._openhltest_github_io_dir)
 
         print('git push...')
         process_args = [
             'git',
             'push'
         ]
-        if self._run_process(process_args, self._openhltest_github_io_dir) > 0:
-            sys.exit(-1)
-        else:
-            print(self._process_output)
+        self._run_process(process_args, self._openhltest_github_io_dir)
+
         return 0
 
 
