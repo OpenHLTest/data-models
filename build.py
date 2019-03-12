@@ -28,6 +28,8 @@ class CiBuild(object):
         self._view_models_dir = os.path.normpath('%s/views' % self._root_dir)
         self._doc_file = os.path.normpath('%s/doc-browser/src/assets/documentation.json' % self._root_dir)
         self._python_client_dir = os.path.normpath('%s/openhltest_client' % self._root_dir)
+        self._openhltest_github_io_dir = os.path.normpath('%s/../OpenHLTest.github.io' % self._root_dir)
+        print('openhltest doc dir location %s' % self._openhltest_github_io_dir)
         print('starting openhltest build script in %s' % self._root_dir)
         print('reading version...')
         with open(os.path.normpath(os.path.join(self._python_client_dir, 'version.txt'))) as fid:
@@ -94,7 +96,9 @@ class CiBuild(object):
             'clone',
             os.environ['OPENHLTEST_GITHUB_IO']
         ]
-        self._run_process(process_args, self._root_dir)		
+        if self._run_process(process_args, self._root_dir) > 0:
+            print('git clone of openltest.github.io failed')
+            sys.exit(-1)	
 
     def _find(self, name, path):
         for root, dirs, files in os.walk(path):
@@ -472,7 +476,7 @@ class CiBuild(object):
 
         print('create openhltest python client wheel...')
         from setuptools import setup
-        result = setup(name='openhltest_client',
+        result = setup(name='openhltest',
             version=self._build_number,
             description='OpenHLTest Python Client',
             long_description=long_description,
@@ -529,8 +533,6 @@ class CiBuild(object):
             print('openhltest client package deployment to pypi failed')
 
     def update_openhltest_github_io(self):
-        self._openhltest_github_io_dir = os.path.normpath('%s/../OpenHLTest.github.io' % self._root_dir)
-        print('openhltest doc dir location %s' % self._openhltest_github_io_dir)
         os.chdir(self._openhltest_github_io_dir)
         process_args = [
             'git',
