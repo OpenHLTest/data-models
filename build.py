@@ -126,17 +126,18 @@ class CiBuild(object):
                     fid.write(stdout_data)
                     fid.close()
                 else:
-                    print(stdout_data)
+                    # print(stdout_data)
                     self._process_output += stdout_data
                 return 0
             elif process.returncode > 0:
                 print('PROCESS FAIL: %s' % stderr_data)
+                print(self._process_output)
                 return process.returncode
             else:
                 if fid is not None:
                     fid.write(stdout_data)
                 else:
-                    print(stdout_data)
+                    # print(stdout_data)
                     self._process_output += stdout_data
 
     def _git_add(self, filename):
@@ -346,7 +347,7 @@ class CiBuild(object):
             class_filename = os.path.normpath(os.path.join(class_path, '%s.py' % pieces[-1]))
             with open(class_filename, 'w') as fid:
                 fid.write(classDefinition)
-            print('generated python class %s' % class_filename)
+            # print('generated python class %s' % class_filename)
 
             if 'children' in node:
                 for child in node['children']:
@@ -507,13 +508,26 @@ class CiBuild(object):
         print('%s is ready for distribution' % self._wheel)
 
     def generate_angular_doc_app(self): 
+        self._angular_app_dir = os.path.join(self._root_dir, 'doc-browser')
+
+        print('update npm...')
+        process_args = [
+            'npm',
+            'install',
+            'npm@latest',
+            '-g'
+        ]
+        if self._run_process(process_args, self._angular_app_dir) > 0:
+            sys.exit(-1)
+
         print('get npm packages...')
         self._angular_app_dir = os.path.join(self._root_dir, 'doc-browser')
         process_args = [
             'npm',
             'install'
         ]
-        self._run_process(process_args, self._angular_app_dir)
+        self._run_process(process_args, self._angular_app_dir) > 0:
+            sys.exit(-1)
 
         print('build angular app...')
         process_args = [
@@ -522,7 +536,8 @@ class CiBuild(object):
             'ng',
             'build'
         ]
-        self._run_process(process_args, self._angular_app_dir)
+        self._run_process(process_args, self._angular_app_dir) > 0:
+            sys.exit(-1)
 
     def deploy_python_package(self):
         username = os.environ['PYPI_USERNAME']
