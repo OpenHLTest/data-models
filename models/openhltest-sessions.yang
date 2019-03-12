@@ -31,15 +31,11 @@ submodule openhltest-sessions {
 
 		list sessions {
 			key "name";
-			description
-			"A list of test tool sessions.
-			Sessions can onl be accessed based on the api-key submitted as part of the request.
-			To get an api-key use the authenticate rpc.";
+			description "A list of test tool sessions.";
 
 			leaf name {
 				type t:config-list-key;
-				description	"The unique name of the test tool session.
-				Once the session has been created the name cannot be modified.";
+				description	"The unique name of a test tool session.";
 			}
 
 			uses config-top;
