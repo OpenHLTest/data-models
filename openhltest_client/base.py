@@ -173,7 +173,7 @@ class Base(object):
 
     def _update(self, locals_dict):
         if self.YANG_KEY is not None:
-            relative_url = self._build_relative_url(self.YANG_NAME, locals_dict[self.YANG_KEY])
+            relative_url = self._build_relative_url(self.YANG_NAME, self._get_value(self.YANG_KEY))
         else:
             relative_url = self._build_relative_url(self.YANG_NAME, None)
         self._transport._update(yang=self.__class__, url=relative_url, locals_dict=locals_dict)
@@ -190,7 +190,7 @@ class Base(object):
 
     def _execute(self, operation, payload):
         if self.YANG_KEY is not None:
-            relative_url = self._build_relative_url(self.YANG_NAME, locals_dict[self.YANG_KEY])
+            relative_url = self._build_relative_url(self.YANG_NAME, self._get_value(self.YANG_KEY))
         else:
             relative_url = self._build_relative_url(self.YANG_NAME, None)
         relative_url = '%s/%s' % (relative_url, operation)

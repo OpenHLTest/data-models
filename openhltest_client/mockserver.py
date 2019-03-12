@@ -100,12 +100,13 @@ class MockServer(object):
         category = 'oht:%s' % yang_class.YANG_NAME
         key = None
         if yang_class.YANG_KEYWORD == 'list':
-            key = data[category][yang_class.YANG_KEY]
+            key = url[url.rfind('/'):]
+            key = key[key.find('=') + 1:]
         if key is None:
             data_index = 0
         else:
             for i in range(len(self._mock_storage[parent][category])):
-                if key == item[yang_class.YANG_KEY]:
+                if key == self._mock_storage[parent][category][i][yang_class.YANG_KEY]:
                     data_index = i
                     break
         self._mock_storage[parent][category][data_index] = data[category]
