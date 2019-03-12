@@ -512,9 +512,9 @@ class CiBuild(object):
         self._run_process(process_args, self._angular_app_dir)
 
     def deploy_python_package(self):
-		username = os.environ['PYPI_USERNAME']
-		password = os.environ['PYPI_PASSWORD']
-		print('uploading to pypi with -u %s -p %s' % (username, password))
+        username = os.environ['PYPI_USERNAME']
+        password = os.environ['PYPI_PASSWORD']
+        print('uploading to pypi with -u %s -p %s' % (username, password))
         process_args = [
             'twine',
             'upload',
