@@ -729,9 +729,11 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 			code.push(`\n`);
 		}
 	}
-	private getPropertyEqualsValue(yangNode: IYangNode): string {
+	private getPropertyEqualsValue(yangNode: IYangNode, parentNode: IYangNode = undefined): string {
 		let value = `None`;
-		if (yangNode._type_pattern) {
+		if (parentNode) {
+			value = `'A unique ${parentNode.name} ${yangNode.name}'`;
+		} else if (yangNode._type_pattern) {
 			value = `'${yangNode._type_pattern}'`;
 		}
 		let hyperlink = this.createHyperlink(yangNode.id, this.pythonName(yangNode.name));	
@@ -749,7 +751,9 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 		}
 		code.push(`from openhltest_client.httptransport import HttpTransport\n\n`)
 		code.push(`# create an instance of the transport class\n`);
-		code.push(`vendors_openhltest_server = '127.0.0.1'\n`);
+		code.push('# by default the HttpTransport will use the internal MockServer to allow for baseline testing\n')
+		code.push('# to connect to a vendor server implementation pass in a valid hostname or ip address\n')
+		code.push(`vendors_openhltest_server = None\n`);
 		code.push(`transport = HttpTransport(vendors_openhltest_server, api_key='optional api key')\n\n`);
 		code.push(`# get an instance of the OpenHlTest module class\n`);
 		code.push('openhltest = transport.OpenHlTest\n\n');
@@ -789,7 +793,7 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 
 			if (action === 'create') {
 				let keyNode = treeNode.data.children.find((c) => c.name == treeNode.data._key);
-				code.push(`.create(${this.getPropertyEqualsValue(keyNode)}`);
+				code.push(`.create(${this.getPropertyEqualsValue(keyNode, treeNode.data)}`);
 				if (optional_parameters.length > 0) {
 					code.push(optional_parameters.join(''));
 				}

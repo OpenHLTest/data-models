@@ -10,9 +10,8 @@ from openhltest_client.errors import *
 
 
 class HttpTransport(Transport):
-    MOCK_SERVER = 'mock'
 
-    def __init__(self, openhltest_server=MOCK_SERVER, api_key=None, log_file_name=None):
+    def __init__(self, openhltest_server=None, api_key=None, log_file_name=None):
         """RestConf style transport
 
         Args:
@@ -29,16 +28,18 @@ class HttpTransport(Transport):
             import urllib3
             urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-        if openhltest_server == HttpTransport.MOCK_SERVER:
-            self._session = MockServer()
-        else:
-            self._session = Session()
+        self._openhltest_server = openhltest_server
         self._verify_cert = False
         self._ignore_env_proxy = False
-        self._openhltest_server = openhltest_server
         self._api_key = None
-        self._base_data_url = 'https://%s/restconf/data' % (self._openhltest_server)
-        self._base_operations_url = 'https://%s/restconf/operations' % (self._openhltest_server)
+        if openhltest_server is None:
+            self._session = MockServer()
+            self._base_data_url = 'https://<ipaddress:port>/restconf/data'
+            self._base_operations_url = 'https://<ipaddress:port>/restconf/operations'
+        else:
+            self._session = Session()
+            self._base_data_url = 'https://%s/restconf/data' % (self._openhltest_server)
+            self._base_operations_url = 'https://%s/restconf/operations' % (self._openhltest_server)
 
     @property
     def OpenHlTest(self):
@@ -111,7 +112,7 @@ class HttpTransport(Transport):
                 payload = {'oht:input': locals_dict}
         
         self._log_request(method, url, headers, payload)
-        if self._openhltest_server == HttpTransport.MOCK_SERVER:
+        if self._openhltest_server is None:
             response = self._session.request(yang_class, method, url, locals_dict, payload)
         else:
             response = self._session.request(method, url, headers=headers, data=payload, verify=self._verify_cert)
