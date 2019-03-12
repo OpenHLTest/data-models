@@ -179,7 +179,7 @@ class CiBuild(object):
         if self._run_process(process_args, self._root_dir) == 0:
             continue_build = False
             for changed_file in self._process_output.split('\n'):
-                if changed_file.startswith(('model/', 'openhltest_client/', 'plugins/', 'doc-browser/')):
+                if changed_file.startswith(('build.py', 'model/', 'openhltest_client/', 'plugins/', 'doc-browser/')):
                     print('changed file %s' % changed_file)
                     continue_build = True
             if continue_build is False:
