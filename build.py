@@ -32,7 +32,7 @@ class CiBuild(object):
         self._view_models_dir = os.path.normpath('%s/views' % self._root_dir)
         self._doc_file = os.path.normpath('%s/doc-browser/src/assets/documentation.json' % self._root_dir)
         self._python_client_dir = os.path.normpath('%s/openhltest_client' % self._root_dir)
-        self._openhltest_github_io_dir = os.path.normpath('%s/../OpenHLTest.github.io' % self._root_dir)
+        self._openhltest_github_io_dir = os.path.normpath(os.path.join(os.environ['TRAVIS_BUILD_DIR'], 'OpenHLTest.github.io'))
         print('openhltest doc dir location %s' % self._openhltest_github_io_dir)
         print('reading version...')
         with open(os.path.normpath(os.path.join(self._python_client_dir, 'version.txt'))) as fid:
@@ -64,7 +64,7 @@ class CiBuild(object):
             'clone',
             'https://%s@github.com/OpenHLTest/OpenHLTest.github.io.git' % os.environ['GH_TOKEN']
         ]
-        if self._run_process(process_args, self._root_dir) > 0:
+        if self._run_process(process_args, os.environ['TRAVIS_BUILD_DIR']) > 0:
             print('failed to clone OpenHLTest.github.io')
             sys.exit(-1)
 
