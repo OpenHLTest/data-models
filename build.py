@@ -127,6 +127,11 @@ class CiBuild(object):
                 print(os.path.join(root, name))
         return '/home/travis/virtualenv/python2.7.14/bin/pyang'
 
+    def _walk_and_print(self, path):
+        for root, dirs, files in os.walk(path):
+            for name in files:
+                print(os.path.join(root, name)):
+
     def _run_process(self, process_args, default_dir, redirect_stdout_to=None):
         self._process_output = ''
         fid = None
@@ -561,7 +566,8 @@ class CiBuild(object):
 
     def update_openhltest_github_io(self):
         os.chdir(self._openhltest_github_io_dir)
-        
+        self._walk_and_print(self._openhltest_github_io_dir)
+
         print('git add...')
         process_args = [
             'git',
@@ -590,9 +596,7 @@ class CiBuild(object):
         print('git push...')
         process_args = [
             'git',
-            'push',
-            'docs',
-            'master'
+            'push'
         ]
         if self._run_process(process_args, self._openhltest_github_io_dir) > 0:
             sys.exit(-1)
