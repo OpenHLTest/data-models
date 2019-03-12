@@ -560,6 +560,8 @@ class CiBuild(object):
             print('openhltest client package deployment to pypi failed')
 
     def update_openhltest_github_io(self):
+        os.chdir(self._openhltest_github_io_dir)
+        
         print('git add...')
         process_args = [
             'git',
@@ -573,7 +575,7 @@ class CiBuild(object):
         process_args = [
             'git',
             'commit',
-            '-m "upload python client documentation"',
+            '-m "update python client documentation"',
             '-a'
         ]
         if self._run_process(process_args, self._openhltest_github_io_dir) > 0:
