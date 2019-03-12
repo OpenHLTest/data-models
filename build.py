@@ -105,7 +105,7 @@ class CiBuild(object):
         for root, dirs, files in os.walk(path):
             if name in files:
                 print(os.path.join(root, name))
-        return 'pyang'
+        return '/home/travis/virtualenv/python2.7.14/bin/pyang'
 
     def _run_process(self, process_args, default_dir, redirect_stdout_to=None):
         self._process_output = ''
@@ -186,7 +186,6 @@ class CiBuild(object):
     def generate_hierarchy(self):
         print('generating model hierarchy...')
         hierarchy = [
-            self._python,
             self._pyang,
             '--strict',
             '--ietf',
