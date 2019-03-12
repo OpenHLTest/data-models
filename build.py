@@ -512,13 +512,16 @@ class CiBuild(object):
         self._run_process(process_args, self._angular_app_dir)
 
     def deploy_python_package(self):
+		username = os.environ['PYPI_USERNAME']
+		password = os.environ['PYPI_PASSWORD']
+		print('uploading to pypi with -u %s -p %s' % (username, password))
         process_args = [
             'twine',
             'upload',
             '-u',
-            os.environ['PYPI_USERNAME'],
+            username,
             '-p',
-            os.environ['PYPI_PASSWORD'],
+            password,
             self._wheel
         ]
         if self._run_process(process_args, self._dist_dir) > 0:
@@ -544,5 +547,5 @@ cibuild.generate_python_package()
 cibuild.generate_angular_doc_app() 
 cibuild.build_python_package()
 cibuild.deploy_python_package()
-cibuild.update_openhltest_github_io()
+#cibuild.update_openhltest_github_io()
 
