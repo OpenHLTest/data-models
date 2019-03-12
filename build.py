@@ -58,6 +58,16 @@ class CiBuild(object):
         print('doc file location %s' % self._doc_file)
         self._data_models_dir = os.path.normpath('%s/models' % self._root_dir)
         print('data models location %s' % self._data_models_dir)
+        print('cloning OpenHLTest.github.io...')
+        process_args = [
+            'git',
+            'clone',
+            'https://%s@github.com/OpenHLTest/OpenHLTest.github.io.git' % os.environ['GH_TOKEN']
+        ]
+        if self._run_process(process_args, self._root_dir) > 0:
+            print('failed to clone OpenHLTest.github.io')
+            sys.exit(-1)
+
         if os.name == 'nt':
             print('install pyang package...')
             process_args = [
@@ -175,7 +185,7 @@ class CiBuild(object):
         if self._run_process(process_args, self._root_dir) == 0:
             continue_build = False
             for changed_file in self._process_output.split('\n'):
-                if changed_file.startswith('model/') or changed_file.startswith('python_client/') or changed_file.startswith('plugins/'):
+                if changed_file.startswith('model/') or changed_file.startswith('openhltest_client/') or changed_file.startswith('plugins/'):
                     continue_build = True
             if continue_build is False:
                 print('stopping build, no model or client generation updates')

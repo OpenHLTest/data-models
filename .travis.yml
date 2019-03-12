@@ -7,18 +7,14 @@ install:
 - pip install pyang
 - pip install setuptools
 - pip install twine
-before_script:
-# - npm install
-# - git clone https://github.com/OpenHLTest/OpenHLTest.github.io.git
-# - cd 
 script:
 - python build.py
 env:
   global:
   - secure: EIwpNGpXdC7Qo27ieDFx3x7scpJEnWtPjb2YDd3v9ungM73tMH6x0DfdFoeNgZzxZG6Shnt8G0cVx7bY9KBOQggBkAZaagKdENkPs7lQX7CKLpIwmKZwwNNlSBYBYANVxRWsbTsF/yFtGZCxcRjJ5I8+RYm8V1SbbXj5CZQuPsGWmB8IUuYD+LPQZBNujssxGB1hRP5GqyXouKP8tM+jbORQOwa94qHAKDnmGI0XRKX1RtGhwahVASXCvYlRZMIbdNxwNC3rfec7D2UutuXmHic07eALBiyKxh8pRm5Bb383y2XiUNj4pnI50QMdZ304hEe6BVXtVKsteXfKRfsL6kRqpjIxAJTNWT5CRTRs9cBuysAJtVOFzJW9Nto0GG1SmnlXViapeA0sKltVDWI4QosT97z3rsN337NFY1C3WS/UCDxCss0Abmt6r1NXXHa8X1s3GnFz/JYtvne0EF8J1Wm4PSFNIAwu9px9D5QkcBV25UwEl0lV6GduS4wCiP0vRf9RAKxp0y3HjMdKj/hCItBZ8kb4/mf7fvaqntxiXY5293zoDTdRWp8JJlhgoWgXKn0bKQEio5rCRO4NjAgOR8VowuMeBWFDPZca7BBubuM3EQ4EQREOoCunwX+SysfR2j2rB0nBwHK+BeO1qUnaJbG+lgYTbaIAs0i+3pvG7J4=
   - secure: nImujis2pbFY9ZD/35I4y+oLHjtb0fu5lh3EkGVQhs7CNMDT2BrdCqEV0wRO3aEruVzMqj/YsQj9TbMp9xEMkDyW6vC2qiqwnsADke3j4u54vECwMC2zX+wyMMPkXaxn6KbGNT3Fb8L9P2tWdLw/HWa8HvO7JBT85Y3IBqTwC4UISblUzlrbZaqlYM3dXS4Z8jCwMbNi05M3/4m44Ct8W1PP8O1Wi+l+G0/NswAOBbbHMmnk8F00LU72Z918UhawsFULdewsJBfCy4axxhlpe6hdCvT3YKltD3NxuuIy9/8L0E1i13xjjVn51KHSddrkv6by+LbXF5yyKa5gW0g/KVHVoWvWrpDoaOXYAsWDwDNH8ypKKSkK7TonhaBG09XpFWTneNHPUszZqPyDJ0OPoEOWVxkQ3bH7xmIXHjylQEEvp+BBQhrrODvthdJzRGw0QvTs/ya3Qy+FaIv9nN0VGDc3lD0TgUbFvap6+/r2S4CzMM+127irjK3+pmJY99FlO+CTnKvH1qYegy1hjy1Erspbcx+cs2pb9XaBjFtu+s5Lm+SHs6+z9y99cyW2vnNY0jmIYjj0CjiqjbCkYb05TxW/c1RBVLsSNfT/D2QQHjlNYvy0t/pjB50Y5EUsUN953cRcJSY7w/O5hRi9X2JhZWbRa+wM5Y4ilnvqF4spaiE=
-after_success:
-- cd OpenHLTest.github.io
-- git add -u
-- git commit -m "upload python client documentation" -a
-- git push
+# after_success:
+# - cd OpenHLTest.github.io
+# - git add -u
+# - git commit -m "upload python client documentation" -a
+# - git push
