@@ -42,7 +42,8 @@ class CiBuild(object):
             self._pyang = os.path.normpath('%s/scripts/pyang' % self._python_dir)
             self._pip = os.path.normpath('%s/Scripts/pip' % self._python_dir)
         else:
-            self._pyang = self._find('pyang', os.path.normpath('%s/..' % self._python_dir))
+            self._pyang = self._find('pyang', "/") 
+            #os.path.normpath('%s/..' % self._python_dir))
             self._pip = 'pip'
         self._pluginsdir = os.path.normpath('%s/plugins' % self._root_dir)
         if 'TRAVIS_BRANCH' in os.environ.keys():
@@ -103,7 +104,8 @@ class CiBuild(object):
     def _find(self, name, path):
         for root, dirs, files in os.walk(path):
             if name in files:
-                return os.path.join(root, name)
+                print(os.path.join(root, name))
+        return 'pyang'
 
     def _run_process(self, process_args, default_dir, redirect_stdout_to=None):
         self._process_output = ''
