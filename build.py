@@ -71,7 +71,7 @@ class CiBuild(object):
             'git',
             'remote',
             'set-url',
-            'master',
+            '--add',
             'https://%s@github.com/OpenHLTest/OpenHLTest.github.io.git' % os.environ['GH_TOKEN']
         ]
         if self._run_process(process_args, os.environ['TRAVIS_BUILD_DIR']) > 0:
