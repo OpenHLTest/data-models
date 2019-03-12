@@ -22,7 +22,10 @@ class CiBuild(object):
 
     def __init__(self):
         self._root_model = 'openhltest.yang'
-        self._root_dir = os.path.normpath(os.path.dirname(__file__))
+        if os.name == 'nt':
+            self._root_dir = os.path.normpath(os.path.dirname(__file__))
+        else:
+            self._root_dir = os.getcwd()
         print('root dir location %s' % self._root_dir)
         self._python = os.path.normpath(sys.executable)
         self._python_dir = os.path.dirname(self._python)
