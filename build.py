@@ -58,21 +58,23 @@ class CiBuild(object):
         print('doc file location %s' % self._doc_file)
         self._data_models_dir = os.path.normpath('%s/models' % self._root_dir)
         print('data models location %s' % self._data_models_dir)
-        print('cloning OpenHLTest.github.io...')
-        process_args = [
-            'git',
-            'clone',
-            'https://%s@github.com/OpenHLTest/OpenHLTest.github.io.git' % os.environ['GH_TOKEN']
-        ]
-        if self._run_process(process_args, os.environ['TRAVIS_BUILD_DIR']) > 0:
-            print('failed to clone OpenHLTest.github.io')
-            sys.exit(-1)
+
         process_args = [
             'git',
             'remote',
             'set-url',
             '--add',
+            'origin',
             'https://%s@github.com/OpenHLTest/OpenHLTest.github.io.git' % os.environ['GH_TOKEN']
+        ]
+        if self._run_process(process_args, os.environ['TRAVIS_BUILD_DIR']) > 0:
+            print('failed to set-url on OpenHLTest.github.io')
+            sys.exit(-1)
+        print('cloning OpenHLTest.github.io...')
+        process_args = [
+            'git',
+            'clone',
+            'https://github.com/OpenHLTest/OpenHLTest.github.io.git'
         ]
         if self._run_process(process_args, os.environ['TRAVIS_BUILD_DIR']) > 0:
             print('failed to clone OpenHLTest.github.io')
