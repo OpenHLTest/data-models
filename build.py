@@ -549,7 +549,7 @@ class CiBuild(object):
             sys.exit(-1)
 
     def deploy_python_package(self):
-        print('uploading to pypi with -u %s -p %s' % (username, password))
+        print('uploading to pypi...')
         process_args = [
             'twine',
             'upload',
