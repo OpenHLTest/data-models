@@ -92,20 +92,9 @@ class CiBuild(object):
         process_args = [
             'git',
             'clone',
-            os.environ['OPENHLTEST.GITHUB.IO']
+            os.environ['OPENHLTEST_GITHUB_IO']
         ]
-        self._run_process(process_args, self._root_dir)
-        # process_args = [
-        #     'git',
-        #     'remote'
-        # ]
-        # self._run_process(process_args, self._root_dir)
-        # process_args = [
-        #     'git',
-        #     'config',
-        #     '--list'
-        # ]
-        # self._run_process(process_args, self._root_dir)		
+        self._run_process(process_args, self._root_dir)		
 
     def _find(self, name, path):
         for root, dirs, files in os.walk(path):
