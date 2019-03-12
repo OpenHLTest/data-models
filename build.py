@@ -546,7 +546,7 @@ class CiBuild(object):
             sys.exit(-1)
 
     def deploy_python_package(self):
-        print('uploading to pypi...')
+        print('uploading %s to pypi...' % self._wheel)
         process_args = [
             'twine',
             'upload',
@@ -570,6 +570,8 @@ class CiBuild(object):
         ]
         if self._run_process(process_args, self._openhltest_github_io_dir) > 0:
             sys.exit(-1)
+        else:
+            print(self._process_output)
 
         print('git commit...')
         process_args = [
@@ -580,6 +582,8 @@ class CiBuild(object):
         ]
         if self._run_process(process_args, self._openhltest_github_io_dir) > 0:
             sys.exit(-1)
+        else:
+            print(self._process_output)
 
         print('git push...')
         process_args = [
@@ -588,7 +592,9 @@ class CiBuild(object):
         ]
         if self._run_process(process_args, self._openhltest_github_io_dir) > 0:
             sys.exit(-1)
-
+        else:
+            print(self._process_output)
+        return 0
 
 
 cibuild = CiBuild()
