@@ -569,7 +569,8 @@ class CiBuild(object):
 
     def update_openhltest_github_io(self):
         os.chdir(self._openhltest_github_io_dir)
-
+        self._walk_and_print(self._openhltest_github_io_dir)
+        
         print('git add...')
         process_args = [
             'git',
