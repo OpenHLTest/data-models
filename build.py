@@ -23,6 +23,7 @@ class CiBuild(object):
     def __init__(self):
         self._root_model = 'openhltest.yang'
         self._root_dir = os.path.normpath(os.path.dirname(__file__))
+        print('root dir location %s' % self._root_dir)
         self._python = os.path.normpath(sys.executable)
         self._python_dir = os.path.dirname(self._python)
         self._view_models_dir = os.path.normpath('%s/views' % self._root_dir)
@@ -30,7 +31,6 @@ class CiBuild(object):
         self._python_client_dir = os.path.normpath('%s/openhltest_client' % self._root_dir)
         self._openhltest_github_io_dir = os.path.normpath('%s/../OpenHLTest.github.io' % self._root_dir)
         print('openhltest doc dir location %s' % self._openhltest_github_io_dir)
-        print('starting openhltest build script in %s' % self._root_dir)
         print('reading version...')
         with open(os.path.normpath(os.path.join(self._python_client_dir, 'version.txt'))) as fid:
             self._build_number = fid.read()
