@@ -90,15 +90,7 @@ class CiBuild(object):
             '--upgrade',
             'twine'
         ]
-        self._run_process(process_args, self._root_dir)
-        process_args = [
-            'git',
-            'clone',
-            os.environ['OPENHLTEST_GITHUB_IO']
-        ]
-        if self._run_process(process_args, os.path.normpath(os.path.join(self._root_dir, '../'))) > 0:
-            print('git clone of openltest.github.io failed')
-            sys.exit(-1)	
+        self._run_process(process_args, self._root_dir)	
 
     def _find(self, name, path):
         for root, dirs, files in os.walk(path):
