@@ -718,7 +718,7 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 			for (let childNode of this.YangNode.children) {
 				if(this.isProperty(childNode)) {
 					if (!accessorComment) {
-						code.push(`# access the values of leaf and leaf-list nodes using class properties\n`);
+						code.push(`# access the values of leaf and leaf-list nodes using properties\n`);
 						accessorComment = true;
 					}
 					code.push(`print(${leftSideName}.${this.pythonName(childNode.name)})\n`);
@@ -814,7 +814,7 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 			}
 
 			if (action === 'create' && treeNode.data.name === this.YangNode.name) {
-				code.push(`# delete the current ${this.pythonName(treeNode.data.name)} resource encapsulated in the ${leftSideName} instance\n`);
+				code.push(`# delete the current ${this.pythonName(treeNode.data.name)} resource(s) encapsulated in the ${leftSideName} instance\n`);
 				code.push(`${leftSideName}.delete()\n\n`);
 			}
 		}
