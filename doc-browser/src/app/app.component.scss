@@ -37,7 +37,7 @@
 	}
 
 	.details {
-		font: normal 12px arial;
+		font: normal 14px arial;
 		padding-bottom: 10px;
 	}
 
@@ -52,4 +52,11 @@
 		width: calc(100% - 50px);
 		border:1px solid lightgray;
 	}
+}
+
+
+.app-link {
+	cursor: pointer;
+	font: normal 14px arial;
+	color: $link-color;
 }

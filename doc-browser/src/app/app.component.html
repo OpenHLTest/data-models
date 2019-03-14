@@ -12,11 +12,20 @@
 			Reference</span> </div>
 	<div class="content" id='content'>
 		<div *ngIf='CurrentTab == TabTypes.overview'>
-			<div class="title">OpenHLTest Overview</div>
-			<div class="summary">Content should come from the github README?</div>
-			<div class="summary">This will be generated everytime there is a checkin to the master branch.</div>
-			<div class="summary">This app will be hosted on the github openhltest site?</div>
-			<div class="summary">Should contain a link to pypi site to get python client?</div>
+			<div class="title">Overview</div>
+			<div class="summary">
+				OpenHLTest is a collaborative effort by test vendors to develop agnostic programmatic interfaces and tools for managing test equipment.
+				<br>
+				<br>
+				For every Yang list, container, rpc and action keyword contained in the OpenHLTest models the <span class='app-link' (click)='CurrentTab = TabTypes.apireference'>model reference</span> documents the following:
+			</div>
+			<ul class="details">
+				<li>Yang model details</li>
+				<li>Python sample code</li>
+				<li>Python class</li>
+				<li>Restconf requests</li>
+			</ul>
+			<div class="details">To get the latest OpenHLTest python client you can install it using <b>pip install -U openhltest</b> or download it directly from <a href="https://pypi.org/project/openhltest/#files">pypi</a></div>
 		</div>
 		<reference-component *ngIf='CurrentTab == TabTypes.apireference'></reference-component>
 		<div *ngIf='CurrentTab == TabTypes.license'>
