@@ -32,7 +32,10 @@ class CiBuild(object):
         self._view_models_dir = os.path.normpath('%s/views' % self._root_dir)
         self._doc_file = os.path.normpath('%s/doc-browser/src/assets/documentation.json' % self._root_dir)
         self._python_client_dir = os.path.normpath('%s/openhltest_client' % self._root_dir)
-        self._openhltest_dir =  os.path.normpath(os.path.join(os.environ['TRAVIS_BUILD_DIR'], '../'))
+        if 'TRAVIS' in os.environ:
+            self._openhltest_dir = os.path.normpath(os.path.join(os.environ['TRAVIS_BUILD_DIR'], '../'))
+        else:
+            self._openhltest_dir = os.path.normpath(os.path.join(self._root_dir, '../'))
         print('openhltest dir location %s' % self._openhltest_dir)
         self._openhltest_github_io_dir = os.path.normpath(os.path.join(self._openhltest_dir, 'OpenHLTest.github.io'))
         print('openhltest doc dir location %s' % self._openhltest_github_io_dir)
@@ -61,24 +64,25 @@ class CiBuild(object):
         self._data_models_dir = os.path.normpath('%s/models' % self._root_dir)
         print('data models location %s' % self._data_models_dir)
 
-        process_args = [
-            'git',
-            'config',
-            'credential.helper',
-            'store'
-        ]
-        if self._run_process(process_args, self._root_dir) > 0:
-            print('failed to config credential store')
-            sys.exit(-1)
-        print('cloning OpenHLTest.github.io...')
-        process_args = [
-            'git',
-            'clone',
-            'https://%s@github.com/OpenHLTest/OpenHLTest.github.io.git' % os.environ['GH_TOKEN']
-        ]
-        if self._run_process(process_args, self._openhltest_dir) > 0:
-            print('failed to clone OpenHLTest.github.io')
-            sys.exit(-1)
+        if 'TRAVIS' in os.environ:
+            process_args = [
+                'git',
+                'config',
+                'credential.helper',
+                'store'
+            ]
+            if self._run_process(process_args, self._root_dir) > 0:
+                print('failed to config credential store')
+                sys.exit(-1)
+            print('cloning OpenHLTest.github.io...')
+            process_args = [
+                'git',
+                'clone',
+                'https://%s@github.com/OpenHLTest/OpenHLTest.github.io.git' % os.environ['GH_TOKEN']
+            ]
+            if self._run_process(process_args, self._openhltest_dir) > 0:
+                print('failed to clone OpenHLTest.github.io')
+                sys.exit(-1)
 
         if os.name == 'nt':
             print('install pyang package...')
@@ -208,6 +212,8 @@ class CiBuild(object):
             self._data_models_dir,
             self._root_model
         ]
+        if os.name == 'nt':
+            hierarchy.insert(0, self._python)
         if self._run_process(hierarchy, self._data_models_dir) > 0:
             print('generating hierarchy failed')
             sys.exit(1)
@@ -226,6 +232,8 @@ class CiBuild(object):
             nodes = json.load(fid)
         for node in nodes:
             self._generate_python_class(node)
+        with open(self._doc_file, 'w') as fid:
+            json.dump(nodes, fid)
 
     def _make_python_name(self, yang_name):
         camelCaseName = ''
@@ -352,7 +360,7 @@ class CiBuild(object):
             class_filename = os.path.normpath(os.path.join(class_path, '%s.py' % pieces[-1]))
             with open(class_filename, 'w') as fid:
                 fid.write(classDefinition)
-            # print('generated python class %s' % class_filename)
+            node['_python_class'] = classDefinition
 
             if 'children' in node:
                 for child in node['children']:
@@ -525,15 +533,16 @@ class CiBuild(object):
         if self._run_process(process_args, self._angular_app_dir) > 0:
             sys.exit(-1)
 
-        print('update node...')
-        process_args = [
-            'npm',
-            'install',
-            '-g',
-            'n'
-        ]
-        if self._run_process(process_args, self._angular_app_dir) > 0:
-            sys.exit(-1)
+        if os.name != 'nt':
+            print('update node...')
+            process_args = [
+                'npm',
+                'install',
+                '-g',
+                'n'
+            ]
+            if self._run_process(process_args, self._angular_app_dir) > 0:
+                sys.exit(-1)
 
         print('get packages...')
         process_args = [
@@ -554,6 +563,9 @@ class CiBuild(object):
             sys.exit(-1)
 
     def deploy_python_package(self):
+        if 'TRAVIS' not in os.environ:
+            return
+            
         print('uploading %s to pypi...' % self._wheel)
         process_args = [
             'twine',
@@ -568,6 +580,9 @@ class CiBuild(object):
             print('openhltest client package deployment to pypi failed')
 
     def update_openhltest_github_io(self):
+        if 'TRAVIS' not in os.environ:
+            return
+
         os.chdir(self._openhltest_github_io_dir)
 
         print('git add...')
