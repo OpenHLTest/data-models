@@ -6,27 +6,18 @@
 
 OpenHLTest is a collaborative effort by test vendors to develop agnostic programmatic interfaces and tools for managing test equipment.  
 
-OpenHLTest's initial focus is the following:
-- a consistent set of vendor-neutral data models (written in YANG)
-- continuous integration yielding a single set of client tools
+OpenHLTest's focus is the following:
+- a consistent set of YANG vendor-neutral data models 
+- continuous integration yielding a single set of client artifacts
 - test vendor server implementations of the data models
 
-## Contributing to OpenHLTest
+## Artifacts
+On every commit to the repository a [Travis job](https://travis-ci.org/OpenHLTest/data-models) will do the following:
+- validate the models
+- generate the python package and the documentation browser artifacts
+- upload the [python package](https://pypi.org/project/openhltest/) and the [documentation browser](https://openhltest.github.io/docs/index.html)
+
+## Contributing
 This repository is primarily for publishing the models, documents, and other material developed by the OpenHLTest working group. We generally do not accept pull requests in this repository.
 
 Feedback and suggestions to improve OpenHLTest models is welcomed by opening a [GitHub issue](https://github.com/OpenHLTest/data-models/issues).
-
-# Continuous Integration
-On every commit to the repository folder travis continuous integration will start and do the following:
-- identify model changes, if none the build will stop
-- use pyang to validate the models.
-- use pyang to generate and update the views folder with a model text view and html view
-- use pyang to generate the python client files under the python_client/openhltest folder
-- run python client unit tests
-- generate pydoc html and markdown documentation
-- include documentation and model views in the openhltest folder
-- package and upload the openhltest folder as the [openhltest python package](https://pypi.org/project/openhltest/) to pypi.python.org
-
-## OK continuous integration is great but what does it mean to me?
-Anytime the model is updated you can install the latest version of the OpenHLTest python client simply by doing the following:  
-- **pip install openhltest --upgrade --no-cache-dir**
