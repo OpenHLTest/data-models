@@ -1,6 +1,7 @@
 <div class='api'>
 	<div class="modal-dialog" *ngIf="NodeLens">
-		<span class="signature">{{NodeLens.name}}</span><span style="float:right;"><button (click)='closeNodeLens($event)'>X</button></span>
+		<span class="signature">{{NodeLens.name}}</span><span style="float:right;"><button
+				(click)='closeNodeLens($event)'>X</button></span>
 		<table class="property-table">
 			<tr>
 				<td class="details_label_column" width="100">{{NodeLens._keyword}}</td>
@@ -26,8 +27,8 @@
 			<tr *ngIf="NodeLens._type">
 				<td class="details_label_column" width="100">Type</td>
 				<td class="details_value_column">
-					{{NodeLens._type}}<span *ngIf="NodeLens._type_pattern">
-						Default:<b>{{NodeLens._type_pattern}}</b></span>
+					{{NodeLens._type}}
+					<div *ngIf="NodeLens._type_pattern"><br>Default: <b>{{NodeLens._type_pattern}}</b></div>
 					<div *ngIf="NodeLens._enums">
 						<br>
 						<ul>
@@ -54,14 +55,15 @@
 				<td class="details_label_column" width="100">Presence</td>
 				<td class="details_value_column">{{NodeLens._presence}}</td>
 			</tr>
-			<tr *ngIf="NodeLens._unsupported_features">
+			<tr *ngIf="NodeLens._unsupported_feature">
 				<td class="details_label_column" width="100">Unsupported Feature</td>
-				<td class="details_value_column">The following vendors do not support
-					this feature
+				<td class="details_value_column">The following vendors do not support this
+					feature
 					<br>
 					<ul>
-						<li *ngFor="let unsupportedFeature of NodeLens._unsupported_features">
-							{{unsupportedFeature}}
+						<li class="not-supported" *ngFor="let vendor of
+							NodeLens._unsupported_feature">
+							{{vendor}}
 						</li>
 					</ul>
 				</td>
@@ -127,8 +129,8 @@
 								<tr *ngIf="yangNode._type">
 									<td class="details_label_column" width="100">Type</td>
 									<td class="details_value_column">
-										{{yangNode._type}}<span *ngIf="yangNode._type_pattern">
-											Default:<b>{{yangNode._type_pattern}}</b></span>
+										{{yangNode._type}}
+										<div *ngIf="yangNode._type_pattern"><br>Default: <b>{{yangNode._type_pattern}}</b></div>
 										<div *ngIf="yangNode._enums">
 											<br>
 											<ul>
@@ -155,15 +157,15 @@
 									<td class="details_label_column" width="100">Presence</td>
 									<td class="details_value_column">{{yangNode._presence}}</td>
 								</tr>
-								<tr *ngIf="yangNode._unsupported_features">
+								<tr *ngIf="yangNode._unsupported_feature">
 									<td class="details_label_column" width="100">Unsupported Feature</td>
 									<td class="details_value_column">The following vendors do not support
 										this feature
 										<br>
 										<ul>
-											<li *ngFor="let unsupportedFeature of
-												yangNode._unsupported_features">
-												{{unsupportedFeature}}
+											<li class="not-supported" *ngFor="let vendor of
+												yangNode._unsupported_feature">
+												{{vendor}}
 											</li>
 										</ul>
 									</td>

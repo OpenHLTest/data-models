@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angula
 import model_docs from "../../assets/documentation.json";
 import { TreeComponent, TreeModel, TreeNode, ITreeOptions } from 'angular-tree-component';
 import { SplitComponent } from 'angular-split';
+import { preserveWhitespacesDefault } from '@angular/compiler';
 
 
 enum eDescriptionFormat {
@@ -26,8 +27,14 @@ export interface IYangNode {
 	_leafref_paths: Array<string>,
 	_presence: boolean,
 	_status: string,
-	_unsupported_features: Array<string>,
-	_constraint: string
+	_unsupported_feature: Array<string>,
+	_constraint: string,
+	_python_class: string
+}
+
+export interface ILeafRefNode {
+	sourceNode: TreeNode,
+	targetNode: TreeNode
 }
 
 export enum Tabs {
@@ -52,6 +59,7 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 	@ViewChild('operationCode') _operationCode: ElementRef;
 	@ViewChild('sampleCode') _sampleCode: ElementRef;
 	@ViewChild('pythonClass') _pythonClass: ElementRef;
+	private _nextId: number = 1;
 	private _options: ITreeOptions = {};
 	private _docs: Array<IYangNode>;
 	private _currentDocNode: TreeNode;
@@ -99,21 +107,27 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 			this._splitterComponent.disabled = false;
 			this._splitterComponent.gutterSize = 5;
 			this._treeComponent.treeModel.setState(this._state);
-			let rootNode = this._treeComponent.treeModel.getFirstRoot();
-			this._currentDocNode = rootNode;
+			this._currentDocNode = this.rootNode;
 			this.YangNode = this._currentDocNode.data;
-			rootNode.setActiveAndVisible().expand();
+			this._currentDocNode.setActiveAndVisible().expand();
 		});
 	}
 
+	public get nextId(): number {
+		return this._nextId++;
+	}
 	public get options(): any {
 		return this._options;
 	}
 	public get nodes(): any {
 		return this._docs;
 	}
+	public get rootNode(): TreeNode {
+		return this._treeComponent.treeModel.getFirstRoot();
+	}
 	public onActivate(event: any) {
 		if (event.node) {
+			this._nextId = 1;
 			this._currentDocNode = event.node;
 			this.YangNode = this._currentDocNode.data;
 			let displayNodes = [this.YangNode];
@@ -242,6 +256,12 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 			}
 		}
 		return false;
+	}
+	public setPythonClass() {
+		if (this.YangNode && this.YangNode._python_class) {
+			this._pythonClass.nativeElement.innerHTML = this.YangNode._python_class;
+			this.processElementRef(this._pythonClass)
+		}
 	}
 	public setGetContent() {
 		if (this.hasGet && this._getCode) {
@@ -416,19 +436,6 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 		}
 	}
 	
-	private get ooPath(): string {
-		let path: string = '';
-		if (this.YangNode._path) {
-			for (let item of this.YangNode._path.split('/')) {
-				if (item === 'oht') {
-					path = "OpenHlTest"
-				} else {
-					path += "." + item[0].toUpperCase() + item.substr(1)
-				}
-			}
-		}
-		return path;
-	}
 	private pythonName(name: string): string {
 		if (name) {
 			let camelCaseName = '';
@@ -440,252 +447,6 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 			return '';
 		}
 	}
-	private pythonReturnsPath(yangNode: IYangNode, excludeClassName: boolean = false): string {
-		let path = yangNode._path.toLowerCase();
-		if (path.length > 4) {
-			path = path.substr(4);
-		}
-		path = `openhltest.${path.replace(/\//g, '.')}.${yangNode.name}`;
-		if (excludeClassName === false) {
-			path += `.${this.pythonName(yangNode.name)}`;
-		}
-		return path.replace(/-/g, '');
-	}
-	private getFormattedDescription(format: eDescriptionFormat, yangNode: IYangNode, indent: number, returns: any = undefined): string {
-		/*
-			description formats
-				class
-					*description from yang node*
-				class property
-					*description from yang node*
-					Returns:
-					Raises:
-				leaf/leaf-list property 
-					*description from yang node*
-					Returns:
-					Raises: when read/write, this will be patch error codes
-				rpc/action method
-					*descriptiion from yang node*
-					Returns:
-					Raises:
-		*/
-		let formattedDescription = `${'\t'.repeat(indent)}"""`;
-		let lines: Array<string> = yangNode._description.replace(/(^\n)|(\n$)/g, '').split('\n');
-		for (var index = 0; index < lines.length; index++) {
-			if (index > 0) {
-				formattedDescription += `${'\t'.repeat(indent)}`;
-			}
-			formattedDescription += `${lines[index]}\n`;
-		}
-
-		switch (format) {
-			case eDescriptionFormat.class:
-				if (yangNode._keyword === 'list') {
-					formattedDescription += `\n${'\t'.repeat(indent)}This class implements the iterator interface __iter__ and encapsulates 0..n instances of the ${yangNode._path} resource.\n`;
-				}
-				break;
-			case eDescriptionFormat.classProperty:
-				formattedDescription += `\n${'\t'.repeat(indent)}Access this property to get an instance of the ${this.pythonName(yangNode.name)} class.\n`;
-				formattedDescription += `\n${'\t'.repeat(indent)}Returns:\n`;
-				formattedDescription += `${'\t'.repeat(indent + 1)}obj: ${this.pythonReturnsPath(yangNode)}\n\n`;
-				break;
-			case eDescriptionFormat.leafProperty:
-				formattedDescription += `\n${'\t'.repeat(indent)}Returns:\n`;
-				formattedDescription += `${'\t'.repeat(indent + 1)}${yangNode._type}\n\n`;
-				formattedDescription += `${'\t'.repeat(indent)}Raises:\n`;
-				formattedDescription += `${'\t'.repeat(indent + 1)}ValueError\n`;
-				formattedDescription += `${'\t'.repeat(indent + 1)}InvalidValueError\n`;
-				formattedDescription += '\n';
-				break;
-			case eDescriptionFormat.operation:
-				break;
-		}
-		return formattedDescription + `${'\t'.repeat(indent)}"""\n`;
-	}
-	public setPythonClass() {
-		if (this._pythonClass) {
-			switch (this.YangNode._keyword) {
-				case 'module':
-				case 'list':
-				case 'container':
-					let classDefinition = '';
-					if (this.YangNode._keyword === 'module') {
-						classDefinition += 'from openhltest.base import Base\n';
-						classDefinition += 'from openhltest.transport import Transport\n\n\n';
-						classDefinition += `class ${this.pythonName(this.YangNode.name)}(Base):\n`;
-					} else {
-						classDefinition += 'from openhltest.base import Base\n\n\n';
-						classDefinition += `class ${this.pythonName(this.YangNode.name)}(Base):\n`;
-					}
-					classDefinition += this.getFormattedDescription(eDescriptionFormat.class, this._currentDocNode.data, 1);
-					classDefinition += `\tYANG_NAME = '${this.YangNode.name}'\n\n`;
-
-					classDefinition += this.pythonInit;
-					classDefinition += this.pythonClassProperties;
-					classDefinition += this.pythonProperties;
-					classDefinition += this.pythonMethods;
-					classDefinition += this.pythonCreate;
-					classDefinition += this.pythonRead;
-					classDefinition += this.pythonUpdate;
-					classDefinition += this.pythonDelete;
-					this._pythonClass.nativeElement.innerHTML = classDefinition;
-					this.processElementRef(this._pythonClass);
-					break;
-				default:
-					break;
-			}
-		}
-	}
-	public get pythonInit(): string {
-		let init = '';
-		if (this.YangNode._keyword === 'module') {
-			init += `\tdef __init__(transport):\n`;
-			init += `\t\tsuper(${this.pythonName(this.YangNode.name)}, self).__init__(transport)\n\n`;
-		} else {
-			init += `\tdef __init__(self, parent):\n`;
-			init += `\t\tsuper(${this.pythonName(this.YangNode.name)}, self).__init__(parent)\n\n`;
-		}
-		return init;
-	}
-	public get pythonClassProperties(): string {
-		let classProperties = '';
-		for (let childNode of this._currentDocNode.data.children) {
-			switch (childNode._keyword) {
-				case 'container':
-				case 'list':
-					classProperties += `\t@property\n`;
-					classProperties += `\tdef ${this.pythonName(childNode.name)}(self):\n`;
-					classProperties += this.getFormattedDescription(eDescriptionFormat.classProperty, childNode, 2);
-					classProperties += `\t\tfrom ${this.pythonReturnsPath(childNode, true)} import ${this.pythonName(childNode.name)}\n`;
-					classProperties += `\t\treturn ${this.pythonName(childNode.name)}(self);\n\n`;
-					break;
-				default:
-					break;
-			}
-		}
-		return classProperties;
-	}
-	public get pythonProperties(): string {
-		let properties = '';
-		for (let childNode of this._currentDocNode.data.children) {
-			switch (childNode._keyword) {
-				case 'leaf':
-				case 'leaf-list':
-					properties += `\t@property\n`;
-					properties += `\tdef ${this.pythonName(childNode.name)}(self):\n`;
-					properties += this.getFormattedDescription(eDescriptionFormat.leafProperty, childNode, 2);
-					properties += `\t\treturn self._get_attribute('${childNode.name}')\n`
-					if (this.YangNode._keyword === 'list' && this.YangNode._key === childNode.name) {
-						properties += '\n';
-						continue;
-					}
-					properties += `\t@${this.pythonName(childNode.name)}.setter\n`;
-					properties += `\tdef ${this.pythonName(childNode.name)}(self, value):\n`;
-					properties += `\t\treturn self._set_attribute('${childNode.name}', value)\n\n`
-					break;
-				default:
-					break;
-			}
-		}
-		return properties;
-	}
-	public get pythonMethods(): string {
-		let methods = '';
-		for (let childNode of this._currentDocNode.data.children) {
-			switch (childNode._keyword) {
-				case 'rpc':
-				case 'action':
-					methods += `\tdef ${this.pythonName(childNode.name)}(self, input):\n`;
-					methods += this.getFormattedDescription(eDescriptionFormat.operation, childNode, 2);
-					methods += `\t\treturn self._call_operation('${childNode.name}', input)\n\n`
-					break;
-				default:
-					break;
-			}
-		}
-		return methods;
-	}
-	public get pythonUpdate(): string {
-		let updateMethod = '';
-		switch (this._currentDocNode.data._keyword) {
-			case 'container':
-			case 'list':
-				let parameters = '';
-				for (let childNode of this._currentDocNode.data.children) {
-					switch (childNode._keyword) {
-						case 'leaf':
-						case 'leaf-list':
-							if (childNode.name !== this._currentDocNode.data._key) {
-								parameters += ', ';
-								parameters += `${this.pythonName(childNode.name)}=None`;
-							}
-							break;
-						default:
-							break;
-					}
-				}
-				if (parameters.length > 0) {
-					updateMethod += `\tdef update(self${parameters}):\n\n`;
-				}
-				break;
-			default:
-				break;
-		}
-		return updateMethod;
-	}
-	public get pythonCreate(): string {
-		let createMethod = '';
-		switch (this._currentDocNode.data._keyword) {
-			case 'list':
-				let parameters = '';
-				for (let childNode of this._currentDocNode.data.children) {
-					switch (childNode._keyword) {
-						case 'leaf':
-						case 'leaf-list':
-							parameters += ', ';
-							if (childNode.name === this._currentDocNode.data._key) {
-								parameters += `${this.pythonName(childNode.name)}`;
-							} else {
-								parameters += `${this.pythonName(childNode.name)}=None`;
-							}
-							break;
-						default:
-							break;
-					}
-				}
-				createMethod += `\tdef create(self${parameters}):\n\n`;
-				break;
-			default:
-				break;
-		}
-		return createMethod;
-	}
-	public get pythonDelete(): string {
-		if (this._currentDocNode.data._keyword === 'list') {
-			return `\tdef delete(self, ${this.pythonName(this._currentDocNode.data._key)}):\n\n`;
-		} else {
-			return '';
-		}
-	}
-	public get pythonRead(): string {
-		let readMethod = '';
-		switch (this._currentDocNode.data._keyword) {
-			case 'list':
-				let parameters = '';
-				for (let childNode of this._currentDocNode.data.children) {
-					if (childNode.name === this._currentDocNode.data._key) {
-						parameters += ', ';
-						parameters += `${this.pythonName(childNode.name)}=None`;
-					}
-				}
-				readMethod += `\tdef read(self${parameters}):\n\n`;
-				break;
-			default:
-				break;
-		}
-		return readMethod;
-	}
-
 	private isMethod(yangNode: IYangNode): boolean {
 		if (yangNode) {
 			switch(yangNode._keyword) {
@@ -712,6 +473,12 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 			return yangNode._keyword === 'list';
 		return false;
 	}
+	private isLeafRef(yangNode: IYangNode): boolean {
+		if (yangNode) {
+			return this.isProperty(yangNode) && yangNode._type.search(/(leafref|union[leafref])/g) !== -1;
+		}
+		return false;	
+	}
 	private addAccessorCode(code: string[], leftSideName: string) {
 		let accessorComment: boolean = false;
 			if (this.YangNode.children) {
@@ -731,13 +498,55 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 	}
 	private getPropertyEqualsValue(yangNode: IYangNode, parentNode: IYangNode = undefined): string {
 		let value = `None`;
-		if (parentNode) {
-			value = `'A unique ${parentNode.name} ${yangNode.name}'`;
-		} else if (yangNode._type_pattern) {
+		if (parentNode && parentNode._key === yangNode.name) {
+			value = `'A unique ${parentNode.name} ${yangNode.name} ${this.nextId}'`;
+		} else if (this.isLeafRef(yangNode) && this.getNodePathFromLeafRefPath(yangNode) !== parentNode._path) {
+			value = parentNode.name.toLowerCase().replace(/-/g, '_') + '_' + yangNode.name.toLowerCase().replace(/-/g, '_');
+		} 
+		else if (yangNode._type_pattern) {
 			value = `'${yangNode._type_pattern}'`;
 		}
 		let hyperlink = this.createHyperlink(yangNode.id, this.pythonName(yangNode.name));	
 		return `${hyperlink}=${value}`;
+	}
+	private getNode(currentNode: TreeNode, yangPath: string): TreeNode {
+		if (currentNode.data._path === yangPath) {
+			return currentNode;
+		}
+		if (currentNode.children) {
+			for (let child of currentNode.children) {
+				let match = this.getNode(child, yangPath);
+				if (match) {
+					return match;
+				}
+			}
+		}
+		return undefined;
+	}
+	private getOptionalParameters(yangNode: IYangNode): string[] {
+		let optional_parameters = [];
+		if (yangNode.children) {
+			for (let child of yangNode.children) {
+				if (child.name === yangNode._key || child._writeable === false) {
+					continue;
+				}
+				if(this.isProperty(child)) {
+					optional_parameters.push(`, ${this.getPropertyEqualsValue(child, yangNode)}`);
+				}
+			}
+		}
+		return optional_parameters;		
+	}
+	private getNodePathFromLeafRefPath(yangNode: IYangNode): string {
+		for (let leafRefPath of yangNode._leafref_paths) {
+			let pieces = `oht:${leafRefPath.substr(1)}`.split('/');
+			pieces.pop();
+			let nodePath = pieces.join('/');
+			if (yangNode._path !== nodePath) {
+				return nodePath;
+			}
+		}
+		return undefined;
 	}
 	private setPythonSample() {
 		if (this._sampleCode === undefined)
@@ -759,8 +568,23 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 		code.push('openhltest = transport.OpenHlTest\n\n');
 
 		let treeNodePath = [];
+		let leafRefNodes = Array<ILeafRefNode>();
 		let currentNode = this._currentDocNode;
 		while (currentNode && currentNode.data._keyword != 'module') {
+			if (currentNode.children) {
+				for (let child of currentNode.children) {
+					if (this.isLeafRef(child.data)) {
+						let nodePath = this.getNodePathFromLeafRefPath(child.data);
+						if (nodePath) {
+							let leafRefNode = this.getNode(this.rootNode, nodePath);
+							if (leafRefNode.data._path !== currentNode.data._path) {
+								leafRefNodes.push({sourceNode: child, targetNode: leafRefNode});
+							}
+						}
+					}
+				}
+			}	
+
 			switch(currentNode.data._keyword) {
 				case 'list':
 				case 'container':
@@ -770,26 +594,35 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 			currentNode = currentNode.parent;
 		}
 
+		// insert leaf ref nodes 
+		for (let leafRefNode of leafRefNodes) {
+			let pieces = leafRefNode.targetNode.data._path.split('/');
+			pieces.pop();
+			let parentPath = pieces.join('/');
+			let index = treeNodePath.findIndex((p) => p.data._path === parentPath);
+			if (index !== -1) {
+				treeNodePath.splice(index + 1, 0, leafRefNode);
+			}
+		}
+
 		let leftSideName: string = 'openhltest';
 		for (let treeNode of treeNodePath) {
+			let isTreeNode = true;
+			if ((<ILeafRefNode>treeNode).sourceNode) {
+				let sourceNode = (<ILeafRefNode>treeNode).sourceNode;
+				leftSideName = sourceNode.parent.data.name.toLowerCase().replace(/-/g, '_') + '_' + sourceNode.data.name.toLowerCase().replace(/-/g, '_');
+				treeNode = (<ILeafRefNode>treeNode).targetNode;
+				isTreeNode = false;
+			} else {
+				leftSideName = treeNode.data.name.toLowerCase().replace(/-/g, '_');
+			}
 			let action = treeNode.data._keyword === 'list' ? 'create' : 'get';
 			code.push(`# ${action} an instance of the ${this.pythonName(treeNode.data.name)} class\n`);
 			//code.push(`# except for the ${this.pythonName(treeNode.data.name)} parameter, all of the remaining parameters in the create method are optional\n`);
-			leftSideName = treeNode.data.name.toLowerCase().replace(/-/g, '_');
 			let rightSideName = treeNode.parent.data.name.toLowerCase().replace(/-/g, '_');
 			code.push(`${leftSideName} = ${rightSideName}.${this.pythonName(treeNode.data.name)}`);
 
-			let optional_parameters = [];
-			if (treeNode.children) {
-				for (let leafNode of treeNode.children) {
-					if (leafNode.data.name === treeNode.data._key || leafNode.data._writeable === false) {
-						continue;
-					}
-					if(this.isProperty(leafNode.data)) {
-						optional_parameters.push(`, ${this.getPropertyEqualsValue(leafNode.data)}`);
-					}
-				}
-			}
+			let optional_parameters = this.getOptionalParameters(treeNode.data);
 
 			if (action === 'create') {
 				let keyNode = treeNode.data.children.find((c) => c.name == treeNode.data._key);
@@ -802,13 +635,17 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 				code.push(`\n\n`);				
 			}
 
+			if (!isTreeNode) {
+				continue;
+			}
+			
 			if (optional_parameters.length > 0 && treeNode.data.name === this.YangNode.name) {
 				code.push(`# update the current ${this.pythonName(treeNode.data.name)} resource encapsulated in the ${leftSideName} instance\n`);
 				code.push(`# all of the parameters in the update method are optional\n`);
 				code.push(`${leftSideName}.update(`);
 				code.push(`${optional_parameters.join('').substr(1).trim()})\n\n`);
 			}
-
+			
 			if (treeNode.data.name === this.YangNode.name) {
 				this.addAccessorCode(code, leftSideName);
 			}

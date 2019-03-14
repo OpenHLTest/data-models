@@ -62,16 +62,6 @@
 	max-width: 1000px;
 	font: $tiny-font;
 }
-.code {
-	padding: 20px;
-	margin: 10px 100px 0px 0px;
-	background-color: #e9e9e9;
-	border: 1pt solid #dbdbdb;
-	border-radius: 4px;
-	font-family: monospace;
-	white-space: pre-line;
-	tab-size: 4;
-}
 .property {
 	font: $tiny-font;
 	color: rgb(127,127,127);
@@ -151,6 +141,9 @@
 	color: rgb(127,127,127);
 }
 
+.not-supported {
+	color: red;
+}
 
 
 
