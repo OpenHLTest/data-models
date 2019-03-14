@@ -22,7 +22,7 @@ print(session)
 config = session.Config
 print(config)
 
-# create an instance of the Ports classm add some resources and retrieve them all
+# create an instance of the Ports class, add some resources and retrieve them all
 for i in range(4):
 	port_name = 'Test Port %s' % i
 	port = config.Ports.create(Name=port_name, Location='0.0.0.%s/1/%s' % (i, i))
@@ -54,7 +54,7 @@ assert(protocol.Ethernet.Mac.Increment.Start == '00:00:01:00:00:01')
 assert(protocol.Ethernet.Mac.Increment.Step == '00:00:00:00:00:01')
 
 # start all the protocols
-config.PortControl({'targets': ports, 'mode': 'START'})
+print(config.PortControl({'targets': ports, 'mode': 'START'}))
 
 # delete the protocols resource
 protocol.delete()
