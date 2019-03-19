@@ -21,8 +21,7 @@ class HttpTransport(Transport):
         """
         super(HttpTransport, self).__init__(log_file_name)
 
-        if sys.version < '2.7.9':
-            import requests.packages.urllib3
+        if sys.version_info.major == 2 and sys.version_info.minor == 7 and sys.version_info.micro < 9:
             requests.packages.urllib3.disable_warnings()
         else:
             import urllib3
@@ -104,12 +103,12 @@ class HttpTransport(Transport):
             headers['x-api-key'] = self._api_key
         payload = None
         if locals_dict is not None:
-            headers['content-type'] = 'application/yang-data+json'
+            headers['content-type'] = 'application/json'
             if url.startswith(self._base_data_url):
-                payload = self._build_payload(yang_class, locals_dict)
+                payload = json.dumps(self._build_payload(yang_class, locals_dict))
             else:
                 self._normalize_payload(locals_dict)
-                payload = {'oht:input': locals_dict}
+                payload = json.dumps({'oht:input': locals_dict})
         
         self._log_request(method, url, headers, payload)
         if self._openhltest_server is None:
