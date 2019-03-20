@@ -188,7 +188,7 @@ class Base(object):
             self._transport._delete(yang=self.__class__, url=relative_url)
         self._clear()
 
-    def _execute(self, operation, payload):
+    def _execute(self, operation, payload=None):
         if self.YANG_KEY is not None:
             relative_url = self._build_relative_url(self.YANG_NAME, self._get_value(self.YANG_KEY))
         else:

@@ -105,11 +105,11 @@ class HttpTransport(Transport):
         if locals_dict is not None:
             headers['content-type'] = 'application/json'
             if url.startswith(self._base_data_url):
-                payload = json.dumps(self._build_payload(yang_class, locals_dict))
+                payload = json.dumps(self._build_payload(yang_class, locals_dict), indent=4)
             else:
                 self._normalize_payload(locals_dict)
-                payload = json.dumps({'oht:input': locals_dict})
-        
+                payload = json.dumps({'oht:input': locals_dict}, indent=4)
+
         self._log_request(method, url, headers, payload)
         if self._openhltest_server is None:
             response = self._session.request(yang_class, method, url, locals_dict, payload)
@@ -117,9 +117,9 @@ class HttpTransport(Transport):
             response = self._session.request(method, url, headers=headers, data=payload, verify=self._verify_cert)
         self._log_response(response)
 
-        if response.status_code == 200 and url.startswith(self._base_data_url):
+        if response.status_code == 200 and '/restconf/data' in url:
             return json.loads(response.content)['oht:%s' % yang_class.YANG_NAME]
-        elif response.status_code == 200 and url.startswith(self._base_operations_url):
+        elif response.status_code == 200 and '/restconf/operations' in url:
             return json.loads(response.content)['oht:output']
         elif response.status_code == 201:
             return response.headers['location']
@@ -139,7 +139,7 @@ class HttpTransport(Transport):
         for key in headers.keys():
            message += '\n%s: %s' % (key, headers[key])
         if payload is not None:
-            message += '\n%s' % json.dumps(payload, indent=4)
+            message += '\n%s' % payload
         self.debug(message)
 
     def _log_response(self, response):
