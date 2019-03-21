@@ -2,7 +2,7 @@
 *.pyc
 build
 dist
-openhltest_client.egg-info
+openhltest.egg-info
 /doc-browser/node_modules
 /doc-browser/src/assets/documentation.json
 /openhltest_client/openhltest/*

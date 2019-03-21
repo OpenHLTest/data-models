@@ -243,8 +243,8 @@ class CiBuild(object):
 
     def _make_return_path(self, node, exclude_class_name = False):
         path = node['_path'].lower()
-        if len(path) > 4:
-            path = 'openhltest_client/openhltest/%s' % path[4:]
+        if path.startswith('openhltest:'):
+            path = 'openhltest_client/openhltest/%s' % path[len('openhltest:'):]
         else:
             path = 'openhltest_client/openhltest'
         path = '%s.%s' % (re.sub('\/', '.', path), node['name'])
@@ -620,6 +620,6 @@ cibuild.generate_hierarchy()
 cibuild.generate_python_package()
 cibuild.generate_angular_doc_app() 
 cibuild.build_python_package()
-cibuild.deploy_python_package()
-cibuild.update_openhltest_github_io()
+# cibuild.deploy_python_package()
+# cibuild.update_openhltest_github_io()
 

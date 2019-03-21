@@ -19,20 +19,20 @@ class MockServer(object):
         elif method == 'POST' and '/restconf/operations' in url:
             response.status_code = 200
             response.reason = 'OK'
-            response._content = json.dumps({'oht:output': {}}, indent=4)
+            response._content = json.dumps({'openhltest:output': {}}, indent=4)
         elif method == 'POST' and '/restconf/data' in url:
             response.status_code = 201
             response.reason = 'Created'
             key_value = locals_dict[yang_class.YANG_KEY[0].upper() + yang_class.YANG_KEY[1:]]
-            if url.find('/restconf/data/oht:') == -1:
-                response.headers['location'] = '%s/oht:%s=%s' % (url, yang_class.YANG_NAME, key_value)
+            if url.find('/restconf/data/openhltest:') == -1:
+                response.headers['location'] = '%s/openhltest:%s=%s' % (url, yang_class.YANG_NAME, key_value)
             else:
                 response.headers['location'] = '%s/%s=%s' % (url, yang_class.YANG_NAME, key_value)
-            self._add_to_mock_storage(yang_class, response.headers['location'], payload)
+            self._add_to_mock_storage(yang_class, response.headers['location'], json.loads(payload))
         elif method == 'PATCH':
             response.status_code = 204
             response.reason = 'No Content'
-            self._update_mock_storage(yang_class, url, payload)
+            self._update_mock_storage(yang_class, url, json.loads(payload))
         elif method == 'DELETE':
             response.status_code = 204
             response.reason = 'No Content'
@@ -41,7 +41,7 @@ class MockServer(object):
 
     def _get_from_mock_storage(self, yang_class, url):
         parent = url[:url.rfind('/')]
-        category = 'oht:%s' % yang_class.YANG_NAME
+        category = 'openhltest:%s' % yang_class.YANG_NAME
         if yang_class.YANG_KEYWORD == 'container':
             key = yang_class.YANG_NAME
             if parent not in self._mock_storage:
@@ -66,7 +66,7 @@ class MockServer(object):
         else:
             # this is asking for the entire list
             parent = url[:url.rfind('/')]
-            category = 'oht:%s' % yang_class.YANG_NAME
+            category = 'openhltest:%s' % yang_class.YANG_NAME
             content = {
                 category: []
             }
@@ -87,7 +87,7 @@ class MockServer(object):
         """Adds a list item to the mock storage
         """
         parent = url[:url.rfind('/')]
-        category = 'oht:%s' % yang_class.YANG_NAME
+        category = 'openhltest:%s' % yang_class.YANG_NAME
         key = data[category][yang_class.YANG_KEY]
         if parent not in self._mock_storage:
             self._mock_storage[parent] = {}
@@ -97,7 +97,7 @@ class MockServer(object):
 
     def _update_mock_storage(self, yang_class, url, data):
         parent = url[:url.rfind('/')]
-        category = 'oht:%s' % yang_class.YANG_NAME
+        category = 'openhltest:%s' % yang_class.YANG_NAME
         key = None
         if yang_class.YANG_KEYWORD == 'list':
             key = url[url.rfind('/'):]

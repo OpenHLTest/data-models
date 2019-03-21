@@ -77,7 +77,7 @@ class HttpTransport(Transport):
                     for base_obj in locals_dict[key]:
                         value.append(getattr(base_obj, key_attr_name))   
                 payload[yang_class.YANG_PROPERTY_MAP[key]] = value
-        return { 'oht:%s' % yang_class.YANG_NAME: payload }
+        return { 'openhltest:%s' % yang_class.YANG_NAME: payload }
 
     def _normalize_payload(self, payload):
         for key in payload.keys():
@@ -108,7 +108,7 @@ class HttpTransport(Transport):
                 payload = json.dumps(self._build_payload(yang_class, locals_dict), indent=4)
             else:
                 self._normalize_payload(locals_dict)
-                payload = json.dumps({'oht:input': locals_dict}, indent=4)
+                payload = json.dumps({'openhltest:input': locals_dict}, indent=4)
 
         self._log_request(method, url, headers, payload)
         if self._openhltest_server is None:
@@ -118,9 +118,9 @@ class HttpTransport(Transport):
         self._log_response(response)
 
         if response.status_code == 200 and '/restconf/data' in url:
-            return json.loads(response.content)['oht:%s' % yang_class.YANG_NAME]
+            return json.loads(response.content)['openhltest:%s' % yang_class.YANG_NAME]
         elif response.status_code == 200 and '/restconf/operations' in url:
-            return json.loads(response.content)['oht:output']
+            return json.loads(response.content)['openhltest:output']
         elif response.status_code == 201:
             return response.headers['location']
         elif response.status_code == 204:
@@ -152,13 +152,13 @@ class HttpTransport(Transport):
 
     def _make_data_url(self, relative_url):
         if len(relative_url) > 0:
-            return '%s/oht:%s' % (self._base_data_url, relative_url)
+            return '%s/openhltest:%s' % (self._base_data_url, relative_url)
         else:
             return self._base_data_url
 
     def _make_operations_url(self, relative_url):
         if len(relative_url) > 0:
-            return '%s/oht:%s' % (self._base_operations_url, relative_url)
+            return '%s/openhltest:%s' % (self._base_operations_url, relative_url)
         else:
             return self._base_operations_url
 

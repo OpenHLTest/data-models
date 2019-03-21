@@ -179,7 +179,7 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 		let request: string = `${method} ${ReferenceComponent.PREAMBLE}/restconf/data`;
 		let path: string = this.getPath(method !== 'POST');
 		if (path.length !== 0) {
-			request += `/oht:${path}`;
+			request += `/openhltest:${path}`;
 		}
 		request += '\n';
 		request += this.xapiHeader;
@@ -272,7 +272,7 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 		// 400 bad request (if not: json encoding, )
 		// 401 unauthorized (x-api-key not present or invalid)
 		// 404 not found (resource does not exist)
-		// 405 method not allowed (get on an operation resource i.e. oht:authenticate)
+		// 405 method not allowed (get on an operation resource i.e. openhltest:authenticate)
 	}
 	public setPostContent(): boolean {
 		if (this.hasPost && this._postCode) {
@@ -282,7 +282,7 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 					restStmt += 'Content-Type: application/json\n\n';
 					let payload: string = '';
 					payload = '{\n';
-					payload += `\t"oht:${this.YangNode.name}": {\n`;
+					payload += `\t"openhltest:${this.YangNode.name}": {\n`;
 					let payloadIds = [];
 					for (let child of this._currentDocNode.data.children) {
 						switch (child['_keyword']) {
@@ -320,7 +320,7 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 					let restStmt = this.getRequest('PATCH');
 					restStmt += 'Content-Type: application/json\n\n';
 					let payload: string = '{\n';
-					payload += `\t"oht:${this.YangNode.name}": {\n`;
+					payload += `\t"openhltest:${this.YangNode.name}": {\n`;
 					let payloadIds = [];
 					for (let child of this.YangNode.children) {
 						switch (child['_keyword']) {
@@ -398,9 +398,9 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 				case 'input':
 				case 'output':
 				case 'container':
-					let name = `oht:${dataNode.name}`;
+					let name = `openhltest:${dataNode.name}`;
 					if (payloadIds && Object.keys(payload).length === 0) {
-						name = `oht:${this.makeHyperLink(dataNode)}`;
+						name = `openhltest:${this.makeHyperLink(dataNode)}`;
 						payloadIds.push(dataNode.id);
 					}
 					payload[name] = {}
@@ -539,7 +539,7 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 	}
 	private getNodePathFromLeafRefPath(yangNode: IYangNode): string {
 		for (let leafRefPath of yangNode._leafref_paths) {
-			let pieces = `oht:${leafRefPath.substr(1)}`.split('/');
+			let pieces = `openhltest:${leafRefPath.substr(1)}`.split('/');
 			pieces.pop();
 			let nodePath = pieces.join('/');
 			if (yangNode._path !== nodePath) {

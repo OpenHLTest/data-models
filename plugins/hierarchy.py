@@ -222,9 +222,9 @@ class HierarchyPlugin(plugin.PyangPlugin):
 
     def _get_yang_path(self, stmt):
         if stmt.parent is not None:
-            return '%s:%s' % (self._module.i_prefix, statements.mk_path_str(stmt)[1:])
+            return '%s:%s' % (self._module.arg, statements.mk_path_str(stmt)[1:])
         else:
-            return self._module.i_prefix
+            return self._module.arg
 
     def _get_yang_description(self, stmt):
         description = stmt.search_one('description')
