@@ -620,6 +620,6 @@ cibuild.generate_hierarchy()
 cibuild.generate_python_package()
 cibuild.generate_angular_doc_app() 
 cibuild.build_python_package()
-# cibuild.deploy_python_package()
-# cibuild.update_openhltest_github_io()
+cibuild.deploy_python_package()
+cibuild.update_openhltest_github_io()
 
