@@ -120,6 +120,7 @@ class HierarchyPlugin(plugin.PyangPlugin):
             _enums: substmt of enumeration
             _leafref_paths: substmt of leafref
             _constraint: substmt must
+            _when: substmt when
         """
         entry = {
             'id': self._nextId,
@@ -149,6 +150,9 @@ class HierarchyPlugin(plugin.PyangPlugin):
         yang_must = stmt.search_one('must')
         if yang_must is not None:
             entry['_constraint'] = statements.mk_path_str(yang_must)
+        yang_when = stmt.search_one('when')
+        if yang_when is not None:
+            entry['_when'] = yang_when.arg
 
     def _add_yang_presence(self, stmt, entry):
         yang_presence = stmt.search_one('presence')
