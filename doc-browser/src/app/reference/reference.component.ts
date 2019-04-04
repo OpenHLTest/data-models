@@ -73,7 +73,7 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 	private _state = {
 		'hiddenNodeIds': {}
 	};
-	static PREAMBLE = 'https://ipaddress[:port]';
+	static PREAMBLE = 'https://ipaddress&lt;:port&gt;';
 
 	constructor() {
 		this._docs = model_docs;
@@ -282,7 +282,8 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 					restStmt += 'Content-Type: application/json\n\n';
 					let payload: string = '';
 					payload = '{\n';
-					payload += `\t"openhltest:${this.YangNode.name}": {\n`;
+					payload += `\t"openhltest:${this.YangNode.name}": [\n`;
+					payload += `\t\t{\n`;
 					let payloadIds = [];
 					for (let child of this._currentDocNode.data.children) {
 						switch (child['_keyword']) {
@@ -290,14 +291,15 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 							case 'leaf-list':
 								if (payloadIds.length > 0)
 									payload += ',\n';
-								payload += `\t\t"${this.makeHyperLink(child)}": ${child['_type']}`;
+								payload += `\t\t\t"${this.makeHyperLink(child)}": ${child['_type']}`;
 								payloadIds.push(child['id']);
 								break;
 							default:
 								break;
 						}
 					}
-					payload += '\n\t}\n';
+					payload += '\n\t\t}\n';
+					payload += `\t]\n`;
 					payload += '}';
 					if (payloadIds.length > 0) {
 						this._postContent = restStmt + payload;
@@ -320,7 +322,6 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 					let restStmt = this.getRequest('PATCH');
 					restStmt += 'Content-Type: application/json\n\n';
 					let payload: string = '{\n';
-					payload += `\t"openhltest:${this.YangNode.name}": {\n`;
 					let payloadIds = [];
 					for (let child of this.YangNode.children) {
 						switch (child['_keyword']) {
@@ -329,7 +330,7 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 								if (child['name'] !== this.YangNode._key) {
 									if (payloadIds.length > 0)
 										payload += ',\n';
-									payload += `\t\t"${this.makeHyperLink(child)}": ${child['_type']}`;
+									payload += `\t"${this.makeHyperLink(child)}": ${child['_type']}`;
 									payloadIds.push(child['id']);
 								}
 								break;
@@ -337,8 +338,7 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 								break;
 						}
 					}
-					payload += '\n\t}\n';
-					payload += '}';
+					payload += '\n}';
 					if (payload.length > 0) {
 						this._patchContent = restStmt + payload;
 						this._patchCode.nativeElement.innerHTML = this._patchContent;

@@ -64,7 +64,7 @@ class HttpTransport(Transport):
     def api_key(self, value):
         self._api_key = value
 
-    def _build_payload(self, yang_class, locals_dict):
+    def _build_payload(self, yang_class, locals_dict, method):
         payload = {}
         for key in locals_dict.keys():
             if key in yang_class.YANG_PROPERTY_MAP:
@@ -77,7 +77,12 @@ class HttpTransport(Transport):
                     for base_obj in locals_dict[key]:
                         value.append(getattr(base_obj, key_attr_name))   
                 payload[yang_class.YANG_PROPERTY_MAP[key]] = value
-        return { 'openhltest:%s' % yang_class.YANG_NAME: payload }
+        if method.lower() == 'post':
+            return { 'openhltest:%s' % yang_class.YANG_NAME: [payload] }
+        elif method.lower() == 'patch':
+            return payload
+        else:
+            return { 'openhltest:%s' % yang_class.YANG_NAME: payload }
 
     def _normalize_payload(self, payload):
         for key in payload.keys():
@@ -105,7 +110,7 @@ class HttpTransport(Transport):
         if locals_dict is not None:
             headers['content-type'] = 'application/json'
             if url.startswith(self._base_data_url):
-                payload = json.dumps(self._build_payload(yang_class, locals_dict), indent=4)
+                payload = json.dumps(self._build_payload(yang_class, locals_dict, method), indent=4)
             else:
                 self._normalize_payload(locals_dict)
                 payload = json.dumps({'openhltest:input': locals_dict}, indent=4)

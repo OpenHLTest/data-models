@@ -9,6 +9,12 @@ class MockServer(object):
     def __init__(self):
         self._mock_storage = {}
 
+    def _make_python_name(self, yang_name):
+        camelCaseName = ''
+        for piece in yang_name.split('-'):
+            camelCaseName += piece[0].upper() + piece[1:]
+        return camelCaseName
+
     def request(self, yang_class, method, url, locals_dict, payload):
         response = Response()
         if method == 'GET':
@@ -17,9 +23,14 @@ class MockServer(object):
             response_object = {}
             response._content = json.dumps(self._get_from_mock_storage(yang_class, url), indent=4)
         elif method == 'POST' and '/restconf/operations' in url:
-            response.status_code = 200
-            response.reason = 'OK'
-            response._content = json.dumps({'openhltest:output': {}}, indent=4)
+            method_name = self._make_python_name(url.split('/').pop())
+            if 'Returns:' in getattr(yang_class, method_name).__doc__:
+                response.status_code = 200
+                response.reason = 'OK'
+                response._content = json.dumps({'openhltest:output': {}}, indent=4)
+            else:
+                response.status_code = 204
+                response.reason = 'No Content'
         elif method == 'POST' and '/restconf/data' in url:
             response.status_code = 201
             response.reason = 'Created'
@@ -88,12 +99,12 @@ class MockServer(object):
         """
         parent = url[:url.rfind('/')]
         category = 'openhltest:%s' % yang_class.YANG_NAME
-        key = data[category][yang_class.YANG_KEY]
+        key = data[category][0][yang_class.YANG_KEY]
         if parent not in self._mock_storage:
             self._mock_storage[parent] = {}
         if category not in self._mock_storage[parent]:
             self._mock_storage[parent][category] = []
-        self._mock_storage[parent][category].append(data[category])
+        self._mock_storage[parent][category].append(data[category][0])
 
     def _update_mock_storage(self, yang_class, url, data):
         parent = url[:url.rfind('/')]
@@ -109,7 +120,7 @@ class MockServer(object):
                 if key == self._mock_storage[parent][category][i][yang_class.YANG_KEY]:
                     data_index = i
                     break
-        self._mock_storage[parent][category][data_index] = data[category]
+        self._mock_storage[parent][category][data_index] = data
         return None
 
     def _delete_from_mock_storage(self, url):
