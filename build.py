@@ -229,11 +229,11 @@ class CiBuild(object):
                     os.unlink(full_path)
 
         with open(self._doc_file, 'r') as fid:
-            nodes = json.load(fid)
-        for node in nodes:
+            self._nodes = json.load(fid)
+        for node in self._nodes:
             self._generate_python_class(node)
         with open(self._doc_file, 'w') as fid:
-            json.dump(nodes, fid)
+            json.dump(self._nodes, fid)
 
     def _make_python_name(self, yang_name):
         camelCaseName = ''
@@ -252,6 +252,25 @@ class CiBuild(object):
             path += '.' + self._make_python_name(node['name'])
         return re.sub('-', '', path)
 
+    def _make_class_path(self, path, exclude_last_piece=True):
+        class_path = 'OpenHLTest'
+        for piece in path[1:].split('/'):
+            if exclude_last_piece is True and path.endswith(piece):
+                break
+            class_path = '%s.%s' % (class_path, self._make_python_name(piece))
+        return class_path
+
+    def _get_node_from_path(self, path):
+        node = self._nodes[0]
+        for piece in path[1:].split('/'):
+            for child in node['children']:
+                if child['name'] == piece:
+                    if child['_keyword'] in ['leaf', 'leaf-list']:
+                        return node
+                    node = child
+                    break
+        return None
+
     def _format_description(self, format, node, indent, returns=None):
         """
             description formats
@@ -266,7 +285,7 @@ class CiBuild(object):
                     Returns:
                     Raises: when read/write, this will be patch error codes
                 METHOD
-                    *descriptiion from yang node*
+                    *description from yang node*
                     Returns:
                     Raises:
                 INLINE
@@ -280,34 +299,56 @@ class CiBuild(object):
             formattedDescription += lines[i] + '\n'
         if format == 'CLASS':
             if node['_keyword'] == 'list':
-                formattedDescription += '\n%sImplements the iterator interface __iter__ and encapsulates 0..n instances of the %s resource.\n' % ('\t' * indent, node['_path'])
+                formattedDescription += '\n%sThis class supports iterators and encapsulates 0..n instances of the %s resource.\n' % ('\t' * indent, node['_path'])
         if format == 'CLASS_PROPERTY':
-                formattedDescription += '\n'
-                formattedDescription += '%sGet an instance of the %s class.\n\n' % ('\t' * indent, self._make_python_name(node['name']))
-                formattedDescription += '%sReturns:\n' % ('\t' * indent)
-                formattedDescription += '%sobj(%s)\n' % ('\t' * (indent + 1), self._make_return_path(node))
+            formattedDescription += '\n'
+            formattedDescription += '%sGet an instance of the %s class.\n\n' % ('\t' * indent, self._make_python_name(node['name']))
+            formattedDescription += '%sReturns:\n' % ('\t' * indent)
+            formattedDescription += '%sobj(%s)\n' % ('\t' * (indent + 1), self._make_return_path(node))
+
         if format == 'PROPERTY':
+            get_value = node['_type']
+            set_value = get_value
+            if node['_keyword'] == 'leaf-list' and '_leafref_paths' in node:
+                class_path = self._make_class_path(node['_leafref_paths'][0])
+                class_path_with_key = self._make_class_path(node['_leafref_paths'][0], exclude_last_piece=False)
+                set_value = 'obj(%s) | list(%s)' % (class_path, class_path_with_key)
+                get_value = 'list(%s)' % (class_path_with_key)
+            elif  '_enums' in node:
+                get_value = []
+                for enum in node['_enums']:
+                    get_value.append(enum['name'])
+                get_value = ' | '.join(get_value)
+                set_value = get_value 
+            elif node['_keyword'] == 'leaf-list' in node:
+                get_value = 'list(%s)' % (get_value)
+                set_value = 'list(%s)' % (set_value)
+            formattedDescription += '\n'
+            formattedDescription += '%sGetter Returns:\n' % ('\t' * indent)
+            formattedDescription += '%s%s\n' % ('\t' * (indent + 1), get_value)
+            if node['_writeable'] is True:
                 formattedDescription += '\n'
-                formattedDescription += '%sReturns:\n' % ('\t' * indent)
-                formattedDescription += '%s%s\n\n' % ('\t' * (indent + 1), node['_type'])
-                formattedDescription += '%sRaises (setter only):\n' % ('\t' * indent)
+                formattedDescription += '%sSetter Allows:\n' % ('\t' * indent)
+                formattedDescription += '%s%s\n\n' % ('\t' * (indent + 1), set_value)
+                formattedDescription += '%sSetter Raises:\n' % ('\t' * indent)
                 formattedDescription += '%sValueError\n' % ('\t' * (indent + 1))
                 formattedDescription += '%sInvalidValueError\n' % ('\t' * (indent + 1))
+
         if format == 'METHOD':
-                formattedDescription += '\n'
-                if 'children' in node:
-                    for child in node['children']:
-                        if child['_keyword'] == 'input' and 'children' in child:
-                            doc_dict = {}
-                            self._make_doc_dict(child, doc_dict)
-                            formattedDescription += '%sArgs:\n' % ('\t' * indent)
-                            formattedDescription += '%sinput (%s)\n\n' % ('\t' * (indent + 1), json.dumps(doc_dict))
-                    for child in node['children']:
-                        if child['_keyword'] == 'output' and 'children' in child:
-                            doc_dict = {}
-                            self._make_doc_dict(child, doc_dict)
-                            formattedDescription += '%sReturns:\n' % ('\t' * indent)
-                            formattedDescription += '%s(%s)\n\n' % ('\t' * (indent + 1), json.dumps(doc_dict))
+            formattedDescription += '\n'
+            if 'children' in node:
+                for child in node['children']:
+                    if child['_keyword'] == 'input' and 'children' in child:
+                        doc_dict = {}
+                        self._make_doc_dict(child, doc_dict)
+                        formattedDescription += '%sArgs:\n' % ('\t' * indent)
+                        formattedDescription += '%sinput (%s)\n\n' % ('\t' * (indent + 1), json.dumps(doc_dict))
+                for child in node['children']:
+                    if child['_keyword'] == 'output' and 'children' in child:
+                        doc_dict = {}
+                        self._make_doc_dict(child, doc_dict)
+                        formattedDescription += '%sReturns:\n' % ('\t' * indent)
+                        formattedDescription += '%s(%s)\n\n' % ('\t' * (indent + 1), json.dumps(doc_dict))
         if format == 'INLINE':
             return re.sub('(\n)|(\t)', '', node['_description'])
         return formattedDescription + '\t' * indent + '"""\n'
