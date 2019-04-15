@@ -458,15 +458,40 @@ class CiBuild(object):
             for child in node['children']:
                 if child['_keyword'] in ['rpc', 'action']:
                     input_param = ''
+                    typedef_params = {
+                        "input-file-name": None,
+                        "output-file-name": None,
+                        "file-content": None
+                    }
                     if 'children' in child:
-                        for input_child in child['children']:
-                            if input_child['_keyword'] == 'input' and 'children' in input_child:
+                        for arg_child in child['children']:
+                            if arg_child['_keyword'] == 'input' and 'children' in arg_child:
                                 input_param = ', input'
+                                for inputs in arg_child['children']:
+                                    self._get_typedef(inputs, 'input-file-name', typedef_params)
+                                    self._get_typedef(inputs, 'output-file-name', typedef_params)
+                            if arg_child['_keyword'] == 'output' and 'children' in arg_child:
+                                for outputs in arg_child['children']:
+                                    self._get_typedef(outputs, 'file-content', typedef_params)
                     methods += '\tdef %s(self%s):\n' % (self._make_python_name(child['name']), input_param)
                     methods += self._format_description('METHOD', child, 2)
-                    methods += "\t\treturn self._execute('%s'%s)\n\n" % (child['name'], input_param)
+                    if typedef_params['input-file-name'] is not None:
+                        methods += "\t\twith open(input['%s'], 'r') as fid:\n" % typedef_params['input-file-name']
+                        methods += "\t\t\tinput['%s'] = fid.read()\n" % typedef_params['input-file-name']
+                        methods += "\t\treturn self._execute('%s'%s)\n\n" % (child['name'], input_param)
+                    elif typedef_params['output-file-name'] is not None and typedef_params['file-content'] is not None:
+                        methods += "\t\toutput = self._execute('%s'%s)\n" % (child['name'], input_param)
+                        methods += "\t\twith open(input['%s'], 'w') as fid:\n" % typedef_params['output-file-name']
+                        methods += "\t\t\tfid.write(output['%s'])\n" % typedef_params['file-content']
+                        methods += "\t\treturn output\n\n"
+                    else:
+                        methods += "\t\treturn self._execute('%s'%s)\n\n" % (child['name'], input_param)
         return methods
     
+    def _get_typedef(self, node, typedef_name, typedef_params):
+        if '_typedef' in node and node['_typedef'] == typedef_name:
+            typedef_params[typedef_name] = node['name']
+
     def _get_args(self, node, add_arg_key=True):
         arg_string = ''
         arg_list = []

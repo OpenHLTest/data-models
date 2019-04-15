@@ -33,16 +33,21 @@ module openhltest-types {
 		}
 	}
 
-	typedef input-file {
+	typedef input-file-name {
 		type string;
-		description "The name of a file whose binary data will be sent to a server implementation";
+		description "A name of an input file from which contents will be read";
 	}
 
-	typedef output-file {
+	typedef output-file-name {
 		type string;
-		description "The name of a file where binary data received from a server implementation will be written to";
+		description "A name of an output file from which contents will be saved to";
 	}
 
+	typedef file-content {
+		type string;
+		description "Binary file content that is base64 encoded";
+	}
+	
 	typedef start-stop-enum {
 		type enumeration {
 			enum START {

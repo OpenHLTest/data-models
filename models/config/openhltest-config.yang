@@ -94,14 +94,14 @@ submodule openhltest-config {
 								description "The configuration data must be in a format recognized by the vendor";
 							}
 							enum RESTCONF_JSON {
-								description "The configuration must be in the restconf json format";
+								description "The nodes under the config node in json format";
 							}
 						}
 						description "The type of configuration data that will be loaded by the vendor implementation";
 					}
-					leaf file-data {
-						type t:input-file;
-						description	"The file-data value is a filename that will provide binary configuration data to a server implementation";
+					leaf file-name {
+						type t:input-file-name;
+						description	"The filename that contains configuration data";
 					}
 				}
 			}
@@ -114,14 +114,20 @@ submodule openhltest-config {
 								description "The configuration will be saved in a vendor specific format";
 							}
 							enum RESTCONF_JSON {
-								description "The configuration will be saved in the restconf json format";
+								description "The nodes under the config node saved in json format";
 							}
 						}
 						description "The type of configuration data that will be saved by the vendor implementation";
 					}
-					leaf file-data {
-						type t:output-file;
-						description	"The file-data value is a filename that will receive binary configuration data from a server implementation";
+					leaf file-name {
+						type t:output-file-name;
+						description	"The file name that configuration data will be written to";
+					}
+				}
+				output {
+					leaf content {
+						type t:file-content;
+						description "The server implementation will return the configuration data";
 					}
 				}
 			}

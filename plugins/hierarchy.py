@@ -192,6 +192,7 @@ class HierarchyPlugin(plugin.PyangPlugin):
         if pattern is not None:
             entry['_type_pattern'] = pattern.arg
         if hasattr(yang_type, 'i_typedef') and yang_type.i_typedef is not None:
+            entry['_typedef'] = yang_type.i_typedef.arg
             self._add_yang_type(yang_type.i_typedef, entry)
 
     def _validate_leaf_ref(self, stmt, leafref, paths):
