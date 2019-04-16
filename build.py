@@ -476,13 +476,15 @@ class CiBuild(object):
                     methods += '\tdef %s(self%s):\n' % (self._make_python_name(child['name']), input_param)
                     methods += self._format_description('METHOD', child, 2)
                     if typedef_params['input-file-name'] is not None:
-                        methods += "\t\twith open(input['%s'], 'r') as fid:\n" % typedef_params['input-file-name']
-                        methods += "\t\t\tinput['%s'] = fid.read()\n" % typedef_params['input-file-name']
+                        methods += "\t\twith open(input['%s'], 'rb') as fid:\n" % typedef_params['input-file-name']
+                        methods += "\t\t\timport base64\n"
+                        methods += "\t\t\tinput['%s'] = base64.b64encode(fid.read())\n" % typedef_params['input-file-name']
                         methods += "\t\treturn self._execute('%s'%s)\n\n" % (child['name'], input_param)
                     elif typedef_params['output-file-name'] is not None and typedef_params['file-content'] is not None:
                         methods += "\t\toutput = self._execute('%s'%s)\n" % (child['name'], input_param)
-                        methods += "\t\twith open(input['%s'], 'w') as fid:\n" % typedef_params['output-file-name']
-                        methods += "\t\t\tfid.write(output['%s'])\n" % typedef_params['file-content']
+                        methods += "\t\twith open(input['%s'], 'wb') as fid:\n" % typedef_params['output-file-name']
+                        methods += "\t\t\timport base64\n"
+                        methods += "\t\t\tfid.write(base64.b64decode(output['%s']))\n" % typedef_params['file-content']
                         methods += "\t\treturn output\n\n"
                     else:
                         methods += "\t\treturn self._execute('%s'%s)\n\n" % (child['name'], input_param)
