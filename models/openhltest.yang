@@ -4,6 +4,10 @@ module openhltest {
 	namespace "http://openhltest.org/yang/oht";
 	prefix "oht";
 
+	import openhltest-extensions {
+      prefix e;
+    }
+
 	include openhltest-sessions;
 	include openhltest-config;
 	include openhltest-ports;
@@ -86,6 +90,7 @@ module openhltest {
 	}
 
 	rpc authenticate {
+		e:spirent-not-supported;
 		description "Authenticate a user to the system and return an api-key that can be used to authenticate the user for subsequent requests.
 		The api-key can be submitted to the system based on the transport.
 		When using the RESTCONF transport the api key is submitted to the system using an http header called X-Api-Key.";
