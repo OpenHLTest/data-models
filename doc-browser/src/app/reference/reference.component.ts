@@ -196,9 +196,15 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 			}
 			if (addFinalNode) {
 				if (node._keyword === 'list') {
-					let keyNode: IYangNode = node.children.find((child) => child.name === node._key);
-					let nameAndKey = `${node.name}=${this.createHyperlink(keyNode.id, keyNode.name)}`;
-					pieces.unshift(nameAndKey);
+					let keys = '';
+					for (let keyPiece of node._key.split(' ')) {
+						let keyNode: IYangNode = node.children.find((child) => child.name === keyPiece);
+						if (keys.length > 0) {
+							keys += ',';
+						}
+						keys += this.createHyperlink(keyNode.id, keyNode.name);
+					}
+					pieces.unshift(`${node.name}=${keys}`);	
 				} else {
 					pieces.unshift(node.name);
 				}
@@ -225,10 +231,10 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 		return this.YangNode && !this.isMethod(this.YangNode) && this.YangNode._keyword !== 'module';
 	}
 	public get hasPost(): boolean {
-		return this.isList(this.YangNode);	
+		return this.isList(this.YangNode) && this.YangNode._writeable;	
 	}
 	public get hasPatch(): boolean {
-		if (this.YangNode && this.YangNode.children)
+		if (this.YangNode && this.YangNode._writeable && this.YangNode.children)
 		{
 			switch (this.YangNode._keyword) {
 				case 'list':
@@ -244,7 +250,7 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 		return false;
 	}
 	public get hasDelete(): boolean {
-		return this.isList(this.YangNode);		
+		return this.isList(this.YangNode) && this.YangNode._writeable;		
 	}
 	public get hasOperation(): boolean {
 		if (this.YangNode) {
@@ -634,7 +640,7 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 			} else {
 				leftSideName = treeNode.data.name.toLowerCase().replace(/-/g, '_');
 			}
-			let action = treeNode.data._keyword === 'list' ? 'create' : 'get';
+			let action = treeNode.data._keyword === 'list' && treeNode.data._writeable ? 'create' : 'get';
 			code.push(`# ${action} an instance of the ${this.pythonName(treeNode.data.name)} class\n`);
 			//code.push(`# except for the ${this.pythonName(treeNode.data.name)} parameter, all of the remaining parameters in the create method are optional\n`);
 			let rightSideName = treeNode.parent.data.name.toLowerCase().replace(/-/g, '_');
@@ -649,6 +655,8 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 					code.push(optional_parameters.join(''));
 				}
 				code.push(`)\n\n`);
+			} else if (treeNode.data._keyword == 'list') {
+				code.push(`.read()\n\n`); 
 			} else {
 				code.push(`\n\n`);				
 			}
