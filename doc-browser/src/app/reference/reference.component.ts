@@ -3,6 +3,7 @@ import model_docs from "../../assets/documentation.json";
 import { TreeComponent, TreeModel, TreeNode, ITreeOptions } from 'angular-tree-component';
 import { SplitComponent } from 'angular-split';
 import { preserveWhitespacesDefault } from '@angular/compiler';
+import { element } from '@angular/core/src/render3/instructions';
 
 
 enum eDescriptionFormat {
@@ -146,7 +147,7 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 			this.setDeleteContent();
 			this.setOperationContent();
 			this.setPythonSample();
-			this.setPythonClass();
+			this.setPythonClass(this._currentDocNode);
 		}
 	}
 	public get header(): string {
@@ -257,10 +258,14 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 		}
 		return false;
 	}
-	public setPythonClass() {
-		if (this.YangNode && this.YangNode._python_class) {
-			this._pythonClass.nativeElement.innerHTML = this.YangNode._python_class;
-			this.processElementRef(this._pythonClass)
+	public setPythonClass(docNode: TreeNode) {
+		if (docNode) {
+			if (docNode.data && docNode.data._python_class) {
+				this._pythonClass.nativeElement.innerHTML = docNode.data._python_class;
+				this.processElementRef(docNode.data._python_class)					
+			} else {
+				this.setPythonClass(docNode.parent);
+			}
 		}
 	}
 	public setGetContent() {
@@ -376,64 +381,77 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 			restStmt += this.xapiHeader;
 			restStmt += 'Content-Type: application/json\n\n';
 			let payload: any = {};
-			let payloadIds = [];
-			this.buildJson(this.findNode('input'), payload, payloadIds);
-			this.processInnerHtml(this._operationCode, restStmt, payload, payloadIds);
+			this.buildJson(this.findNode('input'), payload);
+			let response: any = {};
+			this.buildJson(this.findNode("output"), response);
+			this.processInnerHtml(this._operationCode, restStmt, payload, response);
 		}
 	}
 	private get xapiHeader(): string {
 		if (this._currentDocNode && this._currentDocNode.data._keyword == 'module') {
 			return '';
 		} else {
-			return `X-Api-Key: "api-key returned from the authenticate rpc"\n`;
+			return `&lt;X-Api-Key: "api-key returned from the authenticate rpc"&gt;\n`;
 		}
 	}
 
 	private findNode(name: string): any {
 		return this._currentDocNode.data.children.find((c) => c.name == name);
 	}
-	private buildJson(dataNode: any, payload: any, payloadIds: Array<number>): any {
+	private buildJson(dataNode: any, payload: any): any {
 		if (dataNode) {
 			switch (dataNode._keyword) {
 				case 'input':
 				case 'output':
 				case 'container':
 					let name = `openhltest:${dataNode.name}`;
-					if (payloadIds && Object.keys(payload).length === 0) {
+					if (Object.keys(payload).length === 0) {
 						name = `openhltest:${this.makeHyperLink(dataNode)}`;
-						payloadIds.push(dataNode.id);
 					}
-					payload[name] = {}
+					payload[name] = undefined;
 					if (dataNode.children) {
+						let childItem = {}
 						for (let childNode of dataNode.children) {
-							this.buildJson(childNode, payload[name], payloadIds);
+							this.buildJson(childNode, childItem);
 						}
+						payload[name] = childItem;
 					}
 					break;
-				default:
-					if (payloadIds) {
-						payload[this.makeHyperLink(dataNode)] = `${dataNode._type}`;
-						payloadIds.push(dataNode.id);
-					} else {
-						payload[dataNode.name] = dataNode._type;
+				case 'list':
+					let listName = this.makeHyperLink(dataNode);
+					payload[listName] = [];
+					if (dataNode.children) {
+						let childItem = {};
+						for (let childNode of dataNode.children) {
+							this.buildJson(childNode, childItem);
+						}
+						payload[listName].push(childItem);
 					}
+					break;
+				case 'leaf-list':
+					payload[this.makeHyperLink(dataNode)] = [`${dataNode._type}`];
+					break;
+				default:
+					payload[this.makeHyperLink(dataNode)] = `${dataNode._type}`;
 					break;
 			}
 		}
 		return payload;
 	}
-	private processInnerHtml(elementRef: ElementRef, restStmt: string, payload: any, payloadIds: Array<number>) {
-		if (payloadIds.length > 0) {
-			elementRef.nativeElement.innerHTML = restStmt + JSON.stringify(payload, null, 4);
-			for (let payloadId of payloadIds) {
-				let payloadElement: HTMLElement = elementRef.nativeElement.querySelector('#node' + payloadId);
-				payloadElement.style.color = 'blue';
-				payloadElement.style.cursor = 'pointer';
-				payloadElement.addEventListener("click", () => { this.gotoNode(payloadId); });
+	private processInnerHtml(elementRef: ElementRef, restStmt: string, inputPayload: any = undefined, outputPayload: any = undefined) {
+		if (inputPayload) {
+			restStmt += JSON.stringify(inputPayload, null, 4);
+		} 
+		if (outputPayload) {
+			if (Object.values(outputPayload).length > 0 && Object.values(outputPayload)[0]) {
+				restStmt += "\n\n\n200 OK\nContent-Type: application/json\n\n" + JSON.stringify(outputPayload, null, 4);
+			} else {
+				restStmt += "\n\n\n204 No Content";
 			}
-		} else {
-			elementRef.nativeElement.innerHTML = restStmt;
 		}
+		elementRef.nativeElement.innerHTML = restStmt;
+
+		this.processElementRef(elementRef);
 	}
 	
 	private pythonName(name: string): string {
@@ -663,27 +681,29 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 				switch (io.name) {
 					case 'input':
 						input = {};
-						this.buildJson(io, input, null);
+						this.buildJson(io, input);
 						break;
 					case 'output':
 						output = {};
-						this.buildJson(io, output, null);
+						this.buildJson(io, output);
 						break;
 				}
 			}
-			code.push(`''' call the ${this.pythonName(this.YangNode.name)} method\n`);
-			code.push(`${this.YangNode._description.replace(/\n\t/g, '').trim()}\n`);
-			if (output) {
-				code.push(`\n`);
-				code.push(`the output of the ${this.YangNode._keyword} will have the following structure:\n`);
-				for (let line of JSON.stringify(output, null, 4).split('\n')) {
-					code.push(`${line}\n`);
-				}
-			}
-			code.push(`'''\n`);
-			if (input) {
-				code.push(`input = ${JSON.stringify(input, null, 4)}\n`);
-				code.push(`output = ${leftSideName}.${this.pythonName(this.YangNode.name)}(input)\n\n`);
+			// code.push(`''' call the ${this.pythonName(this.YangNode.name)} method\n`);
+			// code.push(`${this.YangNode._description.replace(/\n\t/g, '').trim()}\n`);
+			// if (output) {
+			// 	code.push(`\n`);
+			// 	code.push(`the output of the ${this.YangNode._keyword} will have the following structure:\n`);
+			// 	for (let line of JSON.stringify(output, null, 4).split('\n')) {
+			// 		code.push(`${line}\n`);
+			// 	}
+			// }
+			// code.push(`'''\n`);
+			code.push(`# execute the ${this.YangNode.name} ${this.YangNode._keyword}\n`)
+			if (input && Object.values(input)[0]) {
+				// code.push(`input = ${JSON.stringify(input, null, 4)}\n`);
+				let inputString = JSON.stringify(Object.values(input)[0]);
+				code.push(`output = ${leftSideName}.${this.pythonName(this.YangNode.name)}(${inputString})\n\n`);
 			} else {
 				code.push(`output = ${leftSideName}.${this.pythonName(this.YangNode.name)}()\n\n`);
 			}
@@ -694,13 +714,15 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 	}
 
 	private processElementRef(elementRef: ElementRef) {
-		for(let span of elementRef.nativeElement.querySelectorAll('span')) {
-			if (span.id.indexOf('node') == 0) {
-				let nodeId = span.id.split('node')[1];
-				span.style.color = 'blue';
-				span.style.cursor = 'pointer';
-				span.addEventListener("click", () => { this.gotoNode(nodeId); });
-			}
-		}		
+		if (elementRef && elementRef.nativeElement) {
+			for(let span of elementRef.nativeElement.querySelectorAll('span')) {
+				if (span.id.indexOf('node') == 0) {
+					let nodeId = span.id.split('node')[1];
+					span.style.color = 'blue';
+					span.style.cursor = 'pointer';
+					span.addEventListener("click", () => { this.gotoNode(nodeId); });
+				}
+			}	
+		}	
 	}
 }
