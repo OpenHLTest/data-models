@@ -109,11 +109,11 @@ class HttpTransport(Transport):
         payload = None
         if locals_dict is not None:
             headers['content-type'] = 'application/json'
-            if url.startswith(self._base_data_url):
-                payload = json.dumps(self._build_payload(yang_class, locals_dict, method), indent=4)
-            else:
+            if method == 'POST' and url.split('/').pop() != yang_class.YANG_NAME:
                 self._normalize_payload(locals_dict)
                 payload = json.dumps({'openhltest:input': locals_dict}, indent=4)
+            else:
+                payload = json.dumps(self._build_payload(yang_class, locals_dict, method), indent=4)
 
         self._log_request(method, url, headers, payload)
         if self._openhltest_server is None:
@@ -122,10 +122,10 @@ class HttpTransport(Transport):
             response = self._session.request(method, url, headers=headers, data=payload, verify=self._verify_cert)
         self._log_response(response)
 
-        if response.status_code == 200 and '/restconf/data' in url:
-            return json.loads(response.content)['openhltest:%s' % yang_class.YANG_NAME]
-        elif response.status_code == 200 and '/restconf/operations' in url:
+        if response.status_code == 200 and method == 'POST' and url.split('/').pop() != yang_class.YANG_NAME:
             return json.loads(response.content)['openhltest:output']
+        elif response.status_code == 200 and '/restconf/data' in url:
+            return json.loads(response.content)['openhltest:%s' % yang_class.YANG_NAME]
         elif response.status_code == 201:
             return response.headers['location']
         elif response.status_code == 204:
@@ -222,4 +222,4 @@ class HttpTransport(Transport):
             url (str): a relative resource based path including keys
             payload (dict): a dictionary of name/values to be set on the existing resource
         """
-        return self._send_recv(kwargs['yang'], 'POST', self._make_operations_url(kwargs['url']), locals_dict=kwargs['locals_dict'])
+        return self._send_recv(kwargs['yang'], 'POST', self._make_data_url(kwargs['url']), locals_dict=kwargs['locals_dict'])
