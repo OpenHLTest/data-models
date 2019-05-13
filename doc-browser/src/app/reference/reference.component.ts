@@ -178,7 +178,7 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 
 	public getRequest(method: string): string {
 		let request: string = `${method} ${ReferenceComponent.PREAMBLE}/restconf/data`;
-		let path: string = this.getPath(method !== 'POST');
+		let path: string = this.getPath(method);
 		if (path.length !== 0) {
 			request += `/openhltest:${path}`;
 		}
@@ -186,7 +186,7 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 		request += this.xapiHeader;
 		return request;
 	}
-	public getPath(addFinalNode: boolean): string {
+	public getPath(method: string): string {
 		let pieces: Array<string> = [];
 		let docNode = this._currentDocNode;
 		while (docNode) {
@@ -194,7 +194,7 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 			if (node._keyword === 'module') {
 				break;
 			}
-			if (addFinalNode) {
+			if (method != 'POST') {
 				if (node._keyword === 'list') {
 					let keys = '';
 					for (let keyPiece of node._key.split(' ')) {
@@ -204,12 +204,16 @@ export class ReferenceComponent implements OnInit, AfterViewInit {
 						}
 						keys += this.createHyperlink(keyNode.id, keyNode.name);
 					}
-					pieces.unshift(`${node.name}=${keys}`);	
+					let lt = '';
+					let gt = '';
+					if (docNode === this._currentDocNode && method === 'GET') {
+						lt = '&lt;';
+						gt = '&gt;';
+					}
+					pieces.unshift(`${node.name}${lt}=${keys}${gt}`);	
 				} else {
 					pieces.unshift(node.name);
 				}
-			} else {
-				addFinalNode = true;
 			}
 			docNode = docNode.parent;
 		}
