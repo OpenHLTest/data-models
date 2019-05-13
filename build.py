@@ -447,9 +447,12 @@ class CiBuild(object):
                 if node['_keyword'] == 'list' and child['name'] in node['_key']:
                     properties += '\n'
                     continue
-                properties += '\t@%s.setter\n' % python_name
-                properties += '\tdef %s(self, value):\n' % python_name
-                properties += "\t\treturn self._set_value('%s', value)\n\n" % child['name']
+                if child['_writeable']:
+                    properties += '\t@%s.setter\n' % python_name
+                    properties += '\tdef %s(self, value):\n' % python_name
+                    properties += "\t\treturn self._set_value('%s', value)\n\n" % child['name']
+                else:
+                    properties += '\n'
         return properties
 
     def _python_methods(self, node):
