@@ -109,7 +109,8 @@ class HttpTransport(Transport):
         payload = None
         if locals_dict is not None:
             headers['content-type'] = 'application/json'
-            if method == 'POST' and yang_class.YANG_KEYWORD in ['rpc', 'action']:
+            action = url.split('/').pop()
+            if method == 'POST' and action in yang_class.YANG_ACTIONS:
                 self._normalize_payload(locals_dict)
                 payload = json.dumps({'openhltest:input': locals_dict}, indent=4)
             else:

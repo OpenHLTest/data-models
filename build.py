@@ -371,6 +371,14 @@ class CiBuild(object):
                     property_map[self._make_python_name(child['name'])] = child['name']
         return property_map
 
+    def _make_method_list(self, node):
+        methods = []
+        if 'children' in node:
+            for child in node['children']:
+                if child['_keyword'] in ['rpc', 'action']:
+                    methods.append(child['name'])
+        return methods
+
     def _generate_python_class(self, node):
         if node['_keyword']	in ['module', 'list', 'container']:
             classDefinition = ''
@@ -383,7 +391,8 @@ class CiBuild(object):
             if '_key' in node:
                 list_key = "'%s'" % node['_key']
             classDefinition += "\tYANG_KEY = %s\n" % list_key
-            classDefinition += "\tYANG_PROPERTY_MAP = %s\n\n" % json.dumps(self._make_property_map(node))
+            classDefinition += "\tYANG_PROPERTY_MAP = %s\n" % json.dumps(self._make_property_map(node))
+            classDefinition += "\tYANG_ACTIONS = %s\n\n" % json.dumps(self._make_method_list(node))
             classDefinition += self._python_class_init(node)
             classDefinition += self._python_class_properties(node)
             classDefinition += self._python_properties(node)
