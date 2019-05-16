@@ -94,6 +94,8 @@ class HttpTransport(Transport):
                 payload[key] = base_values
             elif isinstance(value, dict):
                 self._normalize_payload(payload[key])
+            elif isinstance(value, bytes):
+                payload[key] = value.decode('utf-8')
 
     def _send_recv(self, yang_class, method, url, locals_dict=None):
         """Uses requests to send an http request
