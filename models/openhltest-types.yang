@@ -81,27 +81,4 @@ module openhltest-types {
 			type uint16;
 		}
 	}
-
-	grouping errata-group {
-		description "A list of errata for keyed items that failed an action.";
-
-		list errata {
-			description "A list of rpc errors. 
-			An empty list indicates no errors occurred";
-			key "name";
-
-			leaf name {
-				description "The name of a keyed list object";
-				type string;
-			}
-			leaf detail {
-				description "Vendor specific detail of the error";
-				type string;
-			}
-			leaf stack-trace {
-				description "Optional stack trace of the error";
-				type string;
-			}
-		}
-	}
 }

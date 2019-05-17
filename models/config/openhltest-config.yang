@@ -76,11 +76,6 @@ submodule openhltest-config {
 						description "Specifies the port control action to be taken.";
 					}
 				}
-				output {
-					uses t:errata-group {
-						description "A list of abstract test ports that failed the supplied input mode.";
-					}
-				}
 			}
 			action clear {
 				description	"Clear the current configuration";
@@ -118,16 +113,6 @@ submodule openhltest-config {
 							}
 						}
 						description "The type of configuration data that will be saved by the vendor implementation";
-					}
-					leaf file-name {
-						type t:output-file-name;
-						description	"The file name that configuration data will be written to";
-					}
-				}
-				output {
-					leaf content {
-						type t:file-content;
-						description "The server implementation will return the configuration data";
 					}
 				}
 			}
@@ -189,12 +174,6 @@ submodule openhltest-config {
 						description "Specifies the action to be taken.";
 					}
 				}
-				output {
-					uses t:errata-group {
-						description "A list of traffic references that failed to start.
-						An empty list signifies that all traffic references specified in the input successfully started.";
-					}
-				}
 			}
 			action device-groups-control {
 				description
@@ -212,12 +191,6 @@ submodule openhltest-config {
 						type t:start-stop-enum;
 						default "START";
 						description "Specifies the action to be taken.";
-					}
-				}
-				output {
-					uses t:errata-group {
-						description "A list of device-groups resources that failed to start.
-						An empty list signifies that all protocol groups successfully started.";
 					}
 				}
 			}
@@ -260,11 +233,6 @@ submodule openhltest-config {
 						description "Specifies the action to be taken.";
 					}
 				}
-				output {
-					uses t:errata-group {
-						description "A list of bgpv4 resources that failed the requested mode.";
-					}
-				}
 			}
 			action bgpv6-control {
 				description
@@ -303,12 +271,6 @@ submodule openhltest-config {
 						}
 						default "START";
 						description "Specifies the action to be taken.";
-					}
-				}
-				output {
-					uses t:errata-group {
-						description "A list of protocol group resources that failed to start.
-						An empty list signifies that all protocol groups successfully started.";
 					}
 				}
 			}
@@ -351,12 +313,6 @@ submodule openhltest-config {
 						description "Specifies the action to be taken.";
 					}
 				}
-				output {
-					uses t:errata-group {
-						description "A list of protocol group resources that failed to start.
-						An empty list signifies that all protocol groups successfully started.";
-					}
-				}
 			}
 			action ospfv3-control {
 				description
@@ -397,12 +353,6 @@ submodule openhltest-config {
 						description "Specifies the action to be taken.";
 					}
 				}
-				output {
-					uses t:errata-group {
-						description "A list of protocol group resources that failed to start.
-						An empty list signifies that all protocol groups successfully started.";
-					}
-				}
 			}
 			action isis-control {
 				description
@@ -437,12 +387,6 @@ submodule openhltest-config {
 						description "Specifies the action to be taken.";
 					}
 				}
-				output {
-					uses t:errata-group {
-						description "A list of protocol group resources that failed to start.
-						An empty list signifies that all protocol groups successfully started.";
-					}
-				}
 			}
 			action bfdv4-control {
 				description
@@ -471,12 +415,6 @@ submodule openhltest-config {
 						description "Specifies the action to be taken.";
 					}
 				}
-				output {
-					uses t:errata-group {
-						description "A list of protocol group resources that failed to start.
-						An empty list signifies that all protocol groups successfully started.";
-					}
-				}
 			}
 			action bfdv6-control {
 				description
@@ -503,12 +441,6 @@ submodule openhltest-config {
 						}
 						default "START";
 						description "Specifies the action to be taken.";
-					}
-				}
-				output {
-					uses t:errata-group {
-						description "A list of protocol group resources that failed to start.
-						An empty list signifies that all protocol groups successfully started.";
 					}
 				}
 			}
