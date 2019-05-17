@@ -119,12 +119,9 @@ class Base(object):
         for i in range(len(self)):
             properties = self._object_properties[i]
             instances += '\n%s[%s]: %s' % (self.__class__.__name__, i, properties['yang-path'])
-            for key in sorted(properties.keys()):
-                if key == 'yang-path':
-                    continue
-                property_name = '%s%s' % (key[0].upper(), key[1:])
-                if property_name in self.__class__.__dict__:
-                    instances += '\n\t%s: %s' % (property_name, properties[key])
+            for key in sorted(self.YANG_PROPERTY_MAP.keys()):
+                if self.YANG_PROPERTY_MAP[key] in properties:
+                    instances += '\n\t%s: %s' % (key, properties[self.YANG_PROPERTY_MAP[key]])
         return instances.strip('\n')
 
     def _set_properties(self, properties, clear=False):

@@ -125,7 +125,7 @@ class HttpTransport(Transport):
             response = self._session.request(method, url, headers=headers, data=payload, verify=self._verify_cert)
         self._log_response(response)
 
-        if response.status_code == 200 and method == 'POST' and url.split('/').pop() != yang_class.YANG_NAME:
+        if response.status_code == 200 and method == 'POST' and url.split('/').pop() in yang_class.YANG_ACTIONS:
             return json.loads(response.content)['openhltest:output']
         elif response.status_code == 200 and '/restconf/data' in url:
             return json.loads(response.content)['openhltest:%s' % yang_class.YANG_NAME]
@@ -155,7 +155,10 @@ class HttpTransport(Transport):
         for key in response.headers.keys():
             message += '\n%s: %s' % (key, response.headers[key])
         if response.content is not None:
-            message += '\n%s' % response.content
+            content = response.content
+            if isinstance(content, bytes):
+                content = content.decode('utf-8')
+            message += '\n%s' % content
         self.debug(message)
 
     def _make_data_url(self, relative_url):
