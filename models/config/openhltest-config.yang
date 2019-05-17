@@ -47,6 +47,9 @@ submodule openhltest-config {
 			uses traffic-ports-top;
 			uses traffic-devices-top;
 
+			action commit {
+				description "Notify the server to push all uncommitted config changes to vendor hardware";
+			}
 			action port-control {
 				description
 				"Control one or more physical hardware test ports and/or 
