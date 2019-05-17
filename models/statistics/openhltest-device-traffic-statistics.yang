@@ -9,6 +9,9 @@ submodule openhltest-device-traffic-statistics {
         prefix t;
     }
 
+	include openhltest-config;
+	include openhltest-ports;
+	
     organization
       "OpenHlTest working group";
     contact
@@ -37,6 +40,17 @@ submodule openhltest-device-traffic-statistics {
                 type t:config-list-key;
                 description "Device Traffic name";
             }
+			leaf transmit-state {
+				type enumeration {
+					enum STOPPED {
+						description "Device traffic is stopped";
+					}
+					enum STARTED {
+						description "Device traffic is started";
+					}
+				}
+				description "The transmit state of the device traffic item";
+			}
             leaf tx-frames {
                 type uint64;
                 description
@@ -121,10 +135,13 @@ submodule openhltest-device-traffic-statistics {
 				description "";
 				
                 leaf name {
-                    type t:config-list-key;
-                    description "Port Streams name";
+					type leafref {
+						path "../../../../config/ports/name";
+					}
+					mandatory true;
+					description "The name of the transmit port of this device traffic stream";
                 }
-                leaf tx-frames {
+				leaf tx-frames {
                     type uint64;
                     description
                         "The total number of frames transmitted on the port.

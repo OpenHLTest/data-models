@@ -5,7 +5,11 @@ submodule openhltest-port-traffic-statistics {
 		prefix "oht";
 	}
 
-    organization
+
+	include openhltest-config;
+	include openhltest-ports;
+	
+	organization
       "OpenHlTest working group";
     contact
       "OpenHlTest working group";
@@ -35,6 +39,17 @@ submodule openhltest-port-traffic-statistics {
 			leaf tracking {
 				type string;
 				description "Traffic Statistic-tracking leaf containers - mac.destination, mac.source";
+			}
+			leaf transmit-state {
+				type enumeration {
+					enum STOPPED {
+						description "Port traffic is stopped";
+					}
+					enum STARTED {
+						description "Port traffic is started";
+					}
+				}
+				description "The transmit state of the port traffic item";
 			}
             leaf tx-frames {
                 type uint64;
@@ -121,8 +136,11 @@ submodule openhltest-port-traffic-statistics {
 				description "";
 
                 leaf name {
-					type string;
-                    description "Port Streams name";
+					type leafref {
+						path "../../../../config/ports/name";
+					}
+					mandatory true;
+					description "The name of the transmit port of this port traffic stream";
                 }
                 leaf tx-frames {
                     type uint64;
