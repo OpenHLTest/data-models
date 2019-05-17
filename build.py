@@ -172,6 +172,9 @@ class CiBuild(object):
                     self._process_output += stdout_data
 
     def check_changed_files(self):
+        if 'TRAVIS' not in os.environ:
+            return
+            
         print('checking for changed files...')
         process_args = [
             'git',
