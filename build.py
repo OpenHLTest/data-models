@@ -534,35 +534,36 @@ class CiBuild(object):
 
         if node['_keyword'] == 'list':
             python_key = self._make_python_name(node['_key'])
-            crud += '\tdef create(self, %s):\n' % create_args[0]
-            crud += '\t\t"""Create an instance of the `%s` resource\n\n' % node['name']
-            if len(create_args[1]) > 0:
-                crud += '\t\tArgs:\n'
-                for arg in create_args[1]:
-                    crud += '\t\t\t%s (%s): %s\n' % (self._make_python_name(arg['name']), arg['_type'], self._format_description('INLINE', arg, 0))
-            crud += '\t\t"""\n'
-            crud += "\t\treturn self._create(locals())\n\n"
-
             crud += '\tdef read(self, %s=None):\n' % python_key
             crud += '\t\t"""Get `%s` resource(s). Returns all resources from the server if `%s` is not specified\n\n' % (node['name'], python_key)
             #crud += '\t\t\t%s (%s): %s\n' % (self._make_python_name(node['name']), arg['_type'], self._format_description('INLINE', arg, 0))
             crud += '\t\t"""\n'                     
             crud += "\t\treturn self._read(%s)\n\n" % python_key
 
-            crud += '\tdef delete(self):\n'
-            crud += '\t\t"""Delete all the encapsulated instances of the retrieved `%s` resource\n\n' % node['name']
-            crud += '\t\t"""\n'                
-            crud += "\t\treturn self._delete()\n\n"
+            if node['_writeable'] is True:
+                crud += '\tdef create(self, %s):\n' % create_args[0]
+                crud += '\t\t"""Create an instance of the `%s` resource\n\n' % node['name']
+                if len(create_args[1]) > 0:
+                    crud += '\t\tArgs:\n'
+                    for arg in create_args[1]:
+                        crud += '\t\t\t%s (%s): %s\n' % (self._make_python_name(arg['name']), arg['_type'], self._format_description('INLINE', arg, 0))
+                crud += '\t\t"""\n'
+                crud += "\t\treturn self._create(locals())\n\n"
 
-        if len(update_args[0]) > 0:
-            crud += '\tdef update(self, %s):\n' % update_args[0]
-            crud += '\t\t"""Update the current instance of the `%s` resource\n\n' % node['name']
-            if len(update_args[1]) > 0:
-                crud += '\t\tArgs:\n'
-                for arg in update_args[1]:
-                    crud += '\t\t\t%s (%s): %s\n' % (self._make_python_name(arg['name']), arg['_type'], self._format_description('INLINE', arg, 0))
-            crud += '\t\t"""\n'
-            crud += "\t\treturn self._update(locals())\n\n"
+                crud += '\tdef delete(self):\n'
+                crud += '\t\t"""Delete all the encapsulated instances of the retrieved `%s` resource\n\n' % node['name']
+                crud += '\t\t"""\n'                
+                crud += "\t\treturn self._delete()\n\n"
+
+                if len(update_args[0]) > 0:
+                    crud += '\tdef update(self, %s):\n' % update_args[0]
+                    crud += '\t\t"""Update the current instance of the `%s` resource\n\n' % node['name']
+                    if len(update_args[1]) > 0:
+                        crud += '\t\tArgs:\n'
+                        for arg in update_args[1]:
+                            crud += '\t\t\t%s (%s): %s\n' % (self._make_python_name(arg['name']), arg['_type'], self._format_description('INLINE', arg, 0))
+                    crud += '\t\t"""\n'
+                    crud += "\t\treturn self._update(locals())\n\n"
 
         return crud    
 
