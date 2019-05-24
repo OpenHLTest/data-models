@@ -607,6 +607,17 @@ class CiBuild(object):
     def generate_angular_doc_app(self): 
         self._angular_app_dir = os.path.join(self._root_dir, 'doc-browser')
 
+        print('only build doc browser if angular is installed')
+        process_args = [
+            'npm',
+            'run',
+            'ng',
+            '-version'
+        ]
+        if self._run_process(process_args, self._angular_app_dir) > 0:
+            print('skipping doc browser build')
+            return
+
         print('update npm...')
         process_args = [
             'npm',
