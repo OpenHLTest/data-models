@@ -1,84 +1,89 @@
 module openhltest-types {
+  yang-version 1.1;
+  namespace "http://openhltest.org/yang/types";
+  prefix oht;
 
-    yang-version "1.1";
-    namespace "http://openhltest.org/yang/types";
-    prefix "oht";
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module defines types specific to the OpenHLTest models.";
 
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  revision 2018-02-01 {
     description
-      "This module defines types specific to the OpenHLTest models.";
+      "Initial revision.";
+    reference "0.0.1";
+  }
 
-    revision 2018-02-01 {
-        description
-          "Initial revision.";
-        reference
-          "0.0.1";
+  feature unresolved-type {
+    description
+      "The type in the leaf needs to be reviewed and approved by model principals.";
+  }
+
+  typedef config-list-key {
+    description
+      "A type that contains only alpha numeric characters suitable for use in a list leaf node designated as the key.
+       The pattern is a regex that defines a name to be used in all OpenHLTest keyed lists.
+       Use the pattern to determine if the supplied value is valid alpha numeric.
+       If the input is valid the regex should return no matches
+      ";
+    type string {
+      pattern "([a-zA-Z0-9 _-])*";
     }
+  }
 
-	feature unresolved-type {
-		description "The type in the leaf needs to be reviewed and approved by model principals.";
-	}
+  typedef input-file-name {
+    type string;
+    description
+      "A name of an input file from which contents will be read";
+  }
 
-	typedef config-list-key {
-		description "A type that contains only alpha numeric characters suitable for use in a list leaf node designated as the key.
-		The pattern is a regex that defines a name to be used in all OpenHLTest keyed lists.
-		Use the pattern to determine if the supplied value is valid alpha numeric.
-		If the input is valid the regex should return no matches
-		";
-		type string {
-			pattern "([a-zA-Z0-9 _-])*";
-		}
-	}
+  typedef output-file-name {
+    type string;
+    description
+      "A name of an output file from which contents will be saved to";
+  }
 
-	typedef input-file-name {
-		type string;
-		description "A name of an input file from which contents will be read";
-	}
+  typedef file-content {
+    type string;
+    description
+      "Binary file content that is base64 encoded";
+  }
 
-	typedef output-file-name {
-		type string;
-		description "A name of an output file from which contents will be saved to";
-	}
+  typedef start-stop-enum {
+    type enumeration {
+      enum "START" {
+        description
+          "Start action";
+      }
+      enum "STOP" {
+        description
+          "Stop action";
+      }
+    }
+  }
 
-	typedef file-content {
-		type string;
-		description "Binary file content that is base64 encoded";
-	}
-	
-	typedef start-stop-enum {
-		type enumeration {
-			enum START {
-				description "Start action";
-			}
-			enum STOP {
-				description "Stop action";
-			}
-		}
-	}
-	grouping chassis-card-port-group {
-		description
-		"Reuseable unambiguous group definition for chassis, card and port"; 
-
-		leaf chassis {
-			description
-			"The ip address and/or hostname of the infrastructure that 
-			contains the physical or virtual test ports.";
-			type string;
-		}
-		leaf card {
-			description
-			"The one based card id that contains the physical or virtual test port";
-			default 1;
-			type uint16;
-		}
-		leaf port {
-			description
-			"The one based port id of the physical or virtual test port";
-			default 1;
-			type uint16;
-		}
-	}
+  grouping chassis-card-port-group {
+    description
+      "Reuseable unambiguous group definition for chassis, card and port";
+    leaf chassis {
+      description
+        "The ip address and/or hostname of the infrastructure that 
+         contains the physical or virtual test ports.";
+      type string;
+    }
+    leaf card {
+      description
+        "The one based card id that contains the physical or virtual test port";
+      default "1";
+      type uint16;
+    }
+    leaf port {
+      description
+        "The one based port id of the physical or virtual test port";
+      default "1";
+      type uint16;
+    }
+  }
 }
