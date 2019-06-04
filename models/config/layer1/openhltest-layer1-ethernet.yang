@@ -239,7 +239,7 @@ submodule openhltest-layer1-ethernet {
 				description "If enabled allows for auto negotiation between ports for speed and duplex operation.";
 			}
 			leaf speed-duplex-type {
-				when "../auto-negotiation-enabled == false";
+				when "../auto-negotiation-enabled = false";
 				type enumeration {
 					enum 1000G {
 						description "";
@@ -262,7 +262,7 @@ submodule openhltest-layer1-ethernet {
 			}
 			container auto-negotiation-capabilities {
 				e:spirent-not-supported;
-				when "../auto-negotiation-enabled == true";
+				when "../auto-negotiation-enabled = true";
 				description "When auto negotiation is enabled the following speeds and duplex can be advertised";
 				leaf advertise-1000g {
 					type boolean;
@@ -291,7 +291,7 @@ submodule openhltest-layer1-ethernet {
 				}
 			}
 			leaf master-slave-type {
-				when "../auto-negotiation-enabled == true";
+				when "../auto-negotiation-enabled = true";
 				type enumeration {
 					enum MASTER {
 						description "";
