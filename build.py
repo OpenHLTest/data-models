@@ -200,10 +200,11 @@ class CiBuild(object):
         print('generating model hierarchy...')
         hierarchy = [
             self._pyang,
-            '--strict',
-            '--ietf',
-            '--print-error-code',
-            '--ignore-error',
+            "--strict",
+            "--ietf",
+            "--lax-xpath-checks",
+            "--print-error-code",
+            "--ignore-error",
             "LINT_BAD_MODULENAME_PREFIX_N",
             '--format',
             'hierarchy',
@@ -459,12 +460,12 @@ class CiBuild(object):
                 if node['_keyword'] == 'list' and child['name'] in node['_key']:
                     properties += '\n'
                     continue
-                if child['_writeable']:
-                    properties += '\t@%s.setter\n' % python_name
-                    properties += '\tdef %s(self, value):\n' % python_name
-                    properties += "\t\treturn self._set_value('%s', value)\n\n" % child['name']
-                else:
-                    properties += '\n'
+                # if child['_writeable']:
+                #     properties += '\t@%s.setter\n' % python_name
+                #     properties += '\tdef %s(self, value):\n' % python_name
+                #     properties += "\t\treturn self._set_value('%s', value)\n\n" % child['name']
+                # else:
+                properties += '\n'
         return properties
 
     def _python_methods(self, node):
@@ -555,15 +556,16 @@ class CiBuild(object):
                 crud += '\t\t"""\n'                
                 crud += "\t\treturn self._delete()\n\n"
 
-                if len(update_args[0]) > 0:
-                    crud += '\tdef update(self, %s):\n' % update_args[0]
-                    crud += '\t\t"""Update the current instance of the `%s` resource\n\n' % node['name']
-                    if len(update_args[1]) > 0:
-                        crud += '\t\tArgs:\n'
-                        for arg in update_args[1]:
-                            crud += '\t\t\t%s (%s): %s\n' % (self._make_python_name(arg['name']), arg['_type'], self._format_description('INLINE', arg, 0))
-                    crud += '\t\t"""\n'
-                    crud += "\t\treturn self._update(locals())\n\n"
+        if node['_keyword'] in ['list', 'container'] and node['_writeable'] is True:
+            if len(update_args[0]) > 0:
+                crud += '\tdef update(self, %s):\n' % update_args[0]
+                crud += '\t\t"""Update the current instance of the `%s` resource\n\n' % node['name']
+                if len(update_args[1]) > 0:
+                    crud += '\t\tArgs:\n'
+                    for arg in update_args[1]:
+                        crud += '\t\t\t%s (%s): %s\n' % (self._make_python_name(arg['name']), arg['_type'], self._format_description('INLINE', arg, 0))
+                crud += '\t\t"""\n'
+                crud += "\t\treturn self._update(locals())\n\n"
 
         return crud    
 
