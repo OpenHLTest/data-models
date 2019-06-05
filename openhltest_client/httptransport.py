@@ -75,7 +75,9 @@ class HttpTransport(Transport):
                             key_attr_name = dependency_key
                     value = []
                     for base_obj in locals_dict[key]:
-                        value.append(getattr(base_obj, key_attr_name))   
+                        value.append(getattr(base_obj, key_attr_name))
+                elif value is None:
+                    continue   
                 payload[yang_class.YANG_PROPERTY_MAP[key]] = value
         if method.lower() == 'post':
             return { 'openhltest:%s' % yang_class.YANG_NAME: [payload] }
