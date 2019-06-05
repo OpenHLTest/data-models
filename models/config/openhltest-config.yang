@@ -117,6 +117,16 @@ submodule openhltest-config {
 						}
 						description "The type of configuration data that will be saved by the vendor implementation";
 					}
+					leaf file-name {
+						type t:output-file-name;
+						description	"The filename that will contain the returned configuration data";
+					}
+				}
+				output {
+					leaf content {
+						type t:file-content;
+						description	"The base64 encoded binary data that is the configuration data";
+					}
 				}
 			}
 			action arp-control {

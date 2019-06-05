@@ -115,5 +115,16 @@ module openhltest {
 		}
 	}
 
+	rpc set-license-servers {
+		description "Provide a list of license servers to the test platform";
+		input {
+			leaf-list addresses {
+				type string;
+				description "A list of license server addresses. 
+				The format of the addresses can be a combination of ipv4, ipv6 or hostname.";
+			}
+		}
+	}
+
 	uses session-top;
 }

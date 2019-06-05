@@ -200,10 +200,11 @@ class CiBuild(object):
         print('generating model hierarchy...')
         hierarchy = [
             self._pyang,
-            '--strict',
-            '--ietf',
-            '--print-error-code',
-            '--ignore-error',
+            "--strict",
+            "--ietf",
+            "--lax-xpath-checks",
+            "--print-error-code",
+            "--ignore-error",
             "LINT_BAD_MODULENAME_PREFIX_N",
             '--format',
             'hierarchy',
@@ -459,12 +460,12 @@ class CiBuild(object):
                 if node['_keyword'] == 'list' and child['name'] in node['_key']:
                     properties += '\n'
                     continue
-                if child['_writeable']:
-                    properties += '\t@%s.setter\n' % python_name
-                    properties += '\tdef %s(self, value):\n' % python_name
-                    properties += "\t\treturn self._set_value('%s', value)\n\n" % child['name']
-                else:
-                    properties += '\n'
+                # if child['_writeable']:
+                #     properties += '\t@%s.setter\n' % python_name
+                #     properties += '\tdef %s(self, value):\n' % python_name
+                #     properties += "\t\treturn self._set_value('%s', value)\n\n" % child['name']
+                # else:
+                properties += '\n'
         return properties
 
     def _python_methods(self, node):
@@ -534,35 +535,37 @@ class CiBuild(object):
 
         if node['_keyword'] == 'list':
             python_key = self._make_python_name(node['_key'])
-            crud += '\tdef create(self, %s):\n' % create_args[0]
-            crud += '\t\t"""Create an instance of the `%s` resource\n\n' % node['name']
-            if len(create_args[1]) > 0:
-                crud += '\t\tArgs:\n'
-                for arg in create_args[1]:
-                    crud += '\t\t\t%s (%s): %s\n' % (self._make_python_name(arg['name']), arg['_type'], self._format_description('INLINE', arg, 0))
-            crud += '\t\t"""\n'
-            crud += "\t\treturn self._create(locals())\n\n"
-
             crud += '\tdef read(self, %s=None):\n' % python_key
             crud += '\t\t"""Get `%s` resource(s). Returns all resources from the server if `%s` is not specified\n\n' % (node['name'], python_key)
             #crud += '\t\t\t%s (%s): %s\n' % (self._make_python_name(node['name']), arg['_type'], self._format_description('INLINE', arg, 0))
             crud += '\t\t"""\n'                     
             crud += "\t\treturn self._read(%s)\n\n" % python_key
 
-            crud += '\tdef delete(self):\n'
-            crud += '\t\t"""Delete all the encapsulated instances of the retrieved `%s` resource\n\n' % node['name']
-            crud += '\t\t"""\n'                
-            crud += "\t\treturn self._delete()\n\n"
+            if node['_writeable'] is True:
+                crud += '\tdef create(self, %s):\n' % create_args[0]
+                crud += '\t\t"""Create an instance of the `%s` resource\n\n' % node['name']
+                if len(create_args[1]) > 0:
+                    crud += '\t\tArgs:\n'
+                    for arg in create_args[1]:
+                        crud += '\t\t\t%s (%s): %s\n' % (self._make_python_name(arg['name']), arg['_type'], self._format_description('INLINE', arg, 0))
+                crud += '\t\t"""\n'
+                crud += "\t\treturn self._create(locals())\n\n"
 
-        if len(update_args[0]) > 0:
-            crud += '\tdef update(self, %s):\n' % update_args[0]
-            crud += '\t\t"""Update the current instance of the `%s` resource\n\n' % node['name']
-            if len(update_args[1]) > 0:
-                crud += '\t\tArgs:\n'
-                for arg in update_args[1]:
-                    crud += '\t\t\t%s (%s): %s\n' % (self._make_python_name(arg['name']), arg['_type'], self._format_description('INLINE', arg, 0))
-            crud += '\t\t"""\n'
-            crud += "\t\treturn self._update(locals())\n\n"
+                crud += '\tdef delete(self):\n'
+                crud += '\t\t"""Delete all the encapsulated instances of the retrieved `%s` resource\n\n' % node['name']
+                crud += '\t\t"""\n'                
+                crud += "\t\treturn self._delete()\n\n"
+
+        if node['_keyword'] in ['list', 'container'] and node['_writeable'] is True:
+            if len(update_args[0]) > 0:
+                crud += '\tdef update(self, %s):\n' % update_args[0]
+                crud += '\t\t"""Update the current instance of the `%s` resource\n\n' % node['name']
+                if len(update_args[1]) > 0:
+                    crud += '\t\tArgs:\n'
+                    for arg in update_args[1]:
+                        crud += '\t\t\t%s (%s): %s\n' % (self._make_python_name(arg['name']), arg['_type'], self._format_description('INLINE', arg, 0))
+                crud += '\t\t"""\n'
+                crud += "\t\treturn self._update(locals())\n\n"
 
         return crud    
 
@@ -605,6 +608,17 @@ class CiBuild(object):
 
     def generate_angular_doc_app(self): 
         self._angular_app_dir = os.path.join(self._root_dir, 'doc-browser')
+
+        print('only build doc browser if angular is installed')
+        process_args = [
+            'npm',
+            'run',
+            'ng',
+            '-version'
+        ]
+        if self._run_process(process_args, self._angular_app_dir) > 0:
+            print('skipping doc browser build')
+            return
 
         print('update npm...')
         process_args = [
