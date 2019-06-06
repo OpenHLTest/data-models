@@ -141,6 +141,8 @@ class HttpTransport(Transport):
             raise UnauthorizedError(response)
         elif response.status_code == 404:
             raise NotFoundError(response)
+        elif response.status_code == 412:
+            raise OperationActionError(response)
         else:
             raise ServerError(response)
 

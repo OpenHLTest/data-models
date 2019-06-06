@@ -86,10 +86,9 @@ class OpenHLTestError(Exception):
         Returns:
             str: A string representation of the encapsulated instances
         """
-        instances = ''
+        instances = '%s: %s %s\n' % (self.__class__.__name__, self.StatusCode, self.Reason)
         for i in range(len(self)):
             properties = self._errors[i]
-            instances += '%s: %s %s\n' % (self.__class__.__name__, self.StatusCode, self.Reason)
             instances += '\t%s %s: %s\n' % (properties['error-type'], properties['error-tag'], properties['error-message'])
         return instances.strip('\n')
 
@@ -139,6 +138,12 @@ class NotFoundError(OpenHLTestError):
     """The requested resource does not exist on the server"""
     def __init__(self, response):
         super(NotFoundError, self).__init__(response)
+
+
+class OperationActionError(OpenHLTestError):
+    """The requested operation or action failed"""
+    def __init__(self, response):
+        super(OperationActionError, self).__init__(response)
 
 
 class ServerError(OpenHLTestError):
