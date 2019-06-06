@@ -393,7 +393,7 @@ class CiBuild(object):
             classDefinition += "\tYANG_KEYWORD = '%s'\n" % node['_keyword']
             list_key = "None"
             if '_key' in node:
-                list_key = "'%s'" % node['_key']
+                list_key = "'%s'" % node['_key'].split()[0]
             classDefinition += "\tYANG_KEY = %s\n" % list_key
             classDefinition += "\tYANG_PROPERTY_MAP = %s\n" % json.dumps(self._make_property_map(node))
             classDefinition += "\tYANG_ACTIONS = %s\n\n" % json.dumps(self._make_method_list(node))
@@ -534,12 +534,12 @@ class CiBuild(object):
         update_args = self._get_args(node, add_arg_key=False)
 
         if node['_keyword'] == 'list':
-            python_key = self._make_python_name(node['_key'])
-            crud += '\tdef read(self, %s=None):\n' % python_key
-            crud += '\t\t"""Get `%s` resource(s). Returns all resources from the server if `%s` is not specified\n\n' % (node['name'], python_key)
+            key = self._make_python_name(node['_key'].split()[0])
+            crud += '\tdef read(self, %s=None):\n' % key
+            crud += '\t\t"""Get `%s` resource(s). Returns all `%s` resources from the server if no input parameters are specified.\n\n' % (node['name'], node['name'])
             #crud += '\t\t\t%s (%s): %s\n' % (self._make_python_name(node['name']), arg['_type'], self._format_description('INLINE', arg, 0))
             crud += '\t\t"""\n'                     
-            crud += "\t\treturn self._read(%s)\n\n" % python_key
+            crud += "\t\treturn self._read(%s)\n\n" % key
 
             if node['_writeable'] is True:
                 crud += '\tdef create(self, %s):\n' % create_args[0]
