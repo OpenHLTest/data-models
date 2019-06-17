@@ -1,236 +1,232 @@
 submodule openhltest-ospfv3-as-external-prefix-range {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-patterns {
+    prefix p;
+  }
 
-    import openhltest-patterns {
-		prefix p;
-	}
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes the simulated OSPFV3 AS external Prefix LSA range.";
 
-	organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  revision 2018-02-09 {
     description
-      "This module describes the simulated OSPFV3 AS external Prefix LSA range.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2018-02-09 {
+  grouping ospfv3-as-external-prefix-range-group {
+    description
+      "";
+    container ospfv3-as-external-prefix-range {
+      description
+        "";
+      container address {
         description
-          "Initial revision.";
-        reference
-          "0.0.1";
+          "IPv6 address";
+        uses p:ipv6-pattern-group {
+          refine "single" {
+            default "2000::1";
+          }
+        }
+      }
+      container prefix-length {
+        description
+          "Prefix Length";
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..128";
+          }
+          refine "single" {
+            default "64";
+          }
+        }
+      }
+      container advertise-router-id {
+        description
+          "Advertising Router ID.  Specifies the 32-bit router ID of the router that
+           advertises a given LSA ";
+        uses p:ipv4-pattern-group;
+      }
+      container sequence-number {
+        description
+          "Sequence Number. Used to detect old and duplicate LSAs.";
+        uses p:base-pattern-group {
+          refine "single" {
+            default "80000001";
+          }
+        }
+      }
+      container age {
+        description
+          "Age of the LSA, in seconds.";
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..3600";
+          }
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container checksum {
+        description
+          "Specifies the LSA will be advertised with a good or a bad checksum.";
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "(GOOD|BAD)";
+          }
+          refine "single" {
+            default "GOOD";
+          }
+        }
+      }
+      container route-category {
+        description
+          "Route Category can be used to filter routes by type.
+              UNDEFINED The default category assigned to a manually created block.
+              PRIMARY   A preferred route that has duplicates (secondary routes) advertised by other ports.
+              SECONDARY Secondary route.
+              UNIQUE    A less preferred backup route.
+              ANY       Indicates that a single port in the test configuration advertises this route.";
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "(UNDEFINED|PRIMARY|SECONDARY|UNIQUE|ANY)";
+          }
+          refine "single" {
+            default "UNDEFINED";
+          }
+        }
+      }
+      container metric-type {
+        description
+          "Metric type.
+              TRUE  Metric is considered larger than any intra-AS path.(External Metric)
+              FALSE Metric is expressed in the same units as interface cost.";
+        uses p:bool-pattern-group {
+          refine "single" {
+            default "false";
+          }
+        }
+      }
+      container metric {
+        description
+          "Cost of the advertised network prefix.";
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..16777215";
+          }
+          refine "single" {
+            default "1";
+          }
+        }
+      }
+      container prefix-options {
+        description
+          "8- bit field of capabilities advertised with each prefix.
+              NUBIT    No Unicast capability bit. If set, the prefix is excluded from IPv6 unicast calculations.
+              LABIT    Local Address capability bit. If set, the prefix becomes an IPv6 interface address of the advertising router.
+              MCBIT    Multicast capability bit. If set, the prefix is included in the IPv6 multicast calculations.
+              PBIT     Propagate bit. Set this on the NSSA area prefixes that should be readvertised at the NSSA border.
+              DNBIT    Downward bit. Controls an inter-area-prefix-LSAs or AS-external-LSAs re-advertisement in a VPN environment
+              NBIT     Set in PrefixOptions for a host address (PrefixLength=128) that identifies the advertising router
+              UNUSED6  Bit not defined.
+              UNUSED7  Bit not defined. ";
+        uses p:base-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container link-state-id {
+        description
+          "Link State ID. ID of the interface connected to the transit network";
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..65535";
+          }
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container extended-lsa {
+        description
+          "";
+        container extended-lsa-tlvs {
+          description
+            "Include extended LSA tlvs.
+                IPV6_FORWARDING_ADDR IPv6  IPv6 Forwarding Address sub-TLV.
+                IPV4_FORWARDING_ADDR IPv4  IPv4 Forwarding Address sub-TLV.
+                ROUTE_TAG                  Route-Tag sub-TLV.";
+          uses p:base-pattern-group {
+            refine "pattern-format" {
+              default "IPV6_FORWARDING_ADDR|IPV4_FORWARDING_ADDR|ROUTE_TAG";
+            }
+            refine "single" {
+              default "0";
+            }
+          }
+        }
+        container ipv6-forwarding-address {
+          description
+            "IPv6 Forwarding address";
+          uses p:ipv6-pattern-group;
+        }
+        container ipv4-forwarding-address {
+          description
+            "IPv4 Forwarding address";
+          uses p:ipv4-pattern-group {
+            refine "single" {
+              default "0.0.0.0";
+            }
+          }
+        }
+        container route-tag {
+          description
+            "Route tag";
+          uses p:base-pattern-group {
+            refine "single" {
+              default "0";
+            }
+          }
+        }
+      }
+      container referenced-lsa {
+        description
+          "";
+        container type {
+          description
+            "Type of the referenced LSA.";
+          uses p:base-pattern-group {
+            refine "pattern-format" {
+              default "0..65535";
+            }
+            refine "single" {
+              default "0";
+            }
+          }
+        }
+        container link-state-id {
+          description
+            "Referenced Link State ID.";
+          uses p:base-pattern-group {
+            refine "pattern-format" {
+              default "0..65535";
+            }
+            refine "single" {
+              default "0";
+            }
+          }
+        }
+      }
     }
-	
-	grouping ospfv3-as-external-prefix-range-group {
-		description "";
-		container ospfv3-as-external-prefix-range {
-			description "";
-            container address {
-                description
-                "IPv6 address";
-                uses p:ipv6-pattern-group {
-                    refine single {
-                        default "2000::1";
-                    }
-                }
-            }
-
-            container prefix-length {
-                description
-                "Prefix Length";
-				uses p:base-pattern-group {
-					refine pattern-format {
-						default "0..128";
-					}
-					refine single {
-						default "64";
-					}
-				}
-            }
-
-            container advertise-router-id {
-                description
-                "Advertising Router ID.  Specifies the 32-bit router ID of the router that 
-                advertises a given LSA ";
-                uses p:ipv4-pattern-group;
-            }
-
-            container sequence-number {
-                description
-                "Sequence Number. Used to detect old and duplicate LSAs.";
-				uses p:base-pattern-group {
-					refine single {
-						default "80000001";
-					}
-				}
-            }
-            container age {
-                description
-                "Age of the LSA, in seconds.";
-				uses p:base-pattern-group {
-                	refine pattern-format {
-						default "0..3600";
-					}
-					refine single {
-						default "0";
-					}
-				}
-            }
-
-            container checksum {
-                description
-                "Specifies the LSA will be advertised with a good or a bad checksum.";
-                uses p:enum-pattern-group {
-                    refine pattern-format {
-                        default "(GOOD|BAD)";
-                    }
-                    refine single {
-                        default "GOOD";
-                    }
-                }
-            }
-
-            container route-category {
-                description
-                "Route Category can be used to filter routes by type.
-                    UNDEFINED The default category assigned to a manually created block.
-                    PRIMARY   A preferred route that has duplicates (secondary routes) advertised by other ports.
-                    SECONDARY Secondary route.
-                    UNIQUE    A less preferred backup route.
-                    ANY       Indicates that a single port in the test configuration advertises this route.";
-                uses p:enum-pattern-group {
-                    refine pattern-format {
-                        default "(UNDEFINED|PRIMARY|SECONDARY|UNIQUE|ANY)";
-                    }
-                    refine single {
-                        default "UNDEFINED";
-                    }
-                }
-            }
-
-            container metric-type {
-                description
-                "Metric type.
-                    TRUE  Metric is considered larger than any intra-AS path.(External Metric)
-                    FALSE Metric is expressed in the same units as interface cost.";
-                uses p:bool-pattern-group {
-                    refine single {
-                        default "false";
-                    }
-                }
-            }
-
-            container metric {
-                description
-                "Cost of the advertised network prefix.";
-				uses p:base-pattern-group {
-                	refine pattern-format {
-						default "0..16777215";
-					}
-					refine single {
-						default "1";
-					}
-				}
-            }
-            container prefix-options {
-                description
-                "8- bit field of capabilities advertised with each prefix.
-                    NUBIT    No Unicast capability bit. If set, the prefix is excluded from IPv6 unicast calculations.  
-                    LABIT    Local Address capability bit. If set, the prefix becomes an IPv6 interface address of the advertising router.  
-                    MCBIT    Multicast capability bit. If set, the prefix is included in the IPv6 multicast calculations.  
-                    PBIT     Propagate bit. Set this on the NSSA area prefixes that should be readvertised at the NSSA border.  
-                    DNBIT    Downward bit. Controls an inter-area-prefix-LSAs or AS-external-LSAs re-advertisement in a VPN environment 
-                    NBIT     Set in PrefixOptions for a host address (PrefixLength=128) that identifies the advertising router 
-                    UNUSED6  Bit not defined. 
-                    UNUSED7  Bit not defined. ";
-                uses p:base-pattern-group {
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container link-state-id {
-                description
-                "Link State ID. ID of the interface connected to the transit network";
-				uses p:base-pattern-group {
-                	refine pattern-format {
-						default "0..65535";
-					}
-					refine single {
-						default "0";
-					}
-				}
-            }
-            container extended-lsa {
-				description "";
-                container extended-lsa-tlvs {
-                    description
-                    "Include extended LSA tlvs.
-                        IPV6_FORWARDING_ADDR IPv6  IPv6 Forwarding Address sub-TLV.
-                        IPV4_FORWARDING_ADDR IPv4  IPv4 Forwarding Address sub-TLV.
-                        ROUTE_TAG                  Route-Tag sub-TLV.";
-                    uses p:base-pattern-group {
-                        refine pattern-format {
-                            default "IPV6_FORWARDING_ADDR|IPV4_FORWARDING_ADDR|ROUTE_TAG";
-                        }
-                        refine single {
-                            default "0";
-                        }
-                    }
-                }
-                container ipv6-forwarding-address {
-                    description
-                    "IPv6 Forwarding address";
-                    uses p:ipv6-pattern-group;
-                }
-                container ipv4-forwarding-address {
-                    description
-                    "IPv4 Forwarding address";
-                    uses p:ipv4-pattern-group {
-                        refine single {
-                            default "0.0.0.0";
-                        }
-                    }
-                }
-                container route-tag {
-                    description
-                    "Route tag";
-                    uses p:base-pattern-group {
-                        refine single {
-                            default "0";
-                        }
-                    }
-                }
-            }
-            container referenced-lsa {
-				description "";
-                container type {
-                    description
-                    "Type of the referenced LSA.";
-                    uses p:base-pattern-group {
-                        refine pattern-format {
-                            default "0..65535";
-                        }
-                        refine single {
-                            default "0";
-                        }
-                    }
-                }
-                container link-state-id {
-                    description
-                    "Referenced Link State ID.";
-                    uses p:base-pattern-group {
-                        refine pattern-format {
-                            default "0..65535";
-                        }
-                        refine single {
-                            default "0";
-                        }
-                    }
-                }
-            }
-		}
-	}
+  }
 }

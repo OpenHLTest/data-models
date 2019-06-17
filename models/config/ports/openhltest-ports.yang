@@ -1,51 +1,51 @@
 submodule openhltest-ports {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-types {
+    prefix t;
+  }
 
-    import openhltest-types {
-        prefix t;
-    }
-	
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes a collection of abstract test ports
+     and associated rpcs. An abstract test port should be as
+     minimal as possible.";
+
+  revision 2017-11-02 {
     description
-      "This module describes a collection of abstract test ports
-	  and associated rpcs. An abstract test port should be as 
-	  minimal as possible.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2017-11-02 {
+  grouping port-top {
+    description
+      "A grouping of abstract test ports";
+    list ports {
+      key "name";
+      description
+        "A list of abstract test ports";
+      leaf name {
+        type t:config-list-key;
         description
-          "Initial revision.";
-        reference
-          "0.0.1";
+          "The unique name of an abstract test port";
+      }
+      leaf location {
+        type string {
+          pattern '';
+        }
+        default "";
+        description
+          "The location of the physical or virtual port that will be connected to this abstract port.
+           The value pattern must be chassis/card/port where chassis is an ipv4/ipv6 address and card/port are unsigned byte 1-255.
+           The separator between the chassis/card/port values must be a forward slash.";
+      }
     }
-
-    grouping port-top {
-        description "A grouping of abstract test ports";
-
-		list ports {
-			key "name";
-			description	"A list of abstract test ports";
-
-			leaf name {
-				type t:config-list-key;
-				description	"The unique name of an abstract test port";
-			}	
-
-			leaf location {
-				type string {
-					pattern '';
-				}
-				default '';
-				description	"The location of the physical or virtual port that will be connected to this abstract port.
-				The value pattern must be chassis/card/port where chassis is an ipv4/ipv6 address and card/port are unsigned byte 1-255.
-				The separator between the chassis/card/port values must be a forward slash.";
-			}
-		}				
-	}
+  }
 }

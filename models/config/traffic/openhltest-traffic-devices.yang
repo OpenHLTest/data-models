@@ -1,126 +1,138 @@
 submodule openhltest-traffic-devices {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-	yang-version "1.1";
-	belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-types {
+    prefix t;
+  }
+  include openhltest-traffic-frame-options;
+  include openhltest-traffic-frame-group;
+  include openhltest-device-groups;
 
-	import openhltest-types {
-		prefix t;
-	}
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes a collection of bound traffic groups and associated rpcs.";
 
-	include openhltest-traffic-frame-options;
-	include openhltest-traffic-frame-group;
-	include openhltest-device-groups;
+  revision 2018-02-09 {
+    description
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-	organization
-	  "OpenHlTest working group";
-	contact
-	  "OpenHlTest working group";
-	description
-	  "This module describes a collection of bound traffic groups and associated rpcs.";
-
-	revision 2018-02-09 {
-		description
-		  "Initial revision.";
-		reference
-		  "0.0.1";
-	}
-
-	grouping traffic-devices-top {
-		description "A grouping of traffic groups.";
-		
-		list device-traffic {
-			key "name";
-			description "This is a collection of nodes that the server uses to generate 1..n traffic-streams.
-			The source and destinations of the device traffic group can only come from the device-groups list or its children.
-			";
-
-			leaf name {
-				type t:config-list-key;
-				description "The unique name of a traffic group";
-			}
-			leaf encapsulation {
-				type enumeration {
-					enum ETHERNET {
-						description "";
-					}
-					enum VLAN {
-						description "";
-					}
-					enum IPV4 {
-						description "";
-					}
-					enum IPV6 {
-						description "";
-					}
-				}
-				mandatory true;
-				description "The encapsulation determines the following:
-					What frames will be generated.
-					What the traffic-streams name will be.
-				";
-			}
-			leaf-list sources {
-				type union {
-					type leafref {
-						path "../../device-groups/name";
-					}
-					type leafref {
-						path "../../device-groups/devices/name";
-					}
-					type leafref {
-						path "../../device-groups/devices/protocols/name";
-					}
-				}
-				description "A list of device source endpoint references.";
-			}
-			leaf-list destinations {
-				type union {
-					type leafref {
-						path "../../device-groups/name";
-					}
-					type leafref {
-						path "../../device-groups/devices/name";
-					}
-					type leafref {
-						path "../../device-groups/devices/protocols/name";
-					}
-				}
-				description "A list of device destination endpoint references.";
-			}
-			leaf bi-directional {
-				type boolean;
-				default false;
-				description "If true then traffic-streams objects will be generated from destination DEVICES to source DEVICES.";
-			}
-			leaf mesh-type {
-				type enumeration {
-					enum ONE_TO_ONE {
-						description "";
-					}
-					enum FULL_MESHED {
-						description "";
-					}
-				}
-				default "ONE_TO_ONE";
-				description "If true then generated-traffic-streams objects will be generated from every destination DEVICES to every source DEVICES.";
-			}
-
-			list frames {
-				key "name";
-				description "List of user defined frames. 
-				Frames that are generated as part of the traffic-streams will overwrite any user defined frame leafs 
-				that are part of the learned info due to the endpoint-type.";
-				leaf name {
-					type t:config-list-key;
-					description "";
-				}
-				uses traffic-frame-group-top;
-			}
-			uses traffic-frame-options-group {
-				description "Allows a user to set traffic options that will be used as a template during generation of traffic-streams.";
-			}
-		}
-	}
+  grouping traffic-devices-top {
+    description
+      "A grouping of traffic groups.";
+    list device-traffic {
+      key "name";
+      description
+        "This is a collection of nodes that the server uses to generate 1..n traffic-streams.
+         The source and destinations of the device traffic group can only come from the device-groups list or its children.
+        ";
+      leaf name {
+        type t:config-list-key;
+        description
+          "The unique name of a traffic group";
+      }
+      leaf encapsulation {
+        type enumeration {
+          enum ETHERNET {
+            description
+              "";
+          }
+          enum VLAN {
+            description
+              "";
+          }
+          enum IPV4 {
+            description
+              "";
+          }
+          enum IPV6 {
+            description
+              "";
+          }
+        }
+        mandatory true;
+        description
+          "The encapsulation determines the following:
+           What frames will be generated.
+           What the traffic-streams name will be.
+          ";
+      }
+      leaf-list sources {
+        type union {
+          type leafref {
+            path "../../device-groups/name";
+          }
+          type leafref {
+            path "../../device-groups/devices/name";
+          }
+          type leafref {
+            path "../../device-groups/devices/protocols/name";
+          }
+        }
+        description
+          "A list of device source endpoint references.";
+      }
+      leaf-list destinations {
+        type union {
+          type leafref {
+            path "../../device-groups/name";
+          }
+          type leafref {
+            path "../../device-groups/devices/name";
+          }
+          type leafref {
+            path "../../device-groups/devices/protocols/name";
+          }
+        }
+        description
+          "A list of device destination endpoint references.";
+      }
+      leaf bi-directional {
+        type boolean;
+        default "false";
+        description
+          "If true then traffic-streams objects will be generated from destination DEVICES to source DEVICES.";
+      }
+      leaf mesh-type {
+        type enumeration {
+          enum ONE_TO_ONE {
+            description
+              "";
+          }
+          enum FULL_MESHED {
+            description
+              "";
+          }
+        }
+        default "ONE_TO_ONE";
+        description
+          "If true then generated-traffic-streams objects will be generated from every destination DEVICES to every source DEVICES.";
+      }
+      list frames {
+        key "name";
+        description
+          "List of user defined frames.
+           Frames that are generated as part of the traffic-streams will overwrite any user defined frame leafs
+           that are part of the learned info due to the endpoint-type.";
+        leaf name {
+          type t:config-list-key;
+          description
+            "";
+        }
+        uses traffic-frame-group-top;
+      }
+      uses traffic-frame-options-group {
+        description
+          "Allows a user to set traffic options that will be used as a template during generation of traffic-streams.";
+      }
+    }
+  }
 }

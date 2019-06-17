@@ -1,126 +1,125 @@
 submodule openhltest-isis-route-range {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-types {
+    prefix t;
+  }
+  import openhltest-patterns {
+    prefix p;
+  }
 
-    import openhltest-types {
-        prefix t;
-    }
-    import openhltest-patterns {
-		prefix p;
-	}
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes the simulated ISIS v4 route range.";
 
-	organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  revision 2018-02-09 {
     description
-      "This module describes the simulated ISIS v4 route range.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2018-02-09 {
+  grouping isis-route-range-group {
+    description
+      "";
+    container isis-route-range {
+      description
+        "";
+      container system-id {
         description
-          "Initial revision.";
-        reference
-          "0.0.1";
+          "System ID.";
+        uses p:mac-pattern-group {
+          refine "single" {
+            default "00:10:94:00:00:01";
+          }
+        }
+      }
+      container sequence-number {
+        description
+          "Sequence Number. Used to detect old and duplicate LSAs.";
+        uses p:base-pattern-group {
+          refine "single" {
+            default "80000001";
+          }
+        }
+      }
+      container level {
+        description
+          "This is the circuit type of the emulated router. It defines the type of adjacency
+                      Traffic Generator establishes with the DUT..";
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "(L1|L2|L1L2)";
+          }
+          refine "single" {
+            default "L2";
+          }
+        }
+      }
+      list ipv4-routes {
+        key "name";
+        description
+          "";
+        leaf name {
+          type t:config-list-key;
+          description
+            "The unique name of the IPv4 route object.";
+        }
+        container address {
+          description
+            "";
+          uses p:ipv4-pattern-group {
+            refine "single" {
+              default "0.0.0.1";
+            }
+          }
+        }
+        container prefix-length {
+          description
+            "";
+          uses p:base-pattern-group {
+            refine "pattern-format" {
+              default "0..32";
+            }
+            refine "single" {
+              default "24";
+            }
+          }
+        }
+      }
+      list ipv6-routes {
+        key "name";
+        description
+          "";
+        leaf name {
+          type t:config-list-key;
+          description
+            "The unique name of the IPv4 route object.";
+        }
+        container address {
+          description
+            "";
+          uses p:ipv6-pattern-group;
+        }
+        container prefix-length {
+          description
+            "";
+          uses p:base-pattern-group {
+            refine "pattern-format" {
+              default "0..32";
+            }
+            refine "single" {
+              default "24";
+            }
+          }
+        }
+      }
     }
-	
-	grouping isis-route-range-group {
-		description "";
-		container isis-route-range {
-			description "";
-            container system-id {
-                description
-                "System ID.";
-				uses p:mac-pattern-group {
-					refine single {
-						default "00:10:94:00:00:01";
-					}
-				}
-            }
-            container sequence-number {
-                description
-                "Sequence Number. Used to detect old and duplicate LSAs.";
-				uses p:base-pattern-group {
-					refine single {
-						default "80000001";
-					}
-				}
-            }
-            container level {
-				description
-				"This is the circuit type of the emulated router. It defines the type of adjacency 
-                Traffic Generator establishes with the DUT..";
-                uses p:enum-pattern-group {
-                    refine pattern-format {
-                        default "(L1|L2|L1L2)";
-                    }
-                    refine single {
-                        default "L2";
-                    }
-                }
-			}
-            list ipv4-routes {
-                key "name";
-				description "";
-
-                leaf name {
-                    type t:config-list-key;
-                    description
-                    "The unique name of the IPv4 route object.";
-                }
-                
-                container address {
-					description "";
-                    uses p:ipv4-pattern-group {
-                        refine single {
-                            default "0.0.0.1";
-                        }
-                    }
-                }
-
-                container prefix-length {
-					description "";
-                    uses p:base-pattern-group {
-                        refine pattern-format {
-                            default "0..32";
-                        }
-                        refine single {
-                            default "24";
-                        }
-                    }
-                }
-            }
-            list ipv6-routes {
-                key "name";
-				description "";
-
-                leaf name {
-                    type t:config-list-key;
-                    description
-                    "The unique name of the IPv4 route object.";
-                }
-                
-                container address {
-					description "";
-                    uses p:ipv6-pattern-group;
-                }
-
-                container prefix-length {
-					description "";
-                    uses p:base-pattern-group {
-                        refine pattern-format {
-                            default "0..32";
-                        }
-                        refine single {
-                            default "24";
-                        }
-                    }
-                }
-            }
-		}
-	}
+  }
 }
-
-	

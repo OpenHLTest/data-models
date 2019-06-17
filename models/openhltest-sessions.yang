@@ -1,55 +1,52 @@
 submodule openhltest-sessions {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-types {
+    prefix t;
+  }
+  include openhltest-config;
+  include openhltest-statistics;
 
-	import openhltest-types {
-		prefix t;
-	}
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This sub-module contains the top level sessions.";
 
-	include openhltest-config;
-	include openhltest-statistics;
-
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  revision 2017-11-02 {
     description
-      "This sub-module contains the top level sessions.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2017-11-02 {
+  grouping session-top {
+    description
+      "";
+    list sessions {
+      key "name";
+      description
+        "A list of test tool sessions.";
+      leaf name {
+        type t:config-list-key;
         description
-          "Initial revision.";
-        reference
-          "0.0.1";
+          "The unique name of a test tool session.";
+      }
+      uses config-top;
+      container statistics {
+        config false;
+        description
+          "The statistics pull model";
+        uses statistics-top;
+        action clear {
+          description
+            "Clear all statistic counters.";
+        }
+      }
     }
-
-	grouping session-top {
-		description "";
-
-		list sessions {
-			key "name";
-			description "A list of test tool sessions.";
-
-			leaf name {
-				type t:config-list-key;
-				description	"The unique name of a test tool session.";
-			}
-
-			uses config-top;
-
-			container statistics {
-				config false;
-				description	"The statistics pull model";
-
-				uses statistics-top;
-
-				action clear {
-					description	"Clear all statistic counters.";
-				}
-			}
-		}
-	}
+  }
 }

@@ -1,99 +1,99 @@
 submodule openhltest-ospfv3 {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
-    
-	/*import ietf-inet-types {
-		prefix inet;
-	}*/
-    import openhltest-patterns {
-		prefix p;
-	}
-	organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  /*import ietf-inet-types {
+  	prefix inet;
+  }*/
+
+  import openhltest-patterns {
+    prefix p;
+  }
+
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes the ospfv3 emulated protocol.";
+
+  revision 2018-02-09 {
     description
-      "This module describes the ospfv3 emulated protocol.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2018-02-09 {
+  grouping ospfv3-group {
+    description
+      "";
+    container ospfv3 {
+      description
+        "";
+      container router-id {
         description
-          "Initial revision.";
-        reference
-          "0.0.1";
+          "Router ID.";
+        uses p:ipv4-pattern-group;
+      }
+      container area-id {
+        description
+          "IP address indicating the area to which the emulated router belongs.";
+        uses p:ipv4-pattern-group;
+      }
+      container network-type {
+        description
+          "This setting to override the physical link type to emulate a broadcast
+                      adjacency over POS, or a point-to-point adjacency over Ethernet
+                      NATIVE    : use the adjacency implied by the port-type
+                      BROADCAST : Broadcast adjacency
+                      P2P       : P2P (point-to-point) adjacency";
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "(NATIVE|BROADCAST|P2P)";
+          }
+          refine "single" {
+            default "NATIVE";
+          }
+        }
+      }
+      container router-priority {
+        description
+          "Router priority of the emulated router. Set the router priority to a higher
+                      or lower value to influence the DR and BDR selection process.";
+        uses p:int-32-pattern-group;
+      }
+      container interface-cost {
+        description
+          "Cost of the interface connecting the emulated router to the neighbor DUT router.";
+        uses p:int-32-pattern-group;
+      }
+      container hello-interval {
+        description
+          "Time interval (in seconds) used by the emulated routers to pace Hello packet
+                      transmissions.";
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..65535";
+          }
+          refine "single" {
+            default "10";
+          }
+        }
+      }
+      container router-dead-interval {
+        description
+          "Time interval (in seconds) that the emulated router waits to receive packets
+                      from the neighbor DUT router before deleting that neighbor from its topology";
+        uses p:int-64-pattern-group;
+      }
+      container retransmit-interval {
+        description
+          "If an LSA transmission fails, Spirent TestCenter waits the duration of the
+                      retransmit interval (in seconds) before re-transmitting the packet";
+        uses p:int-64-pattern-group;
+      }
     }
-
-	grouping ospfv3-group {
-		description "";
-		container ospfv3 {
-			description "";
-			
-            container router-id {
-                description
-                "Router ID.";
-                uses p:ipv4-pattern-group;
-            }
-            container area-id {
-                description
-                "IP address indicating the area to which the emulated router belongs.";
-                uses p:ipv4-pattern-group;
-            }
-            
-            container network-type {
-				description
-				"This setting to override the physical link type to emulate a broadcast 
-                adjacency over POS, or a point-to-point adjacency over Ethernet
-                NATIVE    : use the adjacency implied by the port-type
-                BROADCAST : Broadcast adjacency
-                P2P       : P2P (point-to-point) adjacency";
-                uses p:enum-pattern-group {
-                    refine pattern-format {
-                        default "(NATIVE|BROADCAST|P2P)";
-                    }
-                    refine single {
-                        default "NATIVE";
-                    }
-                }
-			}
-            
-            container router-priority {
-				description
-				"Router priority of the emulated router. Set the router priority to a higher 
-                or lower value to influence the DR and BDR selection process.";
-				uses p:int-32-pattern-group;
-			}
-            container interface-cost {
-				description
-				"Cost of the interface connecting the emulated router to the neighbor DUT router.";
-				uses p:int-32-pattern-group;
-			}
-            container hello-interval {
-				description
-				"Time interval (in seconds) used by the emulated routers to pace Hello packet 
-                transmissions.";
-                uses p:base-pattern-group {
-                    refine pattern-format {
-                        default "0..65535";
-                    }
-                    refine single {
-                        default "10";
-                    }
-                }
-			}
-            container router-dead-interval {
-				description
-				"Time interval (in seconds) that the emulated router waits to receive packets
-                from the neighbor DUT router before deleting that neighbor from its topology";
-				uses p:int-64-pattern-group;
-			}
-            container retransmit-interval {
-				description
-				"If an LSA transmission fails, Spirent TestCenter waits the duration of the
-                retransmit interval (in seconds) before re-transmitting the packet";
-				uses p:int-64-pattern-group;
-			}
-		}
-	}
+  }
 }

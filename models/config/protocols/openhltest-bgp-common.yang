@@ -1,233 +1,238 @@
 submodule openhltest-bgp-common {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
-    
-    import openhltest-patterns {
-		prefix p;
-	}
+  import openhltest-patterns {
+    prefix p;
+  }
 
-	organization
+  organization
     "OpenHlTest working group";
-    contact
+  contact
     "OpenHlTest working group";
-    description
+  description
     "This module describes the bgp-common emulated protocol.";
 
-    revision 2018-02-09 {
-        description
-        "Initial revision.";
-        reference
-        "0.0.1";
-    }
+  revision 2018-02-09 {
+    description
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-	grouping bgp-common-group {
-		description "";
-		container as-number-2-byte {
-			description "2-Byte Autonomous system number for the emulated BGP router";
-			uses p:base-pattern-group {
-				refine pattern-format {
-					default "0..65535";
-				}
-				refine single {
-					default "1";
-				}
-			}
-		}
-		container dut-as-number-2-byte {
-			description	"2-Byte Autonomous system number configured for the DUT.";
-			uses p:base-pattern-group {
-				refine pattern-format {
-					default "0..65535";
-				}
-				refine single {
-					default "1001";
-				}
-			}
-		}
-		container as-number-4-byte {
-			presence "";
-			description "Enables the use of 4 Byte Autonomous system number";
-			container as-number {
-				description "4-Byte Autonomous system number";            
-				uses p:base-pattern-group {
-					refine pattern-format {
-						default "0..4294967295";
-					}
-					refine single {
-						default "1";
-					}
-				}
-			}
-			container dut-as-number {
-				description "4-Byte Autonomous system number configured for the DUT.";
-				uses p:base-pattern-group {
-					refine pattern-format {
-						default "0..4294967295";
-					}
-					refine single {
-						default "1001";
-					}
-				}
-			}
-		}
-		container as-number-set-mode {
-			description
-			"Option to exclude, include or prepend the local AS number.";
-			uses p:enum-pattern-group {
-				refine pattern-format {
-					default "(EXCLUDE_AS|INCLUDE_AS_SEQ|INCLUDE_AS_SET|INCLUDE_AS_SEQ_CONFED|INCLUDE_AS_SET_CONFED|PREPEND_AS)";
-				}
-				refine single {
-					default "EXCLUDE_AS";
-				}
-			}
-		}
-        container bgp-type {
-            description
-            "The type of BGP topology you create. Options include the following:
-                External BGP (EBGP)-used for BGP links between two or more Autonomous Systems (ASs)
-                Internal BGP (IBGP)-used within a single Autonomous System (AS)";
-            uses p:enum-pattern-group {
-				refine pattern-format {
-					default '^(INTERNAL|EXTERNAL)$';
-				}
-				refine single {
-					default "INTERNAL";
-				}
-			}
+  grouping bgp-common-group {
+    description
+      "";
+    container as-number-2-byte {
+      description
+        "2-Byte Autonomous system number for the emulated BGP router";
+      uses p:base-pattern-group {
+        refine "pattern-format" {
+          default "0..65535";
         }
-        container hold-time-interval {
-            description
-            "BGP Hold Time in seconds to use when negotiating with peers. If the router 
-            does not receive KEEPALIVE or UPDATE or NOTIFICATION messages within the 
-            Hold Time field of the OPEN message, the BGP connection to the peer will be closed.";
-			uses p:base-pattern-group {
-				refine pattern-format {
-					default "3..65535";
-				}
-				refine single {
-					default "90";
-				}
-			}
+        refine "single" {
+          default "1";
         }
-        container keep-alive-interval {
-            description
-            "Number of seconds between transmissions of Keep Alive messages by the emulated router 
-            (in the absence of the sending of any other BGP packets) to the DUT. The standard 
-            keep-alive transmit time is every 30 seconds, or one-third of the Hold Time.";
-			uses p:base-pattern-group {
-				refine pattern-format {
-					default "1..65535";
-				}
-				refine single {
-					default "30";
-				}
-			}
+      }
+    }
+    container dut-as-number-2-byte {
+      description
+        "2-Byte Autonomous system number configured for the DUT.";
+      uses p:base-pattern-group {
+        refine "pattern-format" {
+          default "0..65535";
         }
-        container graceful-restart {
-			presence
-            "Enable Graceful Restart on the emulated BGP router.
-                Specified:  Causes an emulated router's peer to retain the router's advertised 
-                       routes in the peer's route database when the session is closed. 
-                       Restart Time must be set.
-                Not Specified: Causes an emulated router's peer to remove the router's advertised
-                       routes from its route database when the session is closed ";  
-			description "";          
-            container long-lived-graceful-restart {
-                description
-                "BGP long lived graceful restart allows a network operator to choose to maintain stale routing information 
-				from a failed BGP peer much longer than the existing BGP graceful restart facility.
-                    TRUE  : Enable long lived graceful restart
-                    FALSE : Disable long lived graceful restart";
-				uses p:bool-pattern-group {
-					refine single {
-						default "true";
-					}
-				}
-            }
-			container restart-time {
-                description
-                "BGP graceful restart time. The amount of time (in seconds) that the emulated 
-                router will wait for its peer to re-establish the session. If the session is 
-                not re-established within this time frame, the stale routes will be removed 
-                from the route database.";
-				uses p:base-pattern-group {
-					refine pattern-format {
-						default "0..4095";
-					}
-					refine single {
-						default "90";
-					}
-				}
-            }
-            container restart-delay {
-                description
-                "The amount of time to wait before initiating a new BGP session. Traffic generator
-                will not initiate a new session until this timer expires. If the DUT initiates a
-                new session, Spirent TestCenter will process it and establish the session.";
-				uses p:base-pattern-group {
-					refine pattern-format {
-						default "0..4095";
-					}
-					refine single {
-						default "1";
-					}
-				}
-            }
-            container advertise-eor {
-                description
-                "Advertise End-of-RIB
-                    TRUE  : Send end-of-RIB marker in the update packet
-                    FALSE : Do not send end-of-RIB marker in the update packet";
-				uses p:bool-pattern-group {
-					refine single {
-						default "true";
-					}
-				}
-            }
+        refine "single" {
+          default "1001";
         }
-        container authentication {
-            presence
-            "Enable authentication";
-			description "";
-            container authentication-type {
-                description
-                "Type of authentication to be used";
-				uses p:enum-pattern-group {
-					refine pattern-format {
-						default '^(NONE|MD5)$';
-					}
-					refine single {
-						default "NONE";
-					}
-				}
-            }
-            container md5-password {
-                description
-                "Type a value to be used as a secret MD5 Key for authentication. 
-                This field is available only if you select MD5 as the type of Authentication.";
-				uses p:string-pattern-group {
-					refine single {
-						default "";
-					}
-				}
-            }
+      }
+    }
+    container as-number-4-byte {
+      presence "";
+      description
+        "Enables the use of 4 Byte Autonomous system number";
+      container as-number {
+        description
+          "4-Byte Autonomous system number";
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..4294967295";
+          }
+          refine "single" {
+            default "1";
+          }
         }
-        container ttl {
-            description
-            "The limited number of iterations that a unit of data can experience before 
-            the data is discarded.";
-            uses p:base-pattern-group {
-				refine pattern-format {
-					default '1..255';
-				}
-				refine single {
-					default "64";
-				}
-			}
+      }
+      container dut-as-number {
+        description
+          "4-Byte Autonomous system number configured for the DUT.";
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..4294967295";
+          }
+          refine "single" {
+            default "1001";
+          }
         }
-	}
+      }
+    }
+    container as-number-set-mode {
+      description
+        "Option to exclude, include or prepend the local AS number.";
+      uses p:enum-pattern-group {
+        refine "pattern-format" {
+          default "(EXCLUDE_AS|INCLUDE_AS_SEQ|INCLUDE_AS_SET|INCLUDE_AS_SEQ_CONFED|INCLUDE_AS_SET_CONFED|PREPEND_AS)";
+        }
+        refine "single" {
+          default "EXCLUDE_AS";
+        }
+      }
+    }
+    container bgp-type {
+      description
+        "The type of BGP topology you create. Options include the following:
+            External BGP (EBGP)-used for BGP links between two or more Autonomous Systems (ASs)
+            Internal BGP (IBGP)-used within a single Autonomous System (AS)";
+      uses p:enum-pattern-group {
+        refine "pattern-format" {
+          default "^(INTERNAL|EXTERNAL)$";
+        }
+        refine "single" {
+          default "INTERNAL";
+        }
+      }
+    }
+    container hold-time-interval {
+      description
+        "BGP Hold Time in seconds to use when negotiating with peers. If the router
+         does not receive KEEPALIVE or UPDATE or NOTIFICATION messages within the
+         Hold Time field of the OPEN message, the BGP connection to the peer will be closed.";
+      uses p:base-pattern-group {
+        refine "pattern-format" {
+          default "3..65535";
+        }
+        refine "single" {
+          default "90";
+        }
+      }
+    }
+    container keep-alive-interval {
+      description
+        "Number of seconds between transmissions of Keep Alive messages by the emulated router
+         (in the absence of the sending of any other BGP packets) to the DUT. The standard
+         keep-alive transmit time is every 30 seconds, or one-third of the Hold Time.";
+      uses p:base-pattern-group {
+        refine "pattern-format" {
+          default "1..65535";
+        }
+        refine "single" {
+          default "30";
+        }
+      }
+    }
+    container graceful-restart {
+      presence "Enable Graceful Restart on the emulated BGP router.
+                   Specified:  Causes an emulated router's peer to retain the router's advertised
+                          routes in the peer's route database when the session is closed.
+                          Restart Time must be set.
+                   Not Specified: Causes an emulated router's peer to remove the router's advertised
+                          routes from its route database when the session is closed ";
+      description
+        "";
+      container long-lived-graceful-restart {
+        description
+          "BGP long lived graceful restart allows a network operator to choose to maintain stale routing information
+           from a failed BGP peer much longer than the existing BGP graceful restart facility.
+              TRUE  : Enable long lived graceful restart
+              FALSE : Disable long lived graceful restart";
+        uses p:bool-pattern-group {
+          refine "single" {
+            default "true";
+          }
+        }
+      }
+      container restart-time {
+        description
+          "BGP graceful restart time. The amount of time (in seconds) that the emulated
+           router will wait for its peer to re-establish the session. If the session is
+           not re-established within this time frame, the stale routes will be removed
+           from the route database.";
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..4095";
+          }
+          refine "single" {
+            default "90";
+          }
+        }
+      }
+      container restart-delay {
+        description
+          "The amount of time to wait before initiating a new BGP session. Traffic generator
+           will not initiate a new session until this timer expires. If the DUT initiates a
+           new session, Spirent TestCenter will process it and establish the session.";
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..4095";
+          }
+          refine "single" {
+            default "1";
+          }
+        }
+      }
+      container advertise-eor {
+        description
+          "Advertise End-of-RIB
+              TRUE  : Send end-of-RIB marker in the update packet
+              FALSE : Do not send end-of-RIB marker in the update packet";
+        uses p:bool-pattern-group {
+          refine "single" {
+            default "true";
+          }
+        }
+      }
+    }
+    container authentication {
+      presence "Enable authentication";
+      description
+        "";
+      container authentication-type {
+        description
+          "Type of authentication to be used";
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "^(NONE|MD5)$";
+          }
+          refine "single" {
+            default "NONE";
+          }
+        }
+      }
+      container md5-password {
+        description
+          "Type a value to be used as a secret MD5 Key for authentication.
+           This field is available only if you select MD5 as the type of Authentication.";
+        uses p:string-pattern-group {
+          refine "single" {
+            default "";
+          }
+        }
+      }
+    }
+    container ttl {
+      description
+        "The limited number of iterations that a unit of data can experience before
+         the data is discarded.";
+      uses p:base-pattern-group {
+        refine "pattern-format" {
+          default "1..255";
+        }
+        refine "single" {
+          default "64";
+        }
+      }
+    }
+  }
 }

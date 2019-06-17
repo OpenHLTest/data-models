@@ -1,85 +1,82 @@
 submodule openhltest-bfd-statistics {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes a YANG model for
+     abstract test port statistics.";
 
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  revision 2017-11-02 {
     description
-      "This module describes a YANG model for 
-       abstract test port statistics.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2017-11-02 {
-        description
-          "Initial revision.";
-        reference
-          "0.0.1";
+  grouping bfd-statistics {
+    description
+      "A grouping of common BFD statistics";
+    leaf tx-count {
+      type uint64;
+      config false;
+      description
+        "Number of BFD packets sent on this router.";
     }
-
-
-    grouping bfd-statistics {
-        description
-          "A grouping of common BFD statistics";
-          
-        leaf tx-count {
-            type uint64;
-            config false;
-            description
-              "Number of BFD packets sent on this router.";
-        }
-        leaf rx-count {
-            type uint64;
-            config false;
-            description
-              "Number of BFD packets received on this router.";
-        }
+    leaf rx-count {
+      type uint64;
+      config false;
+      description
+        "Number of BFD packets received on this router.";
     }
-    
-    grouping bfdv4-statistics {
+  }
+
+  grouping bfdv4-statistics {
+    description
+      "A grouping of bfd V4 statistics";
+    list bfdv4-statistics {
+      key "device-name";
+      config false;
+      description
+        "";
+      leaf device-name {
+        type string;
         description
-        "A grouping of bfd V4 statistics";
-
-        list bfdv4-statistics {
-			key "device-name";
-			config false;
-			description "";
-
-			leaf device-name {
-				type string;
-				description "Device Name";
-			}
-			leaf port-name {
-				type string;
-				description "An abstract test port name";
-			}
-            
-            uses bfd-statistics;
-        }
-    }
-    
-    grouping bfdv6-statistics {
+          "Device Name";
+      }
+      leaf port-name {
+        type string;
         description
-        "A grouping of bfd v6 statistics";
-
-        list bfdv6-statistics {
-			key "device-name";
-			config false;
-			description "";
-
-			leaf device-name {
-				type string;
-				description "Device name";
-			}
-			leaf port-name {
-				type string;
-				description "An abstract test port name";
-			}
-            
-            uses bfd-statistics;
-        }
+          "An abstract test port name";
+      }
+      uses bfd-statistics;
     }
+  }
+
+  grouping bfdv6-statistics {
+    description
+      "A grouping of bfd v6 statistics";
+    list bfdv6-statistics {
+      key "device-name";
+      config false;
+      description
+        "";
+      leaf device-name {
+        type string;
+        description
+          "Device name";
+      }
+      leaf port-name {
+        type string;
+        description
+          "An abstract test port name";
+      }
+      uses bfd-statistics;
+    }
+  }
 }

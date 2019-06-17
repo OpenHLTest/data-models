@@ -1,86 +1,89 @@
 submodule openhltest-physical-port-statistics {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes a YANG model for
+     abstract test port statistics.";
 
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  revision 2017-11-02 {
     description
-      "This module describes a YANG model for 
-       abstract test port statistics.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2017-11-02 {
+  grouping physical-port-statistics-top {
+    description
+      "A grouping of port statistics";
+    list physical-port {
+      key "port-name";
+      description
+        "";
+      leaf port-name {
+        type string;
         description
-          "Initial revision.";
-        reference
-          "0.0.1";
-    }
-
-    grouping physical-port-statistics-top {
+          "An abstract test port name";
+      }
+      leaf connected-test-port-id {
+        type string;
         description
-          "A grouping of port statistics";
-
-		list physical-port {
-			key "port-name";
-			description "";
-
-			leaf port-name {
-				type string;
-				description "An abstract test port name";
-			}
-          
-            leaf connected-test-port-id {
-                type string;
-                description
-                "The id of the connected test port. 
-                Empty if the abstract port is not connected to a test port.";
-            }
-            leaf connected-test-port-description {
-                type string;
-                description
-                  "Free form vendor specific description of the connected test port.
-                  Can include details such as make/model/productId of the underlying hardware.
-                  Empty if the abstract port is not connected to a test port.";
-            }
-            leaf connection-state {
-                type enumeration {
-                    enum CONNECTING {
-						description "";
-					}
-                    enum CONNECTED_LINK_UP {
-						description "";
-					}
-                    enum CONNECTED_LINK_DOWN {
-						description "";
-					}
-                    enum DISCONNECTING {
-						description "";
-					}
-                    enum DISCONNECTED {
-						description "";
-					}
-                }
-                description
-                  "The state of the connection to the physical hardware 
-                   test port or virtual machine test port";
-            }
-            leaf connection-state-details {
-                type string;
-                description
-                  "Free form vendor specific information about the state of the connection to
-                   the physical hardware test port or virtual machine test port.
-                   Empty if the abstract port is not connected to a test port.";
-            }
-            leaf speed {
-                type string;
-                description
-                  "The actual speed of the test port.
-                  Empty if the abstract port is not connected to a test port.";
-            }
+          "The id of the connected test port.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf connected-test-port-description {
+        type string;
+        description
+          "Free form vendor specific description of the connected test port.
+           Can include details such as make/model/productId of the underlying hardware.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf connection-state {
+        type enumeration {
+          enum CONNECTING {
+            description
+              "";
+          }
+          enum CONNECTED_LINK_UP {
+            description
+              "";
+          }
+          enum CONNECTED_LINK_DOWN {
+            description
+              "";
+          }
+          enum DISCONNECTING {
+            description
+              "";
+          }
+          enum DISCONNECTED {
+            description
+              "";
+          }
         }
+        description
+          "The state of the connection to the physical hardware
+           test port or virtual machine test port";
+      }
+      leaf connection-state-details {
+        type string;
+        description
+          "Free form vendor specific information about the state of the connection to
+           the physical hardware test port or virtual machine test port.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf speed {
+        type string;
+        description
+          "The actual speed of the test port.
+           Empty if the abstract port is not connected to a test port.";
+      }
     }
+  }
 }

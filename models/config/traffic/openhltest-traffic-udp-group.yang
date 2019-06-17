@@ -1,54 +1,50 @@
 submodule openhltest-traffic-udp-group {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-patterns {
+    prefix p;
+  }
 
-    import openhltest-patterns {
-		prefix p;
-	}
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes a collection of traffic groups
+     and associated rpcs.";
 
-	
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  revision 2018-02-09 {
     description
-      "This module describes a collection of traffic groups
-	  and associated rpcs.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2018-02-09 {
+  grouping traffic-udp-group-top {
+    description
+      "A grouping of traffic groups.
+       A traffic group is a collection of traffic streams and flows.";
+    container udp {
+      description
+        "";
+      container source-port {
         description
-          "Initial revision.";
-        reference
-          "0.0.1";
-    }
-
-    grouping traffic-udp-group-top {
+          "Specifies the port on the sending UDP module.";
+        uses p:int-32-pattern-group;
+      }
+      container destination-port {
         description
-        "A grouping of traffic groups.
-		 A traffic group is a collection of traffic streams and flows.";
-		
-        container udp {
-			description "";
-            container source-port {
-                description
-                "Specifies the port on the sending UDP module.";
-                uses p:int-32-pattern-group;
-            }
-            container destination-port {
-                description
-                "Specifies the port on the receiving UDP module.";
-                uses p:int-32-pattern-group;
-            }
-			          
-            container checksum {
-                description
-                "Specifies the UDP checksum value.";
-                uses p:int-32-pattern-group;
-            }
-        }
+          "Specifies the port on the receiving UDP module.";
+        uses p:int-32-pattern-group;
+      }
+      container checksum {
+        description
+          "Specifies the UDP checksum value.";
+        uses p:int-32-pattern-group;
+      }
     }
-
+  }
 }

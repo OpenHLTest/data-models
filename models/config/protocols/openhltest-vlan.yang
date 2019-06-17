@@ -1,68 +1,69 @@
 submodule openhltest-vlan {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-patterns {
+    prefix p;
+  }
 
-	import openhltest-patterns {
-		prefix p;
-	}
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes the vlan emulated protocol.";
 
-	organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  revision 2018-02-09 {
     description
-      "This module describes the vlan emulated protocol.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2018-02-09 {
+  grouping vlan-group {
+    description
+      "";
+    container vlan {
+      description
+        "";
+      container tpid {
         description
-          "Initial revision.";
-        reference
-          "0.0.1";
+          "Tag Protocol Identifier";
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "(0X8100|0x88A8|0X9100|0X9200|0X9300)";
+          }
+          refine "single" {
+            default "0x8100";
+          }
+        }
+      }
+      container priority {
+        description
+          "Priority";
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..7";
+          }
+          refine "single" {
+            default "1";
+          }
+        }
+      }
+      container id {
+        description
+          "VLAN id";
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..4094";
+          }
+          refine "single" {
+            default "1";
+          }
+        }
+      }
     }
-	
-	grouping vlan-group {
-		description "";
-		
-		container vlan {
-			description "";
-
-			container tpid {
-				description "Tag Protocol Identifier";
-				uses p:enum-pattern-group {
-					refine pattern-format {
-						default "(0X8100|0x88A8|0X9100|0X9200|0X9300)";
-					}
-					refine single {
-						default "0x8100";
-					}
-				}
-			}
-			container priority {
-				description "Priority";
-				uses p:base-pattern-group {
-					refine pattern-format {
-						default "0..7";
-					}
-					refine single {
-						default "1";
-					}
-				}
-			}
-			container id {
-				description	"VLAN id";  		
-				uses p:base-pattern-group {
-					refine pattern-format {
-						default "0..4094";
-					}
-					refine single {
-						default "1";
-					}
-				}
-			}
-		}
-	}
+  }
 }
-

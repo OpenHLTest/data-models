@@ -1,242 +1,249 @@
 submodule openhltest-bgp-statistics {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes a YANG model for
+     abstract test port statistics.";
 
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  revision 2017-11-02 {
     description
-      "This module describes a YANG model for 
-       abstract test port statistics.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2017-11-02 {
-        description
-          "Initial revision.";
-        reference
-          "0.0.1";
+  grouping bgp-statistics {
+    description
+      "A grouping of common bgp statistics";
+    leaf router-state {
+      type enumeration {
+        enum IDLE {
+          description
+            "";
+        }
+        enum CONNECTING {
+          description
+            "";
+        }
+        enum ESTABLISHED {
+          description
+            "";
+        }
+        enum NONE {
+          description
+            "";
+        }
+        enum CONNECT {
+          description
+            "";
+        }
+        enum OPEN_SENT {
+          description
+            "";
+        }
+        enum OPEN_CONFIRM {
+          description
+            "";
+        }
+        enum ACTIVE {
+          description
+            "";
+        }
+      }
+      config false;
+      description
+        "The state of the connection to the physical hardware
+         test port or virtual machine test port
+          NONE\tNo state.
+          IDLE\tPrior to invoking Open_BgpSession or Start_Router, an emulated router is in the Idle state.
+          CONNECT\tConnecting.
+          ACTIVE\tActive.
+          OPEN_SENT\tOpen is sent.
+          OPEN_CONFIRM\tOpen is confirmed.
+          ESTABLISHED\tSession is confirmed by the peer. The router state is Established.";
     }
-
-   
-    grouping bgp-statistics {
-        description
-          "A grouping of common bgp statistics";
-          
-        leaf router-state {
-            type enumeration {
-                enum IDLE {
-					description "";
-				}
-                enum CONNECTING {
-					description "";
-				}
-                enum ESTABLISHED {
-					description "";
-				}
-                enum NONE {
-					description "";
-				}
-                enum CONNECT {
-					description "";
-				}
-                enum OPEN_SENT {
-					description "";
-				}
-                enum OPEN_CONFIRM {
-					description "";
-				}
-                enum ACTIVE {
-					description "";
-				}
-            }
-            config false;
-            description
-              "The state of the connection to the physical hardware 
-               test port or virtual machine test port
-                NONE	No state.
-                IDLE	Prior to invoking Open_BgpSession or Start_Router, an emulated router is in the Idle state.
-                CONNECT	Connecting.
-                ACTIVE	Active.
-                OPEN_SENT	Open is sent.
-                OPEN_CONFIRM	Open is confirmed.
-                ESTABLISHED	Session is confirmed by the peer. The router state is Established.";
-        }
-        leaf tx-advertise-route-count {
-            type uint64;
-            config false;
-            description
-              "The total number of frames transmitted on the port.
-              Empty if the abstract port is not connected to a test port.";
-        }
-        leaf rx-advertise-route-count {
-            type uint64;
-            description
-              "The total number of frames received on the the port.
-              Empty if the abstract port is not connected to a test port.";
-        }
-        leaf tx-withdraw-route-count {
-            type uint64;
-            description
-              "The total number of frames transmitted on the port.
-              Empty if the abstract port is not connected to a test port.";
-        }
-        leaf rx-withdraw-route-count {
-			type uint64;
-            description
-              "The total number of frames received on the the port.
-              Empty if the abstract port is not connected to a test port.";
-        }
-        leaf last-rx-update-route-count {
-            type uint64;
-            description
-              "Number of routes in the last-received UPDATE message.";
-        }
-        leaf outstanding-route-count {
-            type uint64;
-            description
-              "Number of routes that should be in the DUT'scurrent route table.";
-        }
-        leaf rx-advertise-update-count {
-            type uint64;
-            description
-              "Received update packet count. Number of Update packets received fromDUT.";
-        }
-        leaf rx-keepalive-count {
-            type uint64;
-            description
-              "BGP KeepAlive count received. Total number of KeepAlive packets receivedfrom 
-              the DUT during the test. ";
-        }
-        leaf rx-notification-count {
-            type uint64;
-            description
-              "BGP Notification count received. Number of Notification packets received by 
-              the emulated router during the test.";
-        }
-        leaf rx-notify-code {
-            type uint64;
-            description
-              "BGP Notify code received. The last NOTIFICATION code the emulated routerreceived from the DUT.";
-        }
-        leaf rx-notify-sub-code {
-            type uint64;
-            description
-              "BGP Notify subcode received. Each NOTIFICATION code has a sub-code. ";
-        }
-        leaf rx-open-count {
-            type uint64;
-            description
-              "BGP Open message count received. Opens received from DUT. In stable BGP
-              scenarios, this should match the value in the previous field. ";
-        }
-        leaf rx-route-refresh-count {
-            type uint64;
-            description
-              "Number of advertised route refresh message received.";
-        }
-        leaf rx-rt-constraint-count {
-            type uint64;
-            description
-              "Number of RT-Constraint routes received for this router.";
-        }
-        leaf session-up-count {
-            type uint64;
-            description
-              "Number of router sessions within the router block in the Establishedstate.";
-        }
-        leaf tx-advertise-update-count {
-            type uint64;
-            description
-              "Advertised update route count transmitted. Total number of UPDATE packetswith
-               feasible routes sent to the DUT. ";
-        }
-        leaf tx-keepalive-count {
-            type uint64;
-            description
-              "BGP KeepAlive count transmitted. Total number of KEEPALIVE packets sent to
-              the DUT during test. ";
-        }
-        leaf tx-notification-count {
-            type uint64;
-            description
-              "BGP Notification count transmitted. Number of Notification packets sent
-              from the emulated router. ";
-        }
-        leaf tx-notify-code {
-            type uint64;
-            description
-              "BGP Notify code transmitted. Last Notification code the emulated router
-              sent to the DUT.";
-        }
-        leaf tx-notify-sub-code {
-            type uint64;
-            description
-              "BGP Notify subcode received. Each NOTIFICATION code has a sub-code. ";
-        }
-        leaf tx-open-count {
-            type uint64;
-            description
-              "BGP Open message count transmitted. Total number of OPEN packets sent tothe DUT. 
-              Initial one, plus number of times the emulated router re-establishessessions. ";
-        }
-        leaf tx-route-refresh-count {
-            type uint64;
-            description
-              " Number of advertised route refresh message transmitted.";
-        }
-        leaf tx-rt-constraint-count {
-            type uint64;
-            description
-              "Number of RT-Constraint routes transmitted for this router.";
-        }
-        leaf tx-withdrawn-update-count {
-            type uint64;
-            description
-              "Withdrawn update route count transmitted. Total number of UPDATE packetswith unfeasible 
-              routes sent to the DUT (route flapping).  ";
-        }
+    leaf tx-advertise-route-count {
+      type uint64;
+      config false;
+      description
+        "The total number of frames transmitted on the port.
+         Empty if the abstract port is not connected to a test port.";
     }
-    
-    grouping bgpv4-statistics {
-        description
-        "A grouping of bgpv4 statistics";
-        list bgpv4-statistics {
-			key "device-name";
-			description "";
-
-			leaf device-name {
-				type string;
-				description "Abstract emulated bgpv4 device name";
-			}
-            leaf port-name {
-				type string;
-                description "An abstract test port name";
-            }
-            uses bgp-statistics;
-        }
+    leaf rx-advertise-route-count {
+      type uint64;
+      description
+        "The total number of frames received on the the port.
+         Empty if the abstract port is not connected to a test port.";
     }
-    
-    grouping bgpv6-statistics {
-        description
-        "A grouping of bgpv6 statistics";
-        list bgpv6-statistics {
-			key "device-name";
-			description "";
-
-			leaf device-name {
-				type string;
-				description "Abstract emulated bgpv6 device name";
-			}
-            leaf port-name {
-                type string;
-                description "An abstract test port name";
-            }
-
-            uses bgp-statistics;
-        }
+    leaf tx-withdraw-route-count {
+      type uint64;
+      description
+        "The total number of frames transmitted on the port.
+         Empty if the abstract port is not connected to a test port.";
     }
-    
+    leaf rx-withdraw-route-count {
+      type uint64;
+      description
+        "The total number of frames received on the the port.
+         Empty if the abstract port is not connected to a test port.";
+    }
+    leaf last-rx-update-route-count {
+      type uint64;
+      description
+        "Number of routes in the last-received UPDATE message.";
+    }
+    leaf outstanding-route-count {
+      type uint64;
+      description
+        "Number of routes that should be in the DUT'scurrent route table.";
+    }
+    leaf rx-advertise-update-count {
+      type uint64;
+      description
+        "Received update packet count. Number of Update packets received fromDUT.";
+    }
+    leaf rx-keepalive-count {
+      type uint64;
+      description
+        "BGP KeepAlive count received. Total number of KeepAlive packets receivedfrom
+         the DUT during the test. ";
+    }
+    leaf rx-notification-count {
+      type uint64;
+      description
+        "BGP Notification count received. Number of Notification packets received by
+         the emulated router during the test.";
+    }
+    leaf rx-notify-code {
+      type uint64;
+      description
+        "BGP Notify code received. The last NOTIFICATION code the emulated routerreceived from the DUT.";
+    }
+    leaf rx-notify-sub-code {
+      type uint64;
+      description
+        "BGP Notify subcode received. Each NOTIFICATION code has a sub-code. ";
+    }
+    leaf rx-open-count {
+      type uint64;
+      description
+        "BGP Open message count received. Opens received from DUT. In stable BGP
+         scenarios, this should match the value in the previous field. ";
+    }
+    leaf rx-route-refresh-count {
+      type uint64;
+      description
+        "Number of advertised route refresh message received.";
+    }
+    leaf rx-rt-constraint-count {
+      type uint64;
+      description
+        "Number of RT-Constraint routes received for this router.";
+    }
+    leaf session-up-count {
+      type uint64;
+      description
+        "Number of router sessions within the router block in the Establishedstate.";
+    }
+    leaf tx-advertise-update-count {
+      type uint64;
+      description
+        "Advertised update route count transmitted. Total number of UPDATE packetswith
+         feasible routes sent to the DUT. ";
+    }
+    leaf tx-keepalive-count {
+      type uint64;
+      description
+        "BGP KeepAlive count transmitted. Total number of KEEPALIVE packets sent to
+         the DUT during test. ";
+    }
+    leaf tx-notification-count {
+      type uint64;
+      description
+        "BGP Notification count transmitted. Number of Notification packets sent
+         from the emulated router. ";
+    }
+    leaf tx-notify-code {
+      type uint64;
+      description
+        "BGP Notify code transmitted. Last Notification code the emulated router
+         sent to the DUT.";
+    }
+    leaf tx-notify-sub-code {
+      type uint64;
+      description
+        "BGP Notify subcode received. Each NOTIFICATION code has a sub-code. ";
+    }
+    leaf tx-open-count {
+      type uint64;
+      description
+        "BGP Open message count transmitted. Total number of OPEN packets sent tothe DUT.
+         Initial one, plus number of times the emulated router re-establishessessions. ";
+    }
+    leaf tx-route-refresh-count {
+      type uint64;
+      description
+        " Number of advertised route refresh message transmitted.";
+    }
+    leaf tx-rt-constraint-count {
+      type uint64;
+      description
+        "Number of RT-Constraint routes transmitted for this router.";
+    }
+    leaf tx-withdrawn-update-count {
+      type uint64;
+      description
+        "Withdrawn update route count transmitted. Total number of UPDATE packetswith unfeasible
+         routes sent to the DUT (route flapping).  ";
+    }
+  }
+
+  grouping bgpv4-statistics {
+    description
+      "A grouping of bgpv4 statistics";
+    list bgpv4-statistics {
+      key "device-name";
+      description
+        "";
+      leaf device-name {
+        type string;
+        description
+          "Abstract emulated bgpv4 device name";
+      }
+      leaf port-name {
+        type string;
+        description
+          "An abstract test port name";
+      }
+      uses bgp-statistics;
+    }
+  }
+
+  grouping bgpv6-statistics {
+    description
+      "A grouping of bgpv6 statistics";
+    list bgpv6-statistics {
+      key "device-name";
+      description
+        "";
+      leaf device-name {
+        type string;
+        description
+          "Abstract emulated bgpv6 device name";
+      }
+      leaf port-name {
+        type string;
+        description
+          "An abstract test port name";
+      }
+      uses bgp-statistics;
+    }
+  }
 }

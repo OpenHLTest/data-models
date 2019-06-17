@@ -1,110 +1,104 @@
 submodule openhltest-bgpv4-route-range {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-patterns {
+    prefix p;
+  }
 
-    import openhltest-patterns {
-		prefix p;
-	}
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes the simulated bgpv4 route range.";
 
-	organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  revision 2018-02-09 {
     description
-      "This module describes the simulated bgpv4 route range.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2018-02-09 {
+  grouping bgpv4-route-range-group {
+    description
+      "";
+    container bgpv4-route-range {
+      description
+        "";
+      leaf active {
+        type boolean;
+        default "true";
         description
-          "Initial revision.";
-        reference
-          "0.0.1";
+          "";
+      }
+      container address {
+        uses p:ipv4-pattern-group {
+          refine "single" {
+            default "0.0.0.1";
+          }
+        }
+        description
+          "";
+      }
+      container prefix-length {
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..32";
+          }
+          refine "single" {
+            default "24";
+          }
+        }
+        description
+          "";
+      }
+      container as-path {
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..2147483647";
+          }
+          refine "single" {
+            default "1";
+          }
+        }
+        description
+          "Used in the AS_PATH attribute in BGP UPDATE messages.";
+      }
+      container next-hop-address {
+        uses p:ipv4-pattern-group;
+        description
+          "The next hop is the node to which packets should be sent to get them closer
+                      to the destination. Specify the IP address of the border router that should be
+                      used as the next hop to the destinations listed in the UPDATE message.
+                      This is the mandatory NEXT_HOP path attribute in UPDATE messages.";
+      }
+      container aigp-metric {
+        uses p:int-64-pattern-group {
+          refine "single" {
+            default "10";
+          }
+        }
+        description
+          "Value of the first accumulated interior gateway protocol(AIGP) metric";
+      }
+      container atomic-aggregate {
+        presence "Indicates whether to include the ATOMIC_AGGREGATE attribute in BGP UPDATE messages";
+        description
+          "";
+        container aggregate-as {
+          uses p:int-64-pattern-group;
+          description
+            "The AS number to use for the AGGREGATOR attribute";
+        }
+        container aggregate-ip {
+          description
+            "The IP address to use for the AGGREGATOR attribute.";
+          uses p:ipv4-pattern-group;
+        }
+      }
     }
-	
-	grouping bgpv4-route-range-group {		
-		description "";
-
-		container bgpv4-route-range {
-			description "";
-
-            leaf active {
-                type boolean;
-                default "true";
-				description "";
-            }
-            
-            container address {
-                uses p:ipv4-pattern-group {
-                    refine single {
-                        default "0.0.0.1";
-                    }
-                }
-				description "";
-            }
-
-            container prefix-length {
-				uses p:base-pattern-group {
-					refine pattern-format {
-						default "0..32";
-					}
-					refine single {
-						default "24";
-					}
-				}
-				description "";
-            }
-
-            container as-path {
-				uses p:base-pattern-group {
-					refine pattern-format {
-						default "0..2147483647";
-					}
-					refine single {
-						default "1";
-					}
-				}
-                description
-                "Used in the AS_PATH attribute in BGP UPDATE messages.";
-            }
-
-			container next-hop-address {
-                uses p:ipv4-pattern-group;
-				description
-				"The next hop is the node to which packets should be sent to get them closer 
-                to the destination. Specify the IP address of the border router that should be 
-                used as the next hop to the destinations listed in the UPDATE message. 
-                This is the mandatory NEXT_HOP path attribute in UPDATE messages.";
-			}
-            
-            container aigp-metric {
-				uses p:int-64-pattern-group {
-					refine single {
-						default "10";
-					}
-				}
-                description
-                "Value of the first accumulated interior gateway protocol(AIGP) metric";
-            }
-            
-            container atomic-aggregate {
-                presence
-                    "Indicates whether to include the ATOMIC_AGGREGATE attribute in BGP UPDATE messages";
-				description "";
-                container aggregate-as {
-                    uses p:int-64-pattern-group;
-                    description
-                    "The AS number to use for the AGGREGATOR attribute";
-                }
-                container aggregate-ip {
-                    description
-                    "The IP address to use for the AGGREGATOR attribute.";
-                    uses p:ipv4-pattern-group;
-                }
-            }
-		}
-	}
+  }
 }
-
-	

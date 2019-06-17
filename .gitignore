@@ -1,5 +1,6 @@
 .vscode/tasks.json
 *.pyc
+*.yang.tmp
 build
 dist
 openhltest.egg-info

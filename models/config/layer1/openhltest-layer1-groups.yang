@@ -1,115 +1,126 @@
 submodule openhltest-layer1-groups {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-types {
+    prefix t;
+  }
+  include openhltest-ports;
+  include openhltest-layer1-ethernet;
+  include openhltest-layer1-ten-gig;
+  include openhltest-layer1-twenty-five-gig;
 
-    import openhltest-types {
-        prefix t;
-    }
-	include openhltest-ports; 
-	include openhltest-layer1-ethernet;
-	include openhltest-layer1-ten-gig;
-	include openhltest-layer1-twenty-five-gig;
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes a collection of layer1 characteristics and associated rpcs.";
 
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  revision 2017-11-02 {
     description
-      "This module describes a collection of layer1 characteristics and associated rpcs.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2017-11-02 {
+  grouping layer1-top {
+    description
+      "A grouping of layer1 settings.";
+    list layer1-groups {
+      key "name";
+      description
+        "A group of layer1 settings that will be applied to each port's location.
+         The vendor implementation should apply layer 1 settings when starting protocols.
+         If the port's location is empty then nothing will be applied to that port.";
+      leaf name {
+        type t:config-list-key;
         description
-          "Initial revision.";
-        reference
-          "0.0.1";
+          "The unique name of a layer1 group";
+      }
+      leaf-list ports {
+        type leafref {
+          path "../../ports/name";
+        }
+        description
+          "A list of abstract test port names.
+           Every object in the devices and protocols lists will share the ports assigned to a device-groups object.
+           An abstract test port name cannot be assigned to more than one device-groups object.";
+      }
+      leaf layer1-type {
+        type enumeration {
+          enum ETHERNET_COPPER {
+            description
+              "";
+          }
+          enum ETHERNET_FIBER {
+            description
+              "";
+          }
+          enum TEN_GIG_COPPER {
+            description
+              "";
+          }
+          enum TEN_GIG_FIBER {
+            description
+              "";
+          }
+          enum TWENTY_FIVE_GIG {
+            description
+              "";
+          }
+          enum FORTY_GIG {
+            description
+              "";
+          }
+          enum FIFTY_GIG {
+            description
+              "";
+          }
+          enum ONE_HUNDRED_GIG {
+            description
+              "";
+          }
+          enum TWO_HUNDRED_GIG {
+            description
+              "";
+          }
+          enum FOUR_HUNDRED_GIG {
+            description
+              "";
+          }
+        }
+        default "ETHERNET_COPPER";
+        description
+          "";
+      }
+      uses layer1-ethernet-copper-group {
+        when '../layer1-type = ETHERNET_COPPER';
+        description
+          "The conditional container for detailed ethernet copper layer1 settings";
+      }
+      uses layer1-ethernet-fiber-group {
+        when '../layer1-type = ETHERNET_FIBER';
+        description
+          "The conditional container for detailed ethernet fiber layer1 settings";
+      }
+      uses layer1-ten-gig-copper-group {
+        when '../layer1-type = TEN_GIG_COPPER';
+        description
+          "The conditional container for detailed ethernet copper layer1 settings";
+      }
+      uses layer1-ten-gig-fiber-group {
+        when '../layer1-type = TEN_GIG_FIBER';
+        description
+          "The conditional container for detailed ethernet fiber layer1 settings";
+      }
+      uses layer1-twenty-five-gig-group {
+        when '../layer1-type = TWENTY_FIVE_GIG';
+        description
+          "The conditional container for detailed 25 gigabit layer1 settings";
+      }
     }
-
-    grouping layer1-top {
-        description
-          "A grouping of layer1 settings.";
-
-		list layer1-groups {
-			key "name";
-			description
-			"A group of layer1 settings that will be applied to each port's location.
-			The vendor implementation should apply layer 1 settings when starting protocols.
-			If the port's location is empty then nothing will be applied to that port.";
-
-			leaf name {
-				type t:config-list-key;
-				description
-				"The unique name of a layer1 group";
-			}	
-
-			leaf-list ports {
-				type leafref {
-					path "../../ports/name";
-				}
-				description 
-				"A list of abstract test port names. 
-				Every object in the devices and protocols lists will share the ports assigned to a device-groups object.
-				An abstract test port name cannot be assigned to more than one device-groups object.";
-			}
-
-			leaf layer1-type {
-				type enumeration {
-					enum ETHERNET_COPPER {
-						description "";
-					}
-					enum ETHERNET_FIBER {
-						description "";
-					}
-					enum TEN_GIG_COPPER {
-						description "";
-					}
-					enum TEN_GIG_FIBER {
-						description "";
-					}
-					enum TWENTY_FIVE_GIG {
-						description "";
-					}
-					enum FORTY_GIG {
-						description "";
-					}
-					enum FIFTY_GIG {
-						description "";
-					}
-					enum ONE_HUNDRED_GIG {
-						description "";
-					}
-					enum TWO_HUNDRED_GIG {
-						description "";
-					}
-					enum FOUR_HUNDRED_GIG {
-						description "";
-					}
-				}
-				default ETHERNET_COPPER;
-				description "";
-			}
-			uses layer1-ethernet-copper-group {
-				when "../layer1-type = ETHERNET_COPPER";			
-				description "The conditional container for detailed ethernet copper layer1 settings";
-			}
-			uses layer1-ethernet-fiber-group {
-				when "../layer1-type = ETHERNET_FIBER";			
-				description "The conditional container for detailed ethernet fiber layer1 settings";
-			}
-			uses layer1-ten-gig-copper-group {
-				when "../layer1-type = TEN_GIG_COPPER";			
-				description "The conditional container for detailed ethernet copper layer1 settings";
-			}
-			uses layer1-ten-gig-fiber-group {
-				when "../layer1-type = TEN_GIG_FIBER";			
-				description "The conditional container for detailed ethernet fiber layer1 settings";
-			}
-			uses layer1-twenty-five-gig-group {
-				when "../layer1-type = TWENTY_FIVE_GIG";			
-				description "The conditional container for detailed 25 gigabit layer1 settings";
-			}
-		}			
-	}
+  }
 }

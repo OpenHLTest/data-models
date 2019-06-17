@@ -1,251 +1,251 @@
 submodule openhltest-traffic-ospfv2-group {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-        prefix "oht";
-    }
+  import openhltest-types {
+    prefix t;
+  }
+  import openhltest-patterns {
+    prefix p;
+  }
 
-    import openhltest-types {
-        prefix t;
-    }
-    import openhltest-patterns {
-        prefix p;
-    }
-    
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes a collection OSPFv2 message type formats.";
+
+  revision 2018-02-09 {
+    description
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
+
+  grouping traffic-ospfv2-group-top {
     description
       "This module describes a collection OSPFv2 message type formats.";
-
-    revision 2018-02-09 {
+    container ospfv2-hello {
+      description
+        "";
+      container designated-router-address {
         description
-          "Initial revision.";
-        reference
-          "0.0.1";
-    }
-
-    grouping traffic-ospfv2-group-top {
-        description
-        "This module describes a collection OSPFv2 message type formats.";
-        
-        container ospfv2-hello {
-			description "";
-            container designated-router-address {
-                description
-                "Designated Router Address";
-                uses p:ipv4-pattern-group{
-                    refine single {
-                        default "1.1.1.1";
-                    }
-                }
-            }
-            container backup-designated-router-address {
-                description
-                "Backup Designated Router Address";
-                uses p:ipv4-pattern-group{
-                    refine single {
-                        default "2.2.2.2";
-                    }
-                }
-            }
-            container hello-interval {
-                description
-                "Hello Interval.";
-                uses p:int-32-pattern-group {
-                    refine single {
-                        default "10";
-                    }
-                }
-            }
-            container router-dead-interval {
-                description
-                "Router Dead Interval.";
-                uses p:int-32-pattern-group {
-                    refine single {
-                        default "40";
-                    }
-                }
-            }
-            container router-priority {
-                description
-                "Router Priority.";
-                uses p:int-32-pattern-group {
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container network-mask {
-                description
-                "Network mask";
-                uses p:ipv4-pattern-group{
-                    refine single {
-                        default "255.255.255.0";
-                    }
-                }
-            }
-            container area-id {
-                description
-                "Area Id";
-                uses p:ipv4-pattern-group{
-                    refine single {
-                        default "0.0.0.0";
-                    }
-                }
-            }
-            container router-id {
-                description
-                "Router Id";
-                uses p:ipv4-pattern-group{
-                    refine single {
-                        default "1.1.1.1";
-                    }
-                }
-            }
-            container checksum {
-                description
-                "Checksum value.";
-                uses p:int-32-pattern-group {
-                    refine single {
-                        default "0000";
-                    }
-                }
-            }
-            container packet-length {
-                description
-                "Packet Length.";
-                uses p:int-32-pattern-group {
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container auth-type {
-                description
-                "Authentication Type.
-                    NO_AUTH : No Authentication.
-                    SIMPLE_PASSWORD : Simple Password.
-                    MD5 : MD5 Authentication.
-                    USER_DEFINED : User Defined.";
-                uses p:enum-pattern-group {
-                    refine pattern-format {
-                        default "(NO_AUTH|SIMPLE_PASSWORD|MD5|USER_DEFINED)";
-                    }
-                    refine single {
-                        default "NO_AUTH";
-                    }
-                }
-            }
-            container auth-value1 {
-                description
-                "Authentication Value 1.";
-                uses p:int-32-pattern-group {
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container auth-value2 {
-                description
-                "Authentication Value 2.";
-                uses p:int-32-pattern-group {
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container options-reserved-bit-7 {
-                description
-                "Reserved Bit 7";
-                uses p:binary-pattern-group {
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container options-reserved-bit-6 {
-                description
-                "Reserved Bit 6";
-                uses p:binary-pattern-group {
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container options-dc-bit {
-                description
-                "Demand Circuits Bit";
-                uses p:binary-pattern-group {
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container options-ea-bit {
-                description
-                "EA Bit";
-                uses p:binary-pattern-group {
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container options-np-bit {
-                description
-                "NSSA Support";
-                uses p:binary-pattern-group {
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container options-mc-bit {
-                description
-                "Multicast Capable";
-                uses p:binary-pattern-group {
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container options-e-bit {
-                description
-                "E Bit, External Routing Capability.";
-                uses p:binary-pattern-group {
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container options-reserved-bit-0 {
-                description
-                "Reserved Bit 0";
-                uses p:binary-pattern-group {
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            list neighbors {
-                key "name";
-				description "";
-                leaf name {
-                    type t:config-list-key;
-					description "";
-                }
-                container neighbors-id {
-                    description
-                    "Neighbor ID";
-                    uses p:ipv4-pattern-group{
-                        refine single {
-                            default "1.1.1.1";
-                        }
-                    }
-                }
-            }
+          "Designated Router Address";
+        uses p:ipv4-pattern-group {
+          refine "single" {
+            default "1.1.1.1";
+          }
         }
+      }
+      container backup-designated-router-address {
+        description
+          "Backup Designated Router Address";
+        uses p:ipv4-pattern-group {
+          refine "single" {
+            default "2.2.2.2";
+          }
+        }
+      }
+      container hello-interval {
+        description
+          "Hello Interval.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "10";
+          }
+        }
+      }
+      container router-dead-interval {
+        description
+          "Router Dead Interval.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "40";
+          }
+        }
+      }
+      container router-priority {
+        description
+          "Router Priority.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container network-mask {
+        description
+          "Network mask";
+        uses p:ipv4-pattern-group {
+          refine "single" {
+            default "255.255.255.0";
+          }
+        }
+      }
+      container area-id {
+        description
+          "Area Id";
+        uses p:ipv4-pattern-group {
+          refine "single" {
+            default "0.0.0.0";
+          }
+        }
+      }
+      container router-id {
+        description
+          "Router Id";
+        uses p:ipv4-pattern-group {
+          refine "single" {
+            default "1.1.1.1";
+          }
+        }
+      }
+      container checksum {
+        description
+          "Checksum value.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0000";
+          }
+        }
+      }
+      container packet-length {
+        description
+          "Packet Length.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container auth-type {
+        description
+          "Authentication Type.
+              NO_AUTH : No Authentication.
+              SIMPLE_PASSWORD : Simple Password.
+              MD5 : MD5 Authentication.
+              USER_DEFINED : User Defined.";
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "(NO_AUTH|SIMPLE_PASSWORD|MD5|USER_DEFINED)";
+          }
+          refine "single" {
+            default "NO_AUTH";
+          }
+        }
+      }
+      container auth-value1 {
+        description
+          "Authentication Value 1.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container auth-value2 {
+        description
+          "Authentication Value 2.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container options-reserved-bit-7 {
+        description
+          "Reserved Bit 7";
+        uses p:binary-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container options-reserved-bit-6 {
+        description
+          "Reserved Bit 6";
+        uses p:binary-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container options-dc-bit {
+        description
+          "Demand Circuits Bit";
+        uses p:binary-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container options-ea-bit {
+        description
+          "EA Bit";
+        uses p:binary-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container options-np-bit {
+        description
+          "NSSA Support";
+        uses p:binary-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container options-mc-bit {
+        description
+          "Multicast Capable";
+        uses p:binary-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container options-e-bit {
+        description
+          "E Bit, External Routing Capability.";
+        uses p:binary-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container options-reserved-bit-0 {
+        description
+          "Reserved Bit 0";
+        uses p:binary-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      list neighbors {
+        key "name";
+        description
+          "";
+        leaf name {
+          type t:config-list-key;
+          description
+            "";
+        }
+        container neighbors-id {
+          description
+            "Neighbor ID";
+          uses p:ipv4-pattern-group {
+            refine "single" {
+              default "1.1.1.1";
+            }
+          }
+        }
+      }
     }
-
+  }
 }

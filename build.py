@@ -7,6 +7,8 @@ from setuptools import setup, find_packages
 import distutils
 import re
 import json
+import tempfile
+import stat
 
 
 class CiBuild(object):
@@ -195,6 +197,43 @@ class CiBuild(object):
         else:
             print('stopping build, git diff failed')
             sys.exit(1)
+
+    def format_model_files(self):
+        for root, dirs, files in os.walk(self._data_models_dir):
+            for name in files:
+                filename = os.path.join(root, name)
+                if os.path.basename(filename).endswith('.yang'):
+                    print('reformatting %s...' % filename)
+                    temp_filename = '%s.tmp' % filename
+                    if os.path.exists(temp_filename):
+                        os.chmod(temp_filename, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+                        os.remove(temp_filename)                        
+                    hierarchy = [
+                        self._pyang,
+                        '--format',
+                        'yang',
+                        '--output',
+                        temp_filename,
+                        filename
+                    ]
+                    if os.name == 'nt':
+                        hierarchy.insert(0, self._python)
+                    self._run_process(hierarchy, self._data_models_dir)
+                    if self._is_different(filename, temp_filename):
+                        shutil.copy(temp_filename, filename)
+                    if os.path.exists(temp_filename):
+                        os.chmod(temp_filename, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+                        os.remove(temp_filename)                        
+    
+    def _is_different(self, filename1, filename2):
+        with open(filename1) as fid1:
+            with open(filename2) as fid2:
+                for line1 in fid1:
+                    for line2 in fid2:
+                        if line1 != line2:
+                            return True
+                        break
+        return False          
 
     def generate_hierarchy(self):
         print('generating model hierarchy...')
@@ -713,6 +752,7 @@ class CiBuild(object):
 
 cibuild = CiBuild()
 cibuild.check_changed_files()
+cibuild.format_model_files()
 cibuild.generate_hierarchy()
 cibuild.generate_python_package()
 cibuild.generate_angular_doc_app() 

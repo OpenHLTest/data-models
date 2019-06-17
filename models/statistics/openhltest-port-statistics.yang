@@ -1,682 +1,679 @@
 submodule openhltest-port-statistics {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-extensions {
+    prefix e;
+  }
 
-    import openhltest-extensions {
-      prefix e;
-	}
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes a YANG model for
+     abstract test port statistics.";
 
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  revision 2017-11-02 {
     description
-      "This module describes a YANG model for 
-       abstract test port statistics.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2017-11-02 {
+  grouping port-statistics-top {
+    description
+      "A grouping of port statistics";
+    list port {
+      key "name";
+      description
+        "";
+      leaf name {
+        type string;
         description
-          "Initial revision.";
-        reference
-          "0.0.1";
-	}
-
-    grouping port-statistics-top {
+          "An abstract test port name";
+      }
+      leaf tx-duration {
+        type decimal64 {
+          fraction-digits 10;
+        }
         description
-          "A grouping of port statistics";
-
-		list port {
-			key "name";
-			description "";
-
-			leaf name {
-				type string;
-				description "An abstract test port name";
-			}
-			leaf tx-duration {
-				type decimal64 {
-				fraction-digits 10;
-				}
-				description
-				"Generator on time in seconds.";
-			}
-			leaf tx-frames {
-				type uint64;
-				description
-				"The total number of frames transmitted on the port.
-				Empty if the abstract port is not connected to a test port.";
-			}
-			leaf rx-frames {
-				type uint64;
-				description
-				"The total number of frames received on the the port.
-				Empty if the abstract port is not connected to a test port.";
-			}
-        leaf tx-frame-rate {
-            type uint64;
-            description
-              "Total number of frames transmitted over the last 1-second interval.
-              Empty if the abstract port is not connected to a test port.";
-			}
-        leaf rx-frame-rate {
-            type uint64;
-            description
-              "Total number of frames received over the last 1-second interval.
-              Empty if the abstract port is not connected to a test port.";
-			}
-        leaf dropped-frames {
-            type uint64;
-            description
-              "Total Number of dropped frames during transit.
-              Empty if the abstract port is not connected to a test port.";
-			}
-        leaf tx-bit-count {
-            type uint64;
-            description
-              "The total number of bits transmitted on the port.
-              Empty if the abstract port is not connected to a test port.";
-			}
-        leaf rx-bit-count {
-            type uint64;
-            description
-              "The total number of bits received on the the port.
-              Empty if the abstract port is not connected to a test port.";
-			}
-        
-        leaf tx-bit-rate {
-            type uint64;
-            description
-              "Total number of bits transmitted over the last 1-second interval.
-              Empty if the abstract port is not connected to a test port.";
-			}
-        leaf rx-bit-rate {
-            type uint64;
-            description
-              "Total number of bits received over the last 1-second interval.
-              Empty if the abstract port is not connected to a test port.";
-			}
-        leaf tx-byte-count {
-            type uint64;
-            description
-              "The total number of bytes transmitted on the port.
-              Empty if the abstract port is not connected to a test port.";
-			}
-        leaf rx-byte-count {
-            type uint64;
-            description
-              "The total number of bytes received on the the port.
-              Empty if the abstract port is not connected to a test port.";
-			}
-        
-        leaf tx-byte-rate {
-            type uint64;
-            description
-              "Total number of bytes transmitted over the last 1-second interval.
-              Empty if the abstract port is not connected to a test port.";
-			}
-        leaf rx-byte-rate {
-            type uint64;
-            description
-              "Total number of bytes received over the last 1-second interval.
-              Empty if the abstract port is not connected to a test port.";
-			}
-        leaf tx-counter-timestamp {
-            e:ixia-not-supported;
-            type uint64;
-            description
-              "Time when the counter was stored. This value is derived from the TestCenter chassis time sync source.
-              The unit is 10 nanoseconds.";
-			}
-        leaf abort-frame-count {
-            type uint64;
-            description
-              "Number of abort frames generated.";
-			}
-        leaf abort-frame-rate {
-            type uint64;
-            description
-              "Number of abort frames generated over the last 1-second interval.";
-			}
-        leaf crc-error-frame-count {
-            type uint64;
-            description
-              "Number of CRC error frames generated.";
-			}
-        leaf crc-error-frame-rate {
-            type uint64;
-            description
-              "Number of CRC error frames generated over the last 1-second interval.";
-			}
-        leaf ipv4-tx-frame-count {
-            type uint64;
-            description
-              "Number of IPv4 frames generated.";
-			}
-        leaf ipv4-tx-frame-rate {
-            type uint64;
-            description
-              "Number of IPv4 frames generated over the last 1-second interval.";
-			}
-        leaf ipv4-rx-frame-count {
-            type uint64;
-            description
-              "Number of IPv4 frames received.";
-			}
-        leaf ipv4-rx-frame-rate {
-            type uint64;
-            description
-              "Number of IPv4 frames received over the last 1-second interval.";
-			}
-        leaf ipv4-tx-total-frame-count {
-            type uint64;
-            description
-              "Total number of IPv4 frames transmitted.";
-			}
-        leaf ipv4-tx-total-frame-rate {
-            type uint64;
-            description
-              "Total number of IPv4 frames transmitted over the last 1-second interval.";
-			}
-        leaf ipv6-tx-frame-count {
-            type uint64;
-            description
-              "Number of IPv6 frames generated.";
-			}
-        leaf ipv6-tx-frame-rate {
-            type uint64;
-            description
-              "Number of IPv6 frames generated over the last 1-second interval.";
-			}
-        leaf ipv6-rx-frame-count {
-            type uint64;
-            description
-              "Number of IPv6 frames received.";
-			}
-        leaf ipv6-rx-frame-rate {
-            type uint64;
-            description
-              "Number of IPv6 frames received over the last 1-second interval.";
-			}
-        leaf ipv6-tx-total-frame-count {
-            type uint64;
-            description
-              "Total number of IPv6 frames transmitted.";
-			}
-        leaf ipv6-tx-total-frame-rate {
-            type uint64;
-            description
-              "Total number of IPv6 frames transmitted over the last 1-second interval.";
-			}
-        leaf jumbo-tx-frame-count {
-            type uint64;
-            description
-              "Number of jumbo frames generated.";
-			}
-        leaf jumbo-tx-frame-rate {
-            type uint64;
-            description
-              "Number of jumbo frames generated over the last 1-second interval.";
-			}
-        leaf jumbo-rx-frame-count {
-            type uint64;
-            description
-              "Number of jumbo frames received.";
-			}
-        leaf jumbo-rx-frame-rate {
-            type uint64;
-            description
-              "Number of jumbo frames received over the last 1-second interval.";
-			}
-        leaf l3-checksum-error-count {
-            type uint64;
-            description
-              "Number of frames generated with an L3 checksum error.";
-			}
-        leaf l3-checksum-error-rate {
-            type uint64;
-            description
-              "Number of frames generated with an L3 header checksum, per second.";
-			}
-        leaf l4-checksum-error-count {
-            type uint64;
-            description
-              "Number of frames generated with an L4 checksum error.";
-			}
-        leaf l4-checksum-error-rate {
-            type uint64;
-            description
-              "Number of frames generated with an L4 header checksum, per second.";
-			}
-        leaf mpls-tx-frame-count {
-            type uint64;
-            description
-              "Number of mpls frames generated.";
-			}
-        leaf mpls-tx-frame-rate {
-            type uint64;
-            description
-              "Number of mpls frames generated over the last 1-second interval.";
-			}
-        leaf mpls-rx-frame-count {
-            type uint64;
-            description
-              "Number of mpls frames received.";
-			}
-        leaf mpls-rx-frame-rate {
-            type uint64;
-            description
-              "Number of mpls frames received over the last 1-second interval.";
-			}
-        leaf mpls-tx-total-frame-count {
-            type uint64;
-            description
-              "Total number of MPLS frames transmitted.";
-			}
-        leaf mpls-tx-total-frame-rate {
-            type uint64;
-            description
-              "Total number of MPLS frames transmitted over the last 1-second interval.";
-			}
-        leaf octet-tx-frame-count {
-            type uint64;
-            description
-              "Number of octet frames generated.";
-			}
-        leaf octet-tx-frame-rate {
-            type uint64;
-            description
-              "Number of octet frames generated over the last 1-second interval.";
-			}
-        leaf octet-rx-frame-count {
-            type uint64;
-            description
-              "Number of octet frames received.";
-			}
-        leaf octet-rx-frame-rate {
-            type uint64;
-            description
-              "Number of octet frames received over the last 1-second interval.";
-			}
-        leaf octet-tx-total-frame-count {
-            type uint64;
-            description
-              "Total number of octet frames transmitted.";
-			}
-        leaf octet-tx-total-frame-rate {
-            type uint64;
-            description
-              "Total number of octet frames transmitted over the last 1-second interval.";
-			}
-        leaf cell-tx-total-frame-count {
-            type uint64;
-            description
-              "Count of total cells generated.";
-			}
-        leaf cell-tx-total-frame-rate {
-            type uint64;
-            description
-              "Total number of bytes generated over last 1-second interval.";
-			}
-        leaf oversize-tx-frame-count {		
-            type uint64;
-            description
-              "Number of oversize frames generated.";
-			}
-        leaf oversize-tx-frame-rate {
-            type uint64;
-            description
-              "Number of oversize frames generated over the last 1-second interval.";
-			}
-        leaf oversize-rx-frame-count {
-            type uint64;
-            description
-              "Number of oversize frames received.";
-			}
-        leaf oversize-rx-frame-rate {
-            type uint64;
-            description
-              "Number of oversize frames received over the last 1-second interval.";
-			}
-        leaf undersize-tx-frame-count {
-            type uint64;
-            description
-              "Number of undersize frames generated.";
-			}
-        leaf undersize-tx-frame-rate {
-            type uint64;
-            description
-              "Number of undersize frames generated over the last 1-second interval.";
-			}
-        leaf undersize-rx-frame-count {
-            type uint64;
-            description
-              "Number of undersize frames received.";
-			}
-        leaf undersize-rx-frame-rate {
-            type uint64;
-            description
-              "Number of undersize frames received over the last 1-second interval.";
-			}
-        leaf sig-tx-frame-count {
-            e:ixia-not-supported;
-            type uint64;
-            description
-              "Number of Spirent Signature frames generated.";
-			}
-        leaf sig-tx-frame-rate {
-            e:ixia-not-supported;
-            type uint64;
-            description
-              "Number of Spirent Signature  frames generated over the last 1-second interval.";
-			}
-        leaf sig-rx-frame-count {
-            e:ixia-not-supported;
-            type uint64;
-            description
-              "Number of Spirent Signature  frames received.";
-			}
-        leaf sig-rx-frame-rate {
-            e:ixia-not-supported;
-            type uint64;
-            description
-              "Number of Spirent Signature  frames received over the last 1-second interval.";
-			}
-        leaf vlan-tx-frame-count {
-            type uint64;
-            description
-              "Number of VLAN frames generated.";
-			}
-        leaf vlan-tx-frame-rate {
-            type uint64;
-            description
-              "Number of VLAN frames generated over the last 1-second interval.";
-			}
-        leaf vlan-rx-frame-count {
-            type uint64;
-            description
-              "Number of VLAN frames received.";
-			}
-        leaf vlan-rx-frame-rate {
-            type uint64;
-            description
-              "Number of VLAN frames received over the last 1-second interval.";
-			}
-        leaf hw-tx-frame-count {
-            type uint64;
-            description
-              "Number of Hardware frames generated.";
-			}
-        leaf hw-rx-frame-count {
-            type uint64;
-            description
-              "Number of Hardware frames received.";
-			}
-        leaf l1-tx-bit-count {
-            type uint64;
-            description
-              "Count of total layer1 bits generated.";
-			}
-        leaf l1-tx-bit-rate {
-            type uint64;
-            description
-              "Total number of layer1 bits transmitted over last 1-second interval.";
-			}
-        leaf l1-tx-bit-rate-percent {
-            type decimal64 {
-              fraction-digits 10;
-				}
-            description
-              "Total number of layer 1 bits transmitted in percentage.";
-			}
-        leaf l1-rx-bit-count {
-            type uint64;
-            description
-              "Count of total layer1 bits received.";
-			}
-        leaf l1-rx-bit-rate {
-            type uint64;
-            description
-              "Total number of layer1 bits received over last 1-second interval.";
-			}
-        leaf l1-rx-bit-rate-percent {
-            type decimal64 {
-              fraction-digits 10;
-				}
-            description
-              "Total number of layer 1 bits received in percentage.";
-			}
-        leaf pfc-tx-frame-count {
-            type uint64;
-            description
-              "Number of pause frames transmitted.";
-			}
-        leaf pfc-rx-frame-count {
-            type uint64;
-            description
-              "Number of pause frames received.";
-			}
-        leaf pfc-priority0-tx-frame-count {
-            type uint64;
-            description
-              "Number of priority-0 pause frames generated.";
-			}
-        leaf pfc-priority1-tx-frame-count {
-            type uint64;
-            description
-              "Number of priority-1 pause frames generated.";
-			}
-        leaf pfc-priority2-tx-frame-count {
-            type uint64;
-            description
-              "Number of priority-2 pause frames generated.";
-			}
-        leaf pfc-priority3-tx-frame-count {
-            type uint64;
-            description
-              "Number of priority-3 pause frames generated.";
-			}
-        leaf pfc-priority4-tx-frame-count {
-            type uint64;
-            description
-              "Number of priority-4 pause frames generated.";
-			}
-        leaf pfc-priority5-tx-frame-count {
-            type uint64;
-            description
-              "Number of priority-5 pause frames generated.";
-			}
-        leaf pfc-priority6-tx-frame-count {
-            type uint64;
-            description
-              "Number of priority-6 pause frames generated.";
-			}
-        leaf pfc-priority7-tx-frame-count {
-            type uint64;
-            description
-              "Number of priority-7 pause frames generated.";
-			}
-        leaf pfc-priority0-rx-frame-count {
-            type uint64;
-            description
-              "Number of priority-0 pause frames received.";
-			}
-        leaf pfc-priority1-rx-frame-count {
-            type uint64;
-            description
-              "Number of priority-1 pause frames received.";
-			}
-        leaf pfc-priority2-rx-frame-count {
-            type uint64;
-            description
-              "Number of priority-2 pause frames received.";
-			}
-        leaf pfc-priority3-rx-frame-count {
-            type uint64;
-            description
-              "Number of priority-3 pause frames received.";
-			}
-        leaf pfc-priority4-rx-frame-count {
-            type uint64;
-            description
-              "Number of priority-4 pause frames received.";
-			}
-        leaf pfc-priority5-rx-frame-count {
-            type uint64;
-            description
-              "Number of priority-5 pause frames received.";
-			}
-        leaf pfc-priority6-rx-frame-count {
-            type uint64;
-            description
-              "Number of priority-6 pause frames received.";
-			}
-        leaf pfc-priority7-rx-frame-count {
-            type uint64;
-            description
-              "Number of priority-7 pause frames received.";
-			}
-        leaf combo-trigger-count {
-            type uint64;
-            description
-              "Number of frames captured by all the triggers.";
-			}
-        leaf combo-trigger-rate {
-            e:ixia-not-supported;
-            type uint64;
-            description
-              "Number of frames received by all the triggers over the last 1-second interval.";
-			}
-        leaf corrected-baser-fec-error-count {
-            e:ixia-not-supported;
-            type uint64;
-            description
-              "Number of Corrected BaseR FEC Errors received.";
-			}
-        leaf corrected-rs-fec-error-count {
-            e:ixia-not-supported;
-            type uint64;
-            description
-              "Number of Corrected RS FEC Errors received.";
-			}
-        leaf corrected-rs-fec-symbols {
-            e:ixia-not-supported;
-            type uint64;
-            description
-              "Number of Corrected RS FEC Symbols received.";
-			}
-        leaf rx-counter-timestamp {
-            e:ixia-not-supported;
-            type uint64;
-            description
-              "Time when the counter was stored.";
-			}
-        leaf duplicate-frame-count {
-            type uint64;
-            description
-              "Number of duplicate frames received.";
-			}
-        leaf fcoe-rx-frame-count {
-            type uint64;
-            description
-              "Fiber channel over Ethernet frame count.";
-			}
-        leaf fcoe-rx-frame-rate {
-            type uint64;
-            description
-              "Fiber channel over Ethernet frame rate.";
-			}
-        leaf fcs-rx-frame-count {
-            type uint64;
-            description
-              "Number of FCS error frames received.";
-			}
-        leaf fcs-rx-frame-rate {
-            type uint64;
-            description
-              "Number of FCS error frames received over the last 1-second interval.";
-			}
-        leaf first-arrival-timestamp {
-            type decimal64 {
-              fraction-digits 10;
-				}
-            description
-              "Backplane first arrival timestamp received.";
-			}
-        leaf last-arrival-timestamp {
-            type decimal64 {
-              fraction-digits 10;
-				}
-            description
-              "Backplane last arrival timestamp received.";
-			}
-        leaf late-frame-count {
-            type uint64;
-            description
-              "Number of late frames received.";
-			}
-        leaf max-frame-length {
-            type uint64;
-            description
-              "Maximum frame length received (in bytes).";
-			}
-        leaf min-frame-length {
-            type uint64;
-            description
-              "Minimum frame length received (in bytes).";
-			}
-        leaf icmp-rx-frame-count {
-            type uint64;
-            description
-              "Number of ICMP frames received.";
-			}
-        leaf icmp-rx-frame-rate {
-            type uint64;
-            description
-              "Number of ICMP frames received over the last 1-second interval.";
-			}
-        leaf ipv4-checksum-error-rx-frame-count {
-            type uint64;
-            description
-              "Number of IPv4 checksum errors received.";
-			}
-        leaf ipv4-checksum-error-rx-frame-rate {
-            type uint64;
-            description
-              "Number of IPv4 checksum errors received over the last 1-second interval.";
-			}
-        leaf in-sequence-rx-frame-count {
-            type uint64;
-            description
-              "Number of frames received in sequence order.";
-			}
-        leaf out-sequence-rx-frame-count {
-            type uint64;
-            description
-              "Number of frames received out of sequence order.";
-			}
-        leaf ipv6-over-ipv4-rx-frame-count {
-            type uint64;
-            description
-              "Number of IPv6 over IPv4 frames received.";
-			}
-        leaf ipv6-over-ipv4-rx-frame-rate {
-            type uint64;
-            description
-              "Number of IPv6 over IPv4 frames received over the last 1-second interval.";
-			}
-        leaf pause-rx-frame-count {
-            type uint64;
-            description
-              "Number of pause frames received.";
-			}
-        leaf pause-rx-frame-rate {
-            type uint64;
-            description
-              "Number of pause frames received over the last 1-second interval.";
-			}
-		}
-	}
+          "Generator on time in seconds.";
+      }
+      leaf tx-frames {
+        type uint64;
+        description
+          "The total number of frames transmitted on the port.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf rx-frames {
+        type uint64;
+        description
+          "The total number of frames received on the the port.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf tx-frame-rate {
+        type uint64;
+        description
+          "Total number of frames transmitted over the last 1-second interval.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf rx-frame-rate {
+        type uint64;
+        description
+          "Total number of frames received over the last 1-second interval.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf dropped-frames {
+        type uint64;
+        description
+          "Total Number of dropped frames during transit.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf tx-bit-count {
+        type uint64;
+        description
+          "The total number of bits transmitted on the port.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf rx-bit-count {
+        type uint64;
+        description
+          "The total number of bits received on the the port.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf tx-bit-rate {
+        type uint64;
+        description
+          "Total number of bits transmitted over the last 1-second interval.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf rx-bit-rate {
+        type uint64;
+        description
+          "Total number of bits received over the last 1-second interval.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf tx-byte-count {
+        type uint64;
+        description
+          "The total number of bytes transmitted on the port.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf rx-byte-count {
+        type uint64;
+        description
+          "The total number of bytes received on the the port.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf tx-byte-rate {
+        type uint64;
+        description
+          "Total number of bytes transmitted over the last 1-second interval.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf rx-byte-rate {
+        type uint64;
+        description
+          "Total number of bytes received over the last 1-second interval.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf tx-counter-timestamp {
+        e:ixia-not-supported;
+        type uint64;
+        description
+          "Time when the counter was stored. This value is derived from the TestCenter chassis time sync source.
+           The unit is 10 nanoseconds.";
+      }
+      leaf abort-frame-count {
+        type uint64;
+        description
+          "Number of abort frames generated.";
+      }
+      leaf abort-frame-rate {
+        type uint64;
+        description
+          "Number of abort frames generated over the last 1-second interval.";
+      }
+      leaf crc-error-frame-count {
+        type uint64;
+        description
+          "Number of CRC error frames generated.";
+      }
+      leaf crc-error-frame-rate {
+        type uint64;
+        description
+          "Number of CRC error frames generated over the last 1-second interval.";
+      }
+      leaf ipv4-tx-frame-count {
+        type uint64;
+        description
+          "Number of IPv4 frames generated.";
+      }
+      leaf ipv4-tx-frame-rate {
+        type uint64;
+        description
+          "Number of IPv4 frames generated over the last 1-second interval.";
+      }
+      leaf ipv4-rx-frame-count {
+        type uint64;
+        description
+          "Number of IPv4 frames received.";
+      }
+      leaf ipv4-rx-frame-rate {
+        type uint64;
+        description
+          "Number of IPv4 frames received over the last 1-second interval.";
+      }
+      leaf ipv4-tx-total-frame-count {
+        type uint64;
+        description
+          "Total number of IPv4 frames transmitted.";
+      }
+      leaf ipv4-tx-total-frame-rate {
+        type uint64;
+        description
+          "Total number of IPv4 frames transmitted over the last 1-second interval.";
+      }
+      leaf ipv6-tx-frame-count {
+        type uint64;
+        description
+          "Number of IPv6 frames generated.";
+      }
+      leaf ipv6-tx-frame-rate {
+        type uint64;
+        description
+          "Number of IPv6 frames generated over the last 1-second interval.";
+      }
+      leaf ipv6-rx-frame-count {
+        type uint64;
+        description
+          "Number of IPv6 frames received.";
+      }
+      leaf ipv6-rx-frame-rate {
+        type uint64;
+        description
+          "Number of IPv6 frames received over the last 1-second interval.";
+      }
+      leaf ipv6-tx-total-frame-count {
+        type uint64;
+        description
+          "Total number of IPv6 frames transmitted.";
+      }
+      leaf ipv6-tx-total-frame-rate {
+        type uint64;
+        description
+          "Total number of IPv6 frames transmitted over the last 1-second interval.";
+      }
+      leaf jumbo-tx-frame-count {
+        type uint64;
+        description
+          "Number of jumbo frames generated.";
+      }
+      leaf jumbo-tx-frame-rate {
+        type uint64;
+        description
+          "Number of jumbo frames generated over the last 1-second interval.";
+      }
+      leaf jumbo-rx-frame-count {
+        type uint64;
+        description
+          "Number of jumbo frames received.";
+      }
+      leaf jumbo-rx-frame-rate {
+        type uint64;
+        description
+          "Number of jumbo frames received over the last 1-second interval.";
+      }
+      leaf l3-checksum-error-count {
+        type uint64;
+        description
+          "Number of frames generated with an L3 checksum error.";
+      }
+      leaf l3-checksum-error-rate {
+        type uint64;
+        description
+          "Number of frames generated with an L3 header checksum, per second.";
+      }
+      leaf l4-checksum-error-count {
+        type uint64;
+        description
+          "Number of frames generated with an L4 checksum error.";
+      }
+      leaf l4-checksum-error-rate {
+        type uint64;
+        description
+          "Number of frames generated with an L4 header checksum, per second.";
+      }
+      leaf mpls-tx-frame-count {
+        type uint64;
+        description
+          "Number of mpls frames generated.";
+      }
+      leaf mpls-tx-frame-rate {
+        type uint64;
+        description
+          "Number of mpls frames generated over the last 1-second interval.";
+      }
+      leaf mpls-rx-frame-count {
+        type uint64;
+        description
+          "Number of mpls frames received.";
+      }
+      leaf mpls-rx-frame-rate {
+        type uint64;
+        description
+          "Number of mpls frames received over the last 1-second interval.";
+      }
+      leaf mpls-tx-total-frame-count {
+        type uint64;
+        description
+          "Total number of MPLS frames transmitted.";
+      }
+      leaf mpls-tx-total-frame-rate {
+        type uint64;
+        description
+          "Total number of MPLS frames transmitted over the last 1-second interval.";
+      }
+      leaf octet-tx-frame-count {
+        type uint64;
+        description
+          "Number of octet frames generated.";
+      }
+      leaf octet-tx-frame-rate {
+        type uint64;
+        description
+          "Number of octet frames generated over the last 1-second interval.";
+      }
+      leaf octet-rx-frame-count {
+        type uint64;
+        description
+          "Number of octet frames received.";
+      }
+      leaf octet-rx-frame-rate {
+        type uint64;
+        description
+          "Number of octet frames received over the last 1-second interval.";
+      }
+      leaf octet-tx-total-frame-count {
+        type uint64;
+        description
+          "Total number of octet frames transmitted.";
+      }
+      leaf octet-tx-total-frame-rate {
+        type uint64;
+        description
+          "Total number of octet frames transmitted over the last 1-second interval.";
+      }
+      leaf cell-tx-total-frame-count {
+        type uint64;
+        description
+          "Count of total cells generated.";
+      }
+      leaf cell-tx-total-frame-rate {
+        type uint64;
+        description
+          "Total number of bytes generated over last 1-second interval.";
+      }
+      leaf oversize-tx-frame-count {
+        type uint64;
+        description
+          "Number of oversize frames generated.";
+      }
+      leaf oversize-tx-frame-rate {
+        type uint64;
+        description
+          "Number of oversize frames generated over the last 1-second interval.";
+      }
+      leaf oversize-rx-frame-count {
+        type uint64;
+        description
+          "Number of oversize frames received.";
+      }
+      leaf oversize-rx-frame-rate {
+        type uint64;
+        description
+          "Number of oversize frames received over the last 1-second interval.";
+      }
+      leaf undersize-tx-frame-count {
+        type uint64;
+        description
+          "Number of undersize frames generated.";
+      }
+      leaf undersize-tx-frame-rate {
+        type uint64;
+        description
+          "Number of undersize frames generated over the last 1-second interval.";
+      }
+      leaf undersize-rx-frame-count {
+        type uint64;
+        description
+          "Number of undersize frames received.";
+      }
+      leaf undersize-rx-frame-rate {
+        type uint64;
+        description
+          "Number of undersize frames received over the last 1-second interval.";
+      }
+      leaf sig-tx-frame-count {
+        e:ixia-not-supported;
+        type uint64;
+        description
+          "Number of Spirent Signature frames generated.";
+      }
+      leaf sig-tx-frame-rate {
+        e:ixia-not-supported;
+        type uint64;
+        description
+          "Number of Spirent Signature  frames generated over the last 1-second interval.";
+      }
+      leaf sig-rx-frame-count {
+        e:ixia-not-supported;
+        type uint64;
+        description
+          "Number of Spirent Signature  frames received.";
+      }
+      leaf sig-rx-frame-rate {
+        e:ixia-not-supported;
+        type uint64;
+        description
+          "Number of Spirent Signature  frames received over the last 1-second interval.";
+      }
+      leaf vlan-tx-frame-count {
+        type uint64;
+        description
+          "Number of VLAN frames generated.";
+      }
+      leaf vlan-tx-frame-rate {
+        type uint64;
+        description
+          "Number of VLAN frames generated over the last 1-second interval.";
+      }
+      leaf vlan-rx-frame-count {
+        type uint64;
+        description
+          "Number of VLAN frames received.";
+      }
+      leaf vlan-rx-frame-rate {
+        type uint64;
+        description
+          "Number of VLAN frames received over the last 1-second interval.";
+      }
+      leaf hw-tx-frame-count {
+        type uint64;
+        description
+          "Number of Hardware frames generated.";
+      }
+      leaf hw-rx-frame-count {
+        type uint64;
+        description
+          "Number of Hardware frames received.";
+      }
+      leaf l1-tx-bit-count {
+        type uint64;
+        description
+          "Count of total layer1 bits generated.";
+      }
+      leaf l1-tx-bit-rate {
+        type uint64;
+        description
+          "Total number of layer1 bits transmitted over last 1-second interval.";
+      }
+      leaf l1-tx-bit-rate-percent {
+        type decimal64 {
+          fraction-digits 10;
+        }
+        description
+          "Total number of layer 1 bits transmitted in percentage.";
+      }
+      leaf l1-rx-bit-count {
+        type uint64;
+        description
+          "Count of total layer1 bits received.";
+      }
+      leaf l1-rx-bit-rate {
+        type uint64;
+        description
+          "Total number of layer1 bits received over last 1-second interval.";
+      }
+      leaf l1-rx-bit-rate-percent {
+        type decimal64 {
+          fraction-digits 10;
+        }
+        description
+          "Total number of layer 1 bits received in percentage.";
+      }
+      leaf pfc-tx-frame-count {
+        type uint64;
+        description
+          "Number of pause frames transmitted.";
+      }
+      leaf pfc-rx-frame-count {
+        type uint64;
+        description
+          "Number of pause frames received.";
+      }
+      leaf pfc-priority0-tx-frame-count {
+        type uint64;
+        description
+          "Number of priority-0 pause frames generated.";
+      }
+      leaf pfc-priority1-tx-frame-count {
+        type uint64;
+        description
+          "Number of priority-1 pause frames generated.";
+      }
+      leaf pfc-priority2-tx-frame-count {
+        type uint64;
+        description
+          "Number of priority-2 pause frames generated.";
+      }
+      leaf pfc-priority3-tx-frame-count {
+        type uint64;
+        description
+          "Number of priority-3 pause frames generated.";
+      }
+      leaf pfc-priority4-tx-frame-count {
+        type uint64;
+        description
+          "Number of priority-4 pause frames generated.";
+      }
+      leaf pfc-priority5-tx-frame-count {
+        type uint64;
+        description
+          "Number of priority-5 pause frames generated.";
+      }
+      leaf pfc-priority6-tx-frame-count {
+        type uint64;
+        description
+          "Number of priority-6 pause frames generated.";
+      }
+      leaf pfc-priority7-tx-frame-count {
+        type uint64;
+        description
+          "Number of priority-7 pause frames generated.";
+      }
+      leaf pfc-priority0-rx-frame-count {
+        type uint64;
+        description
+          "Number of priority-0 pause frames received.";
+      }
+      leaf pfc-priority1-rx-frame-count {
+        type uint64;
+        description
+          "Number of priority-1 pause frames received.";
+      }
+      leaf pfc-priority2-rx-frame-count {
+        type uint64;
+        description
+          "Number of priority-2 pause frames received.";
+      }
+      leaf pfc-priority3-rx-frame-count {
+        type uint64;
+        description
+          "Number of priority-3 pause frames received.";
+      }
+      leaf pfc-priority4-rx-frame-count {
+        type uint64;
+        description
+          "Number of priority-4 pause frames received.";
+      }
+      leaf pfc-priority5-rx-frame-count {
+        type uint64;
+        description
+          "Number of priority-5 pause frames received.";
+      }
+      leaf pfc-priority6-rx-frame-count {
+        type uint64;
+        description
+          "Number of priority-6 pause frames received.";
+      }
+      leaf pfc-priority7-rx-frame-count {
+        type uint64;
+        description
+          "Number of priority-7 pause frames received.";
+      }
+      leaf combo-trigger-count {
+        type uint64;
+        description
+          "Number of frames captured by all the triggers.";
+      }
+      leaf combo-trigger-rate {
+        e:ixia-not-supported;
+        type uint64;
+        description
+          "Number of frames received by all the triggers over the last 1-second interval.";
+      }
+      leaf corrected-baser-fec-error-count {
+        e:ixia-not-supported;
+        type uint64;
+        description
+          "Number of Corrected BaseR FEC Errors received.";
+      }
+      leaf corrected-rs-fec-error-count {
+        e:ixia-not-supported;
+        type uint64;
+        description
+          "Number of Corrected RS FEC Errors received.";
+      }
+      leaf corrected-rs-fec-symbols {
+        e:ixia-not-supported;
+        type uint64;
+        description
+          "Number of Corrected RS FEC Symbols received.";
+      }
+      leaf rx-counter-timestamp {
+        e:ixia-not-supported;
+        type uint64;
+        description
+          "Time when the counter was stored.";
+      }
+      leaf duplicate-frame-count {
+        type uint64;
+        description
+          "Number of duplicate frames received.";
+      }
+      leaf fcoe-rx-frame-count {
+        type uint64;
+        description
+          "Fiber channel over Ethernet frame count.";
+      }
+      leaf fcoe-rx-frame-rate {
+        type uint64;
+        description
+          "Fiber channel over Ethernet frame rate.";
+      }
+      leaf fcs-rx-frame-count {
+        type uint64;
+        description
+          "Number of FCS error frames received.";
+      }
+      leaf fcs-rx-frame-rate {
+        type uint64;
+        description
+          "Number of FCS error frames received over the last 1-second interval.";
+      }
+      leaf first-arrival-timestamp {
+        type decimal64 {
+          fraction-digits 10;
+        }
+        description
+          "Backplane first arrival timestamp received.";
+      }
+      leaf last-arrival-timestamp {
+        type decimal64 {
+          fraction-digits 10;
+        }
+        description
+          "Backplane last arrival timestamp received.";
+      }
+      leaf late-frame-count {
+        type uint64;
+        description
+          "Number of late frames received.";
+      }
+      leaf max-frame-length {
+        type uint64;
+        description
+          "Maximum frame length received (in bytes).";
+      }
+      leaf min-frame-length {
+        type uint64;
+        description
+          "Minimum frame length received (in bytes).";
+      }
+      leaf icmp-rx-frame-count {
+        type uint64;
+        description
+          "Number of ICMP frames received.";
+      }
+      leaf icmp-rx-frame-rate {
+        type uint64;
+        description
+          "Number of ICMP frames received over the last 1-second interval.";
+      }
+      leaf ipv4-checksum-error-rx-frame-count {
+        type uint64;
+        description
+          "Number of IPv4 checksum errors received.";
+      }
+      leaf ipv4-checksum-error-rx-frame-rate {
+        type uint64;
+        description
+          "Number of IPv4 checksum errors received over the last 1-second interval.";
+      }
+      leaf in-sequence-rx-frame-count {
+        type uint64;
+        description
+          "Number of frames received in sequence order.";
+      }
+      leaf out-sequence-rx-frame-count {
+        type uint64;
+        description
+          "Number of frames received out of sequence order.";
+      }
+      leaf ipv6-over-ipv4-rx-frame-count {
+        type uint64;
+        description
+          "Number of IPv6 over IPv4 frames received.";
+      }
+      leaf ipv6-over-ipv4-rx-frame-rate {
+        type uint64;
+        description
+          "Number of IPv6 over IPv4 frames received over the last 1-second interval.";
+      }
+      leaf pause-rx-frame-count {
+        type uint64;
+        description
+          "Number of pause frames received.";
+      }
+      leaf pause-rx-frame-rate {
+        type uint64;
+        description
+          "Number of pause frames received over the last 1-second interval.";
+      }
+    }
+  }
 }

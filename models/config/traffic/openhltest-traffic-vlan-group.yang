@@ -1,57 +1,58 @@
 submodule openhltest-traffic-vlan-group {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-patterns {
+    prefix p;
+  }
 
-    import openhltest-patterns {
-		prefix p;
-	}
-    
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes a collection of traffic groups
+     and associated rpcs.";
+
+  revision 2018-02-09 {
     description
-      "This module describes a collection of traffic groups
-	  and associated rpcs.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2018-02-09 {
+  grouping traffic-vlan-group-top {
+    description
+      "The traffic vlan frame group";
+    container vlan {
+      description
+        "";
+      container priority {
         description
-          "Initial revision.";
-        reference
-          "0.0.1";
-    }
-
-    grouping traffic-vlan-group-top {
-        description "The traffic vlan frame group";
-		
-        container vlan {
-			description "";
-			container priority {
-				description "";
-				uses p:base-pattern-group {
-					refine pattern-format {
-						default "0..7";
-					}
-					refine single {
-						default "0";
-					}
-				}
-			}
-			container id {
-				description	"A single-tagged VLAN id";  		
-                uses p:base-pattern-group {
-                    refine pattern-format {
-                        default "1..4095";
-                    }
-                    refine single {
-                        default "1";
-                    }
-                }
-			}
+          "";
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..7";
+          }
+          refine "single" {
+            default "0";
+          }
         }
+      }
+      container id {
+        description
+          "A single-tagged VLAN id";
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "1..4095";
+          }
+          refine "single" {
+            default "1";
+          }
+        }
+      }
     }
-
+  }
 }

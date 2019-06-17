@@ -1,246 +1,269 @@
 submodule openhltest-isis-statistics {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes a YANG model for
+     abstract test port statistics.";
 
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  revision 2017-11-02 {
     description
-      "This module describes a YANG model for 
-       abstract test port statistics.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2017-11-02 {
+  grouping isis-statistics {
+    description
+      "A grouping of common ospf statistics";
+    list isis-statistics {
+      key "device-name";
+      description
+        "";
+      leaf device-name {
+        type string;
         description
-          "Initial revision.";
-        reference
-          "0.0.1";
-    }
-
-
-    grouping isis-statistics {
+          "Device Name";
+      }
+      leaf port-name {
+        type string;
         description
-          "A grouping of common ospf statistics";
-        list isis-statistics {
-			key "device-name";
-			description "";
-			leaf device-name {
-				type string;
-				description "Device Name";
-			}
-			leaf port-name {
-				type string;
-				description "An abstract test port name";
-			}
-            leaf rx-l1-lan-hello-count {
-                type uint64;
-                description
-                "Number of LAN Hello packets received by the emulated router.";
-            }
-            leaf tx-l1-lan-hello-count {
-                type uint64;
-                description
-                "Number of LAN Hello packets transmitted by the emulated router.";
-            }
-            leaf rx-l2-lan-hello-count {
-                type uint64;
-                description
-                "Number of LAN Hello packets received by the emulated router.";
-            }
-            leaf tx-l2-lan-hello-count {
-                type uint64;
-                description
-                "Number of LAN Hello packets transmitted by the emulated router.";
-            }
-            leaf tx-l1-csnp-count {
-                type uint64;
-                description
-                "Number of Tx CSNPs sent to the SUT.";
-            }
-            leaf tx-l1-lsp-count {
-                type uint64;
-                description
-                "Number of Tx LSPs sent to the SUT.";
-            }
-            leaf tx-l1-psnp-count {
-                type uint64;
-                description
-                "Number of Tx PSNPs sent to the SUT.";
-            }
-            leaf rx-l1-csnp-count {
-                type uint64;
-                description
-                "Number of Rx CSNPs received from the SUT.";
-            }
-            leaf rx-l1-lsp-count {
-                type uint64;
-                description
-                "Number of Rx LSPs received from the SUT.";
-            }
-            leaf rx-l1-psnp-count {
-                type uint64;
-                description
-                "Number of Rx PSNPs received from the SUT.";
-            }
-
-            leaf tx-l2-csnp-count {
-                type uint64;
-                description
-                "Number of Tx CSNPs sent to the SUT.";
-            }
-            leaf tx-l2-lsp-count {
-                type uint64;
-                description
-                "Number of Tx LSPs sent to the SUT.";
-            }
-            leaf tx-l2-psnp-count {
-                type uint64;
-                description
-                "Number of Tx PSNPs sent to the SUT.";
-            }
-            leaf rx-l2-csnp-count {
-                type uint64;
-                description
-                "Number of Rx CSNPs received from the SUT.";
-            }
-            leaf rx-l2-lsp-count {
-                type uint64;
-                description
-                "Number of Rx LSPs received from the SUT.";
-            }
-            leaf rx-l2-psnp-count {
-                type uint64;
-                description
-                "Number of Rx PSNPs received from the SUT.";
-            }
-
-            leaf router-state {
-                type enumeration {
-                    enum IDLE {
-						description "";
-					}
-                    enum INIT {
-						description "";
-					}
-                    enum UP {
-						description "";
-					}
-                    enum GR {
-						description "";
-					}
-                    enum GRHELPER {
-						description "";
-					}
-                }
-                description
-                "State of adjacency with the SUT";
-            }
-            leaf neighbor-extended-circuit-id {
-                type string;
-                description
-                "Learned the extended circuit ID of the adjacent neighbor after a three-way Hello exchange.";
-            }
-            leaf rx-ptp-hello-count {
-                type uint64;
-                description
-                "Number of Rx point-to-point hellos received from the SUT.";
-            }
-            leaf tx-ptp-hello-count {
-                type uint64;
-                description
-                "Number of Tx point-to-point hellos sent to the SUT.";
-            }
-            leaf neighbor-system-id {
-                type string;
-                description
-                "Learned System ID of the adjacent neighbor after three-way Helloexchange.";
-            }
-            leaf three-way-p2p-adjacency-state {
-                type enumeration {
-                    enum UP {
-						description "";
-					}
-                    enum INIT {
-						description "";
-					}
-                    enum DOWN {
-						description "";
-					}
-                    enum NOT_STARTED {
-						description "";
-					}
-                    enum NA {
-						description "";
-					}
-                }
-                description
-                "Adjacency state of three-way Hello in point-to-pointnetwork.";
-            }
-            leaf l1-broadcast-adjacency-state {
-                type enumeration {
-                    enum NOT_STARTED {
-						description "";
-					}
-                    enum IDLE {
-						description "";
-					}
-                    enum INIT {
-						description "";
-					}
-                    enum DIS_OTHER {
-						description "";
-					}
-                    enum DIS {
-						description "";
-					}
-                    enum GR {
-						description "";
-					}
-                    enum GRHELPER {
-						description "";
-					}
-                    enum NA {
-						description "";
-					}
-                }
-                description
-                "Adjacency state of broadcast router.";
-            }
-            leaf l2-broadcast-adjacency-state {
-                type enumeration {
-                    enum NOT_STARTED {
-						description "";
-					}
-                    enum IDLE {
-						description "";
-					}
-                    enum INIT {
-						description "";
-					}
-                    enum DIS_OTHER {
-						description "";
-					}
-                    enum DIS {
-						description "";
-					}
-                    enum GR {
-						description "";
-					}
-                    enum GRHELPER {
-						description "";
-					}
-                    enum NA {
-						description "";
-					}
-                }
-                description
-                "Adjacency state of broadcast router.";
-            }
+          "An abstract test port name";
+      }
+      leaf rx-l1-lan-hello-count {
+        type uint64;
+        description
+          "Number of LAN Hello packets received by the emulated router.";
+      }
+      leaf tx-l1-lan-hello-count {
+        type uint64;
+        description
+          "Number of LAN Hello packets transmitted by the emulated router.";
+      }
+      leaf rx-l2-lan-hello-count {
+        type uint64;
+        description
+          "Number of LAN Hello packets received by the emulated router.";
+      }
+      leaf tx-l2-lan-hello-count {
+        type uint64;
+        description
+          "Number of LAN Hello packets transmitted by the emulated router.";
+      }
+      leaf tx-l1-csnp-count {
+        type uint64;
+        description
+          "Number of Tx CSNPs sent to the SUT.";
+      }
+      leaf tx-l1-lsp-count {
+        type uint64;
+        description
+          "Number of Tx LSPs sent to the SUT.";
+      }
+      leaf tx-l1-psnp-count {
+        type uint64;
+        description
+          "Number of Tx PSNPs sent to the SUT.";
+      }
+      leaf rx-l1-csnp-count {
+        type uint64;
+        description
+          "Number of Rx CSNPs received from the SUT.";
+      }
+      leaf rx-l1-lsp-count {
+        type uint64;
+        description
+          "Number of Rx LSPs received from the SUT.";
+      }
+      leaf rx-l1-psnp-count {
+        type uint64;
+        description
+          "Number of Rx PSNPs received from the SUT.";
+      }
+      leaf tx-l2-csnp-count {
+        type uint64;
+        description
+          "Number of Tx CSNPs sent to the SUT.";
+      }
+      leaf tx-l2-lsp-count {
+        type uint64;
+        description
+          "Number of Tx LSPs sent to the SUT.";
+      }
+      leaf tx-l2-psnp-count {
+        type uint64;
+        description
+          "Number of Tx PSNPs sent to the SUT.";
+      }
+      leaf rx-l2-csnp-count {
+        type uint64;
+        description
+          "Number of Rx CSNPs received from the SUT.";
+      }
+      leaf rx-l2-lsp-count {
+        type uint64;
+        description
+          "Number of Rx LSPs received from the SUT.";
+      }
+      leaf rx-l2-psnp-count {
+        type uint64;
+        description
+          "Number of Rx PSNPs received from the SUT.";
+      }
+      leaf router-state {
+        type enumeration {
+          enum IDLE {
+            description
+              "";
+          }
+          enum INIT {
+            description
+              "";
+          }
+          enum UP {
+            description
+              "";
+          }
+          enum GR {
+            description
+              "";
+          }
+          enum GRHELPER {
+            description
+              "";
+          }
         }
+        description
+          "State of adjacency with the SUT";
+      }
+      leaf neighbor-extended-circuit-id {
+        type string;
+        description
+          "Learned the extended circuit ID of the adjacent neighbor after a three-way Hello exchange.";
+      }
+      leaf rx-ptp-hello-count {
+        type uint64;
+        description
+          "Number of Rx point-to-point hellos received from the SUT.";
+      }
+      leaf tx-ptp-hello-count {
+        type uint64;
+        description
+          "Number of Tx point-to-point hellos sent to the SUT.";
+      }
+      leaf neighbor-system-id {
+        type string;
+        description
+          "Learned System ID of the adjacent neighbor after three-way Helloexchange.";
+      }
+      leaf three-way-p2p-adjacency-state {
+        type enumeration {
+          enum UP {
+            description
+              "";
+          }
+          enum INIT {
+            description
+              "";
+          }
+          enum DOWN {
+            description
+              "";
+          }
+          enum NOT_STARTED {
+            description
+              "";
+          }
+          enum NA {
+            description
+              "";
+          }
+        }
+        description
+          "Adjacency state of three-way Hello in point-to-pointnetwork.";
+      }
+      leaf l1-broadcast-adjacency-state {
+        type enumeration {
+          enum NOT_STARTED {
+            description
+              "";
+          }
+          enum IDLE {
+            description
+              "";
+          }
+          enum INIT {
+            description
+              "";
+          }
+          enum DIS_OTHER {
+            description
+              "";
+          }
+          enum DIS {
+            description
+              "";
+          }
+          enum GR {
+            description
+              "";
+          }
+          enum GRHELPER {
+            description
+              "";
+          }
+          enum NA {
+            description
+              "";
+          }
+        }
+        description
+          "Adjacency state of broadcast router.";
+      }
+      leaf l2-broadcast-adjacency-state {
+        type enumeration {
+          enum NOT_STARTED {
+            description
+              "";
+          }
+          enum IDLE {
+            description
+              "";
+          }
+          enum INIT {
+            description
+              "";
+          }
+          enum DIS_OTHER {
+            description
+              "";
+          }
+          enum DIS {
+            description
+              "";
+          }
+          enum GR {
+            description
+              "";
+          }
+          enum GRHELPER {
+            description
+              "";
+          }
+          enum NA {
+            description
+              "";
+          }
+        }
+        description
+          "Adjacency state of broadcast router.";
+      }
     }
-    
-    
+  }
 }

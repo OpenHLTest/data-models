@@ -1,217 +1,292 @@
 submodule openhltest-traffic-frame-options {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-	yang-version "1.1";
-	belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-types {
+    prefix t;
+  }
 
-	import openhltest-types {
-		prefix t;
-	}
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "";
 
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
-    description "";
+  revision 2018-02-09 {
+    description
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2018-02-09 {
-        description
-          "Initial revision.";
-        reference
-          "0.0.1";
+  grouping frame-rate-group {
+    description
+      "";
+    leaf rate-type {
+      type enumeration {
+        enum BPS;
+        enum KBPS;
+        enum MPBS;
+        enum FRAMES_PER_SECOND;
+        enum INTER_PACKET_GAP;
+        enum PERCENT_LINE_RATE;
+      }
+      description
+        "Load unit applied to the stream block.";
     }
+    leaf bps {
+      when '../rate-type = BPS';
+      type int32;
+      default "1024000";
+      description
+        "Load value set on the streamblock/traffic-item in bits per second.";
+    }
+    leaf kbps {
+      when '../rate-type = KBPS';
+      type int32;
+      default "10240";
+      description
+        "Load value set on the streamblock/traffic-item in kilo bits per second.";
+    }
+    leaf mbps {
+      when '../rate-type = MBPS';
+      type int32;
+      default "1024";
+      description
+        "Load value set on the streamblock/traffic-item in mega bits per second.";
+    }
+    leaf fps {
+      when '../rate-type = FRAMES_PER_SECOND';
+      type int32;
+      default "1024";
+      description
+        "Load value set on the streamblock/traffic-item in frames per second.";
+    }
+    leaf inter-packet-gap {
+      when '../rate-type = INTER_PACKET_GAP';
+      type int32;
+      default "10";
+      description
+        "Load value set on the streamblock/traffic-item inter packet gap.";
+    }
+    leaf percent-value {
+      when '../rate-type = PERCENT_LINE_RATE';
+      type int32;
+      default "10";
+      description
+        "Load value set on the streamblock/traffic-item in percent.";
+    }
+  }
 
-	grouping traffic-frame-options-group {
-		description "";
-		container frame-length {
-			description "";
-			leaf length-type {
-				type enumeration {
-					enum FIXED {
-						description "";
-					}
-					enum INCREMENTAL {
-						description "";
-					}
-					enum RANDOM {
-						description "";
-					}
-					enum AUTO {
-						description "";
-					}
-					enum IMIX {
-						description "";
-					}
-					enum CUSTOM_IMIX {
-						description "";
-					}
-					enum QUAD_GAUSSIAN {
-						description "";
-					}
-				}
-				description "";
-			}
-			leaf fixed {
-				when "../length-type = FIXED";
-				type int32;
-				default "64";
-				description	"Fixed value for frame length";
-			}
-			container random {
-				when "../length-type = RANDOM";
-				description "Random frame size options";
-				leaf max {
-					type int32;
-					description "";
-				}
-				leaf min {
-					type int32;
-					description "";
-				}
-			}
-			container increment {
-				when "../length-type = INCREMENT";
-				description "";
-				leaf from {
-					type int32;
-					default 64;
-					description
-					"Starting increment value for frame length";
-				}
-				leaf to {
-					type int32;
-					description
-					"Maximum increment value for frame length";
-				}
-				leaf step {
-					type int32;
-					description
-					"Step increment value for frame length";
-				}
-			}
-			leaf imix {
-				when "../length-type = IMIX";
-				type enumeration {
-					enum CISCO {
-						description "";
-					}
-					enum IMIX {
-						description "";
-					}
-					enum IPSEC_IMIX {
-						description "";
-					}
-					enum IPV6_IMIX {
-						description "";
-					}
-					enum RPR_QUAR {
-						description "";
-					}
-					enum RPR_TRI {
-						description "";
-					}
-					enum STANDARD_IMIX {
-						description "";
-					}
-					enum TCP_IMIX {
-						description "";
-					}
-					enum TOLLY {
-						description "";
-					}
-				}
-				default "CISCO";
-				description "";
-			}
-			list custom-imix {
-				when "../length-type = CUSTOM_IMIX";
-				key "name";
-				description "";
-				leaf "name" {
-					type t:config-list-key;
-					description "";
-				} 
-				leaf size {
-					type int32;
-					description "";
-				}
-				leaf weight {
-					type int32;
-					description "";
-				}
-			}
-			list quad-gaussian {
-				when "../length-type = QUAD_GAUSSIAN";
-				key "name";
-				description "";
-				leaf name {
-					type t:config-list-key;
-					description "";
-				}
-				leaf center {
-					type int32;
-					description "";
-				}
-				leaf width-at-half {
-					type int32;
-					description "";
-				}
-				leaf weight {
-					type int32;
-					description "";
-				}
-			}
-		}
-		container frame-rate {
-			description "Configure the total stream rate.
-			The vendor must ensure that the rate configured will be what goes out on the wire for the streams generated by this aggregate.
-			i.e., 100% line rate / 10 vendor generated streams = 10% line rate per stream";
-
-			leaf rate-type {
-				type enumeration {
-					enum BPS {
-						description "";
-					}
-					enum KBPS {
-						description "";
-					}
-					enum MPBS {
-						description "";
-					}
-					enum FRAMES_PER_SECOND {
-						description "";
-					}
-					enum INTER_PACKET_GAP {
-						description "";
-					}
-					enum PERCENT_LINE_RATE {
-						description "";
-					}
-				}
-				description	"Type of rate unit.";
-			}
-			leaf bps {
-				when "../rate-type = BPS";
-				type uint64;
-				default 1024000;
-				description	"Bits per second.";
-			}
-			leaf frames-per-second {
-				when "../rate-type = FRAMES_PER_SECOND";
-				type uint32;
-				default 10;
-				description "Number of frames per second";
-			}
-			leaf percent-line-rate {
-				when "../rate-type = PERCENT_LINE_RATE";
-				type decimal64 {
-					fraction-digits 2;
-					range "0..100";
-				}
-				default 10;
-				description "Percentage of line rate";
-			}
-		}
-	}
+  grouping traffic-frame-options-group {
+    description
+      "";
+    container frame-length {
+      description
+        "";
+      leaf length-type {
+        type enumeration {
+          enum FIXED {
+            description
+              "";
+          }
+          enum INCREMENT {
+            description
+              "";
+          }
+          enum RANDOM {
+            description
+              "";
+          }
+          enum AUTO {
+            description
+              "";
+          }
+          enum IMIX {
+            description
+              "";
+          }
+          enum CUSTOM_IMIX {
+            description
+              "";
+          }
+          enum QUAD_GAUSSIAN {
+            description
+              "";
+          }
+        }
+        description
+          "";
+      }
+      leaf fixed {
+        when '../length-type = FIXED';
+        type int32;
+        default "64";
+        description
+          "Fixed value for frame length";
+      }
+      container random {
+        when '../length-type = RANDOM';
+        description
+          "Random frame size options";
+        leaf max {
+          type int32;
+          description
+            "";
+        }
+        leaf min {
+          type int32;
+          description
+            "";
+        }
+      }
+      container increment {
+        when '../length-type = INCREMENT';
+        description
+          "";
+        leaf from {
+          type int32;
+          default "64";
+          description
+            "Starting increment value for frame length";
+        }
+        leaf to {
+          type int32;
+          description
+            "Maximum increment value for frame length";
+        }
+        leaf step {
+          type int32;
+          description
+            "Step increment value for frame length";
+        }
+      }
+      leaf imix {
+        when '../length-type = IMIX';
+        type enumeration {
+          enum CISCO {
+            description
+              "";
+          }
+          enum IMIX {
+            description
+              "";
+          }
+          enum IPSEC_IMIX {
+            description
+              "";
+          }
+          enum IPV6_IMIX {
+            description
+              "";
+          }
+          enum RPR_QUAR {
+            description
+              "";
+          }
+          enum RPR_TRI {
+            description
+              "";
+          }
+          enum STANDARD_IMIX {
+            description
+              "";
+          }
+          enum TCP_IMIX {
+            description
+              "";
+          }
+          enum TOLLY {
+            description
+              "";
+          }
+        }
+        default "CISCO";
+        description
+          "";
+      }
+      list custom-imix {
+        when '../length-type = CUSTOM_IMIX';
+        key "name";
+        description
+          "";
+        leaf name {
+          type t:config-list-key;
+          description
+            "";
+        }
+        leaf size {
+          type int32;
+          description
+            "";
+        }
+        leaf weight {
+          type int32;
+          description
+            "";
+        }
+      }
+      list quad-gaussian {
+        when '../length-type = QUAD_GAUSSIAN';
+        key "name";
+        description
+          "";
+        leaf name {
+          type t:config-list-key;
+          description
+            "";
+        }
+        leaf center {
+          type int32;
+          description
+            "";
+        }
+        leaf width-at-half {
+          type int32;
+          description
+            "";
+        }
+        leaf weight {
+          type int32;
+          description
+            "";
+        }
+      }
+    }
+    container frame-rate {
+      description
+        "";
+      leaf mode {
+        type enumeration {
+          enum FIXED;
+          enum INCREMENT;
+          enum DECREMENT;
+        }
+        default "FIXED";
+        description
+          "";
+      }
+      container fixed-rate {
+        when '../mode = FIXED';
+        description
+          "";
+        uses frame-rate-group;
+      }
+      container decrement-rate {
+        when '../mode = DECREMENT';
+        description
+          "";
+        uses frame-rate-group;
+      }
+      container increment-rate {
+        when '../mode = INCREMENT';
+        description
+          "";
+        uses frame-rate-group;
+      }
+    }
+  }
 }

@@ -1,58 +1,60 @@
 submodule openhltest-traffic-ethernet-group {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-patterns {
+    prefix p;
+  }
 
-    import openhltest-patterns {
-		prefix p;
-	}
-    
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes a collection of traffic groups
+     and associated rpcs.";
+
+  revision 2018-02-09 {
     description
-      "This module describes a collection of traffic groups
-	  and associated rpcs.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2018-02-09 {
+  grouping traffic-ethernet-group-top {
+    description
+      "The ethernet traffic group.";
+    container ethernet {
+      description
+        "";
+      container destination {
+        presence "Create the destination container to override the automatic destination mac address";
         description
-          "Initial revision.";
-        reference
-          "0.0.1";
-    }
-
-    grouping traffic-ethernet-group-top {
+          "Destination mac address";
+        uses p:mac-pattern-group;
+        uses p:traffic-pattern-extension;
+      }
+      container source {
+        presence "Create the source container to override the automatic source mac address";
         description
-        "The ethernet traffic group.";
-		
-        container ethernet {
-			description "";
-			container destination {
-				presence "Create the destination container to override the automatic destination mac address";
-				description "Destination mac address";
-				uses p:mac-pattern-group;
-				uses p:traffic-pattern-extension;
-			}
-			container source {
-				presence "Create the source container to override the automatic source mac address";
-				description "Source mac address";
-				uses p:mac-pattern-group;
-				uses p:traffic-pattern-extension;
-			}
-            container ethernet-type {
-				presence "Create the ethernet-type container to override the automatic default type value.";
-                description "Ethernet type.
-				Common values are 88B5 86DD 0800";
-                uses p:hex-pattern-group {
-                    refine single {
-                        default "88B5";
-                    }
-                }
-				uses p:traffic-pattern-extension;
-            }
+          "Source mac address";
+        uses p:mac-pattern-group;
+        uses p:traffic-pattern-extension;
+      }
+      container ethernet-type {
+        presence "Create the ethernet-type container to override the automatic default type value.";
+        description
+          "Ethernet type.
+           Common values are 88B5 86DD 0800";
+        uses p:hex-pattern-group {
+          refine "single" {
+            default "88B5";
+          }
         }
+        uses p:traffic-pattern-extension;
+      }
     }
+  }
 }

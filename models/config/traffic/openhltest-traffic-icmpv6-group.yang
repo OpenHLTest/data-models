@@ -1,387 +1,381 @@
 submodule openhltest-traffic-icmpv6-group {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-patterns {
+    prefix p;
+  }
 
-    import openhltest-patterns {
-		prefix p;
-	}
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes all ICMPv6 message types.";
 
-	
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  revision 2018-02-09 {
     description
-      "This module describes all ICMPv6 message types.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2018-02-09 {
-        description
-          "Initial revision.";
-        reference
-          "0.0.1";
-    }
-
-
-    grouping traffic-common-ipv6-data-group-top {
-        description
-        "A grouping of Common IPv6 header and data options.";
-		
-            container ipv6-source-address {
-                description
-                "Source IPv6 Address";
-                uses p:ipv6-pattern-group{
-                    refine single {
-                        default "2000::2";
-                    }
-                }
-            }
-            container ipv6-destination-address {
-                description
-                "Destination IPv6 Address";
-                uses p:ipv6-pattern-group{
-                    refine single {
-                        default "2000::1";
-                    }
-                }
-            }
-            container ipv6-gateway-address {
-                description
-                "Gateway IPv6 Address";
-                uses p:ipv6-pattern-group{
-                    refine single {
-                        default "::0";
-                    }
-                }
-            }
-            container ipv6-hop-limit {
-                description
-                "The hop limit field in the IPv6 header, which is an eight- bit field similar to TTL in IPv4.";
-                uses p:base-pattern-group {
-                    refine pattern-format {
-                        default "0..255";
-                    }
-                    refine single {
-                        default "255";
-                    }
-                }
-            }
-            container ipv6-traffic-class {
-                description
-                "Specifies the IPv6 traffic class setting to use for application layer traffic.";
-                uses p:int-32-pattern-group {
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container ipv6-next-header {
-                description
-                "Indicates the type of L4 protocol in the IP header.";
-                uses p:int-32-pattern-group {
-                    refine pattern-format {
-                        default "0..255";
-                    }
-                    refine single {
-                        default "253";
-                    }
-                }
-            }
-            container ipv6-payload-length {
-                description
-                "Payload Length.";
-                uses p:int-32-pattern-group {
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container ipv6-flow-label {
-                description
-                "The flow label value of the IPv6 stream, which is a twenty- bit field is used for QoS management.";
-                uses p:base-pattern-group {
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container ipv6-data {
-                description
-                "Dataplane of IP header.";
-				uses p:base-pattern-group {
-					refine single {
-						default "0000000000000000";
-					}
-				}
-            }
-    }
-
-    grouping traffic-icmpv6-destination-unreachable-group-top {
-        description
-        "A grouping of ICMPv6 Destination unreachable group.";
-		
-        container icmpv6-destination-unreachable {
-			description "";
-            container code {
-                description
-                "ICMPv6 Destination Unreachable code.
-                    NO_ROUTE            : No Route To Destination
-                    PROHIBITED          : Communication with Destination Prohibited
-                    ADDRESS_UNREACHABLE : Address Unreachable
-                    PORT_UNREACHABLE    : Port Unreachable";
-                uses p:enum-pattern-group {
-                    refine pattern-format {
-                        default "(NO_ROUTE|PROHIBITED|ADDRESS_UNREACHABLE|PORT_UNREACHABLE)";
-                    }
-                    refine single {
-                        default "NO_ROUTE";
-                    }
-                }
-            }
-            container checksum {
-                description
-                "Checksum value.
-                Default: Automatically calculated for each packet. 
-                (If you set this to 0, the checksum will not be calculated and will be the same for each packet.)";
-                uses p:int-32-pattern-group;
-            }
-            container unused {
-                description
-                "Unused field.";
-                uses p:int-32-pattern-group;
-            }
-            uses traffic-common-ipv6-data-group-top;
+  grouping traffic-common-ipv6-data-group-top {
+    description
+      "A grouping of Common IPv6 header and data options.";
+    container ipv6-source-address {
+      description
+        "Source IPv6 Address";
+      uses p:ipv6-pattern-group {
+        refine "single" {
+          default "2000::2";
         }
+      }
     }
-
-    grouping traffic-icmpv6-echo-reply-group-top {
-        description
-        "A grouping of ICMPv6 Echo Reply group.";
-		
-        container icmpv6-echo-reply {
-			description "";
-            container code {
-                description
-                "ICMPv6 Echo reply code.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container identifier {
-                description
-                "Identifier value.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container echo-data {
-                description
-                "Data value.";
-				uses p:base-pattern-group {
-                    refine single {
-			            default "0000";
-		            }
-                }
-            }
-            container sequence-number {
-                description
-                "Sequence Number.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container checksum {
-                description
-                "Checksum value.
-                Default: Automatically calculated for each packet. 
-                (If you set this to 0, the checksum will not be calculated and will be the same for each packet.)";
-                uses p:int-32-pattern-group;
-            }
+    container ipv6-destination-address {
+      description
+        "Destination IPv6 Address";
+      uses p:ipv6-pattern-group {
+        refine "single" {
+          default "2000::1";
         }
+      }
     }
-
-    grouping traffic-icmpv6-echo-request-group-top {
-        description
-        "A grouping of ICMPv6 Echo Request group.";
-		
-        container icmpv6-echo-request {
-			description "";
-            container code {
-                description
-                "ICMPv6 Echo request code.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container identifier {
-                description
-                "Identifier value.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container echo-data {
-                description
-                "Data value.";
-				uses p:base-pattern-group {
-                    refine single {
-			            default "0000";
-		            }
-                }
-            }
-            container sequence-number {
-                description
-                "Sequence Number.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container checksum {
-                description
-                "Checksum value.
-                Default: Automatically calculated for each packet. 
-                (If you set this to 0, the checksum will not be calculated and will be the same for each packet.)";
-                uses p:int-32-pattern-group;
-            }
+    container ipv6-gateway-address {
+      description
+        "Gateway IPv6 Address";
+      uses p:ipv6-pattern-group {
+        refine "single" {
+          default "::0";
         }
+      }
     }
-
-    grouping traffic-icmpv6-parameter-problem-group-top {
-        description
-        "A grouping of ICMPv6 Parameter problem group.";
-		
-        container icmpv6-parameter-problem {
-			description "";
-            container code {
-                description
-                "ICMPv6 Destination Parameter problem code.
-                    ERROR               : Erroneous Header Field
-                    UNKNOWN_NEXT_HEADER : Unrecognized Next Header Type
-                    UNKNOWN_IPV6_OPTION : Unrecognized IPv6 Option";
-                uses p:enum-pattern-group {
-                    refine pattern-format {
-                        default "(ERROR|UNKNOWN_NEXT_HEADER|UNKNOWN_IPV6_OPTION)";
-                    }
-                    refine single {
-                        default "ERROR";
-                    }
-                }
-            }
-            container pointer {
-                description
-                "Pointer value.";
-                uses p:int-32-pattern-group;
-            }
-            container checksum {
-                description
-                "Checksum value.
-                Default: Automatically calculated for each packet. 
-                (If you set this to 0, the checksum will not be calculated and will be the same for each packet.)";
-                uses p:int-32-pattern-group;
-            }
-            uses traffic-common-ipv6-data-group-top;
+    container ipv6-hop-limit {
+      description
+        "The hop limit field in the IPv6 header, which is an eight- bit field similar to TTL in IPv4.";
+      uses p:base-pattern-group {
+        refine "pattern-format" {
+          default "0..255";
         }
-    }
-
-    grouping traffic-icmpv6-time-exceeded-group-top {
-        description
-        "A grouping of ICMPv6 Time exceeded group.";
-		
-        container icmpv6-time-exceeded {
-			description "";
-            container code {
-                description
-                "ICMPv6 Time exceeded code.
-                    HOP_LIMIT_EXCEED : Hop Limit exceeded.
-                    FRAGMENT_ASSEMBLY_EXCEED : Fragment Reassembly Time Exceeded.";
-                uses p:enum-pattern-group {
-                    refine pattern-format {
-                        default "(HOP_LIMIT_EXCEED|FRAGMENT_ASSEMBLY_EXCEED)";
-                    }
-                    refine single {
-                        default "HOP_LIMIT_EXCEED";
-                    }
-                }
-            }
-            container unused {
-                description
-                "Unused.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container checksum {
-                description
-                "Checksum value.
-                Default: Automatically calculated for each packet. 
-                (If you set this to 0, the checksum will not be calculated and will be the same for each packet.)";
-                uses p:int-32-pattern-group;
-            }
-            uses traffic-common-ipv6-data-group-top;
+        refine "single" {
+          default "255";
         }
+      }
     }
-
-    grouping traffic-icmpv6-packet-too-big-group-top {
-        description
-        "A grouping of ICMPv6 Packet Too Big message.";
-		
-        container icmpv6-packet-too-big {
-			description "";
-            container code {
-                description
-                "ICMPv6 Packet too big.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container mtu {
-                description
-                "MTU.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container checksum {
-                description
-                "Checksum value.
-                Default: Automatically calculated for each packet. 
-                (If you set this to 0, the checksum will not be calculated and will be the same for each packet.)";
-                uses p:int-32-pattern-group;
-            }
-            uses traffic-common-ipv6-data-group-top;
+    container ipv6-traffic-class {
+      description
+        "Specifies the IPv6 traffic class setting to use for application layer traffic.";
+      uses p:int-32-pattern-group {
+        refine "single" {
+          default "0";
         }
+      }
     }
+    container ipv6-next-header {
+      description
+        "Indicates the type of L4 protocol in the IP header.";
+      uses p:int-32-pattern-group {
+        refine "pattern-format" {
+          default "0..255";
+        }
+        refine "single" {
+          default "253";
+        }
+      }
+    }
+    container ipv6-payload-length {
+      description
+        "Payload Length.";
+      uses p:int-32-pattern-group {
+        refine "single" {
+          default "0";
+        }
+      }
+    }
+    container ipv6-flow-label {
+      description
+        "The flow label value of the IPv6 stream, which is a twenty- bit field is used for QoS management.";
+      uses p:base-pattern-group {
+        refine "single" {
+          default "0";
+        }
+      }
+    }
+    container ipv6-data {
+      description
+        "Dataplane of IP header.";
+      uses p:base-pattern-group {
+        refine "single" {
+          default "0000000000000000";
+        }
+      }
+    }
+  }
 
-    grouping traffic-icmpv6-group-top {
+  grouping traffic-icmpv6-destination-unreachable-group-top {
+    description
+      "A grouping of ICMPv6 Destination unreachable group.";
+    container icmpv6-destination-unreachable {
+      description
+        "";
+      container code {
         description
-        "A grouping of ICMPv6 message types.";
-
-        uses traffic-icmpv6-destination-unreachable-group-top;
-        uses traffic-icmpv6-echo-reply-group-top;
-        uses traffic-icmpv6-echo-request-group-top;
-        uses traffic-icmpv6-parameter-problem-group-top;
-        uses traffic-icmpv6-time-exceeded-group-top;
-        uses traffic-icmpv6-packet-too-big-group-top;
+          "ICMPv6 Destination Unreachable code.
+              NO_ROUTE            : No Route To Destination
+              PROHIBITED          : Communication with Destination Prohibited
+              ADDRESS_UNREACHABLE : Address Unreachable
+              PORT_UNREACHABLE    : Port Unreachable";
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "(NO_ROUTE|PROHIBITED|ADDRESS_UNREACHABLE|PORT_UNREACHABLE)";
+          }
+          refine "single" {
+            default "NO_ROUTE";
+          }
+        }
+      }
+      container checksum {
+        description
+          "Checksum value.
+           Default: Automatically calculated for each packet.
+           (If you set this to 0, the checksum will not be calculated and will be the same for each packet.)";
+        uses p:int-32-pattern-group;
+      }
+      container unused {
+        description
+          "Unused field.";
+        uses p:int-32-pattern-group;
+      }
+      uses traffic-common-ipv6-data-group-top;
     }
+  }
 
+  grouping traffic-icmpv6-echo-reply-group-top {
+    description
+      "A grouping of ICMPv6 Echo Reply group.";
+    container icmpv6-echo-reply {
+      description
+        "";
+      container code {
+        description
+          "ICMPv6 Echo reply code.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container identifier {
+        description
+          "Identifier value.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container echo-data {
+        description
+          "Data value.";
+        uses p:base-pattern-group {
+          refine "single" {
+            default "0000";
+          }
+        }
+      }
+      container sequence-number {
+        description
+          "Sequence Number.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container checksum {
+        description
+          "Checksum value.
+           Default: Automatically calculated for each packet.
+           (If you set this to 0, the checksum will not be calculated and will be the same for each packet.)";
+        uses p:int-32-pattern-group;
+      }
+    }
+  }
+
+  grouping traffic-icmpv6-echo-request-group-top {
+    description
+      "A grouping of ICMPv6 Echo Request group.";
+    container icmpv6-echo-request {
+      description
+        "";
+      container code {
+        description
+          "ICMPv6 Echo request code.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container identifier {
+        description
+          "Identifier value.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container echo-data {
+        description
+          "Data value.";
+        uses p:base-pattern-group {
+          refine "single" {
+            default "0000";
+          }
+        }
+      }
+      container sequence-number {
+        description
+          "Sequence Number.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container checksum {
+        description
+          "Checksum value.
+           Default: Automatically calculated for each packet.
+           (If you set this to 0, the checksum will not be calculated and will be the same for each packet.)";
+        uses p:int-32-pattern-group;
+      }
+    }
+  }
+
+  grouping traffic-icmpv6-parameter-problem-group-top {
+    description
+      "A grouping of ICMPv6 Parameter problem group.";
+    container icmpv6-parameter-problem {
+      description
+        "";
+      container code {
+        description
+          "ICMPv6 Destination Parameter problem code.
+              ERROR               : Erroneous Header Field
+              UNKNOWN_NEXT_HEADER : Unrecognized Next Header Type
+              UNKNOWN_IPV6_OPTION : Unrecognized IPv6 Option";
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "(ERROR|UNKNOWN_NEXT_HEADER|UNKNOWN_IPV6_OPTION)";
+          }
+          refine "single" {
+            default "ERROR";
+          }
+        }
+      }
+      container pointer {
+        description
+          "Pointer value.";
+        uses p:int-32-pattern-group;
+      }
+      container checksum {
+        description
+          "Checksum value.
+           Default: Automatically calculated for each packet.
+           (If you set this to 0, the checksum will not be calculated and will be the same for each packet.)";
+        uses p:int-32-pattern-group;
+      }
+      uses traffic-common-ipv6-data-group-top;
+    }
+  }
+
+  grouping traffic-icmpv6-time-exceeded-group-top {
+    description
+      "A grouping of ICMPv6 Time exceeded group.";
+    container icmpv6-time-exceeded {
+      description
+        "";
+      container code {
+        description
+          "ICMPv6 Time exceeded code.
+              HOP_LIMIT_EXCEED : Hop Limit exceeded.
+              FRAGMENT_ASSEMBLY_EXCEED : Fragment Reassembly Time Exceeded.";
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "(HOP_LIMIT_EXCEED|FRAGMENT_ASSEMBLY_EXCEED)";
+          }
+          refine "single" {
+            default "HOP_LIMIT_EXCEED";
+          }
+        }
+      }
+      container unused {
+        description
+          "Unused.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container checksum {
+        description
+          "Checksum value.
+           Default: Automatically calculated for each packet.
+           (If you set this to 0, the checksum will not be calculated and will be the same for each packet.)";
+        uses p:int-32-pattern-group;
+      }
+      uses traffic-common-ipv6-data-group-top;
+    }
+  }
+
+  grouping traffic-icmpv6-packet-too-big-group-top {
+    description
+      "A grouping of ICMPv6 Packet Too Big message.";
+    container icmpv6-packet-too-big {
+      description
+        "";
+      container code {
+        description
+          "ICMPv6 Packet too big.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container mtu {
+        description
+          "MTU.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container checksum {
+        description
+          "Checksum value.
+           Default: Automatically calculated for each packet.
+           (If you set this to 0, the checksum will not be calculated and will be the same for each packet.)";
+        uses p:int-32-pattern-group;
+      }
+      uses traffic-common-ipv6-data-group-top;
+    }
+  }
+
+  grouping traffic-icmpv6-group-top {
+    description
+      "A grouping of ICMPv6 message types.";
+    uses traffic-icmpv6-destination-unreachable-group-top;
+    uses traffic-icmpv6-echo-reply-group-top;
+    uses traffic-icmpv6-echo-request-group-top;
+    uses traffic-icmpv6-parameter-problem-group-top;
+    uses traffic-icmpv6-time-exceeded-group-top;
+    uses traffic-icmpv6-packet-too-big-group-top;
+  }
 }

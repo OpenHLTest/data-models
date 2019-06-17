@@ -1,377 +1,418 @@
 submodule openhltest-device-groups {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-	yang-version "1.1";
-	belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-types {
+    prefix t;
+  }
+  include openhltest-ports;
+  include openhltest-ethernet;
+  include openhltest-vlan;
+  include openhltest-ipv4;
+  include openhltest-ipv6;
+  include openhltest-bfd;
+  include openhltest-bgpv4;
+  include openhltest-bgpv6;
+  include openhltest-ospfv2;
+  include openhltest-ospfv3;
+  include openhltest-isis;
+  include openhltest-bgpv4-route-range;
+  include openhltest-bgpv6-route-range;
+  include openhltest-ospfv2-route-range;
+  include openhltest-ospfv2-summary-range;
+  include openhltest-ospfv2-external-range;
+  include openhltest-ospfv2-nssa-range;
+  include openhltest-ospfv3-route-range;
+  include openhltest-ospfv3-inter-area-prefix-range;
+  include openhltest-ospfv3-intra-area-prefix-range;
+  include openhltest-ospfv3-as-external-prefix-range;
+  include openhltest-isis-route-range;
 
-	import openhltest-types {
-		prefix t;
-	}
-	include openhltest-ports;
-	include openhltest-ethernet;
-	include openhltest-vlan;
-	include openhltest-ipv4;
-	include openhltest-ipv6;
-    include openhltest-bfd;
-	include openhltest-bgpv4;
-	include openhltest-bgpv6;
-	include openhltest-ospfv2;
-	include openhltest-ospfv3;
-	include openhltest-isis;
-    include openhltest-bgpv4-route-range;
-    include openhltest-bgpv6-route-range;
-    include openhltest-ospfv2-route-range;
-    include openhltest-ospfv2-summary-range;
-    include openhltest-ospfv2-external-range;
-    include openhltest-ospfv2-nssa-range;
-    include openhltest-ospfv3-route-range;
-	include openhltest-ospfv3-inter-area-prefix-range;
-	include openhltest-ospfv3-intra-area-prefix-range;
-	include openhltest-ospfv3-as-external-prefix-range;
-    include openhltest-isis-route-range;
-    
-	organization
-	"OpenHlTest working group";
-	contact
-	"OpenHlTest working group";
-	description
-	"This module describes a collection of emulated networks.";
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes a collection of emulated networks.";
 
-	revision 2018-02-09 {
-		description
-		  "Initial revision.";
-		reference
-		  "0.0.1";
-	}
+  revision 2018-02-09 {
+    description
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-	grouping device-group-top {
-		description
-		"A grouping of device-groups, devices and protocols.";
-
-		list device-groups {
-			key "name";
-			description
-			"A list of device-groups.
-			Each device-groups object can contain 0..n devices.";
-
-			leaf name {
-				type t:config-list-key;
-				description
-				"The unique name of a device-groups object.";
-			}
-			leaf-list ports {
-				type leafref {
-					path "../../ports/name";
-				}
-				description 
-				"A list of abstract test port names. 
-				Every object in the devices and protocols lists will share the ports assigned to a device-groups object.
-				An abstract test port name cannot be assigned to more than one device-groups object.";
-			}
-
-			list devices {
-				key "name";
-				description 
-				"A list of devices. 
-				Each devices object can contain 0..n protocols objects";
-				
-				leaf name {
-					type t:config-list-key;
-					description
-					"The unique name of a devices object.";
-				}
-				leaf device-count-per-port {
-					type uint32;
-					default "1";
-					description "The number of devices that will be created on each
-					abstract test port specified in the port-names list.";
-				}
-				leaf parent-link {
-					type union {
-						type leafref {
-							path "../name";
-						}
-						type leafref {
-							path "../../simulated-networks/name";
-						}
-						type empty;
-					}
-					mandatory true;
-					description
-					"Identifies which devices object or simulated-networks object is connected to this object.
-					This is used to create a devices container behind a devices or simulated networks container.
-					An empty link indicates that the object is at the top of the stack.";
-				}
-				list protocols {
-					key "name";
-					description "A list of emulated protocols.
-					Each emulated protocols object is a container for one and only one of the emulated protocol types.
-					The protocol-type is used to specify what type of protocol is contained in a protocols object.";
-
-					leaf "name" {
-						type t:config-list-key;
-						description "The unique name of a protocols object";
-					}
-					leaf parent-link {
-						type union {
-							type leafref {
-								path "../name";
-							}
-							type empty;
-						}
-						mandatory true;
-						description "Identifies which protocols object is the parent of this protocol.
-						This link only applies to protocol objects in one container.
-						The link can be used to specify a vertical or horizontal relationship.
-						To specify the first protocols object in a stack the value must be empty.";
-					}
-					leaf flow-link {
-						type union {
-							type leafref {
-								path "../name";
-							}
-							type leafref {
-								path "../../../simulated-networks/name";
-							}
-							type empty;
-						}
-						mandatory true;
-						description
-						"Identifies which object in another container is the next hop from this container.
-						The name cannot be one of the names in this devices container.
-						An empty link indicates no flow link";
-					}
-					leaf protocol-type {
-						type enumeration {
-							enum ETHERNET {
-								description "";
-							}
-							enum VLAN {
-								description "";
-							}
-							enum IPV4 {
-								description "";
-							}
-                            enum IPV6 {
-								description "";
-							}
-							enum BGPV4 {
-								description "";
-							}
-                            enum BGPV6 {
-								description "";
-							}
-                            enum OSPFV2 {
-								description "";
-							}
-                            enum OSPFV3 {
-								description "";
-							}
-                            enum ISIS {
-								description "";
-							}
-                            enum BFDV4 {
-								description "";
-							}
-                            enum BFDV6 {
-								description "";
-							}
-						}
-						mandatory true;
-						description "Determines which detailed emulated protocol container is active.";
-					}
-					uses ethernet-group {
-						when "../protocol-type = ETHERNET";
-						description "The conditional container for detailed ethernet information";
-					}
-					uses vlan-group {
-						when "../protocol-type = VLAN";
-						description "The conditional container for detailed vlan information"; 
-					}
-					uses ipv4-group {
-						when "../protocol-type = IPV4";
-						description "The conditional container for detailed ipv4 information"; 
-					}
-					uses ipv6-group {
-						when "../protocol-type = IPV6";
-						description "The conditional container for detailed ipv6 information"; 
-					}
-					uses bgpv4-group {
-						when "../protocol-type = BGPV4";
-						description "The conditional container for detailed bgpv4 information"; 
-					}
-					uses bgpv6-group {
-						when "../protocol-type = BGPV6";
-						description "The conditional container for detailed bgpv6 information"; 
-					}
-					uses ospfv2-group {
-						when "../protocol-type = OSPFV2";
-						description "The conditional container for detailed ospfv2 information"; 
-					}
-					uses ospfv3-group {
-						when "../protocol-type = OSPFV3";
-						description "The conditional container for detailed ospfv3 information"; 
-					}
-					uses isis-group {
-						when "../protocol-type = ISIS";
-						description "The conditional container for detailed isis v4 information"; 
-					}
-					uses bfdv4-group {
-						when "../protocol-type = BFDV4";
-						description "The conditional container for detailed bfd v4 information"; 
-					}
-					uses bfdv6-group {
-						when "../protocol-type = BFDV6";
-						description "The conditional container for detailed bfd v6 information"; 
-					}
-				}
-			}
-
-			list simulated-networks {
-				key "name";
-				description 
-				"A list of network groups. 
-				Each network group object can contain 0..n networks objects";
-
-				leaf name {
-					type t:config-list-key;
-					description
-					"The unique name of the network groups object.";
-				}
-				leaf parent-link {
-					type union {
-						type leafref {
-							path "../name";
-						}
-						type leafref {
-							path "../../devices/name";
-						}
-					}
-					mandatory true;
-					description 
-					"Identifies which devices object or networks object is connected to this object.
-					This is used to create a netwwork groups container behind a devices or networks container.";
-				}
-
-				list networks {
-					key "name";
-					description "A list of networks.
-					Each networks object is a container for one and only one of the network types.";
-					
-					leaf name {
-						type t:config-list-key;
-						description
-						"The unique name of the networks object.";
-					}
-					leaf network-count-per-port {
-						type uint32;
-						default "1";
-						description 
-						"The number of network devices that will be created on each
-						abstract test port specified in the port-names list.";
-					}
-					leaf flow-link {
-						type union {
-							type leafref {
-								path "../name";
-							}
-							type leafref {
-								path "../../../devices/protocols/name";
-							}
-							type empty;
-						}
-						mandatory true;
-						description
-						"Identifies which object in another container is the next hop from this networks object.
-						The name cannot be one of the names in this networks container.
-						An empty link indicates no flow link";
-					}
-					leaf network-type {
-						type enumeration {
-							enum "BGPV4_ROUTE_RANGE" {
-								description "";
-							}
-							enum "BGPV6_ROUTE_RANGE" {
-								description "";
-							}
-							enum "OSPFV2_ROUTE_RANGE" {
-								description "";
-							}
-							enum "OSPFV2_SUMMARY_RANGE" {
-								description "";
-							}
-							enum "OSPFV2_EXTERNAL_RANGE" {
-								description "";
-							}
-							enum "OSPFV2_NSSA_RANGE" {
-								description "";
-							}
-							enum "OSPFV3_ROUTE_RANGE" {
-								description "";
-							}
-							enum "OSPFV3_INTER_AREA_PREFIX_RANGE" {
-								description "";
-							}
-							enum "OSPFV3_INTRA_AREA_PREFIX_RANGE" {
-								description "";
-							}
-							enum "OSPFV3_AS_EXTERNAL_PREFIX_RANGE" {
-								description "";
-							}
-							enum "ISIS_ROUTE_RANGE" {
-								description "";
-							}
-						}
-						mandatory true;
-						description "Determines which detailed network container is active.";
-					}
-					uses bgpv4-route-range-group {
-						when "../network-type = BGPV4_ROUTE_RANGE";
-						description "The conditional container for detailed bgpv4 route range information"; 
-					}
-					uses bgpv6-route-range-group {
-						when "../network-type = BGPV6_ROUTE_RANGE";
-						description "The conditional container for detailed bgpv6 route range information"; 
-					}
-					uses ospfv2-route-range-group {
-						when "../network-type = OSPFV2_ROUTE_RANGE";
-						description "The conditional container for detailed ospfv2 router LSA range information"; 
-					}
-					uses ospfv2-summary-range-group {
-						when "../network-type = OSPFV2_SUMMARY_RANGE";
-						description "The conditional container for detailed ospfv2 summary LSA range information"; 
-					}
-					uses ospfv2-external-range-group {
-						when "../network-type = OSPFV2_EXTERNAL_RANGE";
-						description "The conditional container for detailed ospfv2 external LSA range information"; 
-					}
-					uses ospfv2-nssa-range-group {
-						when "../network-type = OSPFV2_NSSA_RANGE";
-						description "The conditional container for detailed ospfv2 NSSA LSA range information"; 
-					}
-					uses ospfv3-route-range-group {
-						when "../network-type = OSPFV3_ROUTE_RANGE";
-						description "The conditional container for detailed ospfv3 router LSA range information"; 
-					}
-					uses ospfv3-inter-area-prefix-range-group {
-						when "../network-type = OSPFV3_INTER_AREA_PREFIX_RANGE";
-						description "The conditional container for detailed ospfv3 inter area prefix LSA range information"; 
-					}
-					uses ospfv3-intra-area-prefix-range-group {
-						when "../network-type = OSPFV3_INTRA_AREA_PREFIX_RANGE";
-						description "The conditional container for detailed ospfv3 intra area prefix LSA range information"; 
-					}
-					uses ospfv3-as-external-prefix-range-group {
-						when "../network-type = OSPFV3_AS_EXTERNAL_PREFIX_RANGE";
-						description "The conditional container for detailed ospfv3 intra area prefix LSA range information"; 
-					}
-					uses isis-route-range-group {
-						when "../network-type = ISIS_ROUTE_RANGE";
-						description "The conditional container for detailed isis routes information"; 
-					}
-				}
-			}
-		}        
-	}
+  grouping device-group-top {
+    description
+      "A grouping of device-groups, devices and protocols.";
+    list device-groups {
+      key "name";
+      description
+        "A list of device-groups.
+         Each device-groups object can contain 0..n devices.";
+      leaf name {
+        type t:config-list-key;
+        description
+          "The unique name of a device-groups object.";
+      }
+      leaf-list ports {
+        type leafref {
+          path "../../ports/name";
+        }
+        description
+          "A list of abstract test port names.
+           Every object in the devices and protocols lists will share the ports assigned to a device-groups object.
+           An abstract test port name cannot be assigned to more than one device-groups object.";
+      }
+      list devices {
+        key "name";
+        description
+          "A list of devices.
+           Each devices object can contain 0..n protocols objects";
+        leaf name {
+          type t:config-list-key;
+          description
+            "The unique name of a devices object.";
+        }
+        leaf device-count-per-port {
+          type uint32;
+          default "1";
+          description
+            "The number of devices that will be created on each
+             abstract test port specified in the port-names list.";
+        }
+        leaf parent-link {
+          type union {
+            type leafref {
+              path "../name";
+            }
+            type leafref {
+              path "../../simulated-networks/name";
+            }
+            type empty;
+          }
+          mandatory true;
+          description
+            "Identifies which devices object or simulated-networks object is connected to this object.
+             This is used to create a devices container behind a devices or simulated networks container.
+             An empty link indicates that the object is at the top of the stack.";
+        }
+        list protocols {
+          key "name";
+          description
+            "A list of emulated protocols.
+             Each emulated protocols object is a container for one and only one of the emulated protocol types.
+             The protocol-type is used to specify what type of protocol is contained in a protocols object.";
+          leaf name {
+            type t:config-list-key;
+            description
+              "The unique name of a protocols object";
+          }
+          leaf parent-link {
+            type union {
+              type leafref {
+                path "../name";
+              }
+              type empty;
+            }
+            mandatory true;
+            description
+              "Identifies which protocols object is the parent of this protocol.
+               This link only applies to protocol objects in one container.
+               The link can be used to specify a vertical or horizontal relationship.
+               To specify the first protocols object in a stack the value must be empty.";
+          }
+          leaf flow-link {
+            type union {
+              type leafref {
+                path "../name";
+              }
+              type leafref {
+                path "../../../simulated-networks/name";
+              }
+              type empty;
+            }
+            mandatory true;
+            description
+              "Identifies which object in another container is the next hop from this container.
+               The name cannot be one of the names in this devices container.
+               An empty link indicates no flow link";
+          }
+          leaf protocol-type {
+            type enumeration {
+              enum ETHERNET {
+                description
+                  "";
+              }
+              enum VLAN {
+                description
+                  "";
+              }
+              enum IPV4 {
+                description
+                  "";
+              }
+              enum IPV6 {
+                description
+                  "";
+              }
+              enum BGPV4 {
+                description
+                  "";
+              }
+              enum BGPV6 {
+                description
+                  "";
+              }
+              enum OSPFV2 {
+                description
+                  "";
+              }
+              enum OSPFV3 {
+                description
+                  "";
+              }
+              enum ISIS {
+                description
+                  "";
+              }
+              enum BFDV4 {
+                description
+                  "";
+              }
+              enum BFDV6 {
+                description
+                  "";
+              }
+            }
+            mandatory true;
+            description
+              "Determines which detailed emulated protocol container is active.";
+          }
+          uses ethernet-group {
+            when '../protocol-type = ETHERNET';
+            description
+              "The conditional container for detailed ethernet information";
+          }
+          uses vlan-group {
+            when '../protocol-type = VLAN';
+            description
+              "The conditional container for detailed vlan information";
+          }
+          uses ipv4-group {
+            when '../protocol-type = IPV4';
+            description
+              "The conditional container for detailed ipv4 information";
+          }
+          uses ipv6-group {
+            when '../protocol-type = IPV6';
+            description
+              "The conditional container for detailed ipv6 information";
+          }
+          uses bgpv4-group {
+            when '../protocol-type = BGPV4';
+            description
+              "The conditional container for detailed bgpv4 information";
+          }
+          uses bgpv6-group {
+            when '../protocol-type = BGPV6';
+            description
+              "The conditional container for detailed bgpv6 information";
+          }
+          uses ospfv2-group {
+            when '../protocol-type = OSPFV2';
+            description
+              "The conditional container for detailed ospfv2 information";
+          }
+          uses ospfv3-group {
+            when '../protocol-type = OSPFV3';
+            description
+              "The conditional container for detailed ospfv3 information";
+          }
+          uses isis-group {
+            when '../protocol-type = ISIS';
+            description
+              "The conditional container for detailed isis v4 information";
+          }
+          uses bfdv4-group {
+            when '../protocol-type = BFDV4';
+            description
+              "The conditional container for detailed bfd v4 information";
+          }
+          uses bfdv6-group {
+            when '../protocol-type = BFDV6';
+            description
+              "The conditional container for detailed bfd v6 information";
+          }
+        }
+      }
+      list simulated-networks {
+        key "name";
+        description
+          "A list of network groups.
+           Each network group object can contain 0..n networks objects";
+        leaf name {
+          type t:config-list-key;
+          description
+            "The unique name of the network groups object.";
+        }
+        leaf parent-link {
+          type union {
+            type leafref {
+              path "../name";
+            }
+            type leafref {
+              path "../../devices/name";
+            }
+          }
+          mandatory true;
+          description
+            "Identifies which devices object or networks object is connected to this object.
+             This is used to create a netwwork groups container behind a devices or networks container.";
+        }
+        list networks {
+          key "name";
+          description
+            "A list of networks.
+             Each networks object is a container for one and only one of the network types.";
+          leaf name {
+            type t:config-list-key;
+            description
+              "The unique name of the networks object.";
+          }
+          leaf network-count-per-port {
+            type uint32;
+            default "1";
+            description
+              "The number of network devices that will be created on each
+               abstract test port specified in the port-names list.";
+          }
+          leaf flow-link {
+            type union {
+              type leafref {
+                path "../name";
+              }
+              type leafref {
+                path "../../../devices/protocols/name";
+              }
+              type empty;
+            }
+            mandatory true;
+            description
+              "Identifies which object in another container is the next hop from this networks object.
+               The name cannot be one of the names in this networks container.
+               An empty link indicates no flow link";
+          }
+          leaf network-type {
+            type enumeration {
+              enum BGPV4_ROUTE_RANGE {
+                description
+                  "";
+              }
+              enum BGPV6_ROUTE_RANGE {
+                description
+                  "";
+              }
+              enum OSPFV2_ROUTE_RANGE {
+                description
+                  "";
+              }
+              enum OSPFV2_SUMMARY_RANGE {
+                description
+                  "";
+              }
+              enum OSPFV2_EXTERNAL_RANGE {
+                description
+                  "";
+              }
+              enum OSPFV2_NSSA_RANGE {
+                description
+                  "";
+              }
+              enum OSPFV3_ROUTE_RANGE {
+                description
+                  "";
+              }
+              enum OSPFV3_INTER_AREA_PREFIX_RANGE {
+                description
+                  "";
+              }
+              enum OSPFV3_INTRA_AREA_PREFIX_RANGE {
+                description
+                  "";
+              }
+              enum OSPFV3_AS_EXTERNAL_PREFIX_RANGE {
+                description
+                  "";
+              }
+              enum ISIS_ROUTE_RANGE {
+                description
+                  "";
+              }
+            }
+            mandatory true;
+            description
+              "Determines which detailed network container is active.";
+          }
+          uses bgpv4-route-range-group {
+            when '../network-type = BGPV4_ROUTE_RANGE';
+            description
+              "The conditional container for detailed bgpv4 route range information";
+          }
+          uses bgpv6-route-range-group {
+            when '../network-type = BGPV6_ROUTE_RANGE';
+            description
+              "The conditional container for detailed bgpv6 route range information";
+          }
+          uses ospfv2-route-range-group {
+            when '../network-type = OSPFV2_ROUTE_RANGE';
+            description
+              "The conditional container for detailed ospfv2 router LSA range information";
+          }
+          uses ospfv2-summary-range-group {
+            when '../network-type = OSPFV2_SUMMARY_RANGE';
+            description
+              "The conditional container for detailed ospfv2 summary LSA range information";
+          }
+          uses ospfv2-external-range-group {
+            when '../network-type = OSPFV2_EXTERNAL_RANGE';
+            description
+              "The conditional container for detailed ospfv2 external LSA range information";
+          }
+          uses ospfv2-nssa-range-group {
+            when '../network-type = OSPFV2_NSSA_RANGE';
+            description
+              "The conditional container for detailed ospfv2 NSSA LSA range information";
+          }
+          uses ospfv3-route-range-group {
+            when '../network-type = OSPFV3_ROUTE_RANGE';
+            description
+              "The conditional container for detailed ospfv3 router LSA range information";
+          }
+          uses ospfv3-inter-area-prefix-range-group {
+            when '../network-type = OSPFV3_INTER_AREA_PREFIX_RANGE';
+            description
+              "The conditional container for detailed ospfv3 inter area prefix LSA range information";
+          }
+          uses ospfv3-intra-area-prefix-range-group {
+            when '../network-type = OSPFV3_INTRA_AREA_PREFIX_RANGE';
+            description
+              "The conditional container for detailed ospfv3 intra area prefix LSA range information";
+          }
+          uses ospfv3-as-external-prefix-range-group {
+            when '../network-type = OSPFV3_AS_EXTERNAL_PREFIX_RANGE';
+            description
+              "The conditional container for detailed ospfv3 intra area prefix LSA range information";
+          }
+          uses isis-route-range-group {
+            when '../network-type = ISIS_ROUTE_RANGE';
+            description
+              "The conditional container for detailed isis routes information";
+          }
+        }
+      }
+    }
+  }
 }

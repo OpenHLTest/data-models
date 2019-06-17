@@ -1,227 +1,225 @@
 submodule openhltest-device-traffic-statistics {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-types {
+    prefix t;
+  }
+  include openhltest-config;
+  include openhltest-ports;
 
-    import openhltest-types {
-        prefix t;
-    }
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes a YANG model for
+     abstract test port statistics.";
 
-	include openhltest-config;
-	include openhltest-ports;
-	
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  revision 2017-11-02 {
     description
-      "This module describes a YANG model for 
-       abstract test port statistics.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2017-11-02 {
+  grouping device-traffic-statistics-top {
+    description
+      "A grouping of Device Traffic statistics";
+    list device-traffic {
+      key "name";
+      description
+        "";
+      leaf name {
+        type t:config-list-key;
         description
-          "Initial revision.";
-        reference
-          "0.0.1";
-    }
-
-
-    grouping device-traffic-statistics-top {
-        description
-          "A grouping of Device Traffic statistics";
-
-		list device-traffic {
-			key "name";
-			description "";
-
-            leaf name {
-                type t:config-list-key;
-                description "Device Traffic name";
-            }
-			leaf transmit-state {
-				type enumeration {
-					enum STOPPED {
-						description "Device traffic is stopped";
-					}
-					enum STARTED {
-						description "Device traffic is started";
-					}
-				}
-				description "The transmit state of the device traffic item";
-			}
-            leaf tx-frames {
-                type uint64;
-                description
-                    "The total number of frames transmitted on the port.
-                    Empty if the abstract port is not connected to a test port.";
-            }
-            leaf rx-frames {
-                type uint64;
-                description
-                    "The total number of frames received on the the port.
-                    Empty if the abstract port is not connected to a test port.";
-            }
-            leaf tx-frame-rate {
-                type uint64;
-                description
-                    "Total number of frames transmitted over the last 1-second interval.
-                    Empty if the abstract port is not connected to a test port.";
-            }
-            leaf rx-frame-rate {
-                type uint64;
-                description
-                    "Total number of frames received over the last 1-second interval.
-                    Empty if the abstract port is not connected to a test port.";
-            }
-            leaf dropped-frames {
-                type uint64;
-                description
-                    "Total Number of dropped frames during transit.
-                    Empty if the abstract port is not connected to a test port.";
-            }
-            leaf tx-bit-count {
-                type uint64;
-                description
-                    "The total number of bits transmitted on the port.
-                    Empty if the abstract port is not connected to a test port.";
-            }
-            leaf rx-bit-count {
-                type uint64;
-                description
-                    "The total number of bits received on the the port.
-                    Empty if the abstract port is not connected to a test port.";
-            }
-            
-            leaf tx-bit-rate {
-                type uint64;
-                description
-                    "Total number of bits transmitted over the last 1-second interval.
-                    Empty if the abstract port is not connected to a test port.";
-            }
-            leaf rx-bit-rate {
-                type uint64;
-                description
-                    "Total number of bits received over the last 1-second interval.
-                    Empty if the abstract port is not connected to a test port.";
-            }
-            leaf tx-byte-count {
-                type uint64;
-                description
-                    "The total number of bytes transmitted on the port.
-                    Empty if the abstract port is not connected to a test port.";
-            }
-            leaf rx-byte-count {
-                type uint64;
-                description
-                    "The total number of bytes received on the the port.
-                    Empty if the abstract port is not connected to a test port.";
-            }           
-            leaf tx-byte-rate {
-                type uint64;
-                description
-                    "Total number of bytes transmitted over the last 1-second interval.
-                    Empty if the abstract port is not connected to a test port.";
-            }
-            leaf rx-byte-rate {
-                type uint64;
-                description
-                    "Total number of bytes received over the last 1-second interval.
-                    Empty if the abstract port is not connected to a test port.";
-            }
-            list ports {
-                key "name";
-				description "";
-				
-                leaf name {
-					type leafref {
-						path "../../../../config/ports/name";
-					}
-					mandatory true;
-					description "The name of the transmit port of this device traffic stream";
-                }
-				leaf tx-frames {
-                    type uint64;
-                    description
-                        "The total number of frames transmitted on the port.
-                        Empty if the abstract port is not connected to a test port.";
-                }
-                leaf rx-frames {
-                    type uint64;
-                    description
-                        "The total number of frames received on the the port.
-                        Empty if the abstract port is not connected to a test port.";
-                }
-                leaf tx-frame-rate {
-                    type uint64;
-                    description
-                        "Total number of frames transmitted over the last 1-second interval.
-                        Empty if the abstract port is not connected to a test port.";
-                }
-                leaf rx-frame-rate {
-                    type uint64;
-                    description
-                        "Total number of frames received over the last 1-second interval.
-                        Empty if the abstract port is not connected to a test port.";
-                }
-                leaf dropped-frames {
-                    type uint64;
-                    description
-                        "Total Number of dropped frames during transit.
-                        Empty if the abstract port is not connected to a test port.";
-                }
-                leaf tx-bit-count {
-                    type uint64;
-                    description
-                        "The total number of bits transmitted on the port.
-                        Empty if the abstract port is not connected to a test port.";
-                }
-                leaf rx-bit-count {
-                    type uint64;
-                    description
-                        "The total number of bits received on the the port.
-                        Empty if the abstract port is not connected to a test port.";
-                }
-                
-                leaf tx-bit-rate {
-                    type uint64;
-                    description
-                        "Total number of bits transmitted over the last 1-second interval.
-                        Empty if the abstract port is not connected to a test port.";
-                }
-                leaf rx-bit-rate {
-                    type uint64;
-                    description
-                        "Total number of bits received over the last 1-second interval.
-                        Empty if the abstract port is not connected to a test port.";
-                }
-                leaf tx-byte-count {
-                    type uint64;
-                    description
-                        "The total number of bytes transmitted on the port.
-                        Empty if the abstract port is not connected to a test port.";
-                }
-                leaf rx-byte-count {
-                    type uint64;
-                    description
-                        "The total number of bytes received on the the port.
-                        Empty if the abstract port is not connected to a test port.";
-                }
-                
-                leaf tx-byte-rate {
-                    type uint64;
-                    description
-                        "Total number of bytes transmitted over the last 1-second interval.
-                        Empty if the abstract port is not connected to a test port.";
-                }
-                leaf rx-byte-rate {
-                    type uint64;
-                    description
-                        "Total number of bytes received over the last 1-second interval.
-                        Empty if the abstract port is not connected to a test port.";
-                }
-            }
+          "Device Traffic name";
+      }
+      leaf transmit-state {
+        type enumeration {
+          enum STOPPED {
+            description
+              "Device traffic is stopped";
+          }
+          enum STARTED {
+            description
+              "Device traffic is started";
+          }
         }
+        description
+          "The transmit state of the device traffic item";
+      }
+      leaf tx-frames {
+        type uint64;
+        description
+          "The total number of frames transmitted on the port.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf rx-frames {
+        type uint64;
+        description
+          "The total number of frames received on the the port.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf tx-frame-rate {
+        type uint64;
+        description
+          "Total number of frames transmitted over the last 1-second interval.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf rx-frame-rate {
+        type uint64;
+        description
+          "Total number of frames received over the last 1-second interval.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf dropped-frames {
+        type uint64;
+        description
+          "Total Number of dropped frames during transit.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf tx-bit-count {
+        type uint64;
+        description
+          "The total number of bits transmitted on the port.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf rx-bit-count {
+        type uint64;
+        description
+          "The total number of bits received on the the port.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf tx-bit-rate {
+        type uint64;
+        description
+          "Total number of bits transmitted over the last 1-second interval.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf rx-bit-rate {
+        type uint64;
+        description
+          "Total number of bits received over the last 1-second interval.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf tx-byte-count {
+        type uint64;
+        description
+          "The total number of bytes transmitted on the port.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf rx-byte-count {
+        type uint64;
+        description
+          "The total number of bytes received on the the port.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf tx-byte-rate {
+        type uint64;
+        description
+          "Total number of bytes transmitted over the last 1-second interval.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      leaf rx-byte-rate {
+        type uint64;
+        description
+          "Total number of bytes received over the last 1-second interval.
+           Empty if the abstract port is not connected to a test port.";
+      }
+      list ports {
+        key "name";
+        description
+          "";
+        leaf name {
+          type leafref {
+            path "../../../../config/ports/name";
+          }
+          mandatory true;
+          description
+            "The name of the transmit port of this device traffic stream";
+        }
+        leaf tx-frames {
+          type uint64;
+          description
+            "The total number of frames transmitted on the port.
+             Empty if the abstract port is not connected to a test port.";
+        }
+        leaf rx-frames {
+          type uint64;
+          description
+            "The total number of frames received on the the port.
+             Empty if the abstract port is not connected to a test port.";
+        }
+        leaf tx-frame-rate {
+          type uint64;
+          description
+            "Total number of frames transmitted over the last 1-second interval.
+             Empty if the abstract port is not connected to a test port.";
+        }
+        leaf rx-frame-rate {
+          type uint64;
+          description
+            "Total number of frames received over the last 1-second interval.
+             Empty if the abstract port is not connected to a test port.";
+        }
+        leaf dropped-frames {
+          type uint64;
+          description
+            "Total Number of dropped frames during transit.
+             Empty if the abstract port is not connected to a test port.";
+        }
+        leaf tx-bit-count {
+          type uint64;
+          description
+            "The total number of bits transmitted on the port.
+             Empty if the abstract port is not connected to a test port.";
+        }
+        leaf rx-bit-count {
+          type uint64;
+          description
+            "The total number of bits received on the the port.
+             Empty if the abstract port is not connected to a test port.";
+        }
+        leaf tx-bit-rate {
+          type uint64;
+          description
+            "Total number of bits transmitted over the last 1-second interval.
+             Empty if the abstract port is not connected to a test port.";
+        }
+        leaf rx-bit-rate {
+          type uint64;
+          description
+            "Total number of bits received over the last 1-second interval.
+             Empty if the abstract port is not connected to a test port.";
+        }
+        leaf tx-byte-count {
+          type uint64;
+          description
+            "The total number of bytes transmitted on the port.
+             Empty if the abstract port is not connected to a test port.";
+        }
+        leaf rx-byte-count {
+          type uint64;
+          description
+            "The total number of bytes received on the the port.
+             Empty if the abstract port is not connected to a test port.";
+        }
+        leaf tx-byte-rate {
+          type uint64;
+          description
+            "Total number of bytes transmitted over the last 1-second interval.
+             Empty if the abstract port is not connected to a test port.";
+        }
+        leaf rx-byte-rate {
+          type uint64;
+          description
+            "Total number of bytes received over the last 1-second interval.
+             Empty if the abstract port is not connected to a test port.";
+        }
+      }
     }
+  }
 }

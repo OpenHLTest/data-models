@@ -1,154 +1,151 @@
 submodule openhltest-traffic-gre-group {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-        prefix "oht";
-    }
+  import openhltest-patterns {
+    prefix p;
+  }
 
-    import openhltest-patterns {
-        prefix p;
-    }
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes Generic Routing Encapsulation(GRE) header options";
 
-
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  revision 2018-02-09 {
     description
-      "This module describes Generic Routing Encapsulation(GRE) header options";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2018-02-09 {
+  grouping traffic-gre-group-top {
+    description
+      "Generic Routing Encapsulation(GRE) header";
+    container gre {
+      description
+        "";
+      container checksum-bit {
         description
-          "Initial revision.";
-        reference
-          "0.0.1";
-    }
-
-    grouping traffic-gre-group-top {
-        description
-        "Generic Routing Encapsulation(GRE) header";
-
-        container gre {
-			description "";
-            container checksum-bit {
-                description
-                "Checksum bit.";
-                uses p:binary-pattern-group {
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container routing-bit {
-                description
-                "Routing bit.";
-                uses p:binary-pattern-group {
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container key-bit {
-                description
-                "Key bit.";
-                uses p:binary-pattern-group {
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container sequence-number-bit {
-                description
-                "Sequence Number bit.";
-                uses p:binary-pattern-group {
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container reserved-0 {
-                description
-                "Reserved-0 bits.";
-                uses p:int-32-pattern-group{
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container version {
-                description
-                "GRE Version.";
-                uses p:int-32-pattern-group{
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container protocol-type {
-                description
-                "Indicates the ether protocol type of the encapsulated payload.";
-                uses p:ethertype-pattern-group {
-                    refine single {
-                        default "0x0800";
-                    }
-                }
-            }
-            container gre-checksum {
-                description
-                "GRE Version.";
-                uses p:int-32-pattern-group{
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container reserved-1 {
-                description
-                "Reserved-1 bits.";
-                uses p:int-32-pattern-group{
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container key {
-                description
-                "Key Value.";
-                uses p:int-32-pattern-group;
-            }
-            container sequence-number {
-                description
-                "Sequence Number.";
-                uses p:int-32-pattern-group;
-            }
-            container keep-alive-bit {
-                description
-                "Keep Alive bit.";
-                uses p:binary-pattern-group {
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container keep-alive-period {
-                description
-                "Keep alive period.";
-                uses p:int-32-pattern-group{
-                    refine single {
-                        default "10";
-                    }
-                }
-            }
-            container keep-alive-retries {
-                description
-                "Keep alive retries.";
-                uses p:int-32-pattern-group{
-                    refine single {
-                        default "3";
-                    }
-                }
-            }
+          "Checksum bit.";
+        uses p:binary-pattern-group {
+          refine "single" {
+            default "0";
+          }
         }
+      }
+      container routing-bit {
+        description
+          "Routing bit.";
+        uses p:binary-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container key-bit {
+        description
+          "Key bit.";
+        uses p:binary-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container sequence-number-bit {
+        description
+          "Sequence Number bit.";
+        uses p:binary-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container reserved-0 {
+        description
+          "Reserved-0 bits.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container version {
+        description
+          "GRE Version.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container protocol-type {
+        description
+          "Indicates the ether protocol type of the encapsulated payload.";
+        uses p:ethertype-pattern-group {
+          refine "single" {
+            default "0x0800";
+          }
+        }
+      }
+      container gre-checksum {
+        description
+          "GRE Version.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container reserved-1 {
+        description
+          "Reserved-1 bits.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container key {
+        description
+          "Key Value.";
+        uses p:int-32-pattern-group;
+      }
+      container sequence-number {
+        description
+          "Sequence Number.";
+        uses p:int-32-pattern-group;
+      }
+      container keep-alive-bit {
+        description
+          "Keep Alive bit.";
+        uses p:binary-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container keep-alive-period {
+        description
+          "Keep alive period.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "10";
+          }
+        }
+      }
+      container keep-alive-retries {
+        description
+          "Keep alive retries.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "3";
+          }
+        }
+      }
     }
-
+  }
 }

@@ -1,448 +1,451 @@
 submodule openhltest-ospf-statistics {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes a YANG model for
+     abstract test port statistics.";
 
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  revision 2017-11-02 {
     description
-      "This module describes a YANG model for 
-       abstract test port statistics.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2017-11-02 {
-        description
-          "Initial revision.";
-        reference
-          "0.0.1";
+  grouping ospf-statistics {
+    description
+      "A grouping of common ospf statistics";
+    leaf router-state {
+      type enumeration {
+        enum DOWN {
+          description
+            "";
+        }
+        enum WAITING {
+          description
+            "";
+        }
+        enum DR {
+          description
+            "";
+        }
+        enum DR_OTHER {
+          description
+            "";
+        }
+        enum BACKUP {
+          description
+            "";
+        }
+      }
+      description
+        "Reports the state of adjacency on the current port.";
     }
+    leaf adjacency-status {
+      type enumeration {
+        enum DOWN {
+          description
+            "";
+        }
+        enum ATTEMPT {
+          description
+            "";
+        }
+        enum INIT {
+          description
+            "";
+        }
+        enum TWOWAYS {
+          description
+            "";
+        }
+        enum EXSTART {
+          description
+            "";
+        }
+        enum EXCHANGE {
+          description
+            "";
+        }
+        enum LOADING {
+          description
+            "";
+        }
+        enum FULL {
+          description
+            "";
+        }
+      }
+      description
+        "OSPFv2 Adjacency State.
+          DOWN    Initial state of a neighbor conversation. It indicates that therehas been no
+                  recent information received from the neighbor.
+          ATTEMPT This state is only valid for neighbors attached to non-broadcastnetworks. It
+                  indicates that no recent information has been received from theneighbor, but that
+                  a more concerted effort should be made to contact the neighbor. This is done by
+                  sending the neighbor Hello packets at intervals ofHelloInterval.
 
+          INIT    An Hello packet has recently been seen from the neighbor. However,bidirectional
+                  communication has not yet been established with the neighbor(the router itself
+                  did not appear in the neighbor's Hello packet). Allneighbors in this state (or higher)
+                  are listed in the Hello packets sentfrom the associated interface.
 
-    grouping ospf-statistics {
-        description
-          "A grouping of common ospf statistics";
-          
-        leaf router-state {
-            type enumeration {
-                enum DOWN {
-					description "";
-				}
-                enum WAITING {
-					description "";
-				}
-                enum DR {
-					description "";
-				}
-                enum DR_OTHER {
-					description "";
-				}
-                enum BACKUP {
-					description "";
-				}
-            }
-            description
-              "Reports the state of adjacency on the current port.";
-        }
-        leaf adjacency-status {
-            type enumeration {
-                enum DOWN {
-					description "";
-				}
-                enum ATTEMPT {
-					description "";
-				}
-                enum INIT {
-					description "";
-				}
-                enum TWOWAYS {
-					description "";
-				}
-                enum EXSTART {
-					description "";
-				}
-                enum EXCHANGE {
-					description "";
-				}
-                enum LOADING {
-					description "";
-				}
-                enum FULL {
-					description "";
-				}
-            }
-            description
-              "OSPFv2 Adjacency State.
-                DOWN    Initial state of a neighbor conversation. It indicates that therehas been no 
-                        recent information received from the neighbor.		
-                ATTEMPT This state is only valid for neighbors attached to non-broadcastnetworks. It 
-                        indicates that no recent information has been received from theneighbor, but that
-                        a more concerted effort should be made to contact the neighbor. This is done by 
-                        sending the neighbor Hello packets at intervals ofHelloInterval. 
-                
-                INIT    An Hello packet has recently been seen from the neighbor. However,bidirectional
-                        communication has not yet been established with the neighbor(the router itself 
-                        did not appear in the neighbor's Hello packet). Allneighbors in this state (or higher) 
-                        are listed in the Hello packets sentfrom the associated interface. 
-                
-                TWOWAYS Communication between the two routers is bidirectional. This has been assured by the
-                        operation of the Hello Protocol. This is the mostadvanced state short of beginning 
-                        adjacency establishment. The BackupDesignated Router (BDR) is selected from the set
-                        of neighbors in the TWOWAYSstate or greater. 
-                
-                EXSTART This is the first step in creating an adjacency between the twoneighboring routers.
-                        The goal of this step is to decide which router is the master, and to decide upon 
-                        the initial database description (DD) sequencenumber. Neighbor conversations in this 
-                        state or greater are calledadjacencies. 
-                
-                EXCHANGE In this state the router is describing its entire link statedatabase by sending 
-                        Database Description packets to the neighbor. EachDatabase Description Packet has
-                        a DD sequence number, and is explicitlyacknowledged. Only one Database Description 
-                        Packet is allowed outstanding atany one time. In this state, Link State Request Packets
-                        may also be sentasking for the neighbor's more recent advertisements. All adjacencies in
-                        Exchange state or greater are used by the flooding procedure. In fact, these adjacencies 
-                        are fully capable of transmitting and receiving all types of OSPF routing protocol packets. 
-                        Loading Link State Request packets are sent to the neighbor asking for themore recent
-                        advertisements that have been discovered (but not yet received)in the Exchange state. 
-                
-                FULL    Neighboring routers are fully adjacent. These adjacencies will nowappear in router
-                        links and network links advertisements. ";
-        }
-        leaf tx-hello-count {
-            type uint64;
-            description
-              "Number of Hello packets transmitted by the emulated router.";
-        }
-        leaf rx-hello-count {
-            type uint64;
-            description
-              "Number of Hello packets received by the emulated router.";
-        }
+          TWOWAYS Communication between the two routers is bidirectional. This has been assured by the
+                  operation of the Hello Protocol. This is the mostadvanced state short of beginning
+                  adjacency establishment. The BackupDesignated Router (BDR) is selected from the set
+                  of neighbors in the TWOWAYSstate or greater.
+
+          EXSTART This is the first step in creating an adjacency between the twoneighboring routers.
+                  The goal of this step is to decide which router is the master, and to decide upon
+                  the initial database description (DD) sequencenumber. Neighbor conversations in this
+                  state or greater are calledadjacencies.
+
+          EXCHANGE In this state the router is describing its entire link statedatabase by sending
+                  Database Description packets to the neighbor. EachDatabase Description Packet has
+                  a DD sequence number, and is explicitlyacknowledged. Only one Database Description
+                  Packet is allowed outstanding atany one time. In this state, Link State Request Packets
+                  may also be sentasking for the neighbor's more recent advertisements. All adjacencies in
+                  Exchange state or greater are used by the flooding procedure. In fact, these adjacencies
+                  are fully capable of transmitting and receiving all types of OSPF routing protocol packets.
+                  Loading Link State Request packets are sent to the neighbor asking for themore recent
+                  advertisements that have been discovered (but not yet received)in the Exchange state.
+
+          FULL    Neighboring routers are fully adjacent. These adjacencies will nowappear in router
+                  links and network links advertisements. ";
     }
-    
-    grouping ospfv2-statistics {
-        description
-        "A grouping of ospfv2 statistics";
-        list ospfv2-statistics {
-			key "device-name";
-			description "";
-
-			leaf device-name {
-				type string;
-				description "An abstract test port name";
-			}
-			leaf port-name {
-				type string;
-				description "An abstract test port name";
-			}
-            
-            uses ospf-statistics;
-
-            leaf rx-ack {
-                type uint64;
-                description
-                "Received Acks - Number of Link State Acknowledgment packets 
-                received by theemulated router.";
-            }
-            leaf rx-asbr-summary-lsa {
-                type uint64;
-                description
-                "Received ASBR-Summary-LSAs - Number of ASBR-Summary-LSAs received
-                 by theemulated router. ";
-            }
-            leaf rx-as-external-lsa {
-                type uint64;
-                description
-                "Number of Extended Prefix LSAs received by the emulated router.";
-            }
-            leaf rx-dd {
-                type uint64;
-                description
-                "Received DD - Number of Database Description packets (containing LSAheaders) 
-                received by the emulated router. ";
-            }
-            leaf rx-extended-link-lsa {
-                type uint64;
-                description
-                "Number of Extended Link LSAs received by the emulated router.";
-            }
-            leaf rx-extended-prefix-lsa {
-                type uint64;
-                description
-                "Number of Extended Prefix LSAs received by the emulated router.";
-            }
-            leaf rx-network-lsa {
-                type uint64;
-                description
-                "Received Network-LSAs - Number of Network LSAs received by the emulatedrouter.";
-            }
-            leaf rx-nssa-lsa {
-                type uint64;
-                description
-                "Received NSSA-LSAs - Number of NSSA LSAs received by the emulatedrouter.";
-            }
-            leaf rx-request {
-                type uint64;
-                description
-                "Received Requests - Number of LS Request packets received by the emulatedrouter.";
-            }
-            leaf rx-router-info-lsa {
-                type uint64;
-                description
-                "Number of Router Info LSAs received by the emulated router.";
-            }
-            leaf rx-router-lsa {
-                type uint64;
-                description
-                "Received Router-LSAs - Number of Router LSAs received by the emulatedrouter.";
-            }
-            leaf rx-summary-lsa {
-                type uint64;
-                description
-                "Received Summary-LSAs - Number of Summary LSAs received by the emulatedrouter.";
-            }
-            leaf rx-te-lsa {
-                type uint64;
-                description
-                "Received TE-LSAs - Number of TE-LSAs received by the emulatedrouter.";
-            }
-            leaf tx-ack {
-                type uint64;
-                description
-                "Sent Acks - Number of Link State Acknowledgment packets sent by the 
-                emulated router.";
-            }
-            leaf tx-asbr-summary-lsa {
-                type uint64;
-                description
-                "Sent ASBR-Summary-LSAs - Number of ASBR-Summary LSAs sent by the emulatedrouter.";
-            }
-            leaf tx-as-external-lsa {
-                type uint64;
-                description
-                "Sent External-LSAs - Number of External LSAs sent by the emulatedrouter.";
-            }
-            leaf tx-dd {
-                type uint64;
-                description
-                "Sent DD - Number of Database Description packets sent by the emulatedrouter.";
-            }
-            leaf tx-extended-link-lsa {
-                type uint64;
-                description
-                "Number of Extended Link LSAs sent by the emulated router.";
-            }
-            leaf tx-extended-prefix-lsa {
-                type uint64;
-                description
-                "Number of Extended Prefix LSAs sent by the emulated router.";
-            }
-            leaf tx-network-lsa {
-                type uint64;
-                description
-                "Sent Network-LSAs - Number of Network LSAs sent by the emulatedrouter.";
-            }
-            leaf tx-nssa-lsa {
-                type uint64;
-                description
-                "Sent NSSA-LSAs - Number of NSSA LSAs sent by the emulatedrouter.";
-            }
-            leaf tx-request {
-                type uint64;
-                description
-                "Sent Requests - Number of LS Request packets sent by the emulatedrouter.";
-            }
-            leaf tx-router-info-lsa {
-                type uint64;
-                description
-                "Number of Router Info LSAs sent by the emulated router.";
-            }
-            leaf tx-router-lsa {
-                type uint64;
-                description
-                "Sent Router-LSAs - Number of Router LSAs sent by the emulatedrouter.";
-            }
-            leaf tx-summary-lsa {
-                type uint64;
-                description
-                "Sent Summary-LSAs - Number of Summary LSAs sent by the emulatedrouter.";
-            }
-            leaf tx-te-lsa {
-                type uint64;
-                description
-                "Sent TE-LSAs - Number of TE-LSAs sent by the emulated router.";
-            }
-        }
+    leaf tx-hello-count {
+      type uint64;
+      description
+        "Number of Hello packets transmitted by the emulated router.";
     }
-    
-
-
-    grouping ospfv3-lsa-counters {
-        description
-        "A grouping of ospfv3 LSA counters";
-            leaf rx-as-external-lsa {
-                type uint64;
-                description
-                "Received external-LSAs. The number of external LSAs received by theemulated router.";
-            }
-            leaf rx-inter-area-prefix-lsa {
-                type uint64;
-                description
-                "Received inter-area-prefix LSAs. The number of inter-area-prefix LSAsreceived by the emulated router.";
-            }
-            leaf rx-inter-area-router-lsa {
-                type uint64;
-                description
-                "Received inter-area-router LSAs. The number of inter-area-router LSAsreceived by the emulated router.";
-            }
-            leaf rx-intra-area-prefix-lsa {
-                type uint64;
-                description
-                "Received Intra-Area-Prefix-LSAs - Number of Intra-Area-Prefix LSAs receivedby the emulated router.";
-            }
-            leaf rx-link-lsa {
-                type uint64;
-                description
-                "Received link-LSAs. The number of link LSAs received by the emulatedrouter.";
-            }
-            leaf rx-network-lsa {
-                type uint64;
-                description
-                "Received Network-LSAs - Number of Network LSAs received by the emulated router.";
-            }
-            leaf rx-nssa-lsa {
-                type uint64;
-                description
-                "Received Link-LSAs. The number of Link LSAs received by the emulatedrouter.";
-            }
-            leaf rx-router-lsa {
-                type uint64;
-                description
-                "Received Router-LSAs - Number of Router LSAs received by the emulated router.";
-            }
-            leaf tx-as-external-lsa {
-                type uint64;
-                description
-                "Sent external-LSAs. The number of external LSAs sent by the emulatedrouter.";
-            }
-            leaf tx-inter-area-prefix-lsa {
-                type uint64;
-                description
-                "Sent inter-area-prefix LSAs. The number of inter-area-prefix LSAs sent bythe emulated router.";
-            }
-            leaf tx-inter-area-router-lsa {
-                type uint64;
-                description
-                "Sent inter-area-router LSAs. The number of inter-area-router LSAs sent bythe emulated router.";
-            }
-            leaf tx-intra-area-prefix-lsa {
-                type uint64;
-                description
-                "Sent Intra-Area-Prefix-LSAs - Number of Intra-Area-Prefix LSAs sent by theemulated router.";
-            }
-            leaf tx-link-lsa {
-                type uint64;
-                description
-                "Sent link-LSAs. The number of link LSAs sent by the emulated router.";
-            }
-            leaf tx-network-lsa {
-                type uint64;
-                description
-                "Sent Network-LSAs - Number of Network LSAs sent by the emulated router.";
-            }
-            leaf tx-nssa-lsa {
-                type uint64;
-                description
-                "Sent NSSA-LSAs. The number of NSSA LSAs sent by the emulated router.";
-            }
-            leaf tx-router-lsa {
-                type uint64;
-                description
-                "Sent Router-LSAs - Number of Router LSAs sent by the emulated router.";
-            }
+    leaf rx-hello-count {
+      type uint64;
+      description
+        "Number of Hello packets received by the emulated router.";
     }
+  }
 
-    grouping ospfv3-statistics {
+  grouping ospfv2-statistics {
+    description
+      "A grouping of ospfv2 statistics";
+    list ospfv2-statistics {
+      key "device-name";
+      description
+        "";
+      leaf device-name {
+        type string;
         description
-        "A grouping of ospfv3 statistics";
-
-        list ospfv3-statistics {
-			key "device-name";
-			description "";
-
-			leaf device-name {
-				type string;
-				description "An abstract test port name";
-			}
-			leaf port-name {
-				type string;
-				description "An abstract test port name";
-			}
-            
-            uses ospf-statistics;
-
-            leaf rx-ack {
-                type uint64;
-                description
-                "Received acks. The number of Link State Acknowledgment packets received by the emulated router. ";
-            }
-            leaf rx-dd {
-                type uint64;
-                description
-                "Received DD - The number of Database Description packets (containing LSAheaders) received by the emulated router.";
-            }
-            leaf rx-request {
-                type uint64;
-                description
-                "Received requests. The number of LS requests received by the emulatedrouter. ";
-            }
-            leaf rx-update {
-                type uint64;
-                description
-                "Rx update.";
-            }
-            leaf rx-router-info-lsa {
-                type uint64;
-                description
-                "The number of Router Information LSAs received by the emulated router.";
-            }
-            leaf tx-ack {
-                type uint64;
-                description
-                "Sent acks. The number of Link State Acknowledgment packets sent by theemulated router.";
-            }
-            leaf tx-dd {
-                type uint64;
-                description
-                "Sent DD - Number of Database Description packets sent by the emulatedrouter.";
-            }
-            leaf tx-request {
-                type uint64;
-                description
-                "Sent requests. The number of LS request packets sent by the emulatedrouter.";
-            }
-            leaf tx-update {
-                type uint64;
-                description
-                "Tx update.";
-            }
-            leaf tx-router-info-lsa {
-                type uint64;
-                description
-                "The number of Router Information LSAs sent by the emulated router.";
-            }
-
-            uses ospfv3-lsa-counters;
-
-            container extended-lsa-counters {
-                description
-                "Extended LSA counters.";
-                uses ospfv3-lsa-counters;
-            }
-
-        }
+          "An abstract test port name";
+      }
+      leaf port-name {
+        type string;
+        description
+          "An abstract test port name";
+      }
+      uses ospf-statistics;
+      leaf rx-ack {
+        type uint64;
+        description
+          "Received Acks - Number of Link State Acknowledgment packets
+           received by theemulated router.";
+      }
+      leaf rx-asbr-summary-lsa {
+        type uint64;
+        description
+          "Received ASBR-Summary-LSAs - Number of ASBR-Summary-LSAs received
+           by theemulated router. ";
+      }
+      leaf rx-as-external-lsa {
+        type uint64;
+        description
+          "Number of Extended Prefix LSAs received by the emulated router.";
+      }
+      leaf rx-dd {
+        type uint64;
+        description
+          "Received DD - Number of Database Description packets (containing LSAheaders)
+           received by the emulated router. ";
+      }
+      leaf rx-extended-link-lsa {
+        type uint64;
+        description
+          "Number of Extended Link LSAs received by the emulated router.";
+      }
+      leaf rx-extended-prefix-lsa {
+        type uint64;
+        description
+          "Number of Extended Prefix LSAs received by the emulated router.";
+      }
+      leaf rx-network-lsa {
+        type uint64;
+        description
+          "Received Network-LSAs - Number of Network LSAs received by the emulatedrouter.";
+      }
+      leaf rx-nssa-lsa {
+        type uint64;
+        description
+          "Received NSSA-LSAs - Number of NSSA LSAs received by the emulatedrouter.";
+      }
+      leaf rx-request {
+        type uint64;
+        description
+          "Received Requests - Number of LS Request packets received by the emulatedrouter.";
+      }
+      leaf rx-router-info-lsa {
+        type uint64;
+        description
+          "Number of Router Info LSAs received by the emulated router.";
+      }
+      leaf rx-router-lsa {
+        type uint64;
+        description
+          "Received Router-LSAs - Number of Router LSAs received by the emulatedrouter.";
+      }
+      leaf rx-summary-lsa {
+        type uint64;
+        description
+          "Received Summary-LSAs - Number of Summary LSAs received by the emulatedrouter.";
+      }
+      leaf rx-te-lsa {
+        type uint64;
+        description
+          "Received TE-LSAs - Number of TE-LSAs received by the emulatedrouter.";
+      }
+      leaf tx-ack {
+        type uint64;
+        description
+          "Sent Acks - Number of Link State Acknowledgment packets sent by the
+           emulated router.";
+      }
+      leaf tx-asbr-summary-lsa {
+        type uint64;
+        description
+          "Sent ASBR-Summary-LSAs - Number of ASBR-Summary LSAs sent by the emulatedrouter.";
+      }
+      leaf tx-as-external-lsa {
+        type uint64;
+        description
+          "Sent External-LSAs - Number of External LSAs sent by the emulatedrouter.";
+      }
+      leaf tx-dd {
+        type uint64;
+        description
+          "Sent DD - Number of Database Description packets sent by the emulatedrouter.";
+      }
+      leaf tx-extended-link-lsa {
+        type uint64;
+        description
+          "Number of Extended Link LSAs sent by the emulated router.";
+      }
+      leaf tx-extended-prefix-lsa {
+        type uint64;
+        description
+          "Number of Extended Prefix LSAs sent by the emulated router.";
+      }
+      leaf tx-network-lsa {
+        type uint64;
+        description
+          "Sent Network-LSAs - Number of Network LSAs sent by the emulatedrouter.";
+      }
+      leaf tx-nssa-lsa {
+        type uint64;
+        description
+          "Sent NSSA-LSAs - Number of NSSA LSAs sent by the emulatedrouter.";
+      }
+      leaf tx-request {
+        type uint64;
+        description
+          "Sent Requests - Number of LS Request packets sent by the emulatedrouter.";
+      }
+      leaf tx-router-info-lsa {
+        type uint64;
+        description
+          "Number of Router Info LSAs sent by the emulated router.";
+      }
+      leaf tx-router-lsa {
+        type uint64;
+        description
+          "Sent Router-LSAs - Number of Router LSAs sent by the emulatedrouter.";
+      }
+      leaf tx-summary-lsa {
+        type uint64;
+        description
+          "Sent Summary-LSAs - Number of Summary LSAs sent by the emulatedrouter.";
+      }
+      leaf tx-te-lsa {
+        type uint64;
+        description
+          "Sent TE-LSAs - Number of TE-LSAs sent by the emulated router.";
+      }
     }
-    
+  }
+
+  grouping ospfv3-lsa-counters {
+    description
+      "A grouping of ospfv3 LSA counters";
+    leaf rx-as-external-lsa {
+      type uint64;
+      description
+        "Received external-LSAs. The number of external LSAs received by theemulated router.";
+    }
+    leaf rx-inter-area-prefix-lsa {
+      type uint64;
+      description
+        "Received inter-area-prefix LSAs. The number of inter-area-prefix LSAsreceived by the emulated router.";
+    }
+    leaf rx-inter-area-router-lsa {
+      type uint64;
+      description
+        "Received inter-area-router LSAs. The number of inter-area-router LSAsreceived by the emulated router.";
+    }
+    leaf rx-intra-area-prefix-lsa {
+      type uint64;
+      description
+        "Received Intra-Area-Prefix-LSAs - Number of Intra-Area-Prefix LSAs receivedby the emulated router.";
+    }
+    leaf rx-link-lsa {
+      type uint64;
+      description
+        "Received link-LSAs. The number of link LSAs received by the emulatedrouter.";
+    }
+    leaf rx-network-lsa {
+      type uint64;
+      description
+        "Received Network-LSAs - Number of Network LSAs received by the emulated router.";
+    }
+    leaf rx-nssa-lsa {
+      type uint64;
+      description
+        "Received Link-LSAs. The number of Link LSAs received by the emulatedrouter.";
+    }
+    leaf rx-router-lsa {
+      type uint64;
+      description
+        "Received Router-LSAs - Number of Router LSAs received by the emulated router.";
+    }
+    leaf tx-as-external-lsa {
+      type uint64;
+      description
+        "Sent external-LSAs. The number of external LSAs sent by the emulatedrouter.";
+    }
+    leaf tx-inter-area-prefix-lsa {
+      type uint64;
+      description
+        "Sent inter-area-prefix LSAs. The number of inter-area-prefix LSAs sent bythe emulated router.";
+    }
+    leaf tx-inter-area-router-lsa {
+      type uint64;
+      description
+        "Sent inter-area-router LSAs. The number of inter-area-router LSAs sent bythe emulated router.";
+    }
+    leaf tx-intra-area-prefix-lsa {
+      type uint64;
+      description
+        "Sent Intra-Area-Prefix-LSAs - Number of Intra-Area-Prefix LSAs sent by theemulated router.";
+    }
+    leaf tx-link-lsa {
+      type uint64;
+      description
+        "Sent link-LSAs. The number of link LSAs sent by the emulated router.";
+    }
+    leaf tx-network-lsa {
+      type uint64;
+      description
+        "Sent Network-LSAs - Number of Network LSAs sent by the emulated router.";
+    }
+    leaf tx-nssa-lsa {
+      type uint64;
+      description
+        "Sent NSSA-LSAs. The number of NSSA LSAs sent by the emulated router.";
+    }
+    leaf tx-router-lsa {
+      type uint64;
+      description
+        "Sent Router-LSAs - Number of Router LSAs sent by the emulated router.";
+    }
+  }
+
+  grouping ospfv3-statistics {
+    description
+      "A grouping of ospfv3 statistics";
+    list ospfv3-statistics {
+      key "device-name";
+      description
+        "";
+      leaf device-name {
+        type string;
+        description
+          "An abstract test port name";
+      }
+      leaf port-name {
+        type string;
+        description
+          "An abstract test port name";
+      }
+      uses ospf-statistics;
+      leaf rx-ack {
+        type uint64;
+        description
+          "Received acks. The number of Link State Acknowledgment packets received by the emulated router. ";
+      }
+      leaf rx-dd {
+        type uint64;
+        description
+          "Received DD - The number of Database Description packets (containing LSAheaders) received by the emulated router.";
+      }
+      leaf rx-request {
+        type uint64;
+        description
+          "Received requests. The number of LS requests received by the emulatedrouter. ";
+      }
+      leaf rx-update {
+        type uint64;
+        description
+          "Rx update.";
+      }
+      leaf rx-router-info-lsa {
+        type uint64;
+        description
+          "The number of Router Information LSAs received by the emulated router.";
+      }
+      leaf tx-ack {
+        type uint64;
+        description
+          "Sent acks. The number of Link State Acknowledgment packets sent by theemulated router.";
+      }
+      leaf tx-dd {
+        type uint64;
+        description
+          "Sent DD - Number of Database Description packets sent by the emulatedrouter.";
+      }
+      leaf tx-request {
+        type uint64;
+        description
+          "Sent requests. The number of LS request packets sent by the emulatedrouter.";
+      }
+      leaf tx-update {
+        type uint64;
+        description
+          "Tx update.";
+      }
+      leaf tx-router-info-lsa {
+        type uint64;
+        description
+          "The number of Router Information LSAs sent by the emulated router.";
+      }
+      uses ospfv3-lsa-counters;
+      container extended-lsa-counters {
+        description
+          "Extended LSA counters.";
+        uses ospfv3-lsa-counters;
+      }
+    }
+  }
 }

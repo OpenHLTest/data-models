@@ -1,135 +1,130 @@
 submodule openhltest-ospfv2-route-range {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-types {
+    prefix t;
+  }
+  import openhltest-patterns {
+    prefix p;
+  }
 
-    import openhltest-types {
-        prefix t;
-    }
-    import openhltest-patterns {
-		prefix p;
-	}
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes the simulated OSPFV2 Router LSA range.";
 
-	organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  revision 2018-02-09 {
     description
-      "This module describes the simulated OSPFV2 Router LSA range.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2018-02-09 {
+  grouping ospfv2-route-range-group {
+    description
+      "";
+    container ospfv2-route-range {
+      description
+        "OSPFV2 Router LSA";
+      leaf active {
+        type boolean;
+        default "true";
         description
-          "Initial revision.";
-        reference
-          "0.0.1";
+          "";
+      }
+      container advertise-router-id {
+        description
+          "Advertising Router ID.  Specifies the 32-bit router ID of the router that
+           advertises a given LSA ";
+        uses p:ipv4-pattern-group;
+      }
+      container router-type {
+        description
+          "Router Type
+           ASBR    : AS Boundary Router (E-bit set)
+           ABR     : Border Router (B-bit set)";
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "(ABR|ASBR)";
+          }
+          refine "single" {
+            default "ABR";
+          }
+        }
+      }
+      container options {
+        description
+          "Summary LSA Options.
+              TBIT     TOS: Type of Service (T,0).
+              EBIT     External Routing: Specifies the way AS-external-LSAs are flooded (E,1).
+              MCBIT    Multicast: Specifies whether IP multicast datagrams are forwarded (MC,2).
+              NPBIT    NSSA: Specifies the handling of Type-7 LSAs (N/P,3).
+              EABIT    External Attribute: Specifies the router's willingness to receive and forward External-Attributes-LSAs (EA,4).
+              DCBIT    Demand Circuit: Specifies the router's handling of demand circuits (DC,5).
+              OBIT     Opaque: Specifies the router's willingness to receive and forward Opaque LSAs as specified in RFC 2370 (O,6).
+              UNUSED7  Unused: This bit is not used";
+        uses p:base-pattern-group {
+          refine "single" {
+            default "EBIT";
+          }
+        }
+      }
+      container sequence-number {
+        description
+          "Sequence Number. Used to detect old and duplicate LSAs.";
+        uses p:base-pattern-group {
+          refine "single" {
+            default "80000001";
+          }
+        }
+      }
+      container age {
+        description
+          "Age of the LSA, in seconds.";
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..3600";
+          }
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      list ospfv2-router-link {
+        key "name";
+        description
+          "";
+        leaf name {
+          type t:config-list-key;
+          description
+            "The unique name of the networks object.";
+        }
+        container router-link-type {
+          description
+            "Type of link
+             VL             : Virtual Link
+             POINT_TO_POINT : P2P (point-to-point) network
+             STUB_NETWORK   : STUB Network";
+          uses p:enum-pattern-group {
+            refine "pattern-format" {
+              default "(POINT_TO_POINT|VL|STUB_NETWORK)";
+            }
+            refine "single" {
+              default "POINT_TO_POINT";
+            }
+          }
+        }
+        container router-link-id {
+          description
+            "Link ID (IP address) to be used for the simulated link.";
+          uses p:ipv4-pattern-group;
+        }
+      }
     }
-	
-	grouping ospfv2-route-range-group {
-		description "";
-		container ospfv2-route-range {
-            description
-                "OSPFV2 Router LSA";
-
-            leaf active {
-                type boolean;
-                default "true";
-				description "";
-            }
-            
-            container advertise-router-id {
-                description
-                "Advertising Router ID.  Specifies the 32-bit router ID of the router that 
-                advertises a given LSA ";
-                uses p:ipv4-pattern-group;
-            }
-            
-            container router-type {
-                description
-                "Router Type
-                ASBR    : AS Boundary Router (E-bit set)
-                ABR     : Border Router (B-bit set)";
-                uses p:enum-pattern-group {
-                    refine pattern-format {
-                        default "(ABR|ASBR)";
-                    }
-                    refine single {
-                        default "ABR";
-                    }
-                }
-            }
-            
-            container options {
-                description
-                "Summary LSA Options.
-                    TBIT     TOS: Type of Service (T,0).
-                    EBIT     External Routing: Specifies the way AS-external-LSAs are flooded (E,1).
-                    MCBIT    Multicast: Specifies whether IP multicast datagrams are forwarded (MC,2).
-                    NPBIT    NSSA: Specifies the handling of Type-7 LSAs (N/P,3).
-                    EABIT    External Attribute: Specifies the router's willingness to receive and forward External-Attributes-LSAs (EA,4).
-                    DCBIT    Demand Circuit: Specifies the router's handling of demand circuits (DC,5).
-                    OBIT     Opaque: Specifies the router's willingness to receive and forward Opaque LSAs as specified in RFC 2370 (O,6).
-                    UNUSED7  Unused: This bit is not used";
-                uses p:base-pattern-group {
-                    refine single {
-                        default "EBIT";
-                    }
-                }
-            }
-
-            container sequence-number {
-                description
-                "Sequence Number. Used to detect old and duplicate LSAs.";
-				uses p:base-pattern-group {
-					refine single {
-						default "80000001";
-					}
-				}
-            }
-            container age {
-                description
-                "Age of the LSA, in seconds.";
-				uses p:base-pattern-group {
-                	refine pattern-format {
-						default "0..3600";
-					}
-					refine single {
-						default "0";
-					}
-				}
-            }
-            
-            list ospfv2-router-link {
-                key "name";
-				description "";
-                leaf name {
-                    type t:config-list-key;
-                    description
-                    "The unique name of the networks object.";
-                }
-                container router-link-type {
-                    description
-                    "Type of link
-                    VL             : Virtual Link
-                    POINT_TO_POINT : P2P (point-to-point) network
-                    STUB_NETWORK   : STUB Network";
-                    uses p:enum-pattern-group {
-                        refine pattern-format {
-                            default "(POINT_TO_POINT|VL|STUB_NETWORK)";
-                        }
-                        refine single {
-                            default "POINT_TO_POINT";
-                        }
-                    }
-                }
-                
-                container router-link-id {
-                    description
-                    "Link ID (IP address) to be used for the simulated link.";
-                    uses p:ipv4-pattern-group;
-                }
-            }
-		}
-	}
+  }
 }

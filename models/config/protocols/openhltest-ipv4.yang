@@ -1,56 +1,60 @@
 submodule openhltest-ipv4 {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
- 	yang-version "1.1";
-  	belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-patterns {
+    prefix p;
+  }
 
-	import openhltest-patterns {
-		prefix p;
-	}
-
-	organization
+  organization
     "OpenHlTest working group";
-  	contact
+  contact
     "OpenHlTest working group";
-  	description
+  description
     "This module describes the ipv4 emulated protocol.";
 
-	revision 2018-02-09 {
-		description
-		"Initial revision.";
-		reference
-		"0.0.1";
-	}
-	
-	grouping ipv4-group {
-		description "";
-		container ipv4 {
-			description "";
-			container source-address {
-				description "";
-				uses p:ipv4-pattern-group {
-					refine single {
-						default "0.0.0.1";
-					}
-				}
-			}
-			container gateway-address {
-				description "";
-				uses p:ipv4-pattern-group {
-					refine single {
-						default "0.0.0.1";
-					}
-				}
-			}
-			container prefix {
-				description "";
-				uses p:decimal-pattern-group {
-					refine single {
-						default 24;
-					}
-				}
-			}
-		}
-	}
+  revision 2018-02-09 {
+    description
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
+
+  grouping ipv4-group {
+    description
+      "";
+    container ipv4 {
+      description
+        "";
+      container source-address {
+        description
+          "";
+        uses p:ipv4-pattern-group {
+          refine "single" {
+            default "0.0.0.1";
+          }
+        }
+      }
+      container gateway-address {
+        description
+          "";
+        uses p:ipv4-pattern-group {
+          refine "single" {
+            default "0.0.0.1";
+          }
+        }
+      }
+      container prefix {
+        description
+          "";
+        uses p:decimal-pattern-group {
+          refine "single" {
+            default "24";
+          }
+        }
+      }
+    }
+  }
 }

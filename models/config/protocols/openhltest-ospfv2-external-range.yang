@@ -1,198 +1,193 @@
 submodule openhltest-ospfv2-external-range {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-patterns {
+    prefix p;
+  }
 
-    import openhltest-patterns {
-		prefix p;
-	}
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes the simulated OSPFV2 external LSA(Type-5) range.";
 
-	organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  revision 2018-02-09 {
     description
-      "This module describes the simulated OSPFV2 external LSA(Type-5) range.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2018-02-09 {
+  grouping ospfv2-external-range-group {
+    description
+      "";
+    container ospfv2-external-range {
+      description
+        "OSPFV2 external LSA (Type-5), External LSAs (OSPF Type 5 LSAs), originated by
+         Autonomous System Boundary Routers (ASBRs), advertise routes to destinations
+         external to the AS, including default routes for an Autonomous System.
+         Type 5 LSAs are flooded into all non-stub areas of an Autonomous System.";
+      container address {
         description
-          "Initial revision.";
-        reference
-          "0.0.1";
+          "IP address";
+        uses p:ipv4-pattern-group {
+          refine "single" {
+            default "0.0.0.1";
+          }
+        }
+      }
+      container prefix-length {
+        description
+          "Prefix Length";
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..32";
+          }
+          refine "single" {
+            default "24";
+          }
+        }
+      }
+      container advertise-router-id {
+        description
+          "Router ID of the simulated router that will advertise external LSAs";
+        uses p:ipv4-pattern-group;
+      }
+      container route-category {
+        description
+          "Route Category can be used to filter routes by type.
+              UNDEFINED The default category assigned to a manually created block.
+              PRIMARY   A preferred route that has duplicates (secondary routes) advertised by other ports.
+              SECONDARY Secondary route.
+              UNIQUE    A less preferred backup route.
+              ANY       Indicates that a single port in the test configuration advertises this route.";
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "(UNDEFINED|PRIMARY|SECONDARY|UNIQUE|ANY)";
+          }
+          refine "single" {
+            default "UNDEFINED";
+          }
+        }
+      }
+      container forwarding-address {
+        description
+          "IPv4 forwarding address to use in the forwarding address field of the LSA.";
+        uses p:ipv4-pattern-group;
+      }
+      container sequence-number {
+        description
+          "Initial value of the LS sequence number field in the LSA header.
+           Used to detect old and duplicate LSAs. The larger the sequence number,
+           the more recent the LSA.";
+        uses p:base-pattern-group {
+          refine "single" {
+            default "80000001";
+          }
+        }
+      }
+      container age {
+        description
+          "Age of the LSA, in seconds.";
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..3600";
+          }
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container checksum {
+        description
+          "Specifies the LSA will be advertised with a good or a bad checksum.";
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "(GOOD|BAD)";
+          }
+          refine "single" {
+            default "GOOD";
+          }
+        }
+      }
+      container metric-type {
+        description
+          "Metric type.
+              TYPE1  When calculating the cost of the path to an external route, the costs of internal links are included.
+              TYPE2  Costs of internal links are not included in total cost calculation. Type 2 routes have a lower priority and are considered in path selection after Type 1 costs have been evaluated.";
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "(TYPE1|TYPE2)";
+          }
+          refine "single" {
+            default "TYPE1";
+          }
+        }
+      }
+      container metric {
+        description
+          "Route-cost metric to be used when advertising the specified external LSAs.";
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..16777215";
+          }
+          refine "single" {
+            default "1";
+          }
+        }
+      }
+      container options {
+        description
+          "external LSA Options.
+              TBIT     TOS: Type of Service (T,0).
+              EBIT     External Routing: Specifies the way AS-external-LSAs are flooded (E,1).
+              MCBIT    Multicast: Specifies whether IP multicast datagrams are forwarded (MC,2).
+              NPBIT    NSSA: Specifies the handling of Type-7 LSAs (N/P,3).
+              EABIT    External Attribute: Specifies the router's willingness to receive and forward External-Attributes-LSAs (EA,4).
+              DCBIT    Demand Circuit: Specifies the router's handling of demand circuits (DC,5).
+              OBIT     Opaque: Specifies the router's willingness to receive and forward Opaque LSAs as specified in RFC 2370 (O,6).
+              UNUSED7  Unused: This bit is not used";
+        uses p:base-pattern-group {
+          refine "single" {
+            default "EBIT";
+          }
+        }
+      }
+      container segment-routing {
+        description
+          "";
+        container segment-id {
+          description
+            "Value of the Segment identifier(SID).";
+          uses p:base-pattern-group {
+            refine "pattern-format" {
+              default "0..4294967295";
+            }
+            refine "single" {
+              default "16000";
+            }
+          }
+        }
+        container prefix-segment-id {
+          description
+            "Value of the Prefix Segment identifier(SID).
+                NBIT    Node SID Flag
+                NPBIT   No-PHP Flag
+                MBIT    Mapping Server Flag
+                EBIT    Explicit-Null Flag
+                VBIT    Value/Index Flag
+                LBIT    Local/Global Flag";
+          uses p:base-pattern-group {
+            refine "single" {
+              default "NBIT";
+            }
+          }
+        }
+      }
     }
-	
-	grouping ospfv2-external-range-group {
-		description "";
-		container ospfv2-external-range {
-            description
-                "OSPFV2 external LSA (Type-5), External LSAs (OSPF Type 5 LSAs), originated by
-                 Autonomous System Boundary Routers (ASBRs), advertise routes to destinations 
-                 external to the AS, including default routes for an Autonomous System. 
-                 Type 5 LSAs are flooded into all non-stub areas of an Autonomous System.";
-
-            container address {
-                description
-                "IP address";
-                uses p:ipv4-pattern-group {
-                    refine single {
-                        default "0.0.0.1";
-                    }
-                }
-            }
-
-            container prefix-length {
-                description
-                "Prefix Length";
-				uses p:base-pattern-group {
-					refine pattern-format {
-						default "0..32";
-					}
-					refine single {
-						default "24";
-					}
-				}
-            }
-
-            container advertise-router-id {
-                description
-                "Router ID of the simulated router that will advertise external LSAs";
-                uses p:ipv4-pattern-group;
-            }
-            
-            container route-category {
-                description
-                "Route Category can be used to filter routes by type.
-                    UNDEFINED The default category assigned to a manually created block.
-                    PRIMARY   A preferred route that has duplicates (secondary routes) advertised by other ports.
-                    SECONDARY Secondary route.
-                    UNIQUE    A less preferred backup route.
-                    ANY       Indicates that a single port in the test configuration advertises this route.";
-                uses p:enum-pattern-group {
-                    refine pattern-format {
-                        default "(UNDEFINED|PRIMARY|SECONDARY|UNIQUE|ANY)";
-                    }
-                    refine single {
-                        default "UNDEFINED";
-                    }
-                }
-            }
-            
-            container forwarding-address {
-                description
-                "IPv4 forwarding address to use in the forwarding address field of the LSA.";
-                uses p:ipv4-pattern-group;
-            }
-
-            container sequence-number {
-                description
-                "Initial value of the LS sequence number field in the LSA header.
-                Used to detect old and duplicate LSAs. The larger the sequence number,
-                the more recent the LSA.";
-				uses p:base-pattern-group {
-					refine single {
-						default "80000001";
-					}
-				}
-            }
-            container age {
-                description
-                "Age of the LSA, in seconds.";
-				uses p:base-pattern-group {
-                	refine pattern-format {
-						default "0..3600";
-					}
-					refine single {
-						default "0";
-					}
-				}
-            }
-            container checksum {
-                description
-                "Specifies the LSA will be advertised with a good or a bad checksum.";
-                uses p:enum-pattern-group {
-                    refine pattern-format {
-                        default "(GOOD|BAD)";
-                    }
-                    refine single {
-                        default "GOOD";
-                    }
-                }
-            }
-            container metric-type {
-                description
-                "Metric type.
-                    TYPE1  When calculating the cost of the path to an external route, the costs of internal links are included. 
-                    TYPE2  Costs of internal links are not included in total cost calculation. Type 2 routes have a lower priority and are considered in path selection after Type 1 costs have been evaluated.";
-                uses p:enum-pattern-group {
-                    refine pattern-format {
-                        default "(TYPE1|TYPE2)";
-                    }
-                    refine single {
-                        default "TYPE1";
-                    }
-                }
-            }
-            container metric {
-                description
-                "Route-cost metric to be used when advertising the specified external LSAs.";
-				uses p:base-pattern-group {
-                	refine pattern-format {
-						default "0..16777215";
-					}
-					refine single {
-						default "1";
-					}
-				}
-            }
-            container options {
-                description
-                "external LSA Options.
-                    TBIT     TOS: Type of Service (T,0).
-                    EBIT     External Routing: Specifies the way AS-external-LSAs are flooded (E,1).
-                    MCBIT    Multicast: Specifies whether IP multicast datagrams are forwarded (MC,2).
-                    NPBIT    NSSA: Specifies the handling of Type-7 LSAs (N/P,3).
-                    EABIT    External Attribute: Specifies the router's willingness to receive and forward External-Attributes-LSAs (EA,4).
-                    DCBIT    Demand Circuit: Specifies the router's handling of demand circuits (DC,5).
-                    OBIT     Opaque: Specifies the router's willingness to receive and forward Opaque LSAs as specified in RFC 2370 (O,6).
-                    UNUSED7  Unused: This bit is not used";
-                uses p:base-pattern-group {
-                    refine single {
-                        default "EBIT";
-                    }
-                }
-            }
-            container segment-routing {
-				description "";
-                container segment-id {
-                    description
-                    "Value of the Segment identifier(SID).";
-                    uses p:base-pattern-group {
-                        refine pattern-format {
-                            default "0..4294967295";
-                        }
-                        refine single {
-                            default "16000";
-                        }
-                    }
-                }
-                container prefix-segment-id {
-                    description
-                    "Value of the Prefix Segment identifier(SID).
-                        NBIT    Node SID Flag
-                        NPBIT   No-PHP Flag
-                        MBIT    Mapping Server Flag
-                        EBIT    Explicit-Null Flag
-                        VBIT    Value/Index Flag
-                        LBIT    Local/Global Flag";
-                    uses p:base-pattern-group {
-                        refine single {
-                            default "NBIT";
-                        }
-                    }
-                }
-            }
-		}
-	}
+  }
 }

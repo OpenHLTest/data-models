@@ -1,70 +1,73 @@
 submodule openhltest-traffic-ports {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-	yang-version "1.1";
-	belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-types {
+    prefix t;
+  }
+  include openhltest-traffic-frame-options;
+  include openhltest-traffic-frame-group;
+  include openhltest-ports;
 
-	import openhltest-types {
-		prefix t;
-	}
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes a collection of raw traffic streams and associated rpcs.";
 
-	include openhltest-traffic-frame-options;
-	include openhltest-traffic-frame-group;
-	include openhltest-ports;
+  revision 2018-02-09 {
+    description
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-	organization
-	  "OpenHlTest working group";
-	contact
-	  "OpenHlTest working group";
-	description
-	  "This module describes a collection of raw traffic streams and associated rpcs.";
-
-	revision 2018-02-09 {
-		description
-		  "Initial revision.";
-		reference
-		  "0.0.1";
-	}
-
-	grouping traffic-ports-top {
-		description "A reuseable group of port based traffic streams";
-		
-		list port-traffic {
-			key "name";
-			description "A list of traffic streams where each traffic stream 
-			has a single transmit port as its source and a list of user defined frames.";
-			
-			leaf name {
-				type t:config-list-key;
-				description "The unique name of this traffic stream";
-			}
-			leaf source {
-				type leafref {
-					path "../../ports/name";
-				}
-				mandatory true;
-				description "The transmit port of this traffic stream";
-			}
-			leaf-list destinations {
-				type leafref {
-					path "../../ports/name";
-				}
-				description "The intended receive ports for this traffic stream.
-				Any empty list means that any port can receive these frames.
-				For a non-empty list, any frame received by a port that is not in the list will be counted as stray.";
-			}	
-			list frames {
-				key "name";
-				description "List of user defined frames.
-				The order of frames in the list will be the order of frames on the wire";
-				leaf name {
-					type t:config-list-key;
-					description "";
-				}
-				uses traffic-frame-group-top;
-			}
-			uses traffic-frame-options-group;
-		}
-	}
+  grouping traffic-ports-top {
+    description
+      "A reuseable group of port based traffic streams";
+    list port-traffic {
+      key "name";
+      description
+        "A list of traffic streams where each traffic stream
+         has a single transmit port as its source and a list of user defined frames.";
+      leaf name {
+        type t:config-list-key;
+        description
+          "The unique name of this traffic stream";
+      }
+      leaf source {
+        type leafref {
+          path "../../ports/name";
+        }
+        mandatory true;
+        description
+          "The transmit port of this traffic stream";
+      }
+      leaf-list destinations {
+        type leafref {
+          path "../../ports/name";
+        }
+        description
+          "The intended receive ports for this traffic stream.
+           Any empty list means that any port can receive these frames.
+           For a non-empty list, any frame received by a port that is not in the list will be counted as stray.";
+      }
+      list frames {
+        key "name";
+        description
+          "List of user defined frames.
+           The order of frames in the list will be the order of frames on the wire";
+        leaf name {
+          type t:config-list-key;
+          description
+            "";
+        }
+        uses traffic-frame-group-top;
+      }
+      uses traffic-frame-options-group;
+    }
+  }
 }

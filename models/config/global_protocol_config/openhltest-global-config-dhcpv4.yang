@@ -1,178 +1,191 @@
 submodule openhltest-global-config-dhcpv4 {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-patterns {
+    prefix p;
+  }
+  import openhltest-types {
+    prefix t;
+  }
+  include openhltest-ports;
 
-    import openhltest-patterns {
-        prefix p;
-    }
-    import openhltest-types {
-        prefix t;
-    }
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This submodule describes global port level protocol configuration settings.";
 
-	  include openhltest-ports;
-
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  revision 2017-11-02 {
     description
-      "This submodule describes global port level protocol configuration settings.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2017-11-02 {
+  grouping global-config-dhcpv4 {
+    description
+      "";
+    list dhcpv4 {
+      key "name";
+      description
+        "This list allows for configuring global DHCPv4 options.";
+      leaf name {
+        type t:config-list-key;
         description
-          "Initial revision.";
-        reference
-          "0.0.1";
-    }
-    
-    grouping global-config-dhcpv4 {
-      description "";
-      list dhcpv4 {
-        key "name";
-        description "This list allows for configuring global DHCPv4 options.";
-        leaf name {
-          type t:config-list-key;
-          description	"The unique name for a global protocols list item";
-        }	
-        leaf-list ports {
-          type leafref {
-            path "../../../ports/name";
-          }
-          description 
-          "A list of abstract port references"; 
+          "The unique name for a global protocols list item";
+      }
+      leaf-list ports {
+        type leafref {
+          path "../../../ports/name";
         }
-        container request-rate {
-          uses p:base-pattern-group {
-            refine pattern-format {
-              default "0..10000";
-            }
-            refine single {
-              default "100";
-            }
+        description
+          "A list of abstract port references";
+      }
+      container request-rate {
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..10000";
           }
-          description "Requests per second for DHCP client leases or lease renewals.";
-        }
-        container lease-time {
-          uses p:base-pattern-group {
-            refine pattern-format {
-              default "10..4294967295";
-            }
-            refine single {
-                default "60";
-            }
+          refine "single" {
+            default "100";
           }
-          description "Suggested lease time in seconds at the DHCP port level.";
         }
-        container max-msg-size {
-          uses p:base-pattern-group {
-            refine pattern-format {
-              default "264..1500";
-            }
-            refine single {
-              default "576";
-            }
+        description
+          "Requests per second for DHCP client leases or lease renewals.";
+      }
+      container lease-time {
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "10..4294967295";
           }
-          description "Used to negotiate the maximum DHCP message size, in bytes. 
-          This is option 57 for the options field of the DHCP message, as described in RFC 2132.";
-        }
-        container msg-timeout {
-          uses p:base-pattern-group {
-            refine pattern-format {
-              default "1..99999";
-            }
-            refine single {
-                default "60";
-            }
+          refine "single" {
+            default "60";
           }
-          description "Message timeout in seconds.";
         }
-        container outstanding-session-count {
-          uses p:base-pattern-group {
-            refine pattern-format {
-              default "1..65535";
-            }
-            refine single {
-                default "1000";
-            }
+        description
+          "Suggested lease time in seconds at the DHCP port level.";
+      }
+      container max-msg-size {
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "264..1500";
           }
-          description "Number of DHCP sessions to resolve at a time.";
-        }
-        container release-rate {
-          uses p:base-pattern-group {
-            refine pattern-format {
-              default "1..10000";
-            }
-            refine single {
-                default "100";
-            }
+          refine "single" {
+            default "576";
           }
-          description "Number of DHCP sessions that are released per second.";
         }
-        container retry-count {
-          uses p:base-pattern-group {
-            refine pattern-format {
-              default "0..65535";
-            }
-            refine single {
-                default "4";
-            }
+        description
+          "Used to negotiate the maximum DHCP message size, in bytes.
+           This is option 57 for the options field of the DHCP message, as described in RFC 2132.";
+      }
+      container msg-timeout {
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "1..99999";
           }
-          description "Number of retries allowed.";
-        }
-        container sequence-type {
-          uses p:enum-pattern-group {
-              refine pattern-format {
-                  default "(SEQUENTIAL|PARALLEL)";
-              }
-              refine single {
-                  default "SEQUENTIAL";
-              }
+          refine "single" {
+            default "60";
           }
-          description "Port-level sequence type that determines in what order sessions are attempted.
-          SEQUENTIAL	: Sessions are attempted sequentially across host blocks under the port.
-          PARALLEL	  : Sessions are attempted in parallel across host blocks under the port";
         }
-        container start-transaction-id {
-          uses p:int-32-pattern-group{
-              refine single {
-                  default "0";
-              }
+        description
+          "Message timeout in seconds.";
+      }
+      container outstanding-session-count {
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "1..65535";
           }
-          description "Starting transaction ID for sessions on this port.";
-        }
-        container max-dna-v4-retry-count {
-          uses p:base-pattern-group {
-            refine pattern-format {
-              default "0..10";
-            }
-            refine single {
-                default "0";
-            }
+          refine "single" {
+            default "1000";
           }
-          description "Max DNAv4 retry count.";
         }
-        container dna-v4-timeout {
-          uses p:base-pattern-group {
-            refine pattern-format {
-              default "10..99999";
-            }
-            refine single {
-                default "1000";
-            }
+        description
+          "Number of DHCP sessions to resolve at a time.";
+      }
+      container release-rate {
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "1..10000";
           }
-          description "DNAv4 timeout.";
-        }
-        container enable-custom-option-assign-for-relay-agents {
-          uses p:bool-pattern-group {
-            refine single {
-              default "false";
-            }
+          refine "single" {
+            default "100";
           }
-          description "Enable custom option assignments on relay agent mode.";
         }
+        description
+          "Number of DHCP sessions that are released per second.";
+      }
+      container retry-count {
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..65535";
+          }
+          refine "single" {
+            default "4";
+          }
+        }
+        description
+          "Number of retries allowed.";
+      }
+      container sequence-type {
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "(SEQUENTIAL|PARALLEL)";
+          }
+          refine "single" {
+            default "SEQUENTIAL";
+          }
+        }
+        description
+          "Port-level sequence type that determines in what order sessions are attempted.
+           SEQUENTIAL\t: Sessions are attempted sequentially across host blocks under the port.
+           PARALLEL\t  : Sessions are attempted in parallel across host blocks under the port";
+      }
+      container start-transaction-id {
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+        description
+          "Starting transaction ID for sessions on this port.";
+      }
+      container max-dna-v4-retry-count {
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..10";
+          }
+          refine "single" {
+            default "0";
+          }
+        }
+        description
+          "Max DNAv4 retry count.";
+      }
+      container dna-v4-timeout {
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "10..99999";
+          }
+          refine "single" {
+            default "1000";
+          }
+        }
+        description
+          "DNAv4 timeout.";
+      }
+      container enable-custom-option-assign-for-relay-agents {
+        uses p:bool-pattern-group {
+          refine "single" {
+            default "false";
+          }
+        }
+        description
+          "Enable custom option assignments on relay agent mode.";
       }
     }
+  }
 }

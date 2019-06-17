@@ -1,130 +1,125 @@
 module openhltest {
+  yang-version 1.1;
+  namespace "http://openhltest.org/yang/oht";
+  prefix oht;
 
-	yang-version "1.1";
-	namespace "http://openhltest.org/yang/oht";
-	prefix "oht";
+  import openhltest-extensions {
+    prefix e;
+  }
+  include openhltest-sessions;
+  include openhltest-config;
+  include openhltest-ports;
+  include openhltest-global-protocol-config;
+  include openhltest-global-config-dhcpv4;
+  include openhltest-layer1-groups;
+  include openhltest-layer1-ethernet;
+  include openhltest-layer1-ten-gig;
+  include openhltest-layer1-twenty-five-gig;
+  include openhltest-device-groups;
+  include openhltest-ethernet;
+  include openhltest-vlan;
+  include openhltest-ipv4;
+  include openhltest-ipv6;
+  include openhltest-bfd;
+  include openhltest-bgp-common;
+  include openhltest-bgpv4;
+  include openhltest-bgpv6;
+  include openhltest-ospfv2;
+  include openhltest-ospfv3;
+  include openhltest-isis;
+  include openhltest-traffic-ports;
+  include openhltest-traffic-devices;
+  include openhltest-traffic-frame-options;
+  include openhltest-traffic-frame-group;
+  include openhltest-traffic-custom-frame-group;
+  include openhltest-traffic-ethernet-group;
+  include openhltest-traffic-vlan-group;
+  include openhltest-traffic-ipv4-group;
+  include openhltest-traffic-ipv6-group;
+  include openhltest-traffic-tcp-group;
+  include openhltest-traffic-udp-group;
+  include openhltest-traffic-gre-group;
+  include openhltest-traffic-icmp-group;
+  include openhltest-traffic-icmpv6-group;
+  include openhltest-traffic-igmp-group;
+  include openhltest-traffic-ospfv2-group;
+  include openhltest-statistics;
+  include openhltest-physical-port-statistics;
+  include openhltest-port-statistics;
+  include openhltest-port-traffic-statistics;
+  include openhltest-device-traffic-statistics;
+  include openhltest-bgp-statistics;
+  include openhltest-ospf-statistics;
+  include openhltest-isis-statistics;
+  include openhltest-bfd-statistics;
+  include openhltest-bgpv4-route-range;
+  include openhltest-bgpv6-route-range;
+  include openhltest-ospfv2-route-range;
+  include openhltest-ospfv2-summary-range;
+  include openhltest-ospfv2-external-range;
+  include openhltest-ospfv2-nssa-range;
+  include openhltest-ospfv3-route-range;
+  include openhltest-ospfv3-inter-area-prefix-range;
+  include openhltest-ospfv3-intra-area-prefix-range;
+  include openhltest-ospfv3-as-external-prefix-range;
+  include openhltest-isis-route-range;
 
-	import openhltest-extensions {
-      prefix e;
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module is the top level of the test hierarchy.";
+
+  revision 2019-01-19 {
+    description
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
+
+  rpc authenticate {
+    e:spirent-not-supported;
+    description
+      "Authenticate a user to the system and return an api-key that can be used to authenticate the user for subsequent requests.
+       The api-key can be submitted to the system based on the transport.
+       When using the RESTCONF transport the api key is submitted to the system using an http header called X-Api-Key.";
+    input {
+      leaf username {
+        type string;
+        mandatory true;
+        description
+          "";
+      }
+      leaf password {
+        type string;
+        mandatory true;
+        description
+          "";
+      }
     }
+    output {
+      leaf api-key {
+        type string;
+        mandatory true;
+        description
+          "";
+      }
+    }
+  }
 
-	include openhltest-sessions;
-	include openhltest-config;
-	include openhltest-ports;
+  rpc set-license-servers {
+    description
+      "Provide a list of license servers to the test platform";
+    input {
+      leaf-list addresses {
+        type string;
+        description
+          "A list of license server addresses.
+           The format of the addresses can be a combination of ipv4, ipv6 or hostname.";
+      }
+    }
+  }
 
-	include openhltest-global-protocol-config;
-	include openhltest-global-config-dhcpv4;
-
-
-	include openhltest-layer1-groups;
-	include openhltest-layer1-ethernet;
-	include openhltest-layer1-ten-gig;
-	include openhltest-layer1-twenty-five-gig;
-	include openhltest-device-groups;
-	include openhltest-ethernet;
-	include openhltest-vlan;
-	include openhltest-ipv4;
-    include openhltest-ipv6;
-    
-    include openhltest-bfd;
-    include openhltest-bgp-common;
-	include openhltest-bgpv4;
-	include openhltest-bgpv6;
-	include openhltest-ospfv2;
-	include openhltest-ospfv3;
-	include openhltest-isis;
-    
-    include openhltest-traffic-ports;
-	include openhltest-traffic-devices;
-    include openhltest-traffic-frame-options;
-	include openhltest-traffic-frame-group;
-	include openhltest-traffic-custom-frame-group;
-    include openhltest-traffic-ethernet-group;
-    include openhltest-traffic-vlan-group;
-    include openhltest-traffic-ipv4-group;
-    include openhltest-traffic-ipv6-group;
-    include openhltest-traffic-tcp-group;
-    include openhltest-traffic-udp-group;
-    include openhltest-traffic-gre-group;
-    include openhltest-traffic-icmp-group;
-	include openhltest-traffic-icmpv6-group;
-	include openhltest-traffic-igmp-group;
-	include openhltest-traffic-ospfv2-group;
-	
-    include openhltest-statistics;
-	include openhltest-physical-port-statistics;
-	include openhltest-port-statistics;
-    include openhltest-port-traffic-statistics;
-	include openhltest-device-traffic-statistics;
-    include openhltest-bgp-statistics;
-    include openhltest-ospf-statistics;
-    include openhltest-isis-statistics;
-    include openhltest-bfd-statistics;
-	
-	include openhltest-bgpv4-route-range;
-    include openhltest-bgpv6-route-range;
-    include openhltest-ospfv2-route-range;
-    include openhltest-ospfv2-summary-range;
-    include openhltest-ospfv2-external-range;
-    include openhltest-ospfv2-nssa-range;
-
-    include openhltest-ospfv3-route-range;
-	include openhltest-ospfv3-inter-area-prefix-range;
-	include openhltest-ospfv3-intra-area-prefix-range;
-	include openhltest-ospfv3-as-external-prefix-range;
-
-	include openhltest-isis-route-range;
-
-	organization
-	"OpenHlTest working group";
-	contact
-	"OpenHlTest working group";
-	description
-	"This module is the top level of the test hierarchy.";
-
-	revision 2019-01-19 {
-		description
-		"Initial revision.";
-		reference
-		"0.0.1";
-	}
-
-	rpc authenticate {
-		e:spirent-not-supported;
-		description "Authenticate a user to the system and return an api-key that can be used to authenticate the user for subsequent requests.
-		The api-key can be submitted to the system based on the transport.
-		When using the RESTCONF transport the api key is submitted to the system using an http header called X-Api-Key.";
-		input {
-			leaf username {
-				type string;
-				mandatory true;
-				description "";
-			}
-			leaf password {
-				type string;
-				mandatory true;
-				description "";
-			}
-		}
-		output {
-			leaf api-key {
-				type string;
-				mandatory true;
-				description "";
-			}
-		}
-	}
-
-	rpc set-license-servers {
-		description "Provide a list of license servers to the test platform";
-		input {
-			leaf-list addresses {
-				type string;
-				description "A list of license server addresses. 
-				The format of the addresses can be a combination of ipv4, ipv6 or hostname.";
-			}
-		}
-	}
-
-	uses session-top;
+  uses session-top;
 }

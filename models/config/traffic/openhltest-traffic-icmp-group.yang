@@ -1,876 +1,876 @@
 submodule openhltest-traffic-icmp-group {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-patterns {
+    prefix p;
+  }
 
-    import openhltest-patterns {
-		prefix p;
-	}
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes all ICMP message types.";
 
-	
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  revision 2018-02-09 {
     description
-      "This module describes all ICMP message types.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2018-02-09 {
-        description
-          "Initial revision.";
-        reference
-          "0.0.1";
+  grouping traffic-common-ipv4-data-group-top {
+    description
+      "A grouping of Common IPv4 header and data options.";
+    container ipv4-source-address {
+      description
+        "Source IPv4 Address";
+      uses p:ipv4-pattern-group;
     }
-
-
-    grouping traffic-common-ipv4-data-group-top {
-        description
-        "A grouping of Common IPv4 header and data options.";
-            container ipv4-source-address {
-                description
-                "Source IPv4 Address";
-                uses p:ipv4-pattern-group;
-            }
-            container ipv4-destination-address {
-                description
-                "Destination IPv4 Address";
-                uses p:ipv4-pattern-group;
-            }
-            container ipv4-gateway-address {
-                description
-                "Gateway IPv4 Address";
-                uses p:ipv4-pattern-group;
-            }
-            container ipv4-ttl {
-                description
-                "The limited number of iterations that a unit of data can experience before 
-                the data is discarded.";
-                uses p:base-pattern-group {
-                    refine pattern-format {
-                        default "0..255";
-                    }
-                    refine single {
-                        default "255";
-                    }
-                }
-            }
-            container ipv4-protocol {
-                description
-                "Indicates the type of L4 protocol in the IP header.";
-                uses p:int-32-pattern-group {
-                    refine pattern-format {
-                        default "0..255";
-                    }
-                    refine single {
-                        default "253";
-                    }
-                }
-            }
-            container ipv4-fragment-offset {
-                description
-                "The byte count from the start of the original sent packet.";
-                uses p:int-32-pattern-group {
-                    refine pattern-format {
-                        default "0..8191";
-                    }
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container ipv4-identification {
-                description
-                "Specifies the identifying value used to help assemble the fragments of a datagram.";
-                uses p:int-32-pattern-group {
-                    refine pattern-format {
-                        default "0..65535";
-                    }
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container ipv4-reserved-bit {
-                description
-                "Specifies the reserved bit in the Flags field of the internet header.";
-                uses p:base-pattern-group {
-                    refine pattern-format {
-                        default "0..1";
-                    }
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container ipv4-mf-bit {
-                description
-                "Specifies the More Fragment (MF) bit in the Flags field of the internet header.";
-                uses p:base-pattern-group {
-                    refine pattern-format {
-                        default "0..1";
-                    }
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container ipv4-df-bit {
-                description
-                "Specifies whether the datagram is fragmented.";
-                uses p:base-pattern-group {
-                    refine pattern-format {
-                        default "0..1";
-                    }
-                    refine single {
-                        default "0";
-                    }
-                }
-            }
-            container ipv4-header-length {
-                description
-                "The length of the IP header field in number of bytes.";
-                uses p:int-32-pattern-group {
-                    refine single {
-                        default "5";
-                    }
-                }
-            }
-            container ipv4-total-length {
-                description
-                "The total length of the IP header.";
-                uses p:int-32-pattern-group {
-                    refine single {
-                        default "20";
-                    }
-                }
-            }
-            container ipv4-checksum {
-                description
-                "The header checksum is calculated over the IP header only. 
-                 It does not cover any data that follows the header.";
-                uses p:int-32-pattern-group;
-            }
-            container ipv4-data {
-                description
-                "Dataplane of IP header.";
-				uses p:base-pattern-group {
-					refine single {
-						default "0000000000000000";
-					}
-				}
-            }
+    container ipv4-destination-address {
+      description
+        "Destination IPv4 Address";
+      uses p:ipv4-pattern-group;
     }
-
-    grouping traffic-icmp-destination-unreachable-group-top {
-        description
-        "A grouping of ICMP Destination unreachable group.";
-		
-        container icmp-destination-unreachable {
-			description "";
-            container code {
-                description
-                "ICMP Destination Unreachable code.";
-                uses p:enum-pattern-group {
-                    refine pattern-format {
-                        default "(NET_UNREACHABLE|HOST_UNREACHABLE|PROTOCOL_UNREACHABLE||FRAMENT_NEEDED|SOURCE_ROUTE_FAILED)";
-                    }
-                    refine single {
-                        default "NET_UNREACHABLE";
-                    }
-                }
-            }
-            container checksum {
-                description
-                "Checksum value.";
-                uses p:int-32-pattern-group;
-            }
-            container unused {
-                description
-                "Unused field.";
-                uses p:int-32-pattern-group;
-            }
-            uses traffic-common-ipv4-data-group-top;
+    container ipv4-gateway-address {
+      description
+        "Gateway IPv4 Address";
+      uses p:ipv4-pattern-group;
+    }
+    container ipv4-ttl {
+      description
+        "The limited number of iterations that a unit of data can experience before
+         the data is discarded.";
+      uses p:base-pattern-group {
+        refine "pattern-format" {
+          default "0..255";
         }
-    }
-
-    grouping traffic-icmp-echo-reply-group-top {
-        description
-        "A grouping of ICMP Echo Reply group.";
-		
-        container icmp-echo-reply {
-			description "";
-            container code {
-                description
-                "ICMP Echo reply code.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container identifier {
-                description
-                "Identifier value.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container echo-data {
-                description
-                "Data value.";
-				uses p:base-pattern-group {
-                    refine single {
-			            default "0000";
-		            }
-                }
-            }
-            container sequence-number {
-                description
-                "Sequence Number.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container checksum {
-                description
-                "Checksum value.";
-                uses p:int-32-pattern-group;
-            }
+        refine "single" {
+          default "255";
         }
+      }
     }
-
-    grouping traffic-icmp-echo-request-group-top {
-        description
-        "A grouping of ICMP Echo Request group.";
-		
-        container icmp-echo-request {
-			description "";
-            container code {
-                description
-                "ICMP Echo request code.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container identifier {
-                description
-                "Identifier value.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container echo-data {
-                description
-                "Data value.";
-				uses p:base-pattern-group {
-                    refine single {
-			            default "0000";
-		            }
-                }
-            }
-            container sequence-number {
-                description
-                "Sequence Number.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container checksum {
-                description
-                "Checksum value.";
-                uses p:int-32-pattern-group;
-            }
+    container ipv4-protocol {
+      description
+        "Indicates the type of L4 protocol in the IP header.";
+      uses p:int-32-pattern-group {
+        refine "pattern-format" {
+          default "0..255";
         }
-    }
-
-    grouping traffic-icmp-information-reply-group-top {
-        description
-        "A grouping of ICMP information Reply group.";
-		
-        container icmp-information-reply {
-			description "";
-            container code {
-                description
-                "ICMP information reply code.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container identifier {
-                description
-                "Identifier value.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container sequence-number {
-                description
-                "Sequence Number.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container checksum {
-                description
-                "Checksum value.";
-                uses p:int-32-pattern-group;
-            }
+        refine "single" {
+          default "253";
         }
+      }
     }
-
-    grouping traffic-icmp-information-request-group-top {
-        description
-        "A grouping of ICMP information request group.";
-		
-        container icmp-information-request {
-			description "";
-            container code {
-                description
-                "ICMP information request code.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container identifier {
-                description
-                "Identifier value.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container sequence-number {
-                description
-                "Sequence Number.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container checksum {
-                description
-                "Checksum value.";
-                uses p:int-32-pattern-group;
-            }
+    container ipv4-fragment-offset {
+      description
+        "The byte count from the start of the original sent packet.";
+      uses p:int-32-pattern-group {
+        refine "pattern-format" {
+          default "0..8191";
         }
-    }
-
-    grouping traffic-icmp-address-mask-reply-group-top {
-        description
-        "A grouping of ICMP address mask reply group.";
-		
-        container icmp-address-mask-reply {
-			description "";
-            container code {
-                description
-                "ICMP address mask reply code.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container identifier {
-                description
-                "Identifier value.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container sequence-number {
-                description
-                "Sequence Number.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container checksum {
-                description
-                "Checksum value.";
-                uses p:int-32-pattern-group;
-            }
-            container address-mask {
-                description
-                "Address Mask.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
+        refine "single" {
+          default "0";
         }
+      }
     }
-
-    grouping traffic-icmp-address-mask-request-group-top {
-        description
-        "A grouping of ICMP address mask request group.";
-		
-        container icmp-address-mask-request {
-			description "";
-            container code {
-                description
-                "ICMP address mask request code.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container identifier {
-                description
-                "Identifier value.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container sequence-number {
-                description
-                "Sequence Number.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container checksum {
-                description
-                "Checksum value.";
-                uses p:int-32-pattern-group;
-            }
-            container address-mask {
-                description
-                "Address Mask.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
+    container ipv4-identification {
+      description
+        "Specifies the identifying value used to help assemble the fragments of a datagram.";
+      uses p:int-32-pattern-group {
+        refine "pattern-format" {
+          default "0..65535";
         }
-    }
-
-    grouping traffic-icmp-parameter-problem-group-top {
-        description
-        "A grouping of ICMP Parameter problem group.";
-		
-        container icmp-parameter-problem {
-			description "";
-            container code {
-                description
-                "ICMP Destination Parameter problem code.";
-                uses p:enum-pattern-group {
-                    refine pattern-format {
-                        default "(POINTER_INDICATE_ERROR)";
-                    }
-                    refine single {
-                        default "POINTER_INDICATE_ERROR";
-                    }
-                }
-            }
-            container pointer {
-                description
-                "Pointer value.";
-                uses p:int-32-pattern-group;
-            }
-            container checksum {
-                description
-                "Checksum value.";
-                uses p:int-32-pattern-group;
-            }
-            container unused {
-                description
-                "Unused field.";
-                uses p:int-32-pattern-group;
-            }
-            uses traffic-common-ipv4-data-group-top;
+        refine "single" {
+          default "0";
         }
+      }
     }
-
-    grouping traffic-icmp-redirect-group-top {
-        description
-        "A grouping of ICMP Redirect group.";
-		
-        container icmp-redirect {
-			description "";
-            container code {
-                description
-                "ICMP Redirect code.";
-                uses p:enum-pattern-group {
-                    refine pattern-format {
-                        default "(NETWORK|HOST|TOS_NETWORK|TOS_HOST)";
-                    }
-                    refine single {
-                        default "NETWORK";
-                    }
-                }
-            }
-            container gateway-address {
-                description
-                "Pointer value.";
-                uses p:ipv4-pattern-group;
-            }
-            container checksum {
-                description
-                "Checksum value.";
-                uses p:int-32-pattern-group;
-            }
-            uses traffic-common-ipv4-data-group-top;
+    container ipv4-reserved-bit {
+      description
+        "Specifies the reserved bit in the Flags field of the internet header.";
+      uses p:base-pattern-group {
+        refine "pattern-format" {
+          default "0..1";
         }
-    }
-
-    grouping traffic-icmp-router-advertisement-group-top {
-        description
-        "A grouping of ICMP Router Advertisement group.";
-		
-        container icmp-router-advertisement {
-			description "";
-            container code {
-                description
-                "ICMP Router Advertisement code.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container advertise-count {
-                description
-                "Advertise Count.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container life-time {
-                description
-                "Life Time.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container address-entry-size {
-                description
-                "Address Entry Size.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "2";
-		            }
-                }
-            }
-            container checksum {
-                description
-                "Checksum value.";
-                uses p:int-32-pattern-group;
-            }
-            list icmp-router-address {
-                key "name";
-				description "";
-                leaf name {
-                    type string;
-                    description "Name";
-                }
-                container router-address {
-                    description "Router Address";
-                    uses p:ipv4-pattern-group;
-                }
-                container preference-level {
-                    description "Preference Level";
-                    uses p:int-32-pattern-group{
-                        refine single {
-                            default "0";
-                        }
-                    }
-                }
-            }
+        refine "single" {
+          default "0";
         }
+      }
     }
-
-    grouping traffic-icmp-router-solicitation-group-top {
-        description
-        "A grouping of ICMP Router Solicitation group.";
-		
-        container icmp-router-solicitation {
-			description "";
-            container code {
-                description
-                "ICMP Router Solicitation code.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container reserved {
-                description
-                "Reserved.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container checksum {
-                description
-                "Checksum value.";
-                uses p:int-32-pattern-group;
-            }
+    container ipv4-mf-bit {
+      description
+        "Specifies the More Fragment (MF) bit in the Flags field of the internet header.";
+      uses p:base-pattern-group {
+        refine "pattern-format" {
+          default "0..1";
         }
-    }
-
-    grouping traffic-icmp-source-quench-group-top {
-        description
-        "A grouping of ICMP Source Quench group.";
-		
-        container icmp-source-quench {
-			description "";
-            container code {
-                description
-                "ICMP Source Quench code.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container unused {
-                description
-                "Unused.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container checksum {
-                description
-                "Checksum value.";
-                uses p:int-32-pattern-group;
-            }
-            uses traffic-common-ipv4-data-group-top;
+        refine "single" {
+          default "0";
         }
+      }
     }
-
-    grouping traffic-icmp-time-exceeded-group-top {
-        description
-        "A grouping of ICMP Time exceeded group.";
-		
-        container icmp-time-exceeded {
-			description "";
-            container code {
-                description
-                "ICMP Time exceeded code.";
-                uses p:enum-pattern-group {
-                    refine pattern-format {
-                        default "(TTL_EXCEED|FRAGMENT_ASSEMBLY_EXCEED)";
-                    }
-                    refine single {
-                        default "TTL_EXCEED";
-                    }
-                }
-            }
-            container unused {
-                description
-                "Unused.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container checksum {
-                description
-                "Checksum value.";
-                uses p:int-32-pattern-group;
-            }
-            uses traffic-common-ipv4-data-group-top;
+    container ipv4-df-bit {
+      description
+        "Specifies whether the datagram is fragmented.";
+      uses p:base-pattern-group {
+        refine "pattern-format" {
+          default "0..1";
         }
-    }
-
-    grouping traffic-icmp-timestamp-reply-group-top {
-        description
-        "A grouping of ICMP Timestamp reply group.";
-		
-        container icmp-timestamp-reply {
-			description "";
-            container code {
-                description
-                "ICMP Timestamp reply code.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container identifier {
-                description
-                "Identifier.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container checksum {
-                description
-                "Checksum value.";
-                uses p:int-32-pattern-group;
-            }
-            container sequence_number {
-                description
-                "Sequence Number.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container originate-timestamp {
-                description
-                "Originate timestamp.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container receive-timestamp {
-                description
-                "Receive timestamp.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container transmit-timestamp {
-                description
-                "Transmit timestamp.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
+        refine "single" {
+          default "0";
         }
+      }
     }
-
-    grouping traffic-icmp-timestamp-request-group-top {
-        description
-        "A grouping of ICMP Timestamp request group.";
-		
-        container icmp-timestamp-request {
-			description "";
-            container code {
-                description
-                "ICMP Timestamp request code.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container identifier {
-                description
-                "Identifier.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container checksum {
-                description
-                "Checksum value.";
-                uses p:int-32-pattern-group;
-            }
-            container sequence_number {
-                description
-                "Sequence Number.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container originate-timestamp {
-                description
-                "Originate timestamp.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container receive-timestamp {
-                description
-                "Receive timestamp.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
-            container transmit-timestamp {
-                description
-                "Transmit timestamp.";
-                uses p:int-32-pattern-group{
-                    refine single {
-			            default "0";
-		            }
-                }
-            }
+    container ipv4-header-length {
+      description
+        "The length of the IP header field in number of bytes.";
+      uses p:int-32-pattern-group {
+        refine "single" {
+          default "5";
         }
+      }
     }
+    container ipv4-total-length {
+      description
+        "The total length of the IP header.";
+      uses p:int-32-pattern-group {
+        refine "single" {
+          default "20";
+        }
+      }
+    }
+    container ipv4-checksum {
+      description
+        "The header checksum is calculated over the IP header only.
+         It does not cover any data that follows the header.";
+      uses p:int-32-pattern-group;
+    }
+    container ipv4-data {
+      description
+        "Dataplane of IP header.";
+      uses p:base-pattern-group {
+        refine "single" {
+          default "0000000000000000";
+        }
+      }
+    }
+  }
 
-    grouping traffic-icmp-group-top {
+  grouping traffic-icmp-destination-unreachable-group-top {
+    description
+      "A grouping of ICMP Destination unreachable group.";
+    container icmp-destination-unreachable {
+      description
+        "";
+      container code {
         description
-        "A grouping of ICMP message types.";
-        uses traffic-icmp-destination-unreachable-group-top;
-        uses traffic-icmp-echo-reply-group-top;
-        uses traffic-icmp-echo-request-group-top;
-        uses traffic-icmp-information-reply-group-top;
-        uses traffic-icmp-information-request-group-top;
-        uses traffic-icmp-address-mask-reply-group-top;
-        uses traffic-icmp-address-mask-request-group-top;
-        uses traffic-icmp-parameter-problem-group-top;
-        uses traffic-icmp-redirect-group-top;
-        uses traffic-icmp-router-advertisement-group-top;
-        uses traffic-icmp-router-solicitation-group-top;
-        uses traffic-icmp-source-quench-group-top;
-        uses traffic-icmp-time-exceeded-group-top;
-        uses traffic-icmp-timestamp-reply-group-top;
-        uses traffic-icmp-timestamp-request-group-top;
+          "ICMP Destination Unreachable code.";
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "(NET_UNREACHABLE|HOST_UNREACHABLE|PROTOCOL_UNREACHABLE||FRAMENT_NEEDED|SOURCE_ROUTE_FAILED)";
+          }
+          refine "single" {
+            default "NET_UNREACHABLE";
+          }
+        }
+      }
+      container checksum {
+        description
+          "Checksum value.";
+        uses p:int-32-pattern-group;
+      }
+      container unused {
+        description
+          "Unused field.";
+        uses p:int-32-pattern-group;
+      }
+      uses traffic-common-ipv4-data-group-top;
     }
+  }
 
+  grouping traffic-icmp-echo-reply-group-top {
+    description
+      "A grouping of ICMP Echo Reply group.";
+    container icmp-echo-reply {
+      description
+        "";
+      container code {
+        description
+          "ICMP Echo reply code.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container identifier {
+        description
+          "Identifier value.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container echo-data {
+        description
+          "Data value.";
+        uses p:base-pattern-group {
+          refine "single" {
+            default "0000";
+          }
+        }
+      }
+      container sequence-number {
+        description
+          "Sequence Number.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container checksum {
+        description
+          "Checksum value.";
+        uses p:int-32-pattern-group;
+      }
+    }
+  }
+
+  grouping traffic-icmp-echo-request-group-top {
+    description
+      "A grouping of ICMP Echo Request group.";
+    container icmp-echo-request {
+      description
+        "";
+      container code {
+        description
+          "ICMP Echo request code.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container identifier {
+        description
+          "Identifier value.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container echo-data {
+        description
+          "Data value.";
+        uses p:base-pattern-group {
+          refine "single" {
+            default "0000";
+          }
+        }
+      }
+      container sequence-number {
+        description
+          "Sequence Number.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container checksum {
+        description
+          "Checksum value.";
+        uses p:int-32-pattern-group;
+      }
+    }
+  }
+
+  grouping traffic-icmp-information-reply-group-top {
+    description
+      "A grouping of ICMP information Reply group.";
+    container icmp-information-reply {
+      description
+        "";
+      container code {
+        description
+          "ICMP information reply code.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container identifier {
+        description
+          "Identifier value.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container sequence-number {
+        description
+          "Sequence Number.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container checksum {
+        description
+          "Checksum value.";
+        uses p:int-32-pattern-group;
+      }
+    }
+  }
+
+  grouping traffic-icmp-information-request-group-top {
+    description
+      "A grouping of ICMP information request group.";
+    container icmp-information-request {
+      description
+        "";
+      container code {
+        description
+          "ICMP information request code.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container identifier {
+        description
+          "Identifier value.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container sequence-number {
+        description
+          "Sequence Number.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container checksum {
+        description
+          "Checksum value.";
+        uses p:int-32-pattern-group;
+      }
+    }
+  }
+
+  grouping traffic-icmp-address-mask-reply-group-top {
+    description
+      "A grouping of ICMP address mask reply group.";
+    container icmp-address-mask-reply {
+      description
+        "";
+      container code {
+        description
+          "ICMP address mask reply code.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container identifier {
+        description
+          "Identifier value.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container sequence-number {
+        description
+          "Sequence Number.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container checksum {
+        description
+          "Checksum value.";
+        uses p:int-32-pattern-group;
+      }
+      container address-mask {
+        description
+          "Address Mask.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+    }
+  }
+
+  grouping traffic-icmp-address-mask-request-group-top {
+    description
+      "A grouping of ICMP address mask request group.";
+    container icmp-address-mask-request {
+      description
+        "";
+      container code {
+        description
+          "ICMP address mask request code.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container identifier {
+        description
+          "Identifier value.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container sequence-number {
+        description
+          "Sequence Number.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container checksum {
+        description
+          "Checksum value.";
+        uses p:int-32-pattern-group;
+      }
+      container address-mask {
+        description
+          "Address Mask.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+    }
+  }
+
+  grouping traffic-icmp-parameter-problem-group-top {
+    description
+      "A grouping of ICMP Parameter problem group.";
+    container icmp-parameter-problem {
+      description
+        "";
+      container code {
+        description
+          "ICMP Destination Parameter problem code.";
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "(POINTER_INDICATE_ERROR)";
+          }
+          refine "single" {
+            default "POINTER_INDICATE_ERROR";
+          }
+        }
+      }
+      container pointer {
+        description
+          "Pointer value.";
+        uses p:int-32-pattern-group;
+      }
+      container checksum {
+        description
+          "Checksum value.";
+        uses p:int-32-pattern-group;
+      }
+      container unused {
+        description
+          "Unused field.";
+        uses p:int-32-pattern-group;
+      }
+      uses traffic-common-ipv4-data-group-top;
+    }
+  }
+
+  grouping traffic-icmp-redirect-group-top {
+    description
+      "A grouping of ICMP Redirect group.";
+    container icmp-redirect {
+      description
+        "";
+      container code {
+        description
+          "ICMP Redirect code.";
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "(NETWORK|HOST|TOS_NETWORK|TOS_HOST)";
+          }
+          refine "single" {
+            default "NETWORK";
+          }
+        }
+      }
+      container gateway-address {
+        description
+          "Pointer value.";
+        uses p:ipv4-pattern-group;
+      }
+      container checksum {
+        description
+          "Checksum value.";
+        uses p:int-32-pattern-group;
+      }
+      uses traffic-common-ipv4-data-group-top;
+    }
+  }
+
+  grouping traffic-icmp-router-advertisement-group-top {
+    description
+      "A grouping of ICMP Router Advertisement group.";
+    container icmp-router-advertisement {
+      description
+        "";
+      container code {
+        description
+          "ICMP Router Advertisement code.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container advertise-count {
+        description
+          "Advertise Count.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container life-time {
+        description
+          "Life Time.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container address-entry-size {
+        description
+          "Address Entry Size.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "2";
+          }
+        }
+      }
+      container checksum {
+        description
+          "Checksum value.";
+        uses p:int-32-pattern-group;
+      }
+      list icmp-router-address {
+        key "name";
+        description
+          "";
+        leaf name {
+          type string;
+          description
+            "Name";
+        }
+        container router-address {
+          description
+            "Router Address";
+          uses p:ipv4-pattern-group;
+        }
+        container preference-level {
+          description
+            "Preference Level";
+          uses p:int-32-pattern-group {
+            refine "single" {
+              default "0";
+            }
+          }
+        }
+      }
+    }
+  }
+
+  grouping traffic-icmp-router-solicitation-group-top {
+    description
+      "A grouping of ICMP Router Solicitation group.";
+    container icmp-router-solicitation {
+      description
+        "";
+      container code {
+        description
+          "ICMP Router Solicitation code.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container reserved {
+        description
+          "Reserved.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container checksum {
+        description
+          "Checksum value.";
+        uses p:int-32-pattern-group;
+      }
+    }
+  }
+
+  grouping traffic-icmp-source-quench-group-top {
+    description
+      "A grouping of ICMP Source Quench group.";
+    container icmp-source-quench {
+      description
+        "";
+      container code {
+        description
+          "ICMP Source Quench code.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container unused {
+        description
+          "Unused.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container checksum {
+        description
+          "Checksum value.";
+        uses p:int-32-pattern-group;
+      }
+      uses traffic-common-ipv4-data-group-top;
+    }
+  }
+
+  grouping traffic-icmp-time-exceeded-group-top {
+    description
+      "A grouping of ICMP Time exceeded group.";
+    container icmp-time-exceeded {
+      description
+        "";
+      container code {
+        description
+          "ICMP Time exceeded code.";
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "(TTL_EXCEED|FRAGMENT_ASSEMBLY_EXCEED)";
+          }
+          refine "single" {
+            default "TTL_EXCEED";
+          }
+        }
+      }
+      container unused {
+        description
+          "Unused.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container checksum {
+        description
+          "Checksum value.";
+        uses p:int-32-pattern-group;
+      }
+      uses traffic-common-ipv4-data-group-top;
+    }
+  }
+
+  grouping traffic-icmp-timestamp-reply-group-top {
+    description
+      "A grouping of ICMP Timestamp reply group.";
+    container icmp-timestamp-reply {
+      description
+        "";
+      container code {
+        description
+          "ICMP Timestamp reply code.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container identifier {
+        description
+          "Identifier.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container checksum {
+        description
+          "Checksum value.";
+        uses p:int-32-pattern-group;
+      }
+      container sequence_number {
+        description
+          "Sequence Number.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container originate-timestamp {
+        description
+          "Originate timestamp.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container receive-timestamp {
+        description
+          "Receive timestamp.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container transmit-timestamp {
+        description
+          "Transmit timestamp.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+    }
+  }
+
+  grouping traffic-icmp-timestamp-request-group-top {
+    description
+      "A grouping of ICMP Timestamp request group.";
+    container icmp-timestamp-request {
+      description
+        "";
+      container code {
+        description
+          "ICMP Timestamp request code.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container identifier {
+        description
+          "Identifier.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container checksum {
+        description
+          "Checksum value.";
+        uses p:int-32-pattern-group;
+      }
+      container sequence_number {
+        description
+          "Sequence Number.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container originate-timestamp {
+        description
+          "Originate timestamp.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container receive-timestamp {
+        description
+          "Receive timestamp.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container transmit-timestamp {
+        description
+          "Transmit timestamp.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+    }
+  }
+
+  grouping traffic-icmp-group-top {
+    description
+      "A grouping of ICMP message types.";
+    uses traffic-icmp-destination-unreachable-group-top;
+    uses traffic-icmp-echo-reply-group-top;
+    uses traffic-icmp-echo-request-group-top;
+    uses traffic-icmp-information-reply-group-top;
+    uses traffic-icmp-information-request-group-top;
+    uses traffic-icmp-address-mask-reply-group-top;
+    uses traffic-icmp-address-mask-request-group-top;
+    uses traffic-icmp-parameter-problem-group-top;
+    uses traffic-icmp-redirect-group-top;
+    uses traffic-icmp-router-advertisement-group-top;
+    uses traffic-icmp-router-solicitation-group-top;
+    uses traffic-icmp-source-quench-group-top;
+    uses traffic-icmp-time-exceeded-group-top;
+    uses traffic-icmp-timestamp-reply-group-top;
+    uses traffic-icmp-timestamp-request-group-top;
+  }
 }

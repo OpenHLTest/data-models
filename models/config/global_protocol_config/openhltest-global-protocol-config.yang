@@ -1,31 +1,32 @@
 submodule openhltest-global-protocol-config {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-	yang-version "1.1";
-	belongs-to "openhltest" {
-		prefix "oht";
-	}
+  include openhltest-global-config-dhcpv4;
 
-	include openhltest-global-config-dhcpv4;
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This sub-module aggregates all top level sub-modules that are configuration related.";
 
-	organization
-	  "OpenHlTest working group";
-	contact
-	  "OpenHlTest working group";
-	description
-	  "This sub-module aggregates all top level sub-modules that are configuration related.";
+  revision 2017-11-02 {
+    description
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-	revision 2017-11-02 {
-		description
-		  "Initial revision.";
-		reference
-		  "0.0.1";
-	}
-
-	grouping global-protocol-config-top {
-		description "";
-		container global-protocols {
-			description "This list allows for configuring global protocols options.";
-			uses global-config-dhcpv4;
-		}
-	}
+  grouping global-protocol-config-top {
+    description
+      "";
+    container global-protocols {
+      description
+        "This list allows for configuring global protocols options.";
+      uses global-config-dhcpv4;
+    }
+  }
 }

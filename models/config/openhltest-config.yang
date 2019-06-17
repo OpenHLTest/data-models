@@ -1,462 +1,522 @@
 submodule openhltest-config {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-	yang-version "1.1";
-	belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-types {
+    prefix t;
+  }
+  include openhltest-ports;
+  include openhltest-global-protocol-config;
+  include openhltest-layer1-groups;
+  include openhltest-device-groups;
+  include openhltest-bgpv4;
+  include openhltest-bgpv6;
+  include openhltest-ospfv2;
+  include openhltest-ospfv3;
+  include openhltest-isis;
+  include openhltest-bfd;
+  include openhltest-traffic-ports;
+  include openhltest-traffic-devices;
 
-	import openhltest-types {
-		prefix t;
-	}
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This sub-module aggregates all top level sub-modules that are configuration related.";
 
-  	include openhltest-ports;
-	include openhltest-global-protocol-config;
-	include openhltest-layer1-groups;
-	include openhltest-device-groups;
-	include openhltest-bgpv4;
-	include openhltest-bgpv6;
-	include openhltest-ospfv2;
-	include openhltest-ospfv3;
-	include openhltest-isis;
-    include openhltest-bfd;
-	include openhltest-traffic-ports;
-	include openhltest-traffic-devices;
+  revision 2017-11-02 {
+    description
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-	organization
-	  "OpenHlTest working group";
-	contact
-	  "OpenHlTest working group";
-	description
-	  "This sub-module aggregates all top level sub-modules that are configuration related.";
-
-	revision 2017-11-02 {
-		description
-		  "Initial revision.";
-		reference
-		  "0.0.1";
-	}
-
-	grouping config-top {
-		description "";
-		container config {
-			description "This container aggregates all other top level configuration submodules.";
-			uses port-top;
-			uses layer1-top;
-			uses global-protocol-config-top;
-			uses device-group-top;
-			uses traffic-ports-top;
-			uses traffic-devices-top;
-
-			action commit {
-				description "Notify the server to push all uncommitted config changes to vendor hardware";
-			}
-			action port-control {
-				description
-				"Control one or more physical hardware test ports and/or 
-				virtual machine test ports.
-				An empty targets list signifies that all ports will be subject to the mode specified.";
-
-				input {
-					leaf-list targets {
-						type leafref {
-							path "../../ports/name";
-						}
-						description "A list of abstract test port references.
-						An empty list signifies that all ports will be subject to the mode specified.";
-					}
-					leaf mode {
-						type enumeration {
-							enum CONNECT {
-								description "Connect abstract test ports to physical hardware test ports and/or 
-								virtual machine test ports";
-							}
-							enum DISCONNECT {
-								description "Disconnect abstract test ports from any connected
-								physical hardware test ports and/or virtual machine test ports";
-							}
-						}
-						default CONNECT;
-						description "Specifies the port control action to be taken.";
-					}
-				}
-			}
-			action clear {
-				description	"Clear the current configuration";
-			}
-			action load {
-				description "Load a configuration";
-				input {
-					leaf mode {
-						type enumeration {
-							enum VENDOR_BINARY {
-								description "The configuration data must be in a format recognized by the vendor";
-							}
-							enum RESTCONF_JSON {
-								description "The nodes under the config node in json format";
-							}
-						}
-						description "The type of configuration data that will be loaded by the vendor implementation";
-					}
-					leaf file-name {
-						type t:input-file-name;
-						description	"The filename that contains configuration data";
-					}
-				}
-			}
-			action save {
-				description	"Save the current configuration";
-				input {
-					leaf mode {
-						type enumeration {
-							enum VENDOR_BINARY {
-								description "The configuration will be saved in a vendor specific format";
-							}
-							enum RESTCONF_JSON {
-								description "The nodes under the config node saved in json format";
-							}
-						}
-						description "The type of configuration data that will be saved by the vendor implementation";
-					}
-					leaf file-name {
-						type t:output-file-name;
-						description	"The filename that will contain the returned configuration data";
-					}
-				}
-				output {
-					leaf content {
-						type t:file-content;
-						description	"The base64 encoded binary data that is the configuration data";
-					}
-				}
-			}
-			action arp-control {
-				description "ARP control command.
-				An empty targets list signifies that ARP will be performed globally";
-				input {
-                    leaf-list targets {
-                        type union {
-                            type leafref {
-                                path "../../ports/name";
-                            }
-                            type leafref {
-                                path "../../device-groups/name";
-                            }
-                            type leafref {
-                                path "../../device-groups/devices/name";
-                            }
-                            type leafref {
-                                path "../../port-traffic/name";
-                            }
-                            type leafref {
-                                path "../../device-traffic/name";
-                            }
-                        }
-                        description "List of 1..n abstract ports, device-groups, devices, traffic group references.
-						An empty list signifies that ARP will be performed globally.";
-                    }
-				}
-			}
-			action traffic-control {
-				description
-				"Control one or more traffic groups.
-				An empty list signifies that all traffic will be subject to the mode specified.";
-
-				input {
-					leaf-list targets {
-						type union {
-							type leafref {
-								path "../../port-traffic/name";
-							}
-							type leafref {
-								path "../../device-traffic/name";
-							}
-						}
-						description "A list of traffic names.
-						An empty list signifies that all traffic will be subject to the mode specified.";
-					}
-					leaf mode {
-						type enumeration {
-							enum START {
-								description "";
-							}
-							enum STOP {
-								description "";
-							}
-						}
-						default "START";
-						description "Specifies the action to be taken.";
-					}
-				}
-			}
-			action device-groups-control {
-				description
-				"Control one or more device-groups.
-				An empty list signifies that all device-groups will be subject to the mode specified.";
-
-				input {
-					leaf-list targets {
-						type leafref {
-							path "../../device-groups/name";
-						}
-						description "A list of protocol group names";
-					}
-					leaf mode {
-						type t:start-stop-enum;
-						default "START";
-						description "Specifies the action to be taken.";
-					}
-				}
-			}
-			action bgpv4-control {
-				description
-				"Start one or more emulated BGPV4 protocol groups.
-				An empty targets list signifies that all BGPV4 protocol groups will be subject to the mode specified.";
-
-				input {
-					leaf-list targets {
-						type leafref {
-							path "../../device-groups/devices/protocols/name";
-						}
-						must "../../device-groups/devices/protocols/protocol-type = BGPV4";
-						description "A list of BGPV4 protocol references.
-						An empty list signifies that all BGPV4 protocol groups will be subject to the mode specified.";
-					}
-					leaf mode {
-						type enumeration {
-							enum START {
-								description "";
-							}
-							enum STOP {
-								description "";
-							}
-							enum LINK_FLAP {
-								description "";
-							}
-							enum RESTART {
-								description "";
-							}
-							enum ADVERTISE {
-								description "";
-							}
-							enum WITHDRAW {
-								description "";
-							}
-						}
-						default "START";
-						description "Specifies the action to be taken.";
-					}
-				}
-			}
-			action bgpv6-control {
-				description
-				"Start one or more emulated BGPV6 protocol groups.
-				An empty targets list signifies that all BGPV6 protocol groups will be subject to the mode specified.";
-
-				input {
-					leaf-list targets {
-						type leafref {
-							path "../../device-groups/devices/protocols/name";
-						}
-						must "../../device-groups/devices/protocols/protocol-type = BGPV6";
-						description "A list of BGPV6 protocol references.
-						An empty list signifies that all BGPV6 protocol groups will be subject to the mode specified.";
-					}
-					leaf mode {
-						type enumeration {
-							enum START {
-								description "";
-							}
-							enum STOP {
-								description "";
-							}
-							enum LINK_FLAP {
-								description "";
-							}
-							enum RESTART {
-								description "";
-							}
-							enum ADVERTISE {
-								description "";
-							}
-							enum WITHDRAW {
-								description "";
-							}
-						}
-						default "START";
-						description "Specifies the action to be taken.";
-					}
-				}
-			}
-			action ospfv2-control {
-				description
-				"Start one or more emulated OSPFV2 protocol groups.
-				An empty targets list signifies that all OSPFV2 protocol groups will be subject to the mode specified.";
-
-				input {
-					leaf-list targets {
-						type leafref {
-							path "../../device-groups/devices/protocols/name";
-						}
-						must "../../device-groups/devices/protocols/protocol-type = OSPFV2";
-						description "A list of OSPFV2 protocol references.
-						An empty list signifies that all OSPFV2 protocol groups will be subject to the mode specified.";
-					}
-					leaf mode {
-						type enumeration {
-							enum START {
-								description "";
-							}
-							enum STOP {
-								description "";
-							}
-							enum LINK_FLAP {
-								description "";
-							}
-							enum RESTART {
-								description "";
-							}
-							enum ADVERTISE {
-								description "";
-							}
-							enum WITHDRAW {
-								description "";
-							}
-						}
-						default "START";
-						description "Specifies the action to be taken.";
-					}
-				}
-			}
-			action ospfv3-control {
-				description
-				"Start one or more emulated OSPFV3 protocol groups.
-				An empty targets list signifies that all OSPFV3 protocol groups will be subject to the mode specified.";
-
-				input {
-					leaf-list targets {
-						type leafref {
-							path "../../device-groups/devices/protocols/name";
-						}
-						must "../../device-groups/devices/protocols/protocol-type = OSPFV3";
-						description "A list of OSPFV3 protocol references.
-						An empty list signifies that all OSPFV3 protocol groups will be subject to the mode specified.";
-					}
-					leaf mode {
-						type enumeration {
-							enum START {
-								description "";
-							}
-							enum STOP {
-								description "";
-							}
-							enum LINK_FLAP {
-								description "";
-							}
-							enum RESTART {
-								description "";
-							}
-							enum ADVERTISE {
-								description "";
-							}
-							enum WITHDRAW {
-								description "";
-							}
-						}
-						default "START";
-						description "Specifies the action to be taken.";
-					}
-				}
-			}
-			action isis-control {
-				description
-				"Start one or more emulated ISIS protocol groups.
-				An empty targets list signifies that all ISIS protocol groups will be subject to the mode specified.";
-
-				input {
-					leaf-list targets {
-						type leafref {
-							path "../../device-groups/devices/protocols/name";
-						}
-						must "../../device-groups/devices/protocols/protocol-type = ISIS";
-						description "A list of ISIS protocol references.
-						An empty list signifies that all ISIS protocol groups will be subject to the mode specified.";
-					}
-					leaf mode {
-						type enumeration {
-							enum START {
-								description "";
-							}
-							enum STOP {
-								description "";
-							}
-							enum LINK_FLAP {
-								description "";
-							}
-							enum RESTART {
-								description "";
-							}
-						}
-						default "START";
-						description "Specifies the action to be taken.";
-					}
-				}
-			}
-			action bfdv4-control {
-				description
-				"Start one or more emulated BFD v4 protocol groups.
-				An empty targets list signifies that all BFD v4 protocol groups will be subject to the mode specified.";
-
-				input {
-					leaf-list targets {
-						type leafref {
-							path "../../device-groups/devices/protocols/name";
-						}
-						must "../../device-groups/devices/protocols/protocol-type = BFDV4";
-						description "A list of BFDV4 protocol references.
-						An empty list signifies that all BFD v4 protocol groups will be subject to the mode specified.";
-					}
-					leaf mode {
-						type enumeration {
-							enum START {
-								description "";
-							}
-							enum STOP {
-								description "";
-							}
-						}
-						default "START";
-						description "Specifies the action to be taken.";
-					}
-				}
-			}
-			action bfdv6-control {
-				description
-				"Start one or more emulated BFD v6 protocol groups.
-				An empty targets list signifies that all BFD v6 protocol groups will be subject to the mode specified.";
-
-				input {
-					leaf-list targets {
-						type leafref {
-							path "../../device-groups/devices/protocols/name";
-						}
-						must "../../device-groups/devices/protocols/protocol-type = BFDV6";
-						description "A list of BFDV6 protocol references.
-						An empty list signifies that all BFD v6 protocol groups will be subject to the mode specified.";
-					}
-					leaf mode {
-						type enumeration {
-							enum START {
-								description "";
-							}
-							enum STOP {
-								description "";
-							}
-						}
-						default "START";
-						description "Specifies the action to be taken.";
-					}
-				}
-			}
-		}
-	}
+  grouping config-top {
+    description
+      "";
+    container config {
+      description
+        "This container aggregates all other top level configuration submodules.";
+      uses port-top;
+      uses layer1-top;
+      uses global-protocol-config-top;
+      uses device-group-top;
+      uses traffic-ports-top;
+      uses traffic-devices-top;
+      action commit {
+        description
+          "Notify the server to push all uncommitted config changes to vendor hardware";
+      }
+      action port-control {
+        description
+          "Control one or more physical hardware test ports and/or
+           virtual machine test ports.
+           An empty targets list signifies that all ports will be subject to the mode specified.";
+        input {
+          leaf-list targets {
+            type leafref {
+              path "../../ports/name";
+            }
+            description
+              "A list of abstract test port references.
+               An empty list signifies that all ports will be subject to the mode specified.";
+          }
+          leaf mode {
+            type enumeration {
+              enum CONNECT {
+                description
+                  "Connect abstract test ports to physical hardware test ports and/or
+                   virtual machine test ports";
+              }
+              enum DISCONNECT {
+                description
+                  "Disconnect abstract test ports from any connected
+                   physical hardware test ports and/or virtual machine test ports";
+              }
+            }
+            default "CONNECT";
+            description
+              "Specifies the port control action to be taken.";
+          }
+        }
+      }
+      action clear {
+        description
+          "Clear the current configuration";
+      }
+      action load {
+        description
+          "Load a configuration";
+        input {
+          leaf mode {
+            type enumeration {
+              enum VENDOR_BINARY {
+                description
+                  "The configuration data must be in a format recognized by the vendor";
+              }
+              enum RESTCONF_JSON {
+                description
+                  "The nodes under the config node in json format";
+              }
+            }
+            description
+              "The type of configuration data that will be loaded by the vendor implementation";
+          }
+          leaf file-name {
+            type t:input-file-name;
+            description
+              "The filename that contains configuration data";
+          }
+        }
+      }
+      action save {
+        description
+          "Save the current configuration";
+        input {
+          leaf mode {
+            type enumeration {
+              enum VENDOR_BINARY {
+                description
+                  "The configuration will be saved in a vendor specific format";
+              }
+              enum RESTCONF_JSON {
+                description
+                  "The nodes under the config node saved in json format";
+              }
+            }
+            description
+              "The type of configuration data that will be saved by the vendor implementation";
+          }
+          leaf file-name {
+            type t:output-file-name;
+            description
+              "The filename that will contain the returned configuration data";
+          }
+        }
+        output {
+          leaf content {
+            type t:file-content;
+            description
+              "The base64 encoded binary data that is the configuration data";
+          }
+        }
+      }
+      action arp-control {
+        description
+          "ARP control command.
+           An empty targets list signifies that ARP will be performed globally";
+        input {
+          leaf-list targets {
+            type union {
+              type leafref {
+                path "../../ports/name";
+              }
+              type leafref {
+                path "../../device-groups/name";
+              }
+              type leafref {
+                path "../../device-groups/devices/name";
+              }
+              type leafref {
+                path "../../port-traffic/name";
+              }
+              type leafref {
+                path "../../device-traffic/name";
+              }
+            }
+            description
+              "List of 1..n abstract ports, device-groups, devices, traffic group references.
+               An empty list signifies that ARP will be performed globally.";
+          }
+        }
+      }
+      action traffic-control {
+        description
+          "Control one or more traffic groups.
+           An empty list signifies that all traffic will be subject to the mode specified.";
+        input {
+          leaf-list targets {
+            type union {
+              type leafref {
+                path "../../port-traffic/name";
+              }
+              type leafref {
+                path "../../device-traffic/name";
+              }
+            }
+            description
+              "A list of traffic names.
+               An empty list signifies that all traffic will be subject to the mode specified.";
+          }
+          leaf mode {
+            type enumeration {
+              enum START {
+                description
+                  "";
+              }
+              enum STOP {
+                description
+                  "";
+              }
+            }
+            default "START";
+            description
+              "Specifies the action to be taken.";
+          }
+        }
+      }
+      action device-groups-control {
+        description
+          "Control one or more device-groups.
+           An empty list signifies that all device-groups will be subject to the mode specified.";
+        input {
+          leaf-list targets {
+            type leafref {
+              path "../../device-groups/name";
+            }
+            description
+              "A list of protocol group names";
+          }
+          leaf mode {
+            type t:start-stop-enum;
+            default "START";
+            description
+              "Specifies the action to be taken.";
+          }
+        }
+      }
+      action bgpv4-control {
+        description
+          "Start one or more emulated BGPV4 protocol groups.
+           An empty targets list signifies that all BGPV4 protocol groups will be subject to the mode specified.";
+        input {
+          leaf-list targets {
+            type leafref {
+              path "../../device-groups/devices/protocols/name";
+            }
+            must '../../device-groups/devices/protocols/protocol-type = BGPV4';
+            description
+              "A list of BGPV4 protocol references.
+               An empty list signifies that all BGPV4 protocol groups will be subject to the mode specified.";
+          }
+          leaf mode {
+            type enumeration {
+              enum START {
+                description
+                  "";
+              }
+              enum STOP {
+                description
+                  "";
+              }
+              enum LINK_FLAP {
+                description
+                  "";
+              }
+              enum RESTART {
+                description
+                  "";
+              }
+              enum ADVERTISE {
+                description
+                  "";
+              }
+              enum WITHDRAW {
+                description
+                  "";
+              }
+            }
+            default "START";
+            description
+              "Specifies the action to be taken.";
+          }
+        }
+      }
+      action bgpv6-control {
+        description
+          "Start one or more emulated BGPV6 protocol groups.
+           An empty targets list signifies that all BGPV6 protocol groups will be subject to the mode specified.";
+        input {
+          leaf-list targets {
+            type leafref {
+              path "../../device-groups/devices/protocols/name";
+            }
+            must '../../device-groups/devices/protocols/protocol-type = BGPV6';
+            description
+              "A list of BGPV6 protocol references.
+               An empty list signifies that all BGPV6 protocol groups will be subject to the mode specified.";
+          }
+          leaf mode {
+            type enumeration {
+              enum START {
+                description
+                  "";
+              }
+              enum STOP {
+                description
+                  "";
+              }
+              enum LINK_FLAP {
+                description
+                  "";
+              }
+              enum RESTART {
+                description
+                  "";
+              }
+              enum ADVERTISE {
+                description
+                  "";
+              }
+              enum WITHDRAW {
+                description
+                  "";
+              }
+            }
+            default "START";
+            description
+              "Specifies the action to be taken.";
+          }
+        }
+      }
+      action ospfv2-control {
+        description
+          "Start one or more emulated OSPFV2 protocol groups.
+           An empty targets list signifies that all OSPFV2 protocol groups will be subject to the mode specified.";
+        input {
+          leaf-list targets {
+            type leafref {
+              path "../../device-groups/devices/protocols/name";
+            }
+            must '../../device-groups/devices/protocols/protocol-type = OSPFV2';
+            description
+              "A list of OSPFV2 protocol references.
+               An empty list signifies that all OSPFV2 protocol groups will be subject to the mode specified.";
+          }
+          leaf mode {
+            type enumeration {
+              enum START {
+                description
+                  "";
+              }
+              enum STOP {
+                description
+                  "";
+              }
+              enum LINK_FLAP {
+                description
+                  "";
+              }
+              enum RESTART {
+                description
+                  "";
+              }
+              enum ADVERTISE {
+                description
+                  "";
+              }
+              enum WITHDRAW {
+                description
+                  "";
+              }
+            }
+            default "START";
+            description
+              "Specifies the action to be taken.";
+          }
+        }
+      }
+      action ospfv3-control {
+        description
+          "Start one or more emulated OSPFV3 protocol groups.
+           An empty targets list signifies that all OSPFV3 protocol groups will be subject to the mode specified.";
+        input {
+          leaf-list targets {
+            type leafref {
+              path "../../device-groups/devices/protocols/name";
+            }
+            must '../../device-groups/devices/protocols/protocol-type = OSPFV3';
+            description
+              "A list of OSPFV3 protocol references.
+               An empty list signifies that all OSPFV3 protocol groups will be subject to the mode specified.";
+          }
+          leaf mode {
+            type enumeration {
+              enum START {
+                description
+                  "";
+              }
+              enum STOP {
+                description
+                  "";
+              }
+              enum LINK_FLAP {
+                description
+                  "";
+              }
+              enum RESTART {
+                description
+                  "";
+              }
+              enum ADVERTISE {
+                description
+                  "";
+              }
+              enum WITHDRAW {
+                description
+                  "";
+              }
+            }
+            default "START";
+            description
+              "Specifies the action to be taken.";
+          }
+        }
+      }
+      action isis-control {
+        description
+          "Start one or more emulated ISIS protocol groups.
+           An empty targets list signifies that all ISIS protocol groups will be subject to the mode specified.";
+        input {
+          leaf-list targets {
+            type leafref {
+              path "../../device-groups/devices/protocols/name";
+            }
+            must '../../device-groups/devices/protocols/protocol-type = ISIS';
+            description
+              "A list of ISIS protocol references.
+               An empty list signifies that all ISIS protocol groups will be subject to the mode specified.";
+          }
+          leaf mode {
+            type enumeration {
+              enum START {
+                description
+                  "";
+              }
+              enum STOP {
+                description
+                  "";
+              }
+              enum LINK_FLAP {
+                description
+                  "";
+              }
+              enum RESTART {
+                description
+                  "";
+              }
+            }
+            default "START";
+            description
+              "Specifies the action to be taken.";
+          }
+        }
+      }
+      action bfdv4-control {
+        description
+          "Start one or more emulated BFD v4 protocol groups.
+           An empty targets list signifies that all BFD v4 protocol groups will be subject to the mode specified.";
+        input {
+          leaf-list targets {
+            type leafref {
+              path "../../device-groups/devices/protocols/name";
+            }
+            must '../../device-groups/devices/protocols/protocol-type = BFDV4';
+            description
+              "A list of BFDV4 protocol references.
+               An empty list signifies that all BFD v4 protocol groups will be subject to the mode specified.";
+          }
+          leaf mode {
+            type enumeration {
+              enum START {
+                description
+                  "";
+              }
+              enum STOP {
+                description
+                  "";
+              }
+            }
+            default "START";
+            description
+              "Specifies the action to be taken.";
+          }
+        }
+      }
+      action bfdv6-control {
+        description
+          "Start one or more emulated BFD v6 protocol groups.
+           An empty targets list signifies that all BFD v6 protocol groups will be subject to the mode specified.";
+        input {
+          leaf-list targets {
+            type leafref {
+              path "../../device-groups/devices/protocols/name";
+            }
+            must '../../device-groups/devices/protocols/protocol-type = BFDV6';
+            description
+              "A list of BFDV6 protocol references.
+               An empty list signifies that all BFD v6 protocol groups will be subject to the mode specified.";
+          }
+          leaf mode {
+            type enumeration {
+              enum START {
+                description
+                  "";
+              }
+              enum STOP {
+                description
+                  "";
+              }
+            }
+            default "START";
+            description
+              "Specifies the action to be taken.";
+          }
+        }
+      }
+    }
+  }
 }

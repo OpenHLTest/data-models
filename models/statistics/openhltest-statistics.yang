@@ -1,58 +1,58 @@
 submodule openhltest-statistics {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  include openhltest-physical-port-statistics;
+  include openhltest-port-statistics;
+  include openhltest-port-traffic-statistics;
+  include openhltest-device-traffic-statistics;
+  include openhltest-bgp-statistics;
+  include openhltest-ospf-statistics;
+  include openhltest-isis-statistics;
+  include openhltest-bfd-statistics;
 
-	include openhltest-physical-port-statistics;
-	include openhltest-port-statistics;
-    include openhltest-port-traffic-statistics;
-    include openhltest-device-traffic-statistics;
-    include openhltest-bgp-statistics;
-    include openhltest-ospf-statistics;
-    include openhltest-isis-statistics;
-    include openhltest-bfd-statistics;
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes a collection of all statistics that are available.
+     It offers two methods of statistic retrieval.
+     The pull method is described under the statistics container.
+     The push method is described under the statistic-events container.";
 
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  revision 2017-11-02 {
     description
-      "This module describes a collection of all statistics that are available.
-	  It offers two methods of statistic retrieval.
-	  The pull method is described under the statistics container.
-	  The push method is described under the statistic-events container.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2017-11-02 {
-        description
-          "Initial revision.";
-        reference
-          "0.0.1";
+  grouping statistics-top {
+    description
+      "";
+    leaf first-activity-timestamp {
+      type string;
+      description
+        "Timestamp of the first request to this session.";
     }
-
-	grouping statistics-top {
-		description "";
-
-		leaf first-activity-timestamp {
-			type string;
-			description "Timestamp of the first request to this session.";
-		}
-		leaf last-activity-timestamp {
-			type string;
-			description "Timestamp of the last request to this session";
-		}		
-		
-		uses physical-port-statistics-top;
-		uses port-statistics-top;
-		uses port-traffic-statistics-top;
-		uses device-traffic-statistics-top;
-		uses bgpv4-statistics;
-		uses bgpv6-statistics;
-		uses ospfv2-statistics;
-		uses ospfv3-statistics;
-		uses isis-statistics;
-		uses bfdv4-statistics;
-		uses bfdv6-statistics;
-	}
+    leaf last-activity-timestamp {
+      type string;
+      description
+        "Timestamp of the last request to this session";
+    }
+    uses physical-port-statistics-top;
+    uses port-statistics-top;
+    uses port-traffic-statistics-top;
+    uses device-traffic-statistics-top;
+    uses bgpv4-statistics;
+    uses bgpv6-statistics;
+    uses ospfv2-statistics;
+    uses ospfv3-statistics;
+    uses isis-statistics;
+    uses bfdv4-statistics;
+    uses bfdv6-statistics;
+  }
 }

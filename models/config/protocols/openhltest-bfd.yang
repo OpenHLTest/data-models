@@ -1,114 +1,121 @@
 submodule openhltest-bfd {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
-    
-    import openhltest-patterns {
-		prefix p;
-	}
-	organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  import openhltest-patterns {
+    prefix p;
+  }
+
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes the BFD v4 and v6 emulated protocol.";
+
+  revision 2018-02-09 {
     description
-      "This module describes the BFD v4 and v6 emulated protocol.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2018-02-09 {
-        description
-          "Initial revision.";
-        reference
-          "0.0.1";
+  grouping bfd-common-group {
+    description
+      "";
+    container transmit-interval {
+      description
+        "Minimum interval, in milliseconds, that the emulated router desires between
+         transmitted BFD Control packets.";
+      uses p:base-pattern-group {
+        refine "pattern-format" {
+          default "1..10000";
+        }
+        refine "single" {
+          default "50";
+        }
+      }
     }
+    container receive-interval {
+      description
+        "Minimum interval, in milliseconds, that the emulated router desires between
+         received BFD Control packets.";
+      uses p:base-pattern-group {
+        refine "pattern-format" {
+          default "1..10000";
+        }
+        refine "single" {
+          default "50";
+        }
+      }
+    }
+    container echo-receive-interval {
+      description
+        "Minimum interval, in milliseconds, that the emulated router desires between
+         received BFD Echo packets.";
+      uses p:base-pattern-group {
+        refine "pattern-format" {
+          default "0..10000";
+        }
+        refine "single" {
+          default "0";
+        }
+      }
+    }
+    container authentication {
+      presence "";
+      description
+        "Type of authentication to be used
+         NONE   : no authentication
+         SIMPLE : The packet is authenticated by the receiving router if the password
+         matches the authentication key that is included in the packet.
+         This method provides little security because the authentication
+         key can be learned by capturing packets.
+         MD5    : The packet contains a cryptographic checksum, but not the authentication
+         key itself. The receiving router performs a calculation based on the
+         MD5 algorithm and an authentication key ID. The packet is authenticated
+         if the calculated checksum matches. This method provides a stronger
+         assurance that routing data originated from a router with a valid
+         authentication key.";
+      container authentication-type {
+        description
+          "Type of authentication to be used";
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "(SIMPLE|MD5|NONE)";
+          }
+          refine "single" {
+            default "NONE";
+          }
+        }
+      }
+      container password {
+        description
+          "Authentication password.";
+        uses p:string-pattern-group;
+      }
+    }
+  }
 
-	grouping bfd-common-group {
-		description "";
-        container transmit-interval {
-            description "Minimum interval, in milliseconds, that the emulated router desires between 
-            transmitted BFD Control packets.";
-            uses p:base-pattern-group {
-                refine pattern-format {
-                    default "1..10000";
-                }
-                refine single {
-                    default "50";
-                }
-            }
-        }
-        
-        container receive-interval {
-            description "Minimum interval, in milliseconds, that the emulated router desires between 
-            received BFD Control packets.";
-            uses p:base-pattern-group {
-                refine pattern-format {
-                    default "1..10000";
-                }
-                refine single {
-                    default "50";
-                }
-            }
-        }
-        
-        container echo-receive-interval {
-            description "Minimum interval, in milliseconds, that the emulated router desires between
-            received BFD Echo packets.";
-            uses p:base-pattern-group {
-                refine pattern-format {
-                    default "0..10000";
-                }
-                refine single {
-                    default "0";
-                }
-            }
-        }
-        container authentication {
-			presence "";
-            description "Type of authentication to be used
-                NONE   : no authentication
-                SIMPLE : The packet is authenticated by the receiving router if the password 
-                         matches the authentication key that is included in the packet. 
-                         This method provides little security because the authentication
-                         key can be learned by capturing packets.
-                MD5    : The packet contains a cryptographic checksum, but not the authentication
-                        key itself. The receiving router performs a calculation based on the 
-                        MD5 algorithm and an authentication key ID. The packet is authenticated
-                        if the calculated checksum matches. This method provides a stronger
-                        assurance that routing data originated from a router with a valid 
-                        authentication key.";
-            container authentication-type {
-                description
-                "Type of authentication to be used";
-                uses p:enum-pattern-group {
-                    refine pattern-format {
-                        default "(SIMPLE|MD5|NONE)";
-                    }
-                    refine single {
-                        default "NONE";
-                    }
-                }
-            }
-            container password {
-                description
-                "Authentication password.";
-                uses p:string-pattern-group;
-            }
-        }
-	}
-    
-	grouping bfdv4-group {
-		description "";
-		container bfdv4 {
-			description "";
-			uses bfd-common-group;
-		}
-	}
-    
-	grouping bfdv6-group {
-		description "";
-		container bfdv6 {
-			description "";
-			uses bfd-common-group;
-		}
-	}
+  grouping bfdv4-group {
+    description
+      "";
+    container bfdv4 {
+      description
+        "";
+      uses bfd-common-group;
+    }
+  }
+
+  grouping bfdv6-group {
+    description
+      "";
+    container bfdv6 {
+      description
+        "";
+      uses bfd-common-group;
+    }
+  }
 }

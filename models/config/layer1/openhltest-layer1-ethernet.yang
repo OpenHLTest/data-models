@@ -1,385 +1,475 @@
 submodule openhltest-layer1-ethernet {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-extensions {
+    prefix e;
+  }
 
-	import openhltest-extensions {
-		prefix e;
-	}
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This submodule describes the ethernet physical layer1 settings.";
 
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  revision 2017-11-02 {
     description
-      "This submodule describes the ethernet physical layer1 settings.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2017-11-02 {
+  grouping layer1-ethernet-common-group {
+    description
+      "";
+    leaf auto-mdix {
+      e:ixia-not-supported;
+      type boolean;
+      description
+        "";
+    }
+    leaf auto-instrumentation {
+      e:spirent-not-supported;
+      type enumeration {
+        enum END_OF_FRAME {
+          description
+            "";
+        }
+        enum FLOATING {
+          description
+            "";
+        }
+      }
+      default "FLOATING";
+      description
+        "";
+    }
+    leaf collision-exponent {
+      e:ixia-not-supported;
+      type uint8 {
+        range "1..10";
+      }
+      default "10";
+      description
+        "";
+    }
+    leaf custom-fec-mode {
+      e:ixia-not-supported;
+      type enumeration {
+        enum NONE {
+          description
+            "";
+        }
+        enum KR_FEC {
+          description
+            "";
+        }
+        enum RS_FEC {
+          description
+            "";
+        }
+      }
+      description
+        "";
+    }
+    leaf data-path-mode {
+      type enumeration {
+        enum NORMAL {
+          description
+            "";
+        }
+        enum LOOPBACK {
+          description
+            "";
+        }
+        enum LINE_MONITOR {
+          e:ixia-not-supported;
+          description
+            "";
+        }
+      }
+      default "NORMAL";
+      description
+        "";
+    }
+    container priority-based-flow-control {
+      presence "";
+      description
+        "Priority-based Flow Control provides a link level flow control mechanism that can be controlled independently for each frame priority. The goal of this mechanism is to ensure zero loss under congestion in DCB networks";
+    }
+    container data-center-bridging-exchange {
+      presence "";
+      description
+        "Data Center Bridging Exchange protocol is a discovery and capability exchange protocol that is used for conveying capabilities and configuration between neighbors to ensure consistent configuration across the network. This protocol leverages functionality provided by LLDP";
+    }
+    leaf flow-control {
+      type boolean;
+      default "true";
+      description
+        "Enables the port's MAC flow control mechanisms to listen for a directed address pause message";
+    }
+    leaf flow-control-directed-address {
+      e:spirent-not-supported;
+      type string;
+      default "01 80 C2 00 00 01";
+      description
+        "The 48-bit MAC address that the port listens on for a directed pause.";
+    }
+    leaf forward-error-correction {
+      type boolean;
+      default "true";
+      description
+        "";
+    }
+    leaf ignore-link-status {
+      type boolean;
+      default "false";
+      description
+        "";
+    }
+    leaf internal-ppm-adjust {
+      type int8 {
+        range "-105..105";
+      }
+      default "0";
+      description
+        "";
+    }
+    leaf mtu {
+      e:ixia-not-supported;
+      type uint16 {
+        range "0..16383";
+      }
+      default "1500";
+      description
+        "";
+    }
+    leaf optimized-xon {
+      e:ixia-not-supported;
+      type enumeration {
+        enum DISABLE {
+          description
+            "";
+        }
+        enum ENABLE {
+          description
+            "";
+        }
+      }
+      default "DISABLE";
+      description
+        "";
+    }
+    leaf port-setup-mode {
+      e:ixia-not-supported;
+      type enumeration {
+        enum PORTCONFIG_ONLY {
+          description
+            "";
+        }
+        enum REGISTERS_ONLY {
+          description
+            "";
+        }
+      }
+      default "PORTCONFIG_ONLY";
+      description
+        "";
+    }
+    leaf rx-mode {
+      e:spirent-not-supported;
+      type enumeration {
+        enum CAPTURE {
+          description
+            "";
+        }
+        enum CAPTURE_AND_MEASURE {
+          description
+            "";
+        }
+        enum MEASURE {
+          description
+            "";
+        }
+        enum PACKET_IMPAIRMENT {
+          description
+            "";
+        }
+      }
+      default "MEASURE";
+      description
+        "";
+    }
+    leaf transmit-clock-source {
+      type enumeration {
+        enum INTERNAL {
+          description
+            "";
+        }
+        enum INTERNAL_PPM_ADJ {
+          description
+            "";
+        }
+        enum BITS {
+          description
+            "";
+        }
+        enum LOOP {
+          description
+            "";
+        }
+        enum EXTERNAL {
+          description
+            "";
+        }
+      }
+      default "INTERNAL";
+      description
+        "";
+    }
+    leaf tx-gap-control {
+      e:spirent-not-supported;
+      type enumeration {
+        enum AVERAGE_MODE {
+          description
+            "";
+        }
+        enum FIXED_MODE {
+          description
+            "";
+        }
+      }
+      default "AVERAGE_MODE";
+      description
+        "";
+    }
+    leaf tx-mode {
+      e:spirent-not-supported;
+      type enumeration {
+        enum INTERLEAVED {
+          description
+            "";
+        }
+        enum INTERLEAVED_COARSE {
+          description
+            "";
+        }
+        enum PACKET_IMPAIRMENT {
+          description
+            "";
+        }
+        enum SEQUENTIAL {
+          description
+            "";
+        }
+        enum SEQUENTIAL_COARSE {
+          description
+            "";
+        }
+      }
+      default "INTERLEAVED";
+      description
+        "";
+    }
+  }
+
+  grouping layer1-ethernet-copper-group {
+    description
+      "";
+    container ethernet-copper {
+      description
+        "";
+      uses layer1-ethernet-common-group;
+      leaf auto-negotiation-enabled {
+        type boolean;
+        default "true";
         description
-          "Initial revision.";
-        reference
-          "0.0.1";
+          "If enabled allows for auto negotiation between ports for speed and duplex operation.";
+      }
+      leaf speed-duplex-type {
+        when '../auto-negotiation-enabled = false';
+        type enumeration {
+          enum 1000G {
+            description
+              "";
+          }
+          enum 100M_FD {
+            description
+              "";
+          }
+          enum 100M_HD {
+            description
+              "";
+          }
+          enum 10M_FD {
+            description
+              "";
+          }
+          enum 10M_HD {
+            description
+              "";
+          }
+        }
+        default "1000G";
+        description
+          "When auto negotiation is disabled a single speed and duplex type can be selected";
+      }
+      container auto-negotiation-capabilities {
+        e:spirent-not-supported;
+        when '../auto-negotiation-enabled = true';
+        description
+          "When auto negotiation is enabled the following speeds and duplex can be advertised";
+        leaf advertise-1000g {
+          type boolean;
+          default "true";
+          description
+            "";
+        }
+        leaf advertise-100m-fd {
+          type boolean;
+          default "true";
+          description
+            "";
+        }
+        leaf advertise-100m-hd {
+          type boolean;
+          default "true";
+          description
+            "";
+        }
+        leaf advertise-10m-fd {
+          type boolean;
+          default "true";
+          description
+            "";
+        }
+        leaf advertise-10m-hd {
+          type boolean;
+          default "true";
+          description
+            "";
+        }
+      }
+      leaf master-slave-type {
+        when '../auto-negotiation-enabled = true';
+        type enumeration {
+          enum MASTER {
+            description
+              "";
+          }
+          enum SLAVE {
+            description
+              "";
+          }
+          enum FAULT {
+            e:ixia-not-supported;
+            description
+              "";
+          }
+        }
+        default "MASTER";
+        description
+          "When auto negotiation is enabled one of the master slave types can be specified";
+      }
     }
+  }
 
-	grouping  layer1-ethernet-common-group {
-		description "";
-		leaf auto-mdix {
-			e:ixia-not-supported;
-			type boolean;
-			description "";
-		}	
-		leaf auto-instrumentation {
-			e:spirent-not-supported;
-			type enumeration {
-				enum END_OF_FRAME {
-						description "";
-					}
-				enum FLOATING {
-						description "";
-					}
-			}
-			default FLOATING;
-			description "";
-		}
-		leaf collision-exponent {
-			e:ixia-not-supported;
-			type uint8 {
-				range "1..10";
-			}
-			default 10;
-			description "";
-		}
-		leaf custom-fec-mode {
-			e:ixia-not-supported;
-			type enumeration {
-				enum NONE {
-						description "";
-					}
-				enum KR_FEC {
-						description "";
-					}
-				enum RS_FEC {
-						description "";
-					}
-			}
-			description "";
-		}
-		leaf data-path-mode {
-			type enumeration {
-				enum NORMAL {
-						description "";
-					}
-				enum LOOPBACK {
-						description "";
-					}
-				enum LINE_MONITOR {
-					e:ixia-not-supported;
-					description "";
-				}
-			}
-			default NORMAL;
-			description "";
-		}
-		container priority-based-flow-control {
-			presence "";
-			description "Priority-based Flow Control provides a link level flow control mechanism that can be controlled independently for each frame priority. The goal of this mechanism is to ensure zero loss under congestion in DCB networks";
-		}
-		container data-center-bridging-exchange {
-			presence "";
-			description "Data Center Bridging Exchange protocol is a discovery and capability exchange protocol that is used for conveying capabilities and configuration between neighbors to ensure consistent configuration across the network. This protocol leverages functionality provided by LLDP";
-		}
-		leaf flow-control {
-			type boolean;
-			default true;
-			description "Enables the port's MAC flow control mechanisms to listen for a directed address pause message";
-		}
-		leaf flow-control-directed-address {
-			e:spirent-not-supported;
-			type string;
-			default "01 80 C2 00 00 01";
-			description "The 48-bit MAC address that the port listens on for a directed pause.";
-		}
-		leaf forward-error-correction {
-			type boolean;
-			default true;
-			description "";
-		}
-		leaf ignore-link-status {
-			type boolean;
-			default false;
-			description "";
-		}
-		leaf internal-ppm-adjust {
-			type int8 {
-				range "-105..105";
-			}
-			default "0";
-			description "";
-		}
-		leaf mtu {
-			e:ixia-not-supported;
-			type uint16 {
-				range "0..16383";
-			}
-			default 1500;
-			description "";
-		}
-		leaf optimized-xon {
-			e:ixia-not-supported;
-			type enumeration {
-				enum DISABLE {
-						description "";
-					}
-				enum ENABLE {
-						description "";
-					}
-			}
-			default "DISABLE";
-			description "";
-		}
-		leaf port-setup-mode {
-			e:ixia-not-supported;
-			type enumeration {
-				enum PORTCONFIG_ONLY {
-						description "";
-					}
-				enum REGISTERS_ONLY {
-						description "";
-					}
-			}
-			default "PORTCONFIG_ONLY";
-			description "";
-		}
-		leaf rx-mode {
-			e:spirent-not-supported;
-			type enumeration {
-				enum CAPTURE {
-						description "";
-					}
-				enum CAPTURE_AND_MEASURE {
-						description "";
-					}
-				enum MEASURE {
-						description "";
-					}
-				enum PACKET_IMPAIRMENT {
-						description "";
-					}
-			}
-			default MEASURE;
-			description "";
-		}
-		leaf transmit-clock-source {
-			type enumeration {
-				enum INTERNAL {
-						description "";
-					}
-				enum INTERNAL_PPM_ADJ {
-						description "";
-					}
-				enum BITS {
-						description "";
-					}
-				enum LOOP {
-						description "";
-					}
-				enum EXTERNAL {
-						description "";
-					}
-			}
-			default INTERNAL;
-			description "";
-		}
-		leaf tx-gap-control {
-			e:spirent-not-supported;
-			type enumeration {
-				enum AVERAGE_MODE {
-						description "";
-					}
-				enum FIXED_MODE {
-						description "";
-					}
-			}
-			default AVERAGE_MODE;
-			description "";
-		}
-		leaf tx-mode {
-			e:spirent-not-supported;
-			type enumeration {
-				enum INTERLEAVED {
-					description "";
-				}
-				enum INTERLEAVED_COARSE {
-					description "";
-				}
-				enum PACKET_IMPAIRMENT {
-					description "";
-				}
-				enum SEQUENTIAL {
-					description "";
-				}
-				enum SEQUENTIAL_COARSE {
-					description "";
-				}
-			}
-			default INTERLEAVED;
-			description "";
-		}
-	}
-    grouping layer1-ethernet-copper-group {
-		description "";
-		container ethernet-copper {
-			description "";
-			uses layer1-ethernet-common-group;
-			leaf auto-negotiation-enabled {
-				type boolean;
-				default true;
-				description "If enabled allows for auto negotiation between ports for speed and duplex operation.";
-			}
-			leaf speed-duplex-type {
-				when "../auto-negotiation-enabled = false";
-				type enumeration {
-					enum 1000G {
-						description "";
-					}
-					enum 100M_FD {
-						description "";
-					}
-					enum 100M_HD {
-						description "";
-					}
-					enum 10M_FD {
-						description "";
-					}
-					enum 10M_HD {
-						description "";
-					}
-				}
-				default 1000G;
-				description "When auto negotiation is disabled a single speed and duplex type can be selected";
-			}
-			container auto-negotiation-capabilities {
-				e:spirent-not-supported;
-				when "../auto-negotiation-enabled = true";
-				description "When auto negotiation is enabled the following speeds and duplex can be advertised";
-				leaf advertise-1000g {
-					type boolean;
-					default true;
-					description "";
-				}
-				leaf advertise-100m-fd {
-					type boolean;
-					default true;
-					description "";
-				}
-				leaf advertise-100m-hd {
-					type boolean;
-					default true;
-					description "";
-				}
-				leaf advertise-10m-fd {
-					type boolean;
-					default true;
-					description "";
-				}
-				leaf advertise-10m-hd {
-					type boolean;
-					default true;
-					description "";
-				}
-			}
-			leaf master-slave-type {
-				when "../auto-negotiation-enabled = true";
-				type enumeration {
-					enum MASTER {
-						description "";
-					}
-					enum SLAVE {
-						description "";
-					}
-					enum FAULT {
-						e:ixia-not-supported;
-						description "";
-					}
-				}
-				default MASTER;
-				description "When auto negotiation is enabled one of the master slave types can be specified";
-			}
-		}
+  grouping layer1-ethernet-fiber-group {
+    description
+      "";
+    container ethernet-fiber {
+      description
+        "";
+      uses layer1-ethernet-common-group;
+      leaf cable-type-length {
+        e:ixia-not-supported;
+        type enumeration {
+          enum OPTICAL {
+            description
+              "";
+          }
+          enum COPPER_OM_2M {
+            description
+              "";
+          }
+          enum COPPER_3M {
+            description
+              "";
+          }
+          enum COPPER_5M {
+            description
+              "";
+          }
+          enum COPPER_7M {
+            description
+              "";
+          }
+          enum COPPER_OM_1M {
+            description
+              "";
+          }
+          enum COPPER_2M {
+            description
+              "";
+          }
+          enum COPPER_5M_ACTIVE {
+            description
+              "";
+          }
+          enum COPPER_7M_ACTIVE {
+            description
+              "";
+          }
+        }
+        description
+          "";
+      }
+      leaf cfp-interface {
+        e:ixia-not-supported;
+        type enumeration {
+          enum OPTICAL {
+            description
+              "";
+          }
+          enum COPPER_OM_2M {
+            description
+              "";
+          }
+          enum COPPER_3M {
+            description
+              "";
+          }
+          enum COPPER_5M {
+            description
+              "";
+          }
+          enum COPPER_7M {
+            description
+              "";
+          }
+          enum COPPER_OM_1M {
+            description
+              "";
+          }
+          enum COPPER_2M {
+            description
+              "";
+          }
+          enum COPPER_5M_ACTIVE {
+            description
+              "";
+          }
+          enum COPPER_7M_ACTIVE {
+            description
+              "";
+          }
+        }
+        description
+          "";
+      }
     }
-	grouping layer1-ethernet-fiber-group {
-		description "";
-		container ethernet-fiber {
-			description "";
-			uses layer1-ethernet-common-group;
-			leaf cable-type-length {
-				e:ixia-not-supported;
-				type enumeration {
-					enum OPTICAL {
-						description "";
-					}
-					enum COPPER_OM_2M {
-						description "";
-					}
-					enum COPPER_3M {
-						description "";
-					}
-					enum COPPER_5M {
-						description "";
-					}
-					enum COPPER_7M {
-						description "";
-					}
-					enum COPPER_OM_1M {
-						description "";
-					}
-					enum COPPER_2M {
-						description "";
-					}
-					enum COPPER_5M_ACTIVE {
-						description "";
-					}
-					enum COPPER_7M_ACTIVE {
-						description "";
-					}
-				}
-				description "";
-			}
-			leaf cfp-interface {
-				e:ixia-not-supported;
-				type enumeration {
-					enum OPTICAL {
-						description "";
-					}
-					enum COPPER_OM_2M {
-						description "";
-					}
-					enum COPPER_3M {
-						description "";
-					}
-					enum COPPER_5M {
-						description "";
-					}
-					enum COPPER_7M {
-						description "";
-					}
-					enum COPPER_OM_1M {
-						description "";
-					}
-					enum COPPER_2M {
-						description "";
-					}
-					enum COPPER_5M_ACTIVE {
-						description "";
-					}
-					enum COPPER_7M_ACTIVE {
-						description "";
-					}
-				}	
-				description "";				
-			}
-		}
-	}
+  }
 }

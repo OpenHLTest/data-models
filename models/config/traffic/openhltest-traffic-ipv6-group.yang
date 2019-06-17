@@ -1,108 +1,105 @@
 submodule openhltest-traffic-ipv6-group {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-patterns {
+    prefix p;
+  }
 
-    import openhltest-patterns {
-		prefix p;
-	}
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes a collection of traffic groups
+     and associated rpcs.";
 
-	
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  revision 2018-02-09 {
     description
-      "This module describes a collection of traffic groups
-	  and associated rpcs.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2018-02-09 {
+  grouping traffic-ipv6-group-top {
+    description
+      "A grouping of traffic groups.
+       A traffic group is a collection of traffic streams and flows.";
+    container ipv6 {
+      description
+        "";
+      container source-address {
         description
-          "Initial revision.";
-        reference
-          "0.0.1";
-    }
-
-    grouping traffic-ipv6-group-top {
+          "Specifies the source IPv6 address of the first generated packet.";
+        uses p:ipv6-pattern-group;
+      }
+      container destination-address {
         description
-        "A grouping of traffic groups.
-		 A traffic group is a collection of traffic streams and flows.";
-		
-        container ipv6 {
-			description "";
-            container source-address {
-                description
-                "Specifies the source IPv6 address of the first generated packet.";
-                uses p:ipv6-pattern-group;
-            }
-            container destination-address {
-                description
-                "Specifies the destination IPv6 address of the first generated packet.";
-                uses p:ipv6-pattern-group;
-            }
-            container traffic-class {
-                description
-                "Specifies the IPv6 traffic class setting to use for application layer traffic.";
-                uses p:base-pattern-group {
-                    refine pattern-format {
-					    default "0..255";
-					}
-                    refine single {
-					    default "0";
-					}
-                }
-            }
-            container flow-label {
-                description
-                "The flow label value of the IPv6 stream, which is a twenty- bit field is used for QoS management.";
-                uses p:base-pattern-group {
-                    refine pattern-format {
-					    default "0..1048575";
-					}
-                    refine single {
-					    default "0";
-					}
-                }
-            }
-            container payload-length {
-                description
-                "The two-byte payload length field in the IPv6 header.";
-                uses p:base-pattern-group {
-                    refine pattern-format {
-					    default "0..65535";
-					}
-                    refine single {
-					    default "128";
-					}
-                }
-            }
-            container next-header {
-                description
-                "The next header field in the IPv6 header.";
-                uses p:base-pattern-group {
-                    refine pattern-format {
-					    default "0..255";
-					}
-                    refine single {
-					    default "59";
-					}
-                }
-            }
-            container hop-limit {
-                description
-                "The hop limit field in the IPv6 header, which is an eight- bit field similar to TTL in IPv4.";
-                uses p:base-pattern-group {
-                    refine pattern-format {
-					    default "0..255";
-					}
-                    refine single {
-					    default "64";
-					}
-                }
-            }
-		}
+          "Specifies the destination IPv6 address of the first generated packet.";
+        uses p:ipv6-pattern-group;
+      }
+      container traffic-class {
+        description
+          "Specifies the IPv6 traffic class setting to use for application layer traffic.";
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..255";
+          }
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container flow-label {
+        description
+          "The flow label value of the IPv6 stream, which is a twenty- bit field is used for QoS management.";
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..1048575";
+          }
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container payload-length {
+        description
+          "The two-byte payload length field in the IPv6 header.";
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..65535";
+          }
+          refine "single" {
+            default "128";
+          }
+        }
+      }
+      container next-header {
+        description
+          "The next header field in the IPv6 header.";
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..255";
+          }
+          refine "single" {
+            default "59";
+          }
+        }
+      }
+      container hop-limit {
+        description
+          "The hop limit field in the IPv6 header, which is an eight- bit field similar to TTL in IPv4.";
+        uses p:base-pattern-group {
+          refine "pattern-format" {
+            default "0..255";
+          }
+          refine "single" {
+            default "64";
+          }
+        }
+      }
     }
-
+  }
 }

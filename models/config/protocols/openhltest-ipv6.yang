@@ -1,44 +1,48 @@
 submodule openhltest-ipv6 {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-  yang-version "1.1";
-  belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-patterns {
+    prefix p;
+  }
 
-	import openhltest-patterns {
-		prefix p;
-	}
-
-	organization
+  organization
     "OpenHlTest working group";
-    contact
+  contact
     "OpenHlTest working group";
-    description
+  description
     "This module describes the ipv6 emulated protocol.";
 
-	revision 2018-02-09 {
-		description
-			"Initial revision.";
-		reference
-			"0.0.1";
-	}
-	
-	grouping ipv6-group {
-		description "";
-		container ipv6 {
-			description "";
-			container source-address {
-				description "";
-				uses p:ipv6-pattern-group;
-			}
-			container gateway-address {
-				description "";
-				uses p:ipv6-pattern-group ;
-			}
-			container link-local-address {
-				description "";
-				uses p:ipv6-pattern-group ;
-			}
-		}
-	}
+  revision 2018-02-09 {
+    description
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
+
+  grouping ipv6-group {
+    description
+      "";
+    container ipv6 {
+      description
+        "";
+      container source-address {
+        description
+          "";
+        uses p:ipv6-pattern-group;
+      }
+      container gateway-address {
+        description
+          "";
+        uses p:ipv6-pattern-group;
+      }
+      container link-local-address {
+        description
+          "";
+        uses p:ipv6-pattern-group;
+      }
+    }
+  }
 }

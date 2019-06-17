@@ -1,178 +1,176 @@
 submodule openhltest-traffic-tcp-group {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import openhltest-patterns {
+    prefix p;
+  }
 
-    import openhltest-patterns {
-		prefix p;
-	}
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes a collection of traffic groups
+     and associated rpcs.";
 
-	
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  revision 2018-02-09 {
     description
-      "This module describes a collection of traffic groups
-	  and associated rpcs.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2018-02-09 {
+  grouping traffic-tcp-group-top {
+    description
+      "A grouping of traffic groups.
+       A traffic group is a collection of traffic streams and flows.";
+    container tcp {
+      description
+        "";
+      container source-port {
         description
-          "Initial revision.";
-        reference
-          "0.0.1";
-    }
-
-    grouping traffic-tcp-group-top {
+          "Specifies the port on the sending TCP module.";
+        uses p:int-32-pattern-group;
+      }
+      container destination-port {
         description
-        "A grouping of traffic groups.
-		 A traffic group is a collection of traffic streams and flows.";
-		
-        container tcp {
-			description "";
-            container source-port {
-                description
-                "Specifies the port on the sending TCP module.";
-                uses p:int-32-pattern-group;
-            }
-            container destination-port {
-                description
-                "Specifies the port on the receiving TCP module.";
-                uses p:int-32-pattern-group;
-            }
-			container acknowledgement-number {
-                description
-                "Identifies the next expected TCP octet.";
-                uses p:int-32-pattern-group {
-                    refine single {
-		        		default "234567";
-		    		}
-                }
-            }
-            container header-length {
-                description
-                "Specifies the data offset field in the TCP header.";
-                uses p:int-32-pattern-group {
-                    refine single {
-						default "5";
-					}
-                }
-            }
-            container reserved {
-                description
-                "Reserves TCP bits.";
-                uses p:enum-pattern-group {
-                    refine single {
-		        		default "0000";
-		    		}
-                }
-            }
-            container sequence-number {
-                description
-                "Identifies the position of the data within the data stream.";
-                uses p:int-32-pattern-group {
-                    refine single {
-						default "123456";
-		    		}              
-                }
-            }
-            container urgent-pointer {
-                description
-                "Specifies the position in the segment where urgent data ends.";
-                uses p:int-32-pattern-group {
-                    refine single {
-		        		default "0";
-		    		}
-                }
-            }
-            container window-size {
-                description
-                "This field is used by the receiver to indicate to the sender the amount of data that it is able to accept.";
-                uses p:int-32-pattern-group {
-                    refine single {
-					default "4096";
-		    		}
-                }
-            }
-            container acknowledgement-flag {
-                description
-                "Indicates whether the data identified by the sequence number has been received.";
-                uses p:enum-pattern-group {
-                    refine pattern-format {
-		                default "(0|1)";
-		            }
-                    refine single {
-			            default "1";
-		            }
-                }
-            }
-            container fin-flag {
-                description
-                "Indicates whether a connection is terminated.";
-                uses p:enum-pattern-group {
-                    refine pattern-format {
-						default "(0|1)";
-		    		}
-                    refine single {
-						default "0";
-		    		}
-                }
-            }
-            container push-flag {
-                description
-                "Indicates whether to ensure that the data is given the appropriate priority and is processed at the sending or receiving end.";
-                uses p:enum-pattern-group {
-                    refine pattern-format {
-						default "(0|1)";
-		    		}
-                    refine single {
-						default "0";
-		    		}
-                }
-            }
-            container reset-flag {
-                description
-                "Resets the connection when a segment arrives that is not intended for the current connection.";
-                uses p:enum-pattern-group {
-                    refine pattern-format {
-						default "(0|1)";
-		    		}
-                    refine single {
-						default "0";
-		    		}
-                }
-            }
-            container sync-flag {
-                description
-                "Indicates whether the port is open for connection.";
-                uses p:enum-pattern-group {
-                    refine pattern-format {
-						default "(0|1)";
-		    		}
-                    refine single {
-						default "0";
-		    		}
-                }
-            }
-            container urgent-flag {
-                description
-                "Identifies the incoming data as urgent, giving it priority over the other segments.";
-                uses p:enum-pattern-group {
-                    refine pattern-format {
-						default "(0|1)";
-		    		}
-                    refine single {
-						default "0";
-		    		}
-                }
-            }
-            container checksum {
-                description
-                "Specifies the TCP checksum value.";
-                uses p:int-32-pattern-group;
-            }
+          "Specifies the port on the receiving TCP module.";
+        uses p:int-32-pattern-group;
+      }
+      container acknowledgement-number {
+        description
+          "Identifies the next expected TCP octet.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "234567";
+          }
         }
+      }
+      container header-length {
+        description
+          "Specifies the data offset field in the TCP header.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "5";
+          }
+        }
+      }
+      container reserved {
+        description
+          "Reserves TCP bits.";
+        uses p:enum-pattern-group {
+          refine "single" {
+            default "0000";
+          }
+        }
+      }
+      container sequence-number {
+        description
+          "Identifies the position of the data within the data stream.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "123456";
+          }
+        }
+      }
+      container urgent-pointer {
+        description
+          "Specifies the position in the segment where urgent data ends.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container window-size {
+        description
+          "This field is used by the receiver to indicate to the sender the amount of data that it is able to accept.";
+        uses p:int-32-pattern-group {
+          refine "single" {
+            default "4096";
+          }
+        }
+      }
+      container acknowledgement-flag {
+        description
+          "Indicates whether the data identified by the sequence number has been received.";
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "(0|1)";
+          }
+          refine "single" {
+            default "1";
+          }
+        }
+      }
+      container fin-flag {
+        description
+          "Indicates whether a connection is terminated.";
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "(0|1)";
+          }
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container push-flag {
+        description
+          "Indicates whether to ensure that the data is given the appropriate priority and is processed at the sending or receiving end.";
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "(0|1)";
+          }
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container reset-flag {
+        description
+          "Resets the connection when a segment arrives that is not intended for the current connection.";
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "(0|1)";
+          }
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container sync-flag {
+        description
+          "Indicates whether the port is open for connection.";
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "(0|1)";
+          }
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container urgent-flag {
+        description
+          "Identifies the incoming data as urgent, giving it priority over the other segments.";
+        uses p:enum-pattern-group {
+          refine "pattern-format" {
+            default "(0|1)";
+          }
+          refine "single" {
+            default "0";
+          }
+        }
+      }
+      container checksum {
+        description
+          "Specifies the TCP checksum value.";
+        uses p:int-32-pattern-group;
+      }
     }
+  }
 }

@@ -1,296 +1,368 @@
 submodule openhltest-traffic-frame-group {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-	yang-version "1.1";
-	belongs-to "openhltest" {
-		prefix "oht";
-	}
+  include openhltest-traffic-custom-frame-group;
+  include openhltest-traffic-ethernet-group;
+  include openhltest-traffic-vlan-group;
+  include openhltest-traffic-ipv4-group;
+  include openhltest-traffic-ipv6-group;
+  include openhltest-traffic-tcp-group;
+  include openhltest-traffic-udp-group;
+  include openhltest-traffic-gre-group;
+  include openhltest-traffic-icmp-group;
+  include openhltest-traffic-icmpv6-group;
+  include openhltest-traffic-igmp-group;
+  include openhltest-traffic-ospfv2-group;
 
-	include openhltest-traffic-custom-frame-group;
-	include openhltest-traffic-ethernet-group;
-	include openhltest-traffic-vlan-group;
-	include openhltest-traffic-ipv4-group;
-	include openhltest-traffic-ipv6-group;
-	include openhltest-traffic-tcp-group;
-	include openhltest-traffic-udp-group;
-    include openhltest-traffic-gre-group;
-	include openhltest-traffic-icmp-group;
-	include openhltest-traffic-icmpv6-group;
-	include openhltest-traffic-igmp-group;
-	include openhltest-traffic-ospfv2-group;
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes a collection of traffic protocols.";
 
-	organization
-	"OpenHlTest working group";
-	contact
-	"OpenHlTest working group";
-	description
-	"This module describes a collection of traffic protocols.";
+  revision 2018-02-09 {
+    description
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-	revision 2018-02-09 {
-		description
-		  "Initial revision.";
-		reference
-		  "0.0.1";
-	}
-
-	grouping traffic-frame-group-top {
-		description "A grouping of all possible traffic frames.";
-
-		leaf frame-type {
-			type enumeration {
-				enum CUSTOM {
-					description "";
-				}
-				enum ETHERNET {
-					description "";
-				}
-				enum VLAN {
-					description "";
-				}
-				enum IPV4 {
-					description "";
-				}
-				enum IPV6 {
-					description "";
-				}
-				enum TCP {
-					description "";
-				}
-				enum UDP {
-					description "";
-				}
-				enum GRE {
-					description "";
-				}
-				enum ICMP_DESTINATION_UNREACHABLE {
-					description "";
-				}
-				enum ICMP_ECHO_REPLY {
-					description "";
-				}
-				enum ICMP_ECHO_REQUEST {
-					description "";
-				}
-				enum ICMP_INFORMATION_REPLY {
-					description "";
-				}
-				enum ICMP_INFORMATION_REQUEST {
-					description "";
-				}
-				enum ICMP_ADDRESS_MASK_REPLY {
-					description "";
-				}
-				enum ICMP_ADDRESS_MASK_REQUEST {
-					description "";
-				}
-				enum ICMP_PARAMETER_PROBLEM {
-					description "";
-				}
-				enum ICMP_REDIRECT {
-					description "";
-				}
-				enum ICMP_ROUTER_ADVERTISEMENT {
-					description "";
-				}
-				enum ICMP_ROUTER_SOLICITATION {
-					description "";
-				}
-				enum ICMP_SOURCE_QUENCH {
-					description "";
-				}
-				enum ICMP_TIME_EXCEEDED {
-					description "";
-				}
-				enum ICMP_TIMESTAMP_REPLY {
-					description "";
-				}
-				enum ICMP_TIMESTAMP_REQUEST {
-					description "";
-				}
-				enum ICMPV6_DESTINATION_UNREACHABLE {
-					description "";
-				}
-				enum ICMPV6_ECHO_REPLY {
-					description "";
-				}
-				enum ICMPV6_ECHO_REQUEST {
-					description "";
-				}
-				enum ICMPV6_PARAMETER_PROBLEM {
-					description "";
-				}
-				enum ICMPV6_TIME_EXCEEDED {
-					description "";
-				}
-				enum ICMPV6_PACKET_TOO_BIG {
-					description "";
-				}
-				enum IGMPV1_QUERY {
-					description "";
-				}
-				enum IGMPV1_REPORT {
-					description "";
-				}
-				enum IGMPV2_QUERY {
-					description "";
-				}
-				enum IGMPV2_REPORT {
-					description "";
-				}
-				enum IGMPV3_QUERY {
-					description "";
-				}
-				enum IGMPV3_REPORT {
-					description "";
-				}
-				enum OSPFV2_HELLO {
-					description "";
-				}
-			}
-			description "";
-		}
-		uses traffic-ethernet-group-top {
-			when "../frame-type = ETHERNET";
-			description "The conditional container for detailed ethernet information";
-		}
-		uses traffic-vlan-group-top {
-			when "../frame-type = VLAN";
-			description "The conditional container for detailed vlan information"; 
-		}
-		uses traffic-ipv4-group-top {
-			when "../frame-type = IPV4";
-			description "The conditional container for detailed ipv4 information"; 
-		}
-		uses traffic-ipv6-group-top {
-			when "../frame-type = IPV6";
-			description "The conditional container for detailed ipv6 information"; 
-		}
-		uses traffic-tcp-group-top {
-			when "../frame-type = TCP";
-			description "The conditional container for detailed tcp information"; 
-		}
-		uses traffic-udp-group-top {
-			when "../frame-type = UDP";
-			description "The conditional container for detailed udp information"; 
-		}
-		uses traffic-gre-group-top {
-			when "../frame-type = GRE";
-			description "The conditional container for detailed GRE information"; 
-		}
-		uses traffic-icmp-destination-unreachable-group-top {
-			when "../frame-type = ICMP_DESTINATION_UNREACHABLE";
-			description "The conditional container for detailed Icmp Destination unreachable message"; 
-		}
-		uses traffic-icmp-echo-reply-group-top {
-			when "../frame-type = ICMP_ECHO_REPLY";
-			description "The conditional container for detailed Icmp Echo reply message"; 
-		}
-		uses traffic-icmp-echo-request-group-top {
-			when "../frame-type = ICMP_ECHO_REQUEST";
-			description "The conditional container for detailed Icmp Echo request message"; 
-		}
-		uses traffic-icmp-information-reply-group-top {
-			when "../frame-type = ICMP_INFORMATION_REPLY";
-			description "The conditional container for detailed Icmp information reply message"; 
-		}
-		uses traffic-icmp-information-request-group-top {
-			when "../frame-type = ICMP_INFORMATION_REQUEST";
-			description "The conditional container for detailed Icmp information request message"; 
-		}
-		uses traffic-icmp-address-mask-reply-group-top {
-			when "../frame-type = ICMP_ADDRESS_MASK_REPLY";
-			description "The conditional container for detailed Icmp address mask reply message"; 
-		}
-		uses traffic-icmp-address-mask-request-group-top {
-			when "../frame-type = ICMP_ADDRESS_MASK_REQUEST";
-			description "The conditional container for detailed Icmp address mask request message"; 
-		}
-		uses traffic-icmp-parameter-problem-group-top {
-			when "../frame-type = ICMP_PARAMETER_PROBLEM";
-			description "The conditional container for detailed Icmp parameter problem message"; 
-		}
-		uses traffic-icmp-redirect-group-top {
-			when "../frame-type = ICMP_REDIRECT";
-			description "The conditional container for detailed Icmp redirect message"; 
-		}
-		uses traffic-icmp-router-advertisement-group-top {
-			when "../frame-type = ICMP_ROUTER_ADVERTISEMENT";
-			description "The conditional container for detailed Icmp router advertisement message"; 
-		}
-		uses traffic-icmp-router-solicitation-group-top {
-			when "../frame-type = ICMP_ROUTER_SOLICITATION";
-			description "The conditional container for detailed Icmp router solicitation message"; 
-		}
-		uses traffic-icmp-source-quench-group-top {
-			when "../frame-type = ICMP_SOURCE_QUENCH";
-			description "The conditional container for detailed Icmp source quench message"; 
-		}
-		uses traffic-icmp-time-exceeded-group-top {
-			when "../frame-type = ICMP_TIME_EXCEEDED";
-			description "The conditional container for detailed Icmp time exceeded message"; 
-		}
-		uses traffic-icmp-timestamp-reply-group-top {
-			when "../frame-type = ICMP_TIMESTAMP_REPLY";
-			description "The conditional container for detailed Icmp timestamp reply message"; 
-		}
-		uses traffic-icmp-timestamp-request-group-top {
-			when "../frame-type = ICMP_TIMESTAMP_REQUEST";
-			description "The conditional container for detailed Icmp timestamp request message"; 
-		}
-		uses traffic-icmpv6-destination-unreachable-group-top {
-			when "../frame-type = ICMPV6_DESTINATION_UNREACHABLE";
-			description "The conditional container for detailed Icmpv6 Destination unreachable message"; 
-		}
-		uses traffic-icmpv6-echo-reply-group-top {
-			when "../frame-type = ICMPV6_ECHO_REPLY";
-			description "The conditional container for detailed Icmpv6 Echo reply message"; 
-		}
-		uses traffic-icmpv6-echo-request-group-top {
-			when "../frame-type = ICMPV6_ECHO_REQUEST";
-			description "The conditional container for detailed Icmpv6 Echo request message"; 
-		}
-		uses traffic-icmpv6-parameter-problem-group-top {
-			when "../frame-type = ICMPV6_PARAMETER_PROBLEM";
-			description "The conditional container for detailed Icmpv6 parameter problem message"; 
-		}
-		uses traffic-icmpv6-time-exceeded-group-top {
-			when "../frame-type = ICMPV6_TIME_EXCEEDED";
-			description "The conditional container for detailed Icmpv6 time exceeded message"; 
-		}
-		uses traffic-icmpv6-packet-too-big-group-top {
-			when "../frame-type = ICMPV6_PACKET_TOO_BIG";
-			description "The conditional container for detailed Icmpv6 packet too big message"; 
-		}
-		uses traffic-igmpv1-query-top {
-			when "../frame-type = IGMPV1_QUERY";
-			description "The conditional container for detailed Igmpv1 Query message"; 
-		}
-		uses traffic-igmpv1-report-top {
-			when "../frame-type = IGMPV1_REPORT";
-			description "The conditional container for detailed Igmpv1 Report message"; 
-		}
-		uses traffic-igmpv2-query-top {
-			when "../frame-type = IGMPV2_QUERY";
-			description "The conditional container for detailed Igmpv2 Query message"; 
-		}
-		uses traffic-igmpv2-report-top {
-			when "../frame-type = IGMPV2_REPORT";
-			description "The conditional container for detailed Igmpv2 Report message"; 
-		}
-		uses traffic-igmpv3-query-top {
-			when "../frame-type = IGMPV3_QUERY";
-			description "The conditional container for detailed Igmpv3 Query message"; 
-		}
-		uses traffic-igmpv3-report-top {
-			when "../frame-type = IGMPV3_REPORT";
-			description "The conditional container for detailed Igmpv3 Report message"; 
-		}
-		uses traffic-ospfv2-group-top {
-			when "../frame-type = OSPFV2_HELLO";
-			description "The conditional container for detailed OSPFv2 Hello information"; 
-		}
-		uses traffic-custom-frame-group-top {
-			when "../frame-type = CUSTOM";
-			description "The conditional container for custom frame information";
-		}
-	}
+  grouping traffic-frame-group-top {
+    description
+      "A grouping of all possible traffic frames.";
+    leaf frame-type {
+      type enumeration {
+        enum CUSTOM {
+          description
+            "";
+        }
+        enum ETHERNET {
+          description
+            "";
+        }
+        enum VLAN {
+          description
+            "";
+        }
+        enum IPV4 {
+          description
+            "";
+        }
+        enum IPV6 {
+          description
+            "";
+        }
+        enum TCP {
+          description
+            "";
+        }
+        enum UDP {
+          description
+            "";
+        }
+        enum GRE {
+          description
+            "";
+        }
+        enum ICMP_DESTINATION_UNREACHABLE {
+          description
+            "";
+        }
+        enum ICMP_ECHO_REPLY {
+          description
+            "";
+        }
+        enum ICMP_ECHO_REQUEST {
+          description
+            "";
+        }
+        enum ICMP_INFORMATION_REPLY {
+          description
+            "";
+        }
+        enum ICMP_INFORMATION_REQUEST {
+          description
+            "";
+        }
+        enum ICMP_ADDRESS_MASK_REPLY {
+          description
+            "";
+        }
+        enum ICMP_ADDRESS_MASK_REQUEST {
+          description
+            "";
+        }
+        enum ICMP_PARAMETER_PROBLEM {
+          description
+            "";
+        }
+        enum ICMP_REDIRECT {
+          description
+            "";
+        }
+        enum ICMP_ROUTER_ADVERTISEMENT {
+          description
+            "";
+        }
+        enum ICMP_ROUTER_SOLICITATION {
+          description
+            "";
+        }
+        enum ICMP_SOURCE_QUENCH {
+          description
+            "";
+        }
+        enum ICMP_TIME_EXCEEDED {
+          description
+            "";
+        }
+        enum ICMP_TIMESTAMP_REPLY {
+          description
+            "";
+        }
+        enum ICMP_TIMESTAMP_REQUEST {
+          description
+            "";
+        }
+        enum ICMPV6_DESTINATION_UNREACHABLE {
+          description
+            "";
+        }
+        enum ICMPV6_ECHO_REPLY {
+          description
+            "";
+        }
+        enum ICMPV6_ECHO_REQUEST {
+          description
+            "";
+        }
+        enum ICMPV6_PARAMETER_PROBLEM {
+          description
+            "";
+        }
+        enum ICMPV6_TIME_EXCEEDED {
+          description
+            "";
+        }
+        enum ICMPV6_PACKET_TOO_BIG {
+          description
+            "";
+        }
+        enum IGMPV1_QUERY {
+          description
+            "";
+        }
+        enum IGMPV1_REPORT {
+          description
+            "";
+        }
+        enum IGMPV2_QUERY {
+          description
+            "";
+        }
+        enum IGMPV2_REPORT {
+          description
+            "";
+        }
+        enum IGMPV3_QUERY {
+          description
+            "";
+        }
+        enum IGMPV3_REPORT {
+          description
+            "";
+        }
+        enum OSPFV2_HELLO {
+          description
+            "";
+        }
+      }
+      description
+        "";
+    }
+    uses traffic-ethernet-group-top {
+      when '../frame-type = ETHERNET';
+      description
+        "The conditional container for detailed ethernet information";
+    }
+    uses traffic-vlan-group-top {
+      when '../frame-type = VLAN';
+      description
+        "The conditional container for detailed vlan information";
+    }
+    uses traffic-ipv4-group-top {
+      when '../frame-type = IPV4';
+      description
+        "The conditional container for detailed ipv4 information";
+    }
+    uses traffic-ipv6-group-top {
+      when '../frame-type = IPV6';
+      description
+        "The conditional container for detailed ipv6 information";
+    }
+    uses traffic-tcp-group-top {
+      when '../frame-type = TCP';
+      description
+        "The conditional container for detailed tcp information";
+    }
+    uses traffic-udp-group-top {
+      when '../frame-type = UDP';
+      description
+        "The conditional container for detailed udp information";
+    }
+    uses traffic-gre-group-top {
+      when '../frame-type = GRE';
+      description
+        "The conditional container for detailed GRE information";
+    }
+    uses traffic-icmp-destination-unreachable-group-top {
+      when '../frame-type = ICMP_DESTINATION_UNREACHABLE';
+      description
+        "The conditional container for detailed Icmp Destination unreachable message";
+    }
+    uses traffic-icmp-echo-reply-group-top {
+      when '../frame-type = ICMP_ECHO_REPLY';
+      description
+        "The conditional container for detailed Icmp Echo reply message";
+    }
+    uses traffic-icmp-echo-request-group-top {
+      when '../frame-type = ICMP_ECHO_REQUEST';
+      description
+        "The conditional container for detailed Icmp Echo request message";
+    }
+    uses traffic-icmp-information-reply-group-top {
+      when '../frame-type = ICMP_INFORMATION_REPLY';
+      description
+        "The conditional container for detailed Icmp information reply message";
+    }
+    uses traffic-icmp-information-request-group-top {
+      when '../frame-type = ICMP_INFORMATION_REQUEST';
+      description
+        "The conditional container for detailed Icmp information request message";
+    }
+    uses traffic-icmp-address-mask-reply-group-top {
+      when '../frame-type = ICMP_ADDRESS_MASK_REPLY';
+      description
+        "The conditional container for detailed Icmp address mask reply message";
+    }
+    uses traffic-icmp-address-mask-request-group-top {
+      when '../frame-type = ICMP_ADDRESS_MASK_REQUEST';
+      description
+        "The conditional container for detailed Icmp address mask request message";
+    }
+    uses traffic-icmp-parameter-problem-group-top {
+      when '../frame-type = ICMP_PARAMETER_PROBLEM';
+      description
+        "The conditional container for detailed Icmp parameter problem message";
+    }
+    uses traffic-icmp-redirect-group-top {
+      when '../frame-type = ICMP_REDIRECT';
+      description
+        "The conditional container for detailed Icmp redirect message";
+    }
+    uses traffic-icmp-router-advertisement-group-top {
+      when '../frame-type = ICMP_ROUTER_ADVERTISEMENT';
+      description
+        "The conditional container for detailed Icmp router advertisement message";
+    }
+    uses traffic-icmp-router-solicitation-group-top {
+      when '../frame-type = ICMP_ROUTER_SOLICITATION';
+      description
+        "The conditional container for detailed Icmp router solicitation message";
+    }
+    uses traffic-icmp-source-quench-group-top {
+      when '../frame-type = ICMP_SOURCE_QUENCH';
+      description
+        "The conditional container for detailed Icmp source quench message";
+    }
+    uses traffic-icmp-time-exceeded-group-top {
+      when '../frame-type = ICMP_TIME_EXCEEDED';
+      description
+        "The conditional container for detailed Icmp time exceeded message";
+    }
+    uses traffic-icmp-timestamp-reply-group-top {
+      when '../frame-type = ICMP_TIMESTAMP_REPLY';
+      description
+        "The conditional container for detailed Icmp timestamp reply message";
+    }
+    uses traffic-icmp-timestamp-request-group-top {
+      when '../frame-type = ICMP_TIMESTAMP_REQUEST';
+      description
+        "The conditional container for detailed Icmp timestamp request message";
+    }
+    uses traffic-icmpv6-destination-unreachable-group-top {
+      when '../frame-type = ICMPV6_DESTINATION_UNREACHABLE';
+      description
+        "The conditional container for detailed Icmpv6 Destination unreachable message";
+    }
+    uses traffic-icmpv6-echo-reply-group-top {
+      when '../frame-type = ICMPV6_ECHO_REPLY';
+      description
+        "The conditional container for detailed Icmpv6 Echo reply message";
+    }
+    uses traffic-icmpv6-echo-request-group-top {
+      when '../frame-type = ICMPV6_ECHO_REQUEST';
+      description
+        "The conditional container for detailed Icmpv6 Echo request message";
+    }
+    uses traffic-icmpv6-parameter-problem-group-top {
+      when '../frame-type = ICMPV6_PARAMETER_PROBLEM';
+      description
+        "The conditional container for detailed Icmpv6 parameter problem message";
+    }
+    uses traffic-icmpv6-time-exceeded-group-top {
+      when '../frame-type = ICMPV6_TIME_EXCEEDED';
+      description
+        "The conditional container for detailed Icmpv6 time exceeded message";
+    }
+    uses traffic-icmpv6-packet-too-big-group-top {
+      when '../frame-type = ICMPV6_PACKET_TOO_BIG';
+      description
+        "The conditional container for detailed Icmpv6 packet too big message";
+    }
+    uses traffic-igmpv1-query-top {
+      when '../frame-type = IGMPV1_QUERY';
+      description
+        "The conditional container for detailed Igmpv1 Query message";
+    }
+    uses traffic-igmpv1-report-top {
+      when '../frame-type = IGMPV1_REPORT';
+      description
+        "The conditional container for detailed Igmpv1 Report message";
+    }
+    uses traffic-igmpv2-query-top {
+      when '../frame-type = IGMPV2_QUERY';
+      description
+        "The conditional container for detailed Igmpv2 Query message";
+    }
+    uses traffic-igmpv2-report-top {
+      when '../frame-type = IGMPV2_REPORT';
+      description
+        "The conditional container for detailed Igmpv2 Report message";
+    }
+    uses traffic-igmpv3-query-top {
+      when '../frame-type = IGMPV3_QUERY';
+      description
+        "The conditional container for detailed Igmpv3 Query message";
+    }
+    uses traffic-igmpv3-report-top {
+      when '../frame-type = IGMPV3_REPORT';
+      description
+        "The conditional container for detailed Igmpv3 Report message";
+    }
+    uses traffic-ospfv2-group-top {
+      when '../frame-type = OSPFV2_HELLO';
+      description
+        "The conditional container for detailed OSPFv2 Hello information";
+    }
+    uses traffic-custom-frame-group-top {
+      when '../frame-type = CUSTOM';
+      description
+        "The conditional container for custom frame information";
+    }
+  }
 }

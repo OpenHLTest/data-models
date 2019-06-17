@@ -1,81 +1,95 @@
 submodule openhltest-traffic-custom-frame-group {
+  yang-version 1.1;
+  belongs-to openhltest {
+    prefix oht;
+  }
 
-    yang-version "1.1";
-    belongs-to "openhltest" {
-		prefix "oht";
-	}
+  import ietf-yang-types {
+    prefix iyt;
+  }
 
-	import ietf-yang-types {
-		prefix iyt;
-	}
-    
-    organization
-      "OpenHlTest working group";
-    contact
-      "OpenHlTest working group";
+  organization
+    "OpenHlTest working group";
+  contact
+    "OpenHlTest working group";
+  description
+    "This module describes a collection of traffic groups
+     and associated rpcs.";
+
+  revision 2018-02-09 {
     description
-      "This module describes a collection of traffic groups
-	  and associated rpcs.";
+      "Initial revision.";
+    reference
+      "0.0.1";
+  }
 
-    revision 2018-02-09 {
+  grouping traffic-custom-frame-group-top {
+    description
+      "";
+    container custom {
+      description
+        "";
+      leaf payload-type {
+        type enumeration {
+          enum INCREMENT_BYTE {
+            description
+              "";
+          }
+          enum DECREMENT_BYTE {
+            description
+              "";
+          }
+          enum INCREMENT_WORD {
+            description
+              "";
+          }
+          enum DECREMENT_WORD {
+            description
+              "";
+          }
+          enum CRPAT {
+            description
+              "";
+          }
+          enum CJPAT {
+            description
+              "";
+          }
+          enum RANDOM {
+            description
+              "";
+          }
+          enum CUSTOM {
+            description
+              "";
+          }
+        }
         description
-          "Initial revision.";
-        reference
-          "0.0.1";
+          "";
+      }
+      container payload {
+        description
+          "";
+        leaf data {
+          when '../payload-type = CUSTOM';
+          type iyt:hex-string;
+          default "00";
+          description
+            "";
+        }
+        leaf repeat {
+          type boolean;
+          default "false";
+          description
+            "Repeat the payload data to fill the length specified";
+        }
+        leaf length {
+          type int32;
+          default "0";
+          description
+            "";
+        }
+      }
     }
-
-    grouping traffic-custom-frame-group-top {
-		description "";
-		container custom {
-			description "";
-			leaf payload-type {
-				type enumeration {
-					enum INCREMENT_BYTE {
-						description "";
-					}
-					enum DECREMENT_BYTE {
-						description "";
-					}
-					enum INCREMENT_WORD {
-						description "";
-					}
-					enum DECREMENT_WORD {
-						description "";
-					}
-					enum CRPAT {
-						description "";
-					}
-					enum CJPAT {
-						description "";
-					}
-					enum RANDOM {
-						description "";
-					}
-					enum CUSTOM {
-						description "";
-					}
-				}
-				description "";
-			}
-			container payload {
-				description "";
-				leaf data {
-					when "../payload-type = CUSTOM";
-					type iyt:hex-string;
-					default "00";
-					description "";
-				}
-				leaf repeat {
-					type boolean;
-					default "false";
-					description "Repeat the payload data to fill the length specified";
-				}
-				leaf length {
-					type int32;
-					default 0;
-					description "";
-				}
-			}
-		} 
-    }
+  }
 }
