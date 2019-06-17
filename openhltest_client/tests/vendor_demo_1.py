@@ -30,7 +30,7 @@ OPENHLTEST_SERVER = '127.0.0.1:443'
 SESSION_NAME = 'IxNetwork GUI'
 CONFIG = [
     {
-        'location': '10.36.74.53/2/13',
+        'location': '10.36.74.26/2/13',
         'ipv4': {
             "source-address": '1.1.1.1',
             'prefix': 24,
@@ -41,7 +41,7 @@ CONFIG = [
         } 
     },
     {
-        'location': '10.36.74.53/2/14',
+        'location': '10.36.74.26/2/14',
         'ipv4': {
             "source-address": '1.1.1.2',
             'prefix': 24,
@@ -98,7 +98,7 @@ for i in range(0, len(CONFIG)):
     network = simulated_network.Networks.create(Name='Network_%s' % port.Name, NetworkType='BGPV4_ROUTE_RANGE', NetworkCountPerPort=5, FlowLink='BGPV4_%s' % port.Name)
     network.Bgpv4RouteRange.Address.update(PatternType='SINGLE', Single='10.10.10.1')
     network.Bgpv4RouteRange.AsPath.update(PatternType='SINGLE', Single='20')
-    network.Bgpv4RouteRange.PrefixLength.update(PatternType='SINGLE', Single='32')
+    network.Bgpv4RouteRange.PrefixLength.update(PatternType='SINGLE', Single='16')
     networks.append(network)
 
 traffic = config.DeviceTraffic.create(Name='Device_Traffic', Encapsulation='IPV4', BiDirectional=True, MeshType='ONE_TO_ONE', Sources=networks[0], Destinations=networks[1])
@@ -111,7 +111,7 @@ transport.info('configure frame length')
 traffic.FrameLength.update(LengthType='INCREMENT').Increment.update(From=68, To=1024, Step=2)
 
 transport.info('configure frame rate')
-traffic.FrameRate.update(Mode='FIXED').FixedRate.update(RateType='FRAMES_PER_SECOND', FramesPerSecond=1024)
+traffic.FrameRate.update(Mode='FIXED').FixedRate.update(RateType='FRAMES_PER_SECOND', Fps=1024)
 config.Commit()
 
 transport.info('connect all ports')
