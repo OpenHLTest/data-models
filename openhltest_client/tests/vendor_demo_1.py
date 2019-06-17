@@ -1,16 +1,16 @@
 '''A vendor demo scaffolding script that demonstrates the following:
 
 Configures the test tool with the following:
-	2 ports connected back to back
-	2 device-groups each with one port
-		1 device with the following protocols:
-			ethernet
-			vlan
-			ipv4
-			bgpv4
-		1 simulated network
-			1 network of type bgpv4 route range
-	1 device-traffic from one bgpv4 route range to the other
+    2 ports connected back to back
+    2 device-groups each with one port
+        1 device with the following protocols:
+            ethernet
+            vlan
+            ipv4
+            bgpv4
+        1 simulated network
+            1 network of type bgpv4 route range
+    1 device-traffic from one bgpv4 route range to the other
 
 Connects ports to test hardware
 Starts device-groups
@@ -61,11 +61,14 @@ transport.info('get an instance of the OpenHlTest module class')
 openhltest = transport.OpenHlTest
 
 transport.info('get a Sessions instance')
-sessions = openhltest.Sessions.read()
-if len(sessions) == 0:
+sessions = None
+try:
+    sessions = openhltest.Sessions.read()
+except Exception as e:
+    transport.info(e)
+if sessions is None or len(sessions) == 0:
     sessions = openhltest.Sessions.create(SESSION_NAME)
 transport.info(sessions)
-
 
 transport.info('get an instance of the Config class and clear the configuration')
 config = sessions.Config
@@ -73,15 +76,15 @@ config.Clear()
 
 networks = []
 for i in range(0, len(CONFIG)):
-    port = config.Ports.create(Name='Port %s' % (i + 1), Location=CONFIG[i]['location'])
+    port = config.Ports.create(Name='Port_%s' % (i + 1), Location=CONFIG[i]['location'])
     transport.info('add port %s' % port.Name)
 
     transport.info('add %s bgp protocol scenario' % port.Name)
-    device_group = config.DeviceGroups.create(Name='Device Group %s' % port.Name, Ports=port)
-    device = device_group.Devices.create(Name='Device %s' % port.Name , DeviceCountPerPort=1, ParentLink=None)
+    device_group = config.DeviceGroups.create(Name='Device_Group_%s' % port.Name, Ports=port)
+    device = device_group.Devices.create(Name='Device_%s' % port.Name , DeviceCountPerPort=1, ParentLink=None)
     parent = None
     for protocol_type in ['ETHERNET', 'VLAN', 'IPV4', 'BGPV4']:
-        protocol = device.Protocols.create(Name='%s %s' % (protocol_type, port.Name), ProtocolType=protocol_type, ParentLink=parent)
+        protocol = device.Protocols.create(Name='%s_%s' % (protocol_type, port.Name), ProtocolType=protocol_type, ParentLink=parent)
         if protocol_type == 'IPV4':
             protocol.Ipv4.SourceAddress.update(PatternType='SINGLE', Single=CONFIG[i]['ipv4']['source-address'])
             protocol.Ipv4.Prefix.update(PatternType='SINGLE', Single=CONFIG[i]['ipv4']['prefix'])
@@ -91,23 +94,24 @@ for i in range(0, len(CONFIG)):
         parent = protocol.Name
 
     transport.info('add %s bgp route range' % device.Name)
-    simulated_network = device_group.SimulatedNetworks.create(Name='Simulated Network %s' % port.Name, ParentLink=device.Name)
-    network = simulated_network.Networks.create(Name='Network %s' % port.Name, NetworkType='BGPV4_ROUTE_RANGE', NetworkCountPerPort=5)
-    network.Bgpv4RouteRange.Address.update(PatternType='RANDOM').Random.update(Min="10.10.10.1", Max="10.254.254.254", Step="0.0.0.1", Seed=i)
-    network.Bgpv4RouteRange.PrefixLength.update(PatternType='SINGLE', Single="32")
+    simulated_network = device_group.SimulatedNetworks.create(Name='Simulated_Network_%s' % port.Name, ParentLink=device.Name)
+    network = simulated_network.Networks.create(Name='Network_%s' % port.Name, NetworkType='BGPV4_ROUTE_RANGE', NetworkCountPerPort=5, FlowLink='BGPV4_%s' % port.Name)
+    network.Bgpv4RouteRange.Address.update(PatternType='SINGLE', Single='10.10.10.1')
+    network.Bgpv4RouteRange.AsPath.update(PatternType='SINGLE', Single='20')
+    network.Bgpv4RouteRange.PrefixLength.update(PatternType='SINGLE', Single='32')
     networks.append(network)
 
-traffic = config.DeviceTraffic.create(Name='Device Traffic', Encapsulation='IPV4', BiDirectional=True, MeshType='ONE_TO_ONE', Sources=networks[0], Destinations=networks[1])
+traffic = config.DeviceTraffic.create(Name='Device_Traffic', Encapsulation='IPV4', BiDirectional=True, MeshType='ONE_TO_ONE', Sources=networks[0], Destinations=networks[1])
 transport.info('added %s' % traffic.Name)
 tcp = traffic.Frames.create(Name='TCP', FrameType='TCP').Tcp
 tcp.SourcePort.update(PatternType='SINGLE', Single='12345')
 tcp.DestinationPort.update(PatternType='SINGLE', Single='54321')
 
 transport.info('configure frame length')
-traffic.FrameLength.update(LengthType='INCREMENTAL').Increment.update(From=68, To=1024, Step=3)
+traffic.FrameLength.update(LengthType='INCREMENT').Increment.update(From=68, To=1024, Step=2)
 
 transport.info('configure frame rate')
-traffic.FrameRate.update(RateType='FRAMES_PER_SECOND', FramesPerSecond=12345)
+traffic.FrameRate.update(Mode='FIXED').FixedRate.update(RateType='FRAMES_PER_SECOND', FramesPerSecond=1024)
 config.Commit()
 
 transport.info('connect all ports')
