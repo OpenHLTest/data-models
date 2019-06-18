@@ -52,6 +52,7 @@ CONFIG = [
         }
     }
 ]
+CONFIG_FILENAME = "./config.json"
 
 
 transport = HttpTransport(OPENHLTEST_SERVER)
@@ -108,7 +109,7 @@ tcp.SourcePort.update(PatternType='SINGLE', Single='12345')
 tcp.DestinationPort.update(PatternType='SINGLE', Single='54321')
 
 transport.info('configure frame length')
-traffic.FrameLength.update(LengthType='INCREMENT').Increment.update(From=68, To=1024, Step=2)
+traffic.FrameLength.update(LengthType='INCREMENT').Increment.update(Start=68, End=1024, Step=2)
 
 transport.info('configure frame rate')
 traffic.FrameRate.update(Mode='FIXED').FixedRate.update(RateType='FRAMES_PER_SECOND', Fps=1024)
@@ -148,9 +149,10 @@ transport.info("device-traffic statistics")
 for traffic in sessions.Statistics.DeviceTraffic.read():
     transport.info(traffic)
 
-transport.info('retrieve the current configuration for property checks')
-config.Save({'mode': 'RESTCONF_JSON', 'file-name': 'config.json'})
-with open('config.json') as fid:
-    json_config = json.load(fid)
+transport.info('retrieve the current configuration')
+config.Save({'mode': 'RESTCONF_JSON', 'file-name': CONFIG_FILENAME})
+with open(CONFIG_FILENAME) as fid:
+    json_config = fid.read()
+    transport.info(json_config)
 
 transport.info('PASS')

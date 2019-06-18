@@ -136,6 +136,11 @@
 											<ul>
 												<li *ngFor="let yangEnum of yangNode._enums">
 													{{yangEnum.name}} - {{yangEnum.description}}
+													<ul>
+														<li class="not-supported" *ngFor="let vendor of	yangEnum._unsupported_feature">
+															{{vendor}}
+														</li>
+													</ul>																
 												</li>
 											</ul>
 										</div>

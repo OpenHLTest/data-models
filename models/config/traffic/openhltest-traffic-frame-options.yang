@@ -4,6 +4,9 @@ submodule openhltest-traffic-frame-options {
     prefix oht;
   }
 
+  import openhltest-extensions {
+    prefix e;
+  }
   import openhltest-types {
     prefix t;
   }
@@ -97,6 +100,11 @@ submodule openhltest-traffic-frame-options {
             description
               "";
           }
+          enum DECREMENT {
+            e:ixia-not-supported;
+            description
+              "";
+          }
           enum RANDOM {
             description
               "";
@@ -132,36 +140,58 @@ submodule openhltest-traffic-frame-options {
         when '../length-type = RANDOM';
         description
           "Random frame size options";
-        leaf max {
+        leaf start {
           type int32;
           description
-            "";
+            "The mimumum value of the random frame length";
         }
-        leaf min {
+        leaf end {
           type int32;
           description
-            "";
+            "The maximum value of the random frame length";
         }
       }
       container increment {
         when '../length-type = INCREMENT';
         description
           "";
-        leaf from {
+        leaf start {
           type int32;
           default "64";
           description
-            "Starting increment value for frame length";
+            "The minimum value for the incrementing frame length";
         }
-        leaf to {
+        leaf end {
           type int32;
           description
-            "Maximum increment value for frame length";
+            "The maximum value for the incrementing frame length";
         }
         leaf step {
           type int32;
           description
-            "Step increment value for frame length";
+            "The step increment value for the incrementing frame length. This must be a power of two.";
+        }
+      }
+      container decrement {
+        e:ixia-not-supported;
+        when '../length-type = DECREMENT';
+        description
+          "";
+        leaf start {
+          type int32;
+          default "64";
+          description
+            "The minimum value for the decrementing frame length";
+        }
+        leaf end {
+          type int32;
+          description
+            "The maximum value for the decrementing frame length";
+        }
+        leaf step {
+          type int32;
+          description
+            "The step value for the decrementing frame length. This must be a power of two.";
         }
       }
       leaf imix {

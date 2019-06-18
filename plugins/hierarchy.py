@@ -171,12 +171,12 @@ class HierarchyPlugin(plugin.PyangPlugin):
         if yang_type.arg == 'enumeration':
             enums = []
             for enum in yang_type.search('enum'):
-                enums.append(
-                    {
+                enum_entry = {
                         'name': enum.arg,
                         'description': self._get_yang_description(enum)
                     }
-                )
+                self._add_unsupported_feature(enum, enum_entry)
+                enums.append(enum_entry)
             entry['_enums'] = enums
         if yang_type.arg == 'leafref':
             paths = []
